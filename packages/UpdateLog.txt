@@ -1,0 +1,231 @@
+版本：4.5.13477 ，4.0.13477 
+修复EventLogWriter.WriteLog方法报错。
+修改设计器，添加生成匿名类方法
+
+版本：4.5.13476 ，4.0.13476 
+AbstractEntity 类实例方法SelectByKey，添加对属性IgnorePropertyAttribute特性的支持。
+
+版本：4.5.13474，4.0.13474
+修改 DataGrid和EasyGrid输出带数据的Table标签时添加total属性。
+修改 设计器关于MySql数据库参数占位符号有“?”改为"@"。
+
+版本：4.5.13473，4.0.13473
+修改 HtmlHelper 类EnumFor扩展方法，支持枚举采用FlagsAttribute模式
+
+版本：4.5.13472，4.0.13472
+修改 DataGrid<T> 列 方法，SetField。
+修改设计器选择动态命令，更新实体模型和条件模型时如果有Group By子句时报错
+修改动态命令设计器，添加对Group By子句的修改和显示
+
+版本：4.5.13471，4.0.13471
+修改 DataGrid<T> 默认列宽，如果动态查询中包含WITH子句，更新条件模型时报错。
+
+版本：4.5.13470，4.0.13470
+添加 DataGrid<T> 类行高和列宽单位设置，代码生成器错误。
+
+版本：4.5.13469，4.0.13469
+添加 DataGrid<T> 类行数据的模版输出。
+
+版本：4.5.13467，4.0.13467
+添加 AbstractDbAccess类中关于 StaticCommand 的 Fill 重载方法。
+
+版本：4.5.13466，4.0.13466
+添加 DownloadFileAttribute.GetFileName 方法，获取下载文件名。
+
+版本：4.5.13465，4.0.13465
+修改 QueryEntities和QueryDataTable类中ToPagination方法，最后计算记录总数时，如果Capacity值已经存在并且不分页时不再更新此属性值。
+修改 LambdaExtension Between，In，NotIn函数没有实现的功能。
+
+版本：4.5.13464，4.0.13464
+DataGrid输出时，在table标签中添加记录总数属性(total)。
+
+版本：4.5.13463，4.0.13463
+添加 ToolBar 按钮方法重载，Create，Edit，Import。
+
+版本：4.5.13462，4.0.13462
+添加 DataGrid 输出方法（允许直接输出Html,Excel,Json），修改输出Html方法，添加Caption输出。
+
+版本：4.5.13461，4.0.13461
+修复 DataGrid SelectFor方法产生的列没有加入当前行中。
+添加 DataGridExtension扩展方法重载。
+添加 GroupCell，FooterCell类对Css样式名称的支持（包含添加多个，判断是否包含指定的样式）。
+修复 DataGrid SelectFor方法产生的列如果是第一个列则在Json数据中没有输出。
+
+版本：4.5.13460，4.0.13460
+修改 DataGrid 关于分组和页脚方法的访问权限。
+
+版本：4.5.13459，4.0.13459
+修改对 DataGridJsonColumn 列类型宽度的输出错误。
+
+版本：4.5.13458，4.0.13458
+添加对 DataGridJsonColumn 列类型宽度的设置。
+
+版本：4.5.13457，4.0.13457
+添加 DataGrid 输出单元格的样式。
+添加对 DataGridJsonColumn 列类型的标识（JsonData）。
+
+版本：4.5.13456，4.0.13456
+添加 DataGrid 输出报表模式。
+
+版本：4.5.13455，4.0.13455
+添加 DataGrid 分组输出和页脚输出。
+
+版本：4.5.13454，4.0.13454
+添加DataGrid输出中td对象hidden和field属性的输出。
+修复设计器，如果实体模型主键是枚举或其他自定义类型，无法生成代码。
+
+版本：4.5.13453，4.0.13453
+添加AbstractDataContext对缓存的支持
+
+版本：4.5.13452，4.0.13452
+添加ConnectionContext类管理系统所有数据库连接，添加ConnectionContext.InitializeConnection(ConnectionsSection )方法。
+添加ConnectionStringBuilder 类用户生成系统支持的数据库连接
+删除原 ConfigurationContext类中 ConnectionConfigs，DefaultConnection属性
+修改Designer设计器，添加GetEntities方法重载
+
+版本：4.5.13451，4.0.13451
+添加 DataGrid 类 DataGridJsonColumn输出错误，此列不应输出到Html代码中。
+修改DynamicCommand设计器，通过DynamicCommand更新实体模型时添加对WithClause子句的支持，
+修改StaticCommand设计器，改用DialogWindow窗体。
+
+版本：4.5.13450，4.0.13450
+删除框架对 Framework 3.5 的支持。添加抽象类 AbstractContext<T> ，提供数据缓存功能。
+添加 EasyToolBarExtension类中，HtmlHelper的扩展方法EasyExport。
+
+版本：4.5.13449，4.0.13449，3.5.13449
+修复 DataGridColumn 格式化输出，添加Controller.JsonView重载，修改AbstractEntity的扩展方法(SelectByKey),添加参数connectionName。
+
+版本：4.5.13448，4.0.13448，3.5.13448
+修复 DynamicCommand 命令添加 With子句，在复制时没有将With 子句加入新的命令中，
+修改WithClause设计器。
+
+版本：4.5.13447，4.0.13447，3.5.13447
+为 DynamicCommand 命令添加 With子句。
+
+版本：4.5.13446，4.0.13446，3.5.13446
+添加 Pagination<T> 类的构造函数重载，添加带IPagination<T> 参数。
+
+版本：4.5.13445，4.0.13445，3.5.13445
+添加AbstractAccess类的构造函数重载，带connectionName参数。
+
+版本：4.5.13444，4.0.13444，3.5.13444
+修改 IPagination<T>，添加void ForEach(System.Action<T, int> action) 方法。
+
+版本：4.5.13443，4.0.13443，3.5.13443
+修改 IQueryEntities<T>结构，添加ToEntity方法，返回查询结果的第一条记录
+
+版本：4.5.13442，4.0.13442，3.5.13442
+CheckCommand类中对数据库检测返回时，代码没有转换为文本。
+更新设计器中代码生成器，如果不用带连接的构造函数不生成
+
+版本：4.5.13441，4.0.13441，3.5.13441
+添加 WebCheckBoxListExtension 类中关于 WebCheckBoxList 的方法。
+
+版本：4.5.13440，4.0.13440，3.5.13440
+修改 EntityPropertyProvidor 静态类访问权限由internal改为public，增加TryGetProperties和TryGetProperty的泛型方法。
+
+版本：4.5.13439，4.0.13439，3.5.13439
+添加GuidConverter类的静态属性，NewString和Empty。
+
+版本：4.5.13438，4.0.13438，3.5.13438
+添加AbstractContext类无参构造函数，用以向上兼容
+修复DynamicCommand类设计器，如果当前命令没有SELECT/FROM/WHERE/GROUP/HAVING/ORDERBY子句时会使用上一个选择的的DynamicCommand类信息。
+
+版本：4.5.13437，4.0.13437，3.5.13437
+添加AbstractContext类，与AbstractTableContext类不同的是此类只支持带数据库连接的构造函数
+修改设计器对AbstractContext类和AbstractTableContext类支持和区分。
+
+版本：4.5.13436，4.0.13436，3.5.13436
+修改AbstractAccess和AbstractDbAccess类，添加带connection的构造函数
+修改AbstractTableContext类，添加CreateAccess方法带connection的重载
+
+版本：4.5.13435，4.0.13435，3.5.13435
+删除Pagination<T>类型中 Pagination(IList<T> collection)的构造函数，会引起数组类型的异常。
+
+版本：4.5.13434，4.0.13434，3.5.13434
+修复AbstractDbAccess类中Fill方法，参数为DynamicCommand的参数报错。
+添加LocalizationCollection集合加载完成后进行排序。
+
+版本：4.5.13433，4.0.13433，3.5.13433
+修改DataCommand命令中公开方法为CreateParameterName和CreateParameter方法为公共方法。
+
+版本：4.5.13432，4.0.13432，3.5.13432
+修改DataCommand命令中公开方法为internal protected
+添加DataGrid的ArraysFor方法，用以支持集合的集合属性
+
+版本：4.5.13431，4.0.13431，3.5.13431
+修改DynamicParameter类定义，修改 AbstractDbAccess.Fill方法,
+修改Designer编辑器，关于资源快捷菜单按钮，无效时不显示而不是禁用。
+
+版本：4.5.13430，4.0.13430，3.5.13430
+修复方法 RaiseChecked(string converter, string errorCode) 在没有设置事件时按errorCode原值返回。
+
+版本：4.5.13429，4.0.13429，3.5.13429
+修改MessageManager为MessageContext 同时取消配置文件中关于Message节的必输选项。
+
+版本：4.5.13428，4.0.13428，3.5.13428
+修改 JsonMvcResult 对象生成Json对象时属性中包含"."符号的处理。
+
+版本：4.5.13427，4.0.13427，3.5.13427
+修复 ColumnMappingAttribute 构造函数，因SourceColumn设置不正确。
+
+版本：4.5.13426，4.0.13426，3.5.13426
+调整GetPagination方法，删除不需要的方法，同时修改模型属性窗口，隐藏DefaultValue属性。
+添加GetPagination的重载方法
+
+版本：4.5.13425，4.0.13425，3.5.13425
+修复 MvcLibrary程序集中JsonSerializer.SerializeDateTime方法为不支持序列化毫秒部分。
+修改 Paginatin<T> 集合采用 Collection<T> 基类。修改 Paginatin<T> 集合中属性 Capacity 的实现。
+
+版本：4.5.13424，4.0.13424，3.5.13424
+修改 DataGridColumn GetFormatValue方法为GetString。
+
+版本：4.5.13423，4.0.13423，3.5.13423
+修改 IBasic 抽象类实例中扩展，添加修改 DataGridOptions 默认值。
+修改 DataGrid 列，添加bool类型列，修改数组获取数据问题。
+
+版本：4.5.13422，4.0.13422，3.5.13422
+修改开发安装包，修改 DataGrid 扩展方法，从Basic类实例中扩展。
+
+版本：4.5.13421，4.0.13421，3.5.13421
+程序集 EntityLayer中类 MessageManager 在3.5和4.5版本中运行异常。
+
+版本：4.5.13420，4.0.13420，3.5.13420
+修改 DataGrid 构造函数参数，修改 DataGridExtension 扩展方法参数
+
+版本：4.5.13419，4.0.13419，3.5.13419
+整理EntityLayer，DataAccess,Designer,EditorObjects,EntityDesigner,Localization,Persistent项目程序集。
+添加值类型 PropertyMeta 定义，整理ResultErrorCollection 类型。
+添加 DataGrid 定义。添加 DataGrid 列定义，Render定义。添加数组列,添加DataGrid的Html扩展
+
+版本：4.0.13418 或 3.5.13418
+修复数据库异步执行方法。
+
+版本：4.0.13416 或 3.5.13416
+修复数据库异步执行方法。
+
+版本：4.0.13415 或 3.5.13415
+添加数据库异步执行方法，添加设计器异步代码执行,修改GetEntitiesAsync方法
+
+版本：4.0.13414 或 3.5.13414
+添加数据库异步执行方法
+
+版本：4.0.13413或3.5.13413
+修改日志记录文件内容格式,缩减日志消息字段，仅保留Message字段，删除Description
+
+版本：4.0.13412或3.5.13412
+添加GetDataTable和GetEntities对无条件类（实体模型中条件参数为空或没有指定特定的条件类）的支持。
+修改模型设计器，添加属性为空时在类型旁显示“？”。
+
+版本：4.0.13411或3.5.13411
+在 AbstractDbAccess 类对象中第一次执行方法 BatchExecute<TR>时没有读取数据库表配置信息。
+
+版本：4.0.13410或3.5.13410
+修改Basic.DataAccess 程序集 AbstractDbAccess 类中的方法 BatchExecute<TR>。
+由原先的 基于StaticCommand 类型引发执行改为 基于 TableConfiguration 类型执行。
+
+版本：4.0.13409或3.5.13409
+添加数据库执行方法异步执行
+
+版本：4.0.13408或3.5.13408
+添加数据库执行方法异步执行

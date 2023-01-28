@@ -1,0 +1,33 @@
+<!--Basic.Version.targets,Global Version Control-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<OutputPath>$(ProjectDir)..\..\bin\Net472 Release\</OutputPath>
+		<DocumentationFile>$(ProjectDir)..\..\bin\Net472 Release\$(AssemblyName).xml</DocumentationFile>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<DebugSymbols>true</DebugSymbols>
+		<DefineConstants>Release,NET40,NET472</DefineConstants>
+		<BaseIntermediateOutputPath>$(ProjectDir)..\..\bin\obj\Net472 Release\$(AssemblyName)\</BaseIntermediateOutputPath>
+		<UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+		<OutputPath>$(ProjectDir)..\..\bin\Net472 Debug\</OutputPath>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<DocumentationFile>$(ProjectDir)..\..\bin\Net472 Debug\$(AssemblyName).xml</DocumentationFile>
+		<DefineConstants>Debug,NET40,NET472</DefineConstants>
+		<BaseIntermediateOutputPath>$(ProjectDir)..\..\bin\obj\Net472 Debug\$(AssemblyName)\</BaseIntermediateOutputPath>
+		<UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
+	</PropertyGroup>
+	<PropertyGroup>
+		<SignAssembly>true</SignAssembly>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\..\packages\AssemblyPublic.cs" />
+	</ItemGroup>
+	<Target Name="BeforeBuild"></Target>
+	<Target Name="AfterBuild"></Target>
+</Project>

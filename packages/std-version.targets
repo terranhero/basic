@@ -1,0 +1,38 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<BuildVersion>5440</BuildVersion>
+		<TargetFrameworks>net6.0;netstandard2.0;</TargetFrameworks>
+		<!--<TargetFramework>netstandard2.0</TargetFramework>-->
+		<AssemblyVersion>6.0.0.0</AssemblyVersion>
+		<Version>6.0.0.0</Version>
+		<FileVersion>6.0.$(BuildVersion)</FileVersion>
+		<PackageVersion>6.0.$(BuildVersion)</PackageVersion>
+		<Copyright>@SIP GoldSoft Technology Limited. All Rights Reserved.</Copyright>
+		<Trademark></Trademark>
+		<Company>SIP GoldSoft Technology Limited</Company>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<SignAssembly>true</SignAssembly>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(AssemblyName)' == 'Basic.Authentication'">
+		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
+		<OutputPath>$(ProjectDir)..\..\bin\</OutputPath>
+		<DocumentationFile></DocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(AssemblyName)' == 'Basic.Cryptography'">
+		<OutputPath>$(ProjectDir)..\..\bin\</OutputPath>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\..\packages\license.txt">
+			<Pack>False</Pack>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+</Project>

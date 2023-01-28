@@ -1,0 +1,26 @@
+GoldSoft.pfx
+密码：goldsoft&*1220
+
+
+
+		/// <summary>向当前视图文件输出字符串</summary>
+		/// <param name="builder"></param>
+		/// <param name="expression">需要输出的Lambda表达式。</param>
+		public void AppendProperty<TR>(Expression<Func<T, TR>> expression, IHtmlContentBuilder builder)
+		{
+
+		}
+
+		/// <summary>向当前视图文件输出字符串</summary>
+		/// <param name="builder"></param>
+		/// <param name="name">lambda表达式 属性名称</param>
+		/// <param name="expression">需要输出的Lambda表达式。</param>
+		public void AppendProperty<TR>(Expression<Func<T, TR>> expression, string name, IHtmlContentBuilder builder)
+		{
+			if (string.IsNullOrEmpty(name)) { name = LambdaHelper.GetMemberName(expression.Body); }
+			if (mProperties.TryGetProperty(name, out EntityPropertyMeta meta))
+			{
+				builder.Append(FormatValue(meta, name));
+			}
+			else { builder.Append(string.Concat(name, ":\"\"")); }
+		}

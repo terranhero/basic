@@ -1,0 +1,23 @@
+<!--Basic.Version.targets,Global Version Control-->
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<OutputPath>..\..\bin\Designer Release</OutputPath>
+		<DebugSymbols>false</DebugSymbols>
+		<DefineConstants>Release,NET472</DefineConstants>
+		<DeployExtension>False</DeployExtension>
+		<BaseIntermediateOutputPath>..\..\bin\obj\$(AssemblyName)\</BaseIntermediateOutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<OutputPath>..\..\bin\Designer Debug</OutputPath>
+		<DefineConstants>Debug,NET472</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\..\packages\Assembly.Tools.cs" />
+	</ItemGroup>
+	<PropertyGroup>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+	<Target Name="BeforeBuild"></Target>
+	<Target Name="AfterBuild"></Target>
+</Project>

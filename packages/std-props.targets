@@ -1,0 +1,19 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<OutputPath>$(ProjectDir)..\..\bin\</OutputPath>
+		<DocumentationFile>$(ProjectDir)..\..\bin\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<DebugSymbols>true</DebugSymbols>
+		<DefineConstants>Release,NETSTD</DefineConstants>
+		<!--<BaseIntermediateOutputPath>$(ProjectDir)..\..\bin\obj\$(TargetFramework)\$(AssemblyName)\</BaseIntermediateOutputPath>-->
+		<UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<OutputPath>$(ProjectDir)..\..\bin\</OutputPath>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<DocumentationFile>$(ProjectDir)..\..\bin\\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<DefineConstants>Debug,NETSTD</DefineConstants>
+		<!--<BaseIntermediateOutputPath>$(ProjectDir)..\..\bin\obj\$(TargetFramework)\$(AssemblyName)\</BaseIntermediateOutputPath>-->
+		<UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
+	</PropertyGroup>
+</Project>
