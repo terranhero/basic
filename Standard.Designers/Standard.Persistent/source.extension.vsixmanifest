@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="0b80d67f-de07-42e0-a645-7f19a0dfc9c1" Publisher="JACKY" Version="4.7.13580" Language="zh-Hans" />
+        <DisplayName>ASP.NET MVC 资源和数据持久设计器</DisplayName>
+        <Description xml:space="preserve">ASP.NET MVC 资源和数据持久设计器</Description>
+        <License>license.txt</License>
+        <GettingStartedGuide>license.txt</GettingStartedGuide>
+        <ReleaseNotes>UpdateLog.txt</ReleaseNotes>
+        <Icon>goldsoft.ico</Icon>
+        <PreviewImage>goldsoft.ico</PreviewImage>
+        <Tags>MVC Basic GoldSoft</Tags>
+    </Metadata>
+    <Installation AllUsers="true">
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)" />
+        <InstallationTarget Version="[15.0,17.0)" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[15.0,17.0)" Id="Microsoft.VisualStudio.Enterprise" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency Id="Microsoft.VisualStudio.MPF.16.0" DisplayName="Visual Studio MPF 16.0" d:Source="Installed" Version="[16.0,17.0)" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.DataAccess" Path="|Standard.DataAccess|" AssemblyName="|Standard.DataAccess;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.EntityLayer" Path="|Standard.EntityLayer|" AssemblyName="|Standard.EntityLayer;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.Registers" Path="|Standard.Registers|" AssemblyName="|Standard.Registers;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="RazorEngine.Core" Path="|RazorEngine.Core|" AssemblyName="|RazorEngine.Core;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Microsoft.CodeAnalysis.dll" AssemblyName="Microsoft.CodeAnalysis, Version=3.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Microsoft.CodeAnalysis.CSharp.dll" AssemblyName="Microsoft.CodeAnalysis.CSharp, Version=3.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Microsoft.AspNetCore.Razor.Language.dll" AssemblyName="Microsoft.AspNetCore.Razor.Language, Version=5.0.9.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="Standard.Localizations" Path="|Standard.Localizations;PkgdefProjectOutputGroup|" />
+    </Assets>
+</PackageManifest>

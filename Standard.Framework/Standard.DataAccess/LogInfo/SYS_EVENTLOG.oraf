@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<dpdl:PersistentConfiguration xmlns:dpdl="http://dev.goldsoft.com/2013/BasicDataPersistentSchema-5.0.xsd">
+	<dpdl:TableInfo TableName="SYS_EVENTLOG" ViewName="SYS_EVENTLOG" Description="记录系统日志">
+		<TableColumn Name="GUIDKEY" DbType="Guid" PKey="true">关键字</TableColumn>
+		<TableColumn Name="BATCHNO" DbType="Guid">日志批次</TableColumn>
+		<TableColumn Name="CONTROLLER" DbType="NVarChar" Size="50">控制器名称</TableColumn>
+		<TableColumn Name="ACTION" DbType="NVarChar" Size="50">操作名称</TableColumn>
+		<TableColumn Name="COMPUTER" DbType="NVarChar" Size="50">计算机名称/IP地址</TableColumn>
+		<TableColumn Name="USERNAME" DbType="NVarChar" Size="50">操作用户名</TableColumn>
+		<TableColumn Name="MESSAGE" DbType="NVarChar" Size="200">操作消息</TableColumn>
+		<TableColumn Name="DESCRIPTION" DbType="NVarChar" Nullable="true" Size="2000">描述</TableColumn>
+		<TableColumn Name="LOGLEVEL" DbType="Int32">日志级别</TableColumn>
+		<TableColumn Name="RESULTTYPE" DbType="Int32">操作结果</TableColumn>
+		<TableColumn Name="OPERATIONTIME" DbType="DateTime">操作时间</TableColumn>
+	</dpdl:TableInfo>
+	<dpdl:DataCommands>
+		<DynamicCommand Name="SearchTableConfig" Kind="SearchTable">
+			<SelectText><![CDATA[T1.GUIDKEY,T1.BATCHNO,T1.CONTROLLER,T1.ACTION,T1.COMPUTER,T1.USERNAME,T1.MESSAGE,T1.LOGLEVEL,T1.RESULTTYPE,T1.OPERATIONTIME]]></SelectText>
+			<FromText><![CDATA[{$EVENTLOG_TABLENAME$} T1]]></FromText>
+			<OrderText>T1.OPERATIONTIME</OrderText>
+		</DynamicCommand>
+		<StaticCommand Name="CreateConfig" Kind="AddNew">
+			<CommandText><![CDATA[INSERT INTO {$EVENTLOG_TABLENAME$}(GUIDKEY,BATCHNO,CONTROLLER,ACTION,COMPUTER,USERNAME,MESSAGE,LOGLEVEL,RESULTTYPE,OPERATIONTIME)
+VALUES(:GUIDKEY,:BATCHNO,:CONTROLLER,:ACTION,:COMPUTER,:USERNAME,:MESSAGE,:LOGLEVEL,:RESULTTYPE,:OPERATIONTIME)]]></CommandText>
+			<Parameters>
+				<Parameter Column="GUIDKEY" DbType="Guid">:GUIDKEY</Parameter>
+				<Parameter Column="BATCHNO" DbType="Guid">:BATCHNO</Parameter>
+				<Parameter Column="CONTROLLER" DbType="NVarChar" Size="50">:CONTROLLER</Parameter>
+				<Parameter Column="ACTION" DbType="NVarChar" Size="50">:ACTION</Parameter>
+				<Parameter Column="COMPUTER" DbType="NVarChar" Size="50">:COMPUTER</Parameter>
+				<Parameter Column="USERNAME" DbType="NVarChar" Size="50">:USERNAME</Parameter>
+				<Parameter Column="MESSAGE" DbType="NText">:MESSAGE</Parameter>
+				<Parameter Column="LOGLEVEL" DbType="Int32">:LOGLEVEL</Parameter>
+				<Parameter Column="RESULTTYPE" DbType="Int32">:RESULTTYPE</Parameter>
+				<Parameter Column="OPERATIONTIME" DbType="DateTime">:OPERATIONTIME</Parameter>
+			</Parameters>
+		</StaticCommand>
+		<StaticCommand Name="RemoveConfig" Kind="Remove">
+			<CommandText><![CDATA[DELETE FROM {$EVENTLOG_TABLENAME$} WHERE GUIDKEY=:GUIDKEY]]></CommandText>
+			<Parameters>
+				<Parameter Column="GUIDKEY" DbType="Guid">:GUIDKEY</Parameter>
+			</Parameters>
+		</StaticCommand>
+	</dpdl:DataCommands>
+</dpdl:PersistentConfiguration>

@@ -1,0 +1,206 @@
+﻿<#@ template language="C#" debug="false" hostSpecific="false" #>
+<#@ parameter type="System.String" name="defaultNamespance" #>
+<#@ parameter type="Basic.Builders.ControllerBuilderData" name="builder" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Basic.Builders" #>
+using System;
+using System.Web.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Basic.Collections;
+using Basic.EntityLayer;
+using Basic.Enums;
+using Basic.Interfaces;
+using Basic.MvcLibrary;
+<# if(!string.IsNullOrEmpty(builder.Namespace)) {#>
+using <#=builder.Namespace#>;
+<#}if (!string.IsNullOrEmpty(builder.EntityNamespace) && builder.Namespace != builder.EntityNamespace) {#>
+using <#=builder.EntityNamespace#>;
+<#}#>
+
+namespace <#= defaultNamespance#>
+{
+	/// <summary>
+	///<#= builder.ControllerDescription#> 
+	/// </summary>
+	public class <#= builder.ControllerClass#> : <#= builder.BaseController#>
+	{
+<# if(builder.BaseController=="CloudController") {#>
+		public <#= builder.ControllerClass#>(string name) : base(name) { }
+<# } else {#>
+		public <#= builder.ControllerClass#>() : base() { }
+<#}#>
+<# if(builder.IndexEnabled) {#>
+
+		/// <summary>初始化加载页面</summary>
+		[AcceptVerbs("GET")]
+		public async Task<ActionResult> Index() { return await Task.FromResult(this.PartialView()); }
+<# }#>
+<# if(builder.GridEnabled) {#>
+
+		/// <summary>初始化加载表格</summary>
+		[AcceptVerbs("GET"), ChildActionOnly()]
+		public ActionResult Grid() { return this.PartialView("Grid"); }
+<# }#>
+<# if(builder.CreateEnabled && builder.NewEntityName != null) {#>
+
+		/// <summary>新增数据Get请求</summary>
+		[AcceptVerbs("GET"), ActionName("Create")]
+		public async Task<ActionResult> CreateGet(<#= builder.NewEntityName #> entity)
+		{
+			return await Task.FromResult(this.PartialView(entity));
+		}
+
+		/// <summary>Create Post Action</summary>
+        [AcceptVerbs("POST"), ValidateAntiForgeryToken()]
+        public async Task<ActionResult> Create(<#= builder.NewEntityName #> entity)
+        {
+            if (ModelState.IsValid)
+            {
+				<# if(builder.Connection == true) {#>
+				<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+				<# } else {#>
+				<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+				<#}#>
+		        Result result = await context.CreateAsync(entity);
+                return this.ToJson(result);
+            }
+            return this.ToJson(ModelState);
+        }
+<# }#>
+<# if(builder.EditEnabled && builder.EditEntityName != null) {#>
+
+		/// <summary>Edit Get Action</summary>
+		[AcceptVerbs("GET"), ActionName("Edit")]
+		public async Task<ActionResult> EditGet(<#= builder.SearchEntityName #> entity)
+		{
+			ModelState.Clear();
+			<# if(builder.Connection == true) {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+			<# } else {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+			<#}#>
+			context.SearchByKey(entity);
+			return await Task.FromResult(this.PartialView(entity));
+		}
+
+		/// <summary>Edit Post Action</summary>
+        [AcceptVerbs("POST"), ValidateAntiForgeryToken()]
+        public async Task<ActionResult> Edit(<#= builder.EditEntityName #> entity)
+        {
+            if (ModelState.IsValid)
+            {
+				<# if(builder.Connection == true) {#>
+				<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+				<# } else {#>
+				<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+				<#}#>
+                Result result = await context.UpdateAsync(entity);
+                return this.ToJson(result);
+            }
+            return this.ToJson(ModelState);
+        }
+<# }#>
+<# if(builder.DeleteEnabled && builder.DeleteEntityName != null) {#>
+
+		/// <summary>
+		///	Delete Post Action
+		/// </summary>
+		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
+		public async Task<ActionResult> Delete(<#= builder.DeleteEntityName #>[] entities)
+		{
+			if (ModelState.IsValid)
+			{
+				if (entities == null || entities.Length == 0)
+				{
+					this.AddModelError("Delete_Parameter_Error");//删除数据参数信息错误，必须选择需要删除的记录！
+					return this.ToJson(ModelState);
+				}
+				<# if(builder.Connection == true) {#>
+				<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+				<# } else {#>
+				<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+				<#}#>
+				Result result = await context.DeleteAsync(entities);
+				return this.ToJson(result);
+			}
+			return this.ToJson(ModelState);
+		}
+<# }#>
+<# if(builder.SearchAsyncEnabled && builder.SearchEntityName != null) {#>
+
+		/// <summary>简单查询数据</summary>
+		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
+		public async Task<ActionResult> Search(<#= builder.SearchConditionName #> condition)
+		{
+			<# if(builder.Connection == true) {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+			<# } else {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+			<#}#>
+			IPagination<<#= builder.SearchEntityName #>> result = await context.GetEntitiesAsync(condition);
+			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
+		}
+<# }else if(builder.SearchEnabled && builder.SearchEntityName != null) {#>
+		/// <summary>简单查询数据</summary>
+		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
+		public ActionResult Search(<#= builder.SearchConditionName #> condition)
+		{
+			<# if(builder.Connection == true) {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+			<# } else {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+			<#}#>
+			IPagination<<#= builder.SearchEntityName #>> result = context.GetEntities(condition);
+			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
+		}
+<# }#>
+<# if(builder.ComplexSearchAsyncEnabled && builder.SearchEntityName != null) {#>
+
+		/// <summary>高级查询页面打开</summary>
+		[AcceptVerbs("GET"), ActionName("ComplexSearch")]
+		public ActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
+		{ 
+			return this.PartialView(condition); 
+		}
+
+		/// <summary>高级查询</summary>
+		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
+		public async Task<ActionResult> ComplexSearch(<#= builder.SearchConditionName #> condition)
+		{
+			<# if(builder.Connection == true) {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+			<# } else {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+			<#}#>
+			IPagination<<#= builder.SearchEntityName #>> result = await context.GetEntitiesAsync(condition);
+			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
+		}
+<# }else if(builder.ComplexSearchEnabled && builder.SearchEntityName != null) {#>
+
+		/// <summary>
+		/// Complex Search Get Action
+		/// </summary>
+		[AcceptVerbs("GET"), ActionName("ComplexSearch")]
+		public ActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
+		{ 
+			return this.PartialView(condition); 
+		}
+
+		/// <summary>
+		/// Complex Search Post Action
+		/// </summary>
+		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
+		public ActionResult ComplexSearch(<#= builder.SearchConditionName #> condition)
+		{
+			<# if(builder.Connection == true) {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
+			<# } else {#>
+			<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
+			<#}#>
+			IPagination<<#= builder.SearchEntityName #>> result = context.GetEntities(condition);
+			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
+		}
+<# }#>
+	}
+}

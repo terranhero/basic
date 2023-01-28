@@ -1,0 +1,5 @@
+﻿[assembly: System.Reflection.AssemblyTitle("Basic.Registers")]
+[assembly: System.Reflection.AssemblyDescription("ASP.NET MVC 资源文件注册")]
+[assembly: System.Reflection.AssemblyProduct("Basic.Registers")]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Runtime.InteropServices.Guid("EF421AE5-A518-4EF2-B511-D1801C88BD27")]

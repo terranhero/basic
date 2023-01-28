@@ -1,0 +1,42 @@
+﻿<Project ToolsVersion="15.0" Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
+	<PropertyGroup Label="Globals">
+		<SccProjectName>Svn</SccProjectName>
+		<SccProvider></SccProvider>
+		<SccAuxPath>Svn</SccAuxPath>
+		<SccLocalPath>Svn</SccLocalPath>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AssemblyName>Basic.EntityLayer</AssemblyName>
+		<RootNamespace>Basic</RootNamespace>
+		<DelaySign>false</DelaySign>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Standard.EntityLayer</PackageId>
+		<PackageTags>Basic Entity</PackageTags>
+		<Authors>JACKY</Authors>
+		<Description>Asp.Net Mvc Entity Model Supporting</Description>
+		<Product>Standard.EntityLayer</Product>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Interfaces\IRequestContext.cs" />
+		<Compile Remove="Interfaces\IResponseContext.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Properties\Strings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Strings.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Strings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
+</Project>

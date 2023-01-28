@@ -1,0 +1,6 @@
+﻿//[assembly: System.Reflection.AssemblyDescription("GoldSoft Technology ASP.NET MVC Basic Library")]
+[assembly: System.Reflection.AssemblyAlgorithmId(System.Configuration.Assemblies.AssemblyHashAlgorithm.MD5)]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Runtime.InteropServices.Guid("62CD6D7A-F196-48A1-BFED-AB6185D6BC6E")]
+//[assembly: System.Security.Permissions.StrongNameIdentityPermission(System.Security.Permissions.SecurityAction.RequestMinimum, PublicKey = "")]
+//[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_EasyLibrary)]

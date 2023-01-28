@@ -1,0 +1,23 @@
+﻿<ui:DialogWindow  x:Class="Basic.Designer.CommandTextWindow" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:bcs="http://developer.goldsofttech.com/basic/2014/xaml" 
+	xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0" Title="修改 CommandText 属性的值"
+	ShowInTaskbar="False" Width="850" Height="300" WindowStartupLocation="CenterOwner" HasHelpButton="False">
+	<ui:DialogWindow.Resources>
+		<Style TargetType="{x:Type TextBlock}">
+			<Setter Property="Margin" Value="6"/>
+		</Style>
+		<Style TargetType="{x:Type TextBox}">
+			<Setter Property="Margin" Value="6"/>
+			<Setter Property="FontSize" Value="12"/>
+			<Setter Property="Padding" Value="2"/>
+		</Style>
+	</ui:DialogWindow.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<TextBox x:Name="txtCommandText" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+		<Button Grid.Row="1" x:Name="btnClose" HorizontalAlignment="Stretch" Height="30"  Margin="6" FontSize="14" Click="Button_Click">确    定</Button>
+	</Grid>
+</ui:DialogWindow>

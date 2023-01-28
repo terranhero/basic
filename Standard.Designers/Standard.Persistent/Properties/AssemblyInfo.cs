@@ -1,0 +1,10 @@
+﻿[assembly: System.Reflection.AssemblyTitle("Basic.Persistent")]
+[assembly: System.Reflection.AssemblyDescription("ASP.NET MVC 资源和数据持久设计器")]
+[assembly: System.Reflection.AssemblyProduct("Basic.Persistent")]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Runtime.InteropServices.Guid("FB46A196-DFD8-429A-A134-12B0B737FFDE")]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://developer.goldsofttech.com/basic/2018/xaml", "Basic.Commands")]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://developer.goldsofttech.com/basic/2018/xaml", "Basic.Windows")]
+[assembly: System.Windows.Markup.XmlnsPrefix("http://developer.goldsofttech.com/basic/2018/xaml", "bcs")]
+[assembly: System.Windows.ThemeInfo(System.Windows.ResourceDictionaryLocation.None,
+	System.Windows.ResourceDictionaryLocation.SourceAssembly)]

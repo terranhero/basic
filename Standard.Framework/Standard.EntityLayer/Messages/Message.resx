@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Access_ConfigFileException" xml:space="preserve">
+    <value>读取配置文件异常，可能是配置文件路径不正确或配置文件被移动，配置文件名称{0}。</value>
+  </data>
+  <data name="Access_ConstructedFunction" xml:space="preserve">
+    <value>构造函数使用错误，请使用带参数的构造函数创建{0}类型的实例</value>
+  </data>
+  <data name="Access_NotExistsElement" xml:space="preserve">
+    <value>配置文件中不存在配置节:{0}，请检查配置节名称。</value>
+  </data>
+  <data name="Access_ReturnColumn" xml:space="preserve">
+    <value>新建关键字出错，没有指定关键字列名或指定的列名错误</value>
+  </data>
+  <data name="ConnectionType_Description" xml:space="preserve">
+    <value>数据库连接类型枚举</value>
+  </data>
+  <data name="ConnectionType_OdbcConType" xml:space="preserve">
+    <value>OdbcConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_OleDbConType" xml:space="preserve">
+    <value>OleDbConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_OracleConType" xml:space="preserve">
+    <value>OracleConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_SqlConType" xml:space="preserve">
+    <value>SqlConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_SQLiteConType" xml:space="preserve">
+    <value>SQLiteConnection类型数据库连接</value>
+  </data>
+  <data name="DataBaseType_Description" xml:space="preserve">
+    <value>数据库连接类型枚举</value>
+  </data>
+  <data name="DataBaseType_Access" xml:space="preserve">
+    <value>Access类型数据库</value>
+  </data>
+  <data name="DataBaseType_Oracle" xml:space="preserve">
+    <value>Oracle类型数据库</value>
+  </data>
+  <data name="DataBaseType_SQLite" xml:space="preserve">
+    <value>SQLite类型数据库</value>
+  </data>
+  <data name="DataBaseType_SqlServer" xml:space="preserve">
+    <value>SQL SERVER类型数据库</value>
+  </data>
+  <data name="Access_UninitializedCommand" xml:space="preserve">
+    <value>当前数据库命令没有被初始化，请在执行数据库命令前首先确保调用InitCommand(SqlStruct)方法，或者调用InitCommand(SqlStruct)时，参数不正确。</value>
+  </data>
+  <data name="OperatorModeEnum_AddNew" xml:space="preserve">
+    <value>当前窗口执行新增操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Custom" xml:space="preserve">
+    <value>当前窗口执行自定义操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Delete" xml:space="preserve">
+    <value>当前窗口执行删除操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Des" xml:space="preserve">
+    <value>窗口操作模式枚举,一般用在页面操作中。</value>
+  </data>
+  <data name="OperatorModeEnum_Export" xml:space="preserve">
+    <value>当前窗口执行导出操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Import" xml:space="preserve">
+    <value>当前窗口执行导入操作。</value>
+  </data>
+  <data name="OperatorModeEnum_None" xml:space="preserve">
+    <value>无任何操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Save" xml:space="preserve">
+    <value>当前窗口执行保存操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Search" xml:space="preserve">
+    <value>当前窗口执行查询操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Update" xml:space="preserve">
+    <value>当前窗口执行更新操作。</value>
+  </data>
+  <data name="IDataPersistent_UselessMethod" xml:space="preserve">
+    <value>无效的方法，类{0}不能使用此方法。</value>
+  </data>
+  <data name="Parameter_Direction" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</value>
+  </data>
+  <data name="Parameter_IsNullable" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是否接受空值</value>
+  </data>
+  <data name="Parameter_Length" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）。</value>
+  </data>
+  <data name="Parameter_ParameterType" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数数据库参数的类型。</value>
+  </data>
+  <data name="Parameter_Scale" xml:space="preserve">
+    <value>获取或设置数据库参数值解析为的小数位数</value>
+  </data>
+  <data name="SqlStructXmlClass_SqlStructs" xml:space="preserve">
+    <value>DbCommand命令结构列表</value>
+  </data>
+  <data name="SqlStructXmlClass_TableColumns" xml:space="preserve">
+    <value>数据库表列信息</value>
+  </data>
+  <data name="SqlStructXmlClass_TableName" xml:space="preserve">
+    <value>数据库视图名称</value>
+  </data>
+  <data name="SqlStructXmlClass_ViewName" xml:space="preserve">
+    <value>数据库表名称</value>
+  </data>
+  <data name="SqlStruct_AutoGeneration" xml:space="preserve">
+    <value>是否需要自动创建SqlStruct结构</value>
+  </data>
+  <data name="SqlStruct_CommandText" xml:space="preserve">
+    <value>获取或设置要对数据源执行的 Transact-SQL 语句、表名或存储过程。</value>
+  </data>
+  <data name="SqlStruct_CommandTimeout" xml:space="preserve">
+    <value>获取或设置在终止执行命令的尝试并生成错误之前的等待时间</value>
+  </data>
+  <data name="SqlStruct_CommandType" xml:space="preserve">
+    <value>获取或设置一个值，该值指示如何解释 CommandText 属性。</value>
+  </data>
+  <data name="SqlStruct_ConnectionType" xml:space="preserve">
+    <value>当前数据库连接类型</value>
+  </data>
+  <data name="SqlStruct_Parameters" xml:space="preserve">
+    <value>DbCommand命令执行参数集合</value>
+  </data>
+  <data name="SqlStruct_ReturnColumn" xml:space="preserve">
+    <value>如果 Transact-SQL语句返回单值，则需要进行的迭代字段名称</value>
+  </data>
+  <data name="SqlStruct_TransferParameter" xml:space="preserve">
+    <value>当前命令结构是否需要进行连接参数转换</value>
+  </data>
+  <data name="SqlStruct_XmlElementName" xml:space="preserve">
+    <value>Xml文件中此结构的元素名称</value>
+  </data>
+  <data name="StatusModeEnum_AddNewed" xml:space="preserve">
+    <value>当前窗口已经执行完新增操作</value>
+  </data>
+  <data name="StatusModeEnum_AddNewing" xml:space="preserve">
+    <value>当前窗口正在执行新增操作，一般为开始新增后标记</value>
+  </data>
+  <data name="StatusModeEnum_Canceled" xml:space="preserve">
+    <value>当前窗口已经执行完取消操作。</value>
+  </data>
+  <data name="StatusModeEnum_Canceling" xml:space="preserve">
+    <value>当前窗口正在执行取消操作，一般为开始取消后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Confirmed" xml:space="preserve">
+    <value>当前窗口已经执行完确认操作。</value>
+  </data>
+  <data name="StatusModeEnum_Confirming" xml:space="preserve">
+    <value>当前窗口正在执行确认操作，一般为开始确认后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Deleted" xml:space="preserve">
+    <value>当前窗口已经执行完删除操作。</value>
+  </data>
+  <data name="StatusModeEnum_Deleting" xml:space="preserve">
+    <value>当前窗口正在执行删除操作，一般为开始删除后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Description" xml:space="preserve">
+    <value>描述页面的各种操作状态</value>
+  </data>
+  <data name="StatusModeEnum_Exported" xml:space="preserve">
+    <value>当前窗口已经执行完导出操作。</value>
+  </data>
+  <data name="StatusModeEnum_Exporting" xml:space="preserve">
+    <value>当前窗口正在执行导出操作，一般为开始导出增后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Imported" xml:space="preserve">
+    <value>当前窗口已经执行完导入操作。</value>
+  </data>
+  <data name="StatusModeEnum_Importing" xml:space="preserve">
+    <value>当前窗口正在执行导入操作，一般为开始导入后标记。</value>
+  </data>
+  <data name="StatusModeEnum_None" xml:space="preserve">
+    <value>当前页面无任何状态，一般指刚刚进入页面还没进行任何操作。</value>
+  </data>
+  <data name="StatusModeEnum_Saved" xml:space="preserve">
+    <value>当前窗口已经执行保存增操作。</value>
+  </data>
+  <data name="StatusModeEnum_Saving" xml:space="preserve">
+    <value>当前窗口正在执行保存操作，一般为开始保存后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Searched" xml:space="preserve">
+    <value>当前窗口已经执行完查询操作。</value>
+  </data>
+  <data name="StatusModeEnum_Searching" xml:space="preserve">
+    <value>当前窗口正在执行查询操作，一般为开始查询后标记。</value>
+  </data>
+  <data name="StatusModeEnum_UnkwonOperated" xml:space="preserve">
+    <value>当前窗口已经执行完未知操作。</value>
+  </data>
+  <data name="StatusModeEnum_UnkwonOperating" xml:space="preserve">
+    <value>当前窗口正在执行未知操作，一般为开始未知操作后标记</value>
+  </data>
+  <data name="StatusModeEnum_Updated" xml:space="preserve">
+    <value>当前窗口已经执行完更新操作。</value>
+  </data>
+  <data name="StatusModeEnum_Updating" xml:space="preserve">
+    <value>当前窗口正在执行更新操作，一般为开始更新后标记。</value>
+  </data>
+  <data name="TransactionState_AllowCommitTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务，且事务允许被提交。</value>
+  </data>
+  <data name="TransactionState_AllowRollbackTransaction" xml:space="preserve">
+    <value>指示当前存在可被回滚的事务，且事务允许被回滚。</value>
+  </data>
+  <data name="TransactionState_AlreadyCommitTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务，且事务已经被提交，如果在提交则系统抛出TransactionInDoubtException异常。</value>
+  </data>
+  <data name="TransactionState_AlreadyRollbackTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务，且事务已经被回滚，如果在提交则系统抛出TransactionInDoubtException异常。</value>
+  </data>
+  <data name="TransactionState_Description" xml:space="preserve">
+    <value>事务的提交状态枚举。</value>
+  </data>
+  <data name="TransactionState_ExistTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务。</value>
+  </data>
+  <data name="TransactionState_NotExistTransaction" xml:space="preserve">
+    <value>指示当前不存在可被提交的事务。</value>
+  </data>
+  <data name="DataBaseType_DB2" xml:space="preserve">
+    <value>IBM公司DB2类型数据库</value>
+  </data>
+  <data name="WindowsStorage_EventSource" xml:space="preserve">
+    <value>金软科技</value>
+  </data>
+  <data name="WindowsStorage_UselessMethod" xml:space="preserve">
+    <value>当前方法{0}在{1}类中不可用。</value>
+  </data>
+  <data name="WindowsStorage_ActionMessage" xml:space="preserve">
+    <value>操作:{0}
+消息:{1}
+计算机:{2}
+用户:{3}</value>
+  </data>
+  <data name="WindowsStorage_ExceptionMessage" xml:space="preserve">
+    <value>操作:{0}
+消息:{1}
+计算机:{2}
+用户:{3}
+异常信息:{4}
+异常源:{5}
+异常栈:{6}</value>
+  </data>
+  <data name="Parameter_DefaultValue" xml:space="preserve">
+    <value>参数的值为空时使用的默认值。</value>
+  </data>
+  <data name="Parameter_Name" xml:space="preserve">
+    <value>参数的名称。</value>
+  </data>
+  <data name="Parameter_NullOrEmpty" xml:space="preserve">
+    <value>字符串参数“{0}”不能为 Null 或为空。</value>
+  </data>
+  <data name="Parameter_Size" xml:space="preserve">
+    <value>参数的最大大小。</value>
+  </data>
+  <data name="Parameter_Type" xml:space="preserve">
+    <value>参数的类型。</value>
+  </data>
+  <data name="WindowsStorage_Exception" xml:space="preserve">
+    <value>异常信息:{0}
+异常源:{1}
+异常栈:{2}</value>
+  </data>
+  <data name="Access_Parameter_IStringObjectArray" xml:space="preserve">
+    <value>当前参数{0}不能为空或参数中字段个数不能为零。</value>
+  </data>
+  <data name="IDataPersistent_ParameterValue" xml:space="preserve">
+    <value>数据库参数:"{0}"需要值，当前参入参数中不存在此参数需要的值。</value>
+  </data>
+  <data name="Access_NotExistProperty" xml:space="preserve">
+    <value>实体类{0}中不存在属性{1}。</value>
+  </data>
+  <data name="Access_PropertyForbidRead" xml:space="preserve">
+    <value>实体类{0}的属性{1},禁止读取数据。</value>
+  </data>
+  <data name="Access_PropertyForbidWrite" xml:space="preserve">
+    <value>实体类{0}的属性{1},禁止修改数据。</value>
+  </data>
+  <data name="Access_ConfigurationAttribute" xml:space="preserve">
+    <value>类{0}不存在自定义属性{1}，无法获取配置文件信息。</value>
+  </data>
+  <data name="Access_ConfigurationParameterType" xml:space="preserve">
+    <value>参数类型错误，参数类型必须是AbstractAccess的子类。</value>
+  </data>
+  <data name="Access_NoParameterConstructor" xml:space="preserve">
+    <value>构造函数参数错误,类型{0}必须有无参构造函数。</value>
+  </data>
+  <data name="BaseEntityType_AccessConfigurationAttribute" xml:space="preserve">
+    <value>实体类{0}中未找到{1}类的特性信息，因此无法进行任何数据库读、写、删。</value>
+  </data>
+  <data name="BaseEntityType_MissingPrimaryKey" xml:space="preserve">
+    <value>表{0}中缺少主键信息。</value>
+  </data>
+  <data name="SqlStruct_DynamicParameter" xml:space="preserve">
+    <value>获取或设置当前Transact-SQL命令是否制定动态参数,指执行Transact-SQL 语句时根据传入参数动态制定SQL语句的参数。</value>
+  </data>
+  <data name="Access_DynamicParameter" xml:space="preserve">
+    <value>Transact-SQL语句结构"{0}"设置错误，使用动态参数时CommandType必须是CommandType.Text枚举值。</value>
+  </data>
+  <data name="Access_MustDynamicParameter" xml:space="preserve">
+    <value>Transact-SQL语句结构"{0}"设置错误，如果启用动态参数必须将DynamicParameter设置为True。</value>
+  </data>
+  <data name="GridViewColumn_HeaderText_Null" xml:space="preserve">
+    <value>初始化GridView列时，不能讲HeaderText和HeaderCode同时设置Null值，这会导致GridView不能正确显示表头。</value>
+  </data>
+  <data name="PagedDataSource_PagedMode_Count" xml:space="preserve">
+    <value>分页数据源如果为{0}模式时，不能取{1}属性的值！</value>
+  </data>
+  <data name="NonSupport_Class" xml:space="preserve">
+    <value>系统不支持的此类型{0}。</value>
+  </data>
+  <data name="NonSupport_Enum" xml:space="preserve">
+    <value>系统不支持的此枚举{0}的{1}值。</value>
+  </data>
+  <data name="NonSupport_Method" xml:space="preserve">
+    <value>系统不支持的此类型{0}中{1}方法的使用。</value>
+  </data>
+  <data name="Access_Configuration_SectionTypeError" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，自定义配置组"{1}"，类型必须是"{2}"。</value>
+  </data>
+  <data name="Access_Configuration_FileNotFound" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"不存在。</value>
+  </data>
+  <data name="Access_Configuration_GroupNotFound" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，不存在自定义配置组"{1}'。</value>
+  </data>
+  <data name="Message_ConverterType_Error" xml:space="preserve">
+    <value>自定义消息转换器类型"{0}"加载失败，请检查类型是否填写错误或程序集不存在。</value>
+  </data>
+  <data name="Access_Configuration_ConnectionError" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，不存在类型为"{1}"的数据库连接配置信息。</value>
+  </data>
+  <data name="Access_Configuration_SectionsError" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，不存在数据库连接配置信息或默认连接信息。</value>
+  </data>
+  <data name="Access_ParameterType_UnSupport" xml:space="preserve">
+    <value>当前使用了不支持的数据库参数类型，类型"{0}.{1}"无效。</value>
+  </data>
+</root>

@@ -1,0 +1,66 @@
+﻿@using System.Reflection
+@using RazorEngine.Text
+@model System.Type
+@{ PropertyInfo[] properties = Model.GetProperties(BindingFlags.Public | BindingFlags.Instance);}
+@@model @Model.FullName
+@@{ ViewBag.Title = "Index"; Layout = "~/Master/_VueLayout.cshtml";}
+@@{ CloudController controller = ViewContext.Controller as CloudController; bool chinese = BH.IsChinese();}
+@@using (var view = BH.GridView<@Model.FullName>("tView").RowKey("UserKey")
+	.QueryParams("queryParams").HighlightCurrentRow().SizeToSmall().Begin())
+{
+	using (IToolbar<@Model.FullName> itb = view.Toolbar<@Model.FullName>().Model("queryParams"))
+	{
+		<ul class="toolbar small">
+			<li>@@itb.Create(01).Action("Create").ToHtml()</li>
+			<li>@@itb.Update(02).Action("Edit").ToHtml()</li>
+			<li>@@itb.Delete(03).Action("Delete").ToHtml()</li>
+			@@if (BH.CheckAuthorizeCode(04))
+			{
+				<li class="right padding">@@itb.InputTextFor(m => m.LoginName).Clearable().Placeholder().ToHtml()</li>
+				<li>@@itb.Search().ToHtml()</li>
+			}
+			<li>
+				@@if (BH.CheckAuthorizeCode(04))
+				{
+					using (var search = BH.ComplexButton().LabelWidth(chinese, 80, 120).Width(800).Model("complexParams").Begin())
+					{
+						search.ComplexView();
+					}
+				}
+			</li>
+		</ul>
+	}
+	view.ColumnsFor(cols =>
+	{
+		@foreach (PropertyInfo property in properties)
+		{
+			@(new RawString(string.Concat("cols.LabelFor(m => m.",@property.Name,");\r\n")));
+		}
+	});
+}
+<script type="text/javascript">
+	function vue_load(opts) {
+		return {
+			el: "#tView",
+			data: {
+				title: opts.text, icon: opts.icon,
+				 queryParams: {
+					@@using(var provider = BH.PropertyInfo()){
+						provider.AntiForgeryToken();
+					}
+				},
+				complexParams: {
+					@@using(var provider = BH.PropertyInfo()){
+						provider.AntiForgeryFormToken();
+						provider.ComplexData();
+					}
+				}
+			},
+			methods: {
+				handleEdit: function (evt, btn, data) {
+					this.$refs.tView.editData(evt, btn, data );
+				}
+			}
+		};
+	}
+</script>

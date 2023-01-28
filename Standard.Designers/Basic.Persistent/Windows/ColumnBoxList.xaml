@@ -1,0 +1,30 @@
+﻿<ListBox x:Class="Basic.Windows.ColumnBoxList" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:bcs="clr-namespace:Basic.Windows">
+	<ListBox.Background>
+		<SolidColorBrush />
+	</ListBox.Background>
+	<ListBox.Resources>
+		<Style TargetType="ListBoxItem">
+			<Style.Resources>
+				<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+				<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" Opacity=".4"/>
+			</Style.Resources>
+		</Style>
+	</ListBox.Resources>
+	<ListBox.ItemsPanel>
+		<ItemsPanelTemplate>
+			<UniformGrid Columns="5"/>
+		</ItemsPanelTemplate>
+	</ListBox.ItemsPanel>
+	<ListBox.ItemContainerStyle>
+		<Style TargetType="ListBoxItem">
+			<Setter Property="Template" >
+				<Setter.Value>
+					<ControlTemplate TargetType="ListBoxItem">
+						<bcs:ColumnBox BorderThickness="1" Margin="3,0"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</ListBox.ItemContainerStyle>
+</ListBox>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Basic.Configuration.DataCommandElement" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAFQxKAUAABAAUOAeAAIBEQAYRCUkAAABBAWgoAABAg=</HashCode>
+      <FileName>DataCommand\DataCommandElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Basic.Configuration.DynamicCommandElement" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>hAAAgMSQQACkASAAAAACAEQAQQAUIYgCBAJFAEEIAgg=</HashCode>
+      <FileName>DataCommand\DynamicCommandElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Basic.Configuration.NewCommandElement" Collapsed="true">
+    <Position X="1" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQQAgAABASEAIIAAEAAABAEIAAABAJAAAAAAAA=</HashCode>
+      <FileName>DataCommand\NewCommandElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Basic.Configuration.StaticCommandElement" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAEAkAYQCAAEAEwAIMAABEQAABAEIAAABEJGAAEAAIA=</HashCode>
+      <FileName>DataCommand\StaticCommandElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Basic.Configuration.AbstractCommandElement" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMQAYQQQAgAhAACAgAAAqEYAAAAHIBAABIBAAAgAAAA=</HashCode>
+      <FileName>DataCommand\AbstractCommandElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Basic.Configuration.CheckedCommandElement" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQQQgEAhIQEAIAAQEAAAEgUAAAABAIQAIIEBAA=</HashCode>
+      <FileName>DataCommand\CheckedCommandElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

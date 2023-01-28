@@ -1,0 +1,761 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Access_ConfigFileException" xml:space="preserve">
+    <value>读取配置文件异常，可能是配置文件路径不正确或配置文件被移动，配置文件名称{0}。</value>
+  </data>
+  <data name="Access_ConstructedFunction" xml:space="preserve">
+    <value>构造函数使用错误，请使用带参数的构造函数创建{0}类型的实例</value>
+  </data>
+  <data name="Access_NotExistsElement" xml:space="preserve">
+    <value>配置文件中不存在配置节:{0}，请检查配置节名称。</value>
+  </data>
+  <data name="Access_ReturnColumn" xml:space="preserve">
+    <value>新建关键字出错，没有指定关键字列名或指定的列名错误</value>
+  </data>
+  <data name="ConnectionType_Description" xml:space="preserve">
+    <value>数据库连接类型枚举</value>
+  </data>
+  <data name="ConnectionType_OdbcConType" xml:space="preserve">
+    <value>OdbcConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_OleDbConType" xml:space="preserve">
+    <value>OleDbConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_OracleConType" xml:space="preserve">
+    <value>OracleConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_SqlConType" xml:space="preserve">
+    <value>SqlConnection类型数据库连接</value>
+  </data>
+  <data name="ConnectionType_SQLiteConType" xml:space="preserve">
+    <value>SQLiteConnection类型数据库连接</value>
+  </data>
+  <data name="DataBaseType_Description" xml:space="preserve">
+    <value>数据库连接类型枚举</value>
+  </data>
+  <data name="DataBaseType_Access" xml:space="preserve">
+    <value>Access类型数据库</value>
+  </data>
+  <data name="DataBaseType_Oracle" xml:space="preserve">
+    <value>Oracle类型数据库</value>
+  </data>
+  <data name="DataBaseType_SQLite" xml:space="preserve">
+    <value>SQLite类型数据库</value>
+  </data>
+  <data name="DataBaseType_SqlServer" xml:space="preserve">
+    <value>SQL SERVER类型数据库</value>
+  </data>
+  <data name="IDataPersistent_UninitializedCommand" xml:space="preserve">
+    <value>当前数据库命令没有被初始化，请在执行数据库命令前首先确保调用InitCommand(SqlStruct)方法，或者调用InitCommand(SqlStruct)时，参数不正确。</value>
+  </data>
+  <data name="OperatorModeEnum_AddNew" xml:space="preserve">
+    <value>当前窗口执行新增操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Custom" xml:space="preserve">
+    <value>当前窗口执行自定义操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Delete" xml:space="preserve">
+    <value>当前窗口执行删除操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Des" xml:space="preserve">
+    <value>窗口操作模式枚举,一般用在页面操作中。</value>
+  </data>
+  <data name="OperatorModeEnum_Export" xml:space="preserve">
+    <value>当前窗口执行导出操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Import" xml:space="preserve">
+    <value>当前窗口执行导入操作。</value>
+  </data>
+  <data name="OperatorModeEnum_None" xml:space="preserve">
+    <value>无任何操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Save" xml:space="preserve">
+    <value>当前窗口执行保存操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Search" xml:space="preserve">
+    <value>当前窗口执行查询操作。</value>
+  </data>
+  <data name="OperatorModeEnum_Update" xml:space="preserve">
+    <value>当前窗口执行更新操作。</value>
+  </data>
+  <data name="IDataPersistent_UselessMethod" xml:space="preserve">
+    <value>无效的方法，类{0}不能使用此方法。</value>
+  </data>
+  <data name="Parameter_Direction" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是只可输入、只可输出、双向还是存储过程返回值参数。</value>
+  </data>
+  <data name="Parameter_IsNullable" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是否接受空值</value>
+  </data>
+  <data name="Parameter_Length" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）。</value>
+  </data>
+  <data name="Parameter_ParameterType" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数数据库参数的类型。</value>
+  </data>
+  <data name="Parameter_Scale" xml:space="preserve">
+    <value>获取或设置数据库参数值解析为的小数位数</value>
+  </data>
+  <data name="SqlStructXmlClass_SqlStructs" xml:space="preserve">
+    <value>DbCommand命令结构列表</value>
+  </data>
+  <data name="SqlStructXmlClass_TableColumns" xml:space="preserve">
+    <value>数据库表列信息</value>
+  </data>
+  <data name="SqlStructXmlClass_TableName" xml:space="preserve">
+    <value>数据库视图名称</value>
+  </data>
+  <data name="SqlStructXmlClass_ViewName" xml:space="preserve">
+    <value>数据库表名称</value>
+  </data>
+  <data name="SqlStruct_AutoGeneration" xml:space="preserve">
+    <value>是否需要自动创建SqlStruct结构</value>
+  </data>
+  <data name="SqlStruct_CommandText" xml:space="preserve">
+    <value>获取或设置要对数据源执行的 Transact-SQL 语句、表名或存储过程。</value>
+  </data>
+  <data name="SqlStruct_CommandTimeout" xml:space="preserve">
+    <value>获取或设置在终止执行命令的尝试并生成错误之前的等待时间</value>
+  </data>
+  <data name="SqlStruct_CommandType" xml:space="preserve">
+    <value>获取或设置一个值，该值指示如何解释 CommandText 属性。</value>
+  </data>
+  <data name="SqlStruct_ConnectionType" xml:space="preserve">
+    <value>当前数据库连接类型</value>
+  </data>
+  <data name="SqlStruct_Parameters" xml:space="preserve">
+    <value>DbCommand命令执行参数集合</value>
+  </data>
+  <data name="SqlStruct_ReturnColumn" xml:space="preserve">
+    <value>如果 Transact-SQL语句返回单值，则需要进行的迭代字段名称</value>
+  </data>
+  <data name="SqlStruct_TransferParameter" xml:space="preserve">
+    <value>当前命令结构是否需要进行连接参数转换</value>
+  </data>
+  <data name="SqlStruct_XmlElementName" xml:space="preserve">
+    <value>Xml文件中此结构的元素名称</value>
+  </data>
+  <data name="StatusModeEnum_AddNewed" xml:space="preserve">
+    <value>当前窗口已经执行完新增操作</value>
+  </data>
+  <data name="StatusModeEnum_AddNewing" xml:space="preserve">
+    <value>当前窗口正在执行新增操作，一般为开始新增后标记</value>
+  </data>
+  <data name="StatusModeEnum_Canceled" xml:space="preserve">
+    <value>当前窗口已经执行完取消操作。</value>
+  </data>
+  <data name="StatusModeEnum_Canceling" xml:space="preserve">
+    <value>当前窗口正在执行取消操作，一般为开始取消后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Confirmed" xml:space="preserve">
+    <value>当前窗口已经执行完确认操作。</value>
+  </data>
+  <data name="StatusModeEnum_Confirming" xml:space="preserve">
+    <value>当前窗口正在执行确认操作，一般为开始确认后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Deleted" xml:space="preserve">
+    <value>当前窗口已经执行完删除操作。</value>
+  </data>
+  <data name="StatusModeEnum_Deleting" xml:space="preserve">
+    <value>当前窗口正在执行删除操作，一般为开始删除后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Description" xml:space="preserve">
+    <value>描述页面的各种操作状态</value>
+  </data>
+  <data name="StatusModeEnum_Exported" xml:space="preserve">
+    <value>当前窗口已经执行完导出操作。</value>
+  </data>
+  <data name="StatusModeEnum_Exporting" xml:space="preserve">
+    <value>当前窗口正在执行导出操作，一般为开始导出增后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Imported" xml:space="preserve">
+    <value>当前窗口已经执行完导入操作。</value>
+  </data>
+  <data name="StatusModeEnum_Importing" xml:space="preserve">
+    <value>当前窗口正在执行导入操作，一般为开始导入后标记。</value>
+  </data>
+  <data name="StatusModeEnum_None" xml:space="preserve">
+    <value>当前页面无任何状态，一般指刚刚进入页面还没进行任何操作。</value>
+  </data>
+  <data name="StatusModeEnum_Saved" xml:space="preserve">
+    <value>当前窗口已经执行保存增操作。</value>
+  </data>
+  <data name="StatusModeEnum_Saving" xml:space="preserve">
+    <value>当前窗口正在执行保存操作，一般为开始保存后标记。</value>
+  </data>
+  <data name="StatusModeEnum_Searched" xml:space="preserve">
+    <value>当前窗口已经执行完查询操作。</value>
+  </data>
+  <data name="StatusModeEnum_Searching" xml:space="preserve">
+    <value>当前窗口正在执行查询操作，一般为开始查询后标记。</value>
+  </data>
+  <data name="StatusModeEnum_UnkwonOperated" xml:space="preserve">
+    <value>当前窗口已经执行完未知操作。</value>
+  </data>
+  <data name="StatusModeEnum_UnkwonOperating" xml:space="preserve">
+    <value>当前窗口正在执行未知操作，一般为开始未知操作后标记</value>
+  </data>
+  <data name="StatusModeEnum_Updated" xml:space="preserve">
+    <value>当前窗口已经执行完更新操作。</value>
+  </data>
+  <data name="StatusModeEnum_Updating" xml:space="preserve">
+    <value>当前窗口正在执行更新操作，一般为开始更新后标记。</value>
+  </data>
+  <data name="TransactionState_AllowCommitTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务，且事务允许被提交。</value>
+  </data>
+  <data name="TransactionState_AllowRollbackTransaction" xml:space="preserve">
+    <value>指示当前存在可被回滚的事务，且事务允许被回滚。</value>
+  </data>
+  <data name="TransactionState_AlreadyCommitTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务，且事务已经被提交，如果在提交则系统抛出TransactionInDoubtException异常。</value>
+  </data>
+  <data name="TransactionState_AlreadyRollbackTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务，且事务已经被回滚，如果在提交则系统抛出TransactionInDoubtException异常。</value>
+  </data>
+  <data name="TransactionState_Description" xml:space="preserve">
+    <value>事务的提交状态枚举。</value>
+  </data>
+  <data name="TransactionState_ExistTransaction" xml:space="preserve">
+    <value>指示当前存在可被提交的事务。</value>
+  </data>
+  <data name="TransactionState_NotExistTransaction" xml:space="preserve">
+    <value>指示当前不存在可被提交的事务。</value>
+  </data>
+  <data name="DataBaseType_DB2" xml:space="preserve">
+    <value>IBM公司DB2类型数据库</value>
+  </data>
+  <data name="WindowsStorage_EventSource" xml:space="preserve">
+    <value>金软科技</value>
+  </data>
+  <data name="WindowsStorage_UselessMethod" xml:space="preserve">
+    <value>当前方法{0}在{1}类中不可用。</value>
+  </data>
+  <data name="WindowsStorage_ActionMessage" xml:space="preserve">
+    <value>操作:{0}
+消息:{1}
+计算机:{2}
+用户:{3}</value>
+  </data>
+  <data name="WindowsStorage_ExceptionMessage" xml:space="preserve">
+    <value>操作:{0}
+消息:{1}
+计算机:{2}
+用户:{3}
+异常信息:{4}
+异常源:{5}
+异常栈:{6}</value>
+  </data>
+  <data name="Parameter_DefaultValue" xml:space="preserve">
+    <value>参数的值为空时使用的默认值。</value>
+  </data>
+  <data name="Parameter_Name" xml:space="preserve">
+    <value>参数的名称。</value>
+  </data>
+  <data name="Parameter_NullOrEmpty" xml:space="preserve">
+    <value>字符串参数“{0}”不能为 Null 或为空。</value>
+  </data>
+  <data name="Parameter_Size" xml:space="preserve">
+    <value>参数的最大大小。</value>
+  </data>
+  <data name="Parameter_Type" xml:space="preserve">
+    <value>参数的类型。</value>
+  </data>
+  <data name="WindowsStorage_Exception" xml:space="preserve">
+    <value>异常信息:{0}
+异常源:{1}
+异常栈:{2}</value>
+  </data>
+  <data name="Access_Parameter_IStringObjectArray" xml:space="preserve">
+    <value>当前参数{0}不能为空或参数中字段个数不能为零。</value>
+  </data>
+  <data name="IDataPersistent_ParameterValue" xml:space="preserve">
+    <value>数据库参数:"{0}"需要值，当前参入参数中不存在此参数需要的值。</value>
+  </data>
+  <data name="Access_NotExistProperty" xml:space="preserve">
+    <value>实体类{0}中不存在属性{1}。</value>
+  </data>
+  <data name="Access_PropertyForbidRead" xml:space="preserve">
+    <value>实体类{0}的属性{1},禁止读取数据。</value>
+  </data>
+  <data name="Access_PropertyForbidWrite" xml:space="preserve">
+    <value>实体类{0}的属性{1},禁止修改数据。</value>
+  </data>
+  <data name="Access_ConfigurationAttribute" xml:space="preserve">
+    <value>类{0}不存在自定义属性{1}，无法获取配置文件信息。</value>
+  </data>
+  <data name="Access_ConfigurationParameterType" xml:space="preserve">
+    <value>参数类型错误，参数类型必须是AbstractAccess的子类。</value>
+  </data>
+  <data name="Access_NoParameterConstructor" xml:space="preserve">
+    <value>构造函数参数错误,类型{0}必须有无参构造函数。</value>
+  </data>
+  <data name="BaseEntityType_AccessConfigurationAttribute" xml:space="preserve">
+    <value>实体类{0}中未找到{1}类的特性信息，因此无法进行任何数据库读、写、删。</value>
+  </data>
+  <data name="BaseEntityType_MissingPrimaryKey" xml:space="preserve">
+    <value>表{0}中缺少主键信息。</value>
+  </data>
+  <data name="SqlStruct_DynamicParameter" xml:space="preserve">
+    <value>获取或设置当前Transact-SQL命令是否制定动态参数,指执行Transact-SQL 语句时根据传入参数动态制定SQL语句的参数。</value>
+  </data>
+  <data name="Access_DynamicParameter" xml:space="preserve">
+    <value>Transact-SQL语句结构"{0}"设置错误，使用动态参数时CommandType必须是CommandType.Text枚举值。</value>
+  </data>
+  <data name="Access_MustDynamicParameter" xml:space="preserve">
+    <value>Transact-SQL语句结构"{0}"设置错误，如果启用动态参数必须将DynamicParameter设置为True。</value>
+  </data>
+  <data name="GridViewColumn_HeaderText_Null" xml:space="preserve">
+    <value>初始化GridView列时，不能讲HeaderText和HeaderCode同时设置Null值，这会导致GridView不能正确显示表头。</value>
+  </data>
+  <data name="PagedDataSource_PagedMode_Count" xml:space="preserve">
+    <value>分页数据源如果为{0}模式时，不能取{1}属性的值！</value>
+  </data>
+  <data name="NonSupport_Class" xml:space="preserve">
+    <value>系统不支持的此类型{0}。</value>
+  </data>
+  <data name="NonSupport_Enum" xml:space="preserve">
+    <value>系统不支持的此枚举{0}的{1}值。</value>
+  </data>
+  <data name="NonSupport_Method" xml:space="preserve">
+    <value>系统不支持的此类型{0}中{1}方法的使用。</value>
+  </data>
+  <data name="Access_Configuration_SectionTypeError" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，自定义配置组"{1}"，类型必须是"{2}"。</value>
+  </data>
+  <data name="Access_Configuration_FileNotFound" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"不存在。</value>
+  </data>
+  <data name="Access_Configuration_GroupNotFound" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，不存在自定义配置组"{1}'。</value>
+  </data>
+  <data name="Message_ConverterType_Error" xml:space="preserve">
+    <value>自定义消息转换器类型"{0}"加载失败，请检查类型是否填写错误或程序集不存在。</value>
+  </data>
+  <data name="Access_Configuration_ConnectionError" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，不存在类型为"{1}"的数据库连接配置信息。</value>
+  </data>
+  <data name="Access_Configuration_SectionsError" xml:space="preserve">
+    <value>读取配置文件异常，配置文件"{0}"中，不存在数据库连接配置信息或默认连接信息。</value>
+  </data>
+  <data name="Access_ParameterType_UnSupport" xml:space="preserve">
+    <value>当前使用了不支持的数据库参数类型，类型"{0}.{1}"无效。</value>
+  </data>
+  <data name="DataReader_Prop_Not_Found" xml:space="preserve">
+    <value>DataReader: 类中'{0}'中不存在属性'{1}'</value>
+  </data>
+  <data name="StructBuilder_NotExistFile" xml:space="preserve">
+    <value>文件{0}不存在，请检查路径或文件名是否正确!	</value>
+  </data>
+  <data name="ConnectionSectionPropertyError" xml:space="preserve">
+    <value>Connection配置节可用的属性有,请参考以下可用属性列表：</value>
+  </data>
+  <data name="ConnectionSectionProperty" xml:space="preserve">
+    <value>属性名:{0}，类型:{1}</value>
+  </data>
+  <data name="ColumnAttribute_NotExists" xml:space="preserve">
+    <value>类型'{0}'的属性'{1}'中不存在ColumnMappingAttribute特性标记</value>
+  </data>
+  <data name="Access_NotExist_OrderBy" xml:space="preserve">
+    <value>'{0}' 命令中 缺少 Order By子句，如果需要分页则必须需要此子句。</value>
+  </data>
+  <data name="Access_InvalidArgument" xml:space="preserve">
+    <value>参数'{0}'无效，请检查程序是否使用了错误的数据库配置信息。</value>
+  </data>
+  <data name="ColumnMappingAttribute_NotExists" xml:space="preserve">
+    <value>类型'{0}'的属性'{1}'中不存在ColumnMappingAttribute特性标记</value>
+  </data>
+  <data name="ArgumentIsNullOrWhitespace" xml:space="preserve">
+    <value>The argument '{0}' cannot be null, empty or contain only white space.</value>
+  </data>
+  <data name="BindingBehavior_ValueNotFound" xml:space="preserve">
+    <value>A value for '{0}' is required but was not present in the request.</value>
+  </data>
+  <data name="ChildActionCacheAttribute_DurationMustBePositive" xml:space="preserve">
+    <value>The 'Duration' property must be a positive number.</value>
+  </data>
+  <data name="CommonControls_NameRequired" xml:space="preserve">
+    <value>The 'Name' property must be set.</value>
+  </data>
+  <data name="Common_ModelBinderDoesNotSupportModelType" xml:space="preserve">
+    <value>This model binder does not support the model type '{0}'.</value>
+  </data>
+  <data name="Common_NullOrEmpty" xml:space="preserve">
+    <value>Value cannot be null or empty.</value>
+  </data>
+  <data name="Common_PropertyNotFound" xml:space="preserve">
+    <value>The property {0}.{1} could not be found.</value>
+  </data>
+  <data name="Common_TypeMustImplementInterface" xml:space="preserve">
+    <value>The type '{0}' does not implement the interface '{1}'.</value>
+  </data>
+  <data name="CompareAttribute_MustMatch" xml:space="preserve">
+    <value>'{0}' and '{1}' do not match.</value>
+  </data>
+  <data name="ControllerBuilder_FactoryReturnedNull" xml:space="preserve">
+    <value>The IControllerFactory '{0}' did not return a controller for a controller named '{1}'.</value>
+  </data>
+  <data name="CreditCardAttribute_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid credit card number.</value>
+  </data>
+  <data name="CuitAttribute_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid CUIT number.</value>
+  </data>
+  <data name="DataAnnotationsModelMetadataProvider_UnknownProperty" xml:space="preserve">
+    <value>{0} has a DisplayColumn attribute for {1}, but property {1} does not exist.</value>
+  </data>
+  <data name="DataAnnotationsModelMetadataProvider_UnreadableProperty" xml:space="preserve">
+    <value>{0} has a DisplayColumn attribute for {1}, but property {1} does not have a public getter.</value>
+  </data>
+  <data name="DateAttribute_Invalid" xml:space="preserve">
+    <value>The field {0} is not a valid date</value>
+  </data>
+  <data name="DigitsAttribute_Invalid" xml:space="preserve">
+    <value>The field {0} should contain only digits</value>
+  </data>
+  <data name="DropDownList_SampleItem" xml:space="preserve">
+    <value>Sample Item</value>
+  </data>
+  <data name="DynamicViewDataDictionary_SingleIndexerOnly" xml:space="preserve">
+    <value>DynamicViewDataDictionary only supports single indexers.</value>
+  </data>
+  <data name="DynamicViewDataDictionary_StringIndexerOnly" xml:space="preserve">
+    <value>DynamicViewDataDictionary only supports string-based indexers.</value>
+  </data>
+  <data name="DynamicViewPage_NoProperties" xml:space="preserve">
+    <value>The property {0} doesn't exist. There are no public properties on this object.</value>
+  </data>
+  <data name="DynamicViewPage_PropertyDoesNotExist" xml:space="preserve">
+    <value>The property {0} doesn't exist. Supported properties are: {1}.</value>
+  </data>
+  <data name="EmailAddressAttribute_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
+  </data>
+  <data name="ErrorPropertyType" xml:space="preserve">
+    <value>名为"{0}"的属性值类型与目标值类型"{1}"不相同，无法进行值相等比较。</value>
+  </data>
+  <data name="ExpressionHelper_CannotCallCompletedMethod" xml:space="preserve">
+    <value>The method '{0}' is an asynchronous completion method and cannot be called directly.</value>
+  </data>
+  <data name="ExpressionHelper_CannotCallNonAction" xml:space="preserve">
+    <value>The method '{0}' is marked [NonAction] and cannot be called directly.</value>
+  </data>
+  <data name="ExpressionHelper_CannotRouteToController" xml:space="preserve">
+    <value>Cannot route to class named 'Controller'.</value>
+  </data>
+  <data name="ExpressionHelper_MustBeMethodCall" xml:space="preserve">
+    <value>Expression must be a method call.</value>
+  </data>
+  <data name="ExpressionHelper_TargetMustEndInController" xml:space="preserve">
+    <value>Controller name must end in 'Controller'.</value>
+  </data>
+  <data name="ExtensibleModelBinderAdapter_PropertyFilterMustNotBeSet" xml:space="preserve">
+    <value>The new model binding system cannot be used when a property whitelist or blacklist has been specified in [Bind] or via the call to UpdateModel() / TryUpdateModel(). Use the [BindRequired] and [BindNever] attributes on the model type or its properties instead.</value>
+  </data>
+  <data name="FileExtensionsAttribute_Invalid" xml:space="preserve">
+    <value>The {0} field only accepts files with the following extensions: {1}</value>
+  </data>
+  <data name="GenericModelBinderProvider_ParameterMustSpecifyOpenGenericType" xml:space="preserve">
+    <value>The type '{0}' is not an open generic type.</value>
+  </data>
+  <data name="GenericModelBinderProvider_TypeArgumentCountMismatch" xml:space="preserve">
+    <value>The open model type '{0}' has {1} generic type argument(s), but the open binder type '{2}' has {3} generic type argument(s). The binder type must not be an open generic type or must have the same number of generic arguments as the open model type.</value>
+  </data>
+  <data name="HtmlHelper_MissingSelectData" xml:space="preserve">
+    <value>There is no ViewData item with the key '{0}' of type '{1}'.</value>
+  </data>
+  <data name="HtmlHelper_WrongSelectDataType" xml:space="preserve">
+    <value>The ViewData item with the key '{0}' is of type '{1}' but needs to be of type '{2}'.</value>
+  </data>
+  <data name="IntegerAttribute_Invalid" xml:space="preserve">
+    <value>The field {0} should be a positive or negative non-decimal number.</value>
+  </data>
+  <data name="MaxAttribute_Invalid" xml:space="preserve">
+    <value>字段"{0}"的长度必须小于或等于"{1}"。</value>
+  </data>
+  <data name="MaxLengthAttribute_InvalidMaxLength" xml:space="preserve">
+    <value>MaxLengthAttribute必须有一个长度值大于零。如果不限制最大长度，请删除此验证特性。</value>
+  </data>
+  <data name="MaxLengthAttribute_ValidationError" xml:space="preserve">
+    <value>字段“{0}”必须是一个字符串或者数组类型“{1}”的最大长度。</value>
+  </data>
+  <data name="MinAttribute_Invalid" xml:space="preserve">
+    <value>The field {0} must be greater than or equal to {1}</value>
+  </data>
+  <data name="MinLengthAttribute_InvalidMinLength" xml:space="preserve">
+    <value>MinLengthAttribute must have a Length value that is zero or greater.</value>
+  </data>
+  <data name="MinLengthAttribute_ValidationError" xml:space="preserve">
+    <value>The field {0} must be a string or array type with a minimum length of '{1}'.</value>
+  </data>
+  <data name="ModelBinderConfig_ValueInvalid" xml:space="preserve">
+    <value>The value '{0}' is not valid for {1}.</value>
+  </data>
+  <data name="ModelBinderConfig_ValueRequired" xml:space="preserve">
+    <value>A value is required.</value>
+  </data>
+  <data name="ModelBinderProviderCollection_BinderForTypeNotFound" xml:space="preserve">
+    <value>A binder for type {0} could not be located.</value>
+  </data>
+  <data name="ModelBinderProviderCollection_InvalidBinderType" xml:space="preserve">
+    <value>The type '{0}' does not subclass {1} or implement the interface {2}.</value>
+  </data>
+  <data name="ModelBinderProviderCollection_TypeCannotHaveBindAttribute" xml:space="preserve">
+    <value>The model of type '{0}' has a [Bind] attribute. The new model binding system cannot be used with models that have type-level [Bind] attributes. Use the [BindRequired] and [BindNever] attributes on the model type or its properties instead.</value>
+  </data>
+  <data name="ModelBinderUtil_ModelCannotBeNull" xml:space="preserve">
+    <value>The binding context has a null Model, but this binder requires a non-null model of type '{0}'.</value>
+  </data>
+  <data name="ModelBinderUtil_ModelInstanceIsWrong" xml:space="preserve">
+    <value>The binding context has a Model of type '{0}', but this binder can only operate on models of type '{1}'.</value>
+  </data>
+  <data name="ModelBinderUtil_ModelMetadataCannotBeNull" xml:space="preserve">
+    <value>The binding context cannot have a null ModelMetadata.</value>
+  </data>
+  <data name="ModelBinderUtil_ModelTypeIsWrong" xml:space="preserve">
+    <value>The binding context has a ModelType of '{0}', but this binder can only operate on models of type '{1}'.</value>
+  </data>
+  <data name="ModelBindingContext_ModelMetadataMustBeSet" xml:space="preserve">
+    <value>The ModelMetadata property must be set before accessing this property.</value>
+  </data>
+  <data name="MvcDynamicSessionModule_WrongControllerFactory" xml:space="preserve">
+    <value>The ControllerBuilder must return an IControllerFactory of type {0} if the MvcDynamicSessionModule is enabled.</value>
+  </data>
+  <data name="MvcSerializer_DeserializationFailed" xml:space="preserve">
+    <value>Deserialization failed. Verify that the data is being deserialized using the same SerializationMode with which it was serialized. Otherwise see the inner exception.</value>
+  </data>
+  <data name="MvcSerializer_InvalidSerializationMode" xml:space="preserve">
+    <value>The provided SerializationMode is invalid.</value>
+  </data>
+  <data name="MvcSerializer_MagicHeaderCheckFailed" xml:space="preserve">
+    <value>The data being serialized is corrupt.</value>
+  </data>
+  <data name="NumericAttribute_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid number.</value>
+  </data>
+  <data name="RequiredAttribute_ValidationError" xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="ResourceControllerFactory_ConflictingActions" xml:space="preserve">
+    <value>Error dispatching on controller {0}, conflicting actions matched: {1}.</value>
+  </data>
+  <data name="ResourceControllerFactory_NoActions" xml:space="preserve">
+    <value>Error dispatching on controller {0}, no actions matched.</value>
+  </data>
+  <data name="Resources_UnsupportedFormat" xml:space="preserve">
+    <value>Format '{0}' is not supported.</value>
+  </data>
+  <data name="Resources_UnsupportedMediaType" xml:space="preserve">
+    <value>Unsupported Media Type: '{0}'.</value>
+  </data>
+  <data name="UnknownProperty" xml:space="preserve">
+    <value>未能找到名为 {0} 的属性。</value>
+  </data>
+  <data name="UrlAttributeProtocolOptional_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid URL.</value>
+  </data>
+  <data name="UrlAttributeWithoutProtocol_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid protocol-less URL.</value>
+  </data>
+  <data name="UrlAttribute_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid fully-qualified http, https, or ftp URL.</value>
+  </data>
+  <data name="YearAttribute_Invalid" xml:space="preserve">
+    <value>The {0} field is not a valid year</value>
+  </data>
+  <data name="Validator_InstanceMustMatchValidationContextInstance" xml:space="preserve">
+    <value>instance 必须匹配 ValidationContext 提供的实例 ObjectInstance。</value>
+  </data>
+  <data name="JSON_ArrayTypeNotSupported" xml:space="preserve">
+    <value>Type '{0}' is not supported for deserialization of an array.</value>
+  </data>
+  <data name="JSON_BadEscape" xml:space="preserve">
+    <value>Unrecognized escape sequence.</value>
+  </data>
+  <data name="JSON_CannotConvertObjectToType" xml:space="preserve">
+    <value>Cannot convert object of type '{0}' to type '{1}'</value>
+  </data>
+  <data name="JSON_CannotCreateListType" xml:space="preserve">
+    <value>Cannot create instance of {0}.</value>
+  </data>
+  <data name="JSON_CircularReference" xml:space="preserve">
+    <value>A circular reference was detected while serializing an object of type '{0}'.</value>
+  </data>
+  <data name="JSON_DepthLimitExceeded" xml:space="preserve">
+    <value>RecursionLimit exceeded.</value>
+  </data>
+  <data name="JSON_DeserializerTypeMismatch" xml:space="preserve">
+    <value>Cannot deserialize object graph into type of '{0}'.</value>
+  </data>
+  <data name="JSON_DictionaryTypeNotSupported" xml:space="preserve">
+    <value>Type '{0}' is not supported for serialization/deserialization of a dictionary, keys must be strings or objects.</value>
+  </data>
+  <data name="JSON_ExpectedOpenBrace" xml:space="preserve">
+    <value>Invalid object passed in, '{' expected.</value>
+  </data>
+  <data name="JSON_IllegalPrimitive" xml:space="preserve">
+    <value>Invalid JSON primitive: {0}.</value>
+  </data>
+  <data name="JSON_InvalidArrayEnd" xml:space="preserve">
+    <value>Invalid array passed in, ']' expected.</value>
+  </data>
+  <data name="JSON_InvalidArrayExpectComma" xml:space="preserve">
+    <value>Invalid array passed in, ',' expected.</value>
+  </data>
+  <data name="JSON_InvalidArrayExtraComma" xml:space="preserve">
+    <value>Invalid array passed in, extra trailing ','.</value>
+  </data>
+  <data name="JSON_InvalidArrayStart" xml:space="preserve">
+    <value>Invalid array passed in, '[' expected.</value>
+  </data>
+  <data name="JSON_InvalidEnumType" xml:space="preserve">
+    <value>Enums based on System.Int64 or System.UInt64 are not JSON-serializable because JavaScript does not support the necessary precision.</value>
+  </data>
+  <data name="JSON_InvalidMaxJsonLength" xml:space="preserve">
+    <value>Value must be a positive integer.</value>
+  </data>
+  <data name="JSON_InvalidMemberName" xml:space="preserve">
+    <value>Invalid object passed in, member name expected.</value>
+  </data>
+  <data name="JSON_InvalidObject" xml:space="preserve">
+    <value>Invalid object passed in, ':' or '}' expected.</value>
+  </data>
+  <data name="JSON_InvalidRecursionLimit" xml:space="preserve">
+    <value>RecursionLimit must be a positive integer.</value>
+  </data>
+  <data name="JSON_MaxJsonLengthExceeded" xml:space="preserve">
+    <value>Error during serialization or deserialization using the JSON JavaScriptSerializer. The length of the string exceeds the value set on the maxJsonLength property.</value>
+  </data>
+  <data name="JSON_NoConstructor" xml:space="preserve">
+    <value>No parameterless constructor defined for type of '{0}'.</value>
+  </data>
+  <data name="JSON_StringNotQuoted" xml:space="preserve">
+    <value>Invalid string passed in, '\"' expected.</value>
+  </data>
+  <data name="JSON_UnterminatedString" xml:space="preserve">
+    <value>Unterminated string passed in.</value>
+  </data>
+  <data name="JSON_ValueTypeCannotBeNull" xml:space="preserve">
+    <value>Cannot convert null to a value type.</value>
+  </data>
+  <data name="Access_NotExistsConnection" xml:space="preserve">
+    <value>类{0}中配置信息错误,名称为{1}的连接配置信息不存在，请检查应用程序配置文件(*.config)</value>
+  </data>
+</root>

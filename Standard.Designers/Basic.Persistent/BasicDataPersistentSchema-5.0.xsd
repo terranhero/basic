@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BasicDpdlSchema" targetNamespace="http://dev.goldsoft.com/2013/BasicDataPersistentSchema-5.0.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+	xmlns:tns="http://dev.goldsoft.com/2013/BasicDataPersistentSchema-5.0.xsd" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="typeCommandText">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCommandTimeout">
+		<xs:restriction base="xs:int">
+			<xs:maxInclusive value="2147483647" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCommandType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Text" />
+			<xs:enumeration value="StoredProcedure" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNewTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EveryTime" />
+			<xs:enumeration value="OnlyOnce" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeConfigurationKind">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Other" />
+			<xs:enumeration value="AddNew" />
+			<xs:enumeration value="Modify" />
+			<xs:enumeration value="Remove" />
+			<xs:enumeration value="SearchTable" />
+			<xs:enumeration value="Insert" />
+			<xs:enumeration value="Update" />
+			<xs:enumeration value="Delete" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDynamicConfigurationType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Other" />
+			<xs:enumeration value="Select" />
+			<xs:enumeration value="SelectKey" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDbType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None" />
+			<xs:enumeration value="Guid" />
+			<xs:enumeration value="Boolean" />
+			<xs:enumeration value="Int16" />
+			<xs:enumeration value="Int32" />
+			<xs:enumeration value="Int64" />
+			<xs:enumeration value="Decimal" />
+			<xs:enumeration value="Single" />
+			<xs:enumeration value="Double" />
+			<xs:enumeration value="Binary" />
+			<xs:enumeration value="VarBinary" />
+			<xs:enumeration value="Image" />
+			<xs:enumeration value="Char" />
+			<xs:enumeration value="VarChar" />
+			<xs:enumeration value="Text" />
+			<xs:enumeration value="NChar" />
+			<xs:enumeration value="NVarChar" />
+			<xs:enumeration value="NText" />
+			<xs:enumeration value="Date" />
+			<xs:enumeration value="Time" />
+			<xs:enumeration value="Timestamp" />
+			<xs:enumeration value="DateTime" />
+			<xs:enumeration value="DateTime2" />
+			<xs:enumeration value="DateTimeOffset" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDirection">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Input" />
+			<xs:enumeration value="Output" />
+			<xs:enumeration value="InputOutput" />
+			<xs:enumeration value="ReturnValue" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeWithClauses">
+		<xs:sequence>
+			<xs:element name="WithClause" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Definition" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+						<xs:element name="Query" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+					</xs:sequence>
+					<xs:attribute name="TableName" use="required" type="xs:Name" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeParameters" mixed="false">
+		<xs:sequence>
+			<xs:element name="Parameter"  minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent msdata:ColumnName="Parameter_Text" msdata:Ordinal="6">
+						<xs:extension base="xs:string">
+							<xs:attribute name="Column" use="required" type="xs:Name" />
+							<xs:attribute name="DbType" use="required" type="tns:typeDbType" />
+							<xs:attribute name="Size" use="optional">
+								<xs:simpleType id="sizeType1">
+									<xs:restriction base="xs:int">
+										<xs:maxInclusive value="8000" />
+										<xs:minInclusive value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="Precision" use="optional">
+								<xs:simpleType>
+									<xs:restriction base="xs:unsignedByte">
+										<xs:maxInclusive value="255" />
+										<xs:minInclusive value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="Scale" use="optional">
+								<xs:simpleType>
+									<xs:restriction base="xs:unsignedByte">
+										<xs:maxInclusive value="255" />
+										<xs:minInclusive value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="Direction" type="tns:typeDirection" use="optional" default="Input"/>
+							<xs:attribute name="Nullable" type="xs:boolean" use="optional" default="false"  />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeCheckCommands">
+		<xs:sequence>
+			<xs:element name="CheckCommand" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CommandText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+						<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters">
+							<xs:key name="keyCheckCommandParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="@Column"/>
+							</xs:key>
+							<xs:unique name="uniqueCheckCommandParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="."/>
+							</xs:unique>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+					<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+					<xs:attribute name="ErrorCode" use="required" type="xs:string" />
+					<xs:attribute name="Converter" use="optional" type="xs:string" />
+					<xs:attribute name="PropertyName" use="optional" type="xs:string" />
+					<xs:attribute name="CheckExist" use="optional" type="xs:boolean" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeNewValues">
+		<xs:sequence>
+			<xs:element name="NewValue" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CommandText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+						<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters">
+							<xs:key name="keyNewValueParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="@Column"/>
+							</xs:key>
+							<xs:unique name="uniqueNewValueParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="."/>
+							</xs:unique>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+					<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+					<xs:attribute name="NewType" use="optional" type="tns:typeNewTypeEnum" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="typeSize">
+		<xs:restriction base="xs:int">
+			<xs:maxInclusive value="8000" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNumeric">
+		<xs:restriction base="xs:unsignedByte">
+			<xs:maxInclusive value="255" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeStaticCommand">
+		<xs:all>
+			<xs:element name="CheckCommands" minOccurs="0" maxOccurs="1" type="tns:typeCheckCommands" msdata:Ordinal="1"/>
+			<xs:element name="NewValues" minOccurs="0" maxOccurs="1" type="tns:typeNewValues" msdata:Ordinal="2"/>
+			<xs:element name="CommandText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" msdata:Ordinal="3"/>
+			<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters" msdata:Ordinal="4">
+				<xs:key name="keyStaticCommandParameters">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="@Column"/>
+				</xs:key>
+				<xs:unique name="uniqueStaticCommandParameters">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="."/>
+				</xs:unique>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="Name" use="required" type="xs:NCName" />
+		<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+		<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+		<xs:attribute name="Kind" use="optional" type="tns:typeConfigurationKind" />
+		<xs:attribute name="Comment" use="optional" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="typeDynamicCommand">
+		<xs:all>
+			<xs:element name="WithClauses" minOccurs="0" maxOccurs="1" type="tns:typeWithClauses"></xs:element>
+			<xs:element name="SelectText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="FromText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="WhereText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText"  />
+			<xs:element name="GroupText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="OrderText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="HavingText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="JoinOnText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters">
+				<xs:key name="keyDynamicCommandParameters">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="@Column"/>
+				</xs:key>
+				<xs:unique name="uniqueDynamicCommandParameters">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="."/>
+				</xs:unique>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="Name" use="required" type="xs:NCName" />
+		<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+		<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+		<xs:attribute name="Kind" use="optional" type="tns:typeConfigurationKind" />
+		<xs:attribute name="Comment" use="optional" type="xs:string" />
+	</xs:complexType>
+	<xs:element name="PersistentConfiguration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TableInfo" minOccurs="1" maxOccurs="1" msdata:Ordinal="10" form="qualified">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TableColumn" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:simpleContent msdata:ColumnName="ColumnName" msdata:Ordinal="6">
+										<xs:extension base="xs:string">
+											<xs:attribute name="Name" type="xs:string" use="required"/>
+											<xs:attribute name="DbType" type="xs:string" use="required"/>
+											<xs:attribute name="Nullable" type="xs:boolean" use="optional"/>
+											<xs:attribute name="Size" type="xs:int" use="optional"/>
+											<xs:attribute name="Precision" type="xs:int" use="optional"/>
+											<xs:attribute name="Scale" type="xs:int" use="optional"/>
+											<xs:attribute name="PKey" type="xs:string" use="optional"/>
+											<xs:attribute name="Default" type="xs:string" use="optional"/>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="TableName" type="xs:string" use="required"/>
+						<xs:attribute name="ViewName" type="xs:string" use="required"/>
+						<xs:attribute name="Description" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DataCommands" minOccurs="1"  maxOccurs="1" msdata:Ordinal="50" form="qualified">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="StaticCommand"  minOccurs="0" maxOccurs="unbounded" form="unqualified" type="tns:typeStaticCommand"/>
+								<xs:element name="DynamicCommand"  minOccurs="0" maxOccurs="unbounded" form="unqualified" type="tns:typeDynamicCommand"/>
+							</xs:choice>
+						</xs:sequence>
+					</xs:complexType>
+					<xs:unique name="uniqueDataComandsName">
+						<xs:selector xpath="./StaticCommand|./DynamicCommand"/>
+						<xs:field xpath="@Name"/>
+					</xs:unique>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Version" default="4.0.0.0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d+.\d+(.\d+){1,2}" />
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

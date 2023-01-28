@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
+	<PropertyGroup Label="Globals">
+		<SccProjectName>Svn</SccProjectName>
+		<SccProvider></SccProvider>
+		<SccAuxPath>Svn</SccAuxPath>
+		<SccLocalPath>Svn</SccLocalPath>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AssemblyName>Basic.MvcLibrary</AssemblyName>
+		<RootNamespace>Basic</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Standard.MvcLibrary</PackageId>
+		<Product>Standard.MvcLibrary</Product>
+		<PackageTags>Basic Mvc</PackageTags>
+		<Authors>JACKY</Authors>
+		<Description>Asp.Net Mvc Core Supporting</Description>
+		<NeutralLanguage>zh-CN</NeutralLanguage>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
+		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\EasyUIStrings.Designer.cs">
+			<DependentUpon>EasyUIStrings.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<Compile Update="Properties\JsonStrings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>JsonStrings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\MvcStrings.Designer.cs">
+			<DependentUpon>MvcStrings.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<Compile Update="MvcLibrary\WebStrings.designer.cs">
+			<DependentUpon>WebStrings.localresx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\EasyUIStrings.resx">
+			<LastGenOutput>EasyUIStrings.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\JsonStrings.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>JsonStrings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="MvcLibrary\WebStrings.localresx">
+			<LastGenOutput>WebStrings.designer.cs</LastGenOutput>
+			<Generator>ResourceGenerator</Generator>
+		</None>
+		<EmbeddedResource Update="Properties\MvcStrings.resx">
+			<LastGenOutput>MvcStrings.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="MvcLibrary\WebStrings.resx">
+			<DependentUpon>WebStrings.localresx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
+</Project>

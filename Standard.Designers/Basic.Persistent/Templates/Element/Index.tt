@@ -1,0 +1,88 @@
+﻿<#@ template language="C#" debug="false" hostSpecific="false" #>
+<#@ output extension=".cshtml" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+@model LoginUserCondition
+@{ ViewBag.Title = "Index"; Layout = "~/Master/_VueLayout.cshtml";}
+@using (var view = BH.GridView<LoginUserEntity>("tUsers")
+	.QueryParams("queryParams").HighlightCurrentRow().SizeToSmall().Begin())
+{
+	using (IToolbar<LoginUserCondition> itb = view.Toolbar<LoginUserCondition>().Model("queryParams"))
+	{
+		<ul class="toolbar small">
+			<li>@itb.Create(01).Action("vue-create").ToHtml()</li>
+			<li>@itb.Update(02).Action("Delete").ToHtml()</li>
+			<li>@itb.Delete(03).Action("Delete").ToHtml()</li>
+			@if (BH.CheckAuthorizeCode(04))
+			{
+				<li class="right padding">@itb.OrganizationFor(m => m.OrgKey, true).ToHtml()</li>
+				<li class="right padding">@itb.InputTextFor(m => m.LoginName).Clearable().Placeholder().ToHtml()</li>
+				<li>@itb.Search().ToHtml()</li>
+			}
+			<li>
+				@if (BH.CheckAuthorizeCode(99030104))
+				{
+					using (var search = BH.ComplexButton().LabelWidth(chinese, 80, 120).Width(800).Model("complexParams").Begin())
+					{
+						search.ComplexView();
+						<el-row>
+							@using (BasicFormItem item = search.ItemFor(m => m.RoleKey).SetSpan(12).Begin())
+							{
+								@search.SelectFor(99030104, m => m.RoleKey).Options(true).ToHtml();
+							}
+							@using (BasicFormItem item = search.ItemFor(m => m.GroupKey).SetSpan(12).Begin())
+							{
+								@search.SelectFor(99030104, m => m.GroupKey).Options(true).ToHtml();
+							}
+						</el-row>
+					}
+				}
+			</li>
+		</ul>
+	}
+	view.ColumnsFor(cols =>
+	{
+		cols.ButtonsFor(btns =>
+	{
+		btns.Button(99030102).Action("vue-edit").Icon("icon-edit").Click("function(evt,btn){ handleEdit(evt, btn, scope.row);}").Title("Button_Edit");
+	}).Title("Button_Operate_Title").Width(50).AllowFixed();
+		cols.EmployeeFor(controller);
+		cols.LabelFor(m => m.LoginName);
+		cols.LabelFor(m => m.RoleName).Width(120);
+		cols.LabelFor(m => m.GroupName).Width(120);
+		cols.LabelFor(m => m.UserKind);
+		cols.LabelFor(m => m.Enabled);
+		cols.LabelFor(m => m.EffectiveDate).Width(90);
+		cols.LabelFor(m => m.LoginTime).Width(140);
+		cols.LabelFor(m => m.ChangedTime).Width(120);
+		cols.LabelFor(m => m.UserName);
+		cols.LabelFor(m => m.ModifiedTime).Width(180);
+		cols.LabelFor(m => m.Memo);
+	});
+}
+<script type="text/javascript">
+	function vue_load(opts) {
+		return {
+			el: "#tUsers",
+			data: {
+				 queryParams: {
+					@using(var provider = BH.PropertyInfo()){
+						provider.AntiForgeryToken();
+						provider.Property(m => m.OrgKey, true);
+						provider.Property(m => m.LoginName);
+					}
+				},
+				complexParams: {
+					@using(var provider = BH.PropertyInfo()){
+						provider.AntiForgeryFormToken();
+						provider.ComplexData();
+					}
+				}
+			},
+			methods: {
+			}
+		};
+	}
+</script>

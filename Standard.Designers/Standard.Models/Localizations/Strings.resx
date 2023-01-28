@@ -1,0 +1,909 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BasicCommands_AddCommand-en-US" xml:space="preserve">
+    <value>Add...</value>
+  </data>
+  <data name="BasicCommands_AddCommand-zh-CN" xml:space="preserve">
+    <value>添加...</value>
+  </data>
+  <data name="BasicCommands_AddGroup-en-US" xml:space="preserve">
+    <value>Add a group</value>
+  </data>
+  <data name="BasicCommands_AddGroup-zh-CN" xml:space="preserve">
+    <value>添加分组依据</value>
+  </data>
+  <data name="BasicCommands_AddRelation-en-US" xml:space="preserve">
+    <value>Add Relationship</value>
+  </data>
+  <data name="BasicCommands_AddRelation-zh-CN" xml:space="preserve">
+    <value>添加表关系</value>
+  </data>
+  <data name="BasicCommands_AddTable-en-US" xml:space="preserve">
+    <value>Add Table Objects</value>
+  </data>
+  <data name="BasicCommands_AddTable-zh-CN" xml:space="preserve">
+    <value>添加表对象</value>
+  </data>
+  <data name="BasicCommands_BringForward-en-US" xml:space="preserve">
+    <value>Bring Forward</value>
+  </data>
+  <data name="BasicCommands_BringForward-zh-CN" xml:space="preserve">
+    <value>上移一层</value>
+  </data>
+  <data name="BasicCommands_BringToFront-en-US" xml:space="preserve">
+    <value>Bring To Front</value>
+  </data>
+  <data name="BasicCommands_BringToFront-zh-CN" xml:space="preserve">
+    <value>置于顶层</value>
+  </data>
+  <data name="BasicCommands_CreateCommand-en-US" xml:space="preserve">
+    <value>Create Command</value>
+  </data>
+  <data name="BasicCommands_CreateCommand-zh-CN" xml:space="preserve">
+    <value>新建命令</value>
+  </data>
+  <data name="BasicCommands_CreateResource-en-US" xml:space="preserve">
+    <value>Create localization resource</value>
+  </data>
+  <data name="BasicCommands_CreateResource-zh-CN" xml:space="preserve">
+    <value>创建本地化资源信息</value>
+  </data>
+  <data name="BasicCommands_EditCode-en-US" xml:space="preserve">
+    <value>Edit Code</value>
+  </data>
+  <data name="BasicCommands_EditCode-zh-CN" xml:space="preserve">
+    <value>编辑代码</value>
+  </data>
+  <data name="BasicCommands_EditCommand-en-US" xml:space="preserve">
+    <value>Edit Command</value>
+  </data>
+  <data name="BasicCommands_EditCommand-zh-CN" xml:space="preserve">
+    <value>修改命令</value>
+  </data>
+  <data name="BasicCommands_InitializeTable-en-US" xml:space="preserve">
+    <value>Initialize Table</value>
+  </data>
+  <data name="BasicCommands_InitializeTable-zh-CN" xml:space="preserve">
+    <value>初始化数据库表</value>
+  </data>
+  <data name="BasicCommands_InsertProperty-en-US" xml:space="preserve">
+    <value>Insert Property</value>
+  </data>
+  <data name="BasicCommands_InsertProperty-zh-CN" xml:space="preserve">
+    <value>插入新属性</value>
+  </data>
+  <data name="BasicCommands_NewProperty-en-US" xml:space="preserve">
+    <value>New Property</value>
+  </data>
+  <data name="BasicCommands_NewProperty-zh-CN" xml:space="preserve">
+    <value>添加新属性</value>
+  </data>
+  <data name="BasicCommands_OrderCommand-en-US" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="BasicCommands_OrderCommand-zh-CN" xml:space="preserve">
+    <value>顺序</value>
+  </data>
+  <data name="BasicCommands_PasteDynamicCommand-en-US" xml:space="preserve">
+    <value>Paste To Dynamic Command</value>
+  </data>
+  <data name="BasicCommands_PasteDynamicCommand-zh-CN" xml:space="preserve">
+    <value>粘帖为动态命令</value>
+  </data>
+  <data name="BasicCommands_PasteStaticCommand-en-US" xml:space="preserve">
+    <value>Paste To Static Command</value>
+  </data>
+  <data name="BasicCommands_PasteStaticCommand-zh-CN" xml:space="preserve">
+    <value>粘帖为静态命令</value>
+  </data>
+  <data name="BasicCommands_Properties-en-US" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="BasicCommands_Properties-zh-CN" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="BasicCommands_RefreshConnection-en-US" xml:space="preserve">
+    <value>Refresh Connection</value>
+  </data>
+  <data name="BasicCommands_RefreshConnection-zh-CN" xml:space="preserve">
+    <value>重置数据库连接</value>
+  </data>
+  <data name="BasicCommands_Remove-en-US" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="BasicCommands_Remove-zh-CN" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="BasicCommands_RemoveGroup-en-US" xml:space="preserve">
+    <value>Remove a group</value>
+  </data>
+  <data name="BasicCommands_RemoveGroup-zh-CN" xml:space="preserve">
+    <value>删除分组依据</value>
+  </data>
+  <data name="BasicCommands_ResetResource-en-US" xml:space="preserve">
+    <value>Set Resource Key</value>
+  </data>
+  <data name="BasicCommands_ResetResource-zh-CN" xml:space="preserve">
+    <value>设置属性的资源键</value>
+  </data>
+  <data name="BasicCommands_ResetWidth-en-US" xml:space="preserve">
+    <value>Reset Sharp Width</value>
+  </data>
+  <data name="BasicCommands_ResetWidth-zh-CN" xml:space="preserve">
+    <value>重置形状宽度</value>
+  </data>
+  <data name="BasicCommands_SelectLocalization-en-US" xml:space="preserve">
+    <value>Select Localization File</value>
+  </data>
+  <data name="BasicCommands_SelectLocalization-zh-CN" xml:space="preserve">
+    <value>选择本地化资源文件</value>
+  </data>
+  <data name="BasicCommands_SendBackward-en-US" xml:space="preserve">
+    <value>Send Backward</value>
+  </data>
+  <data name="BasicCommands_SendBackward-zh-CN" xml:space="preserve">
+    <value>下移一层</value>
+  </data>
+  <data name="BasicCommands_SendToBack-en-US" xml:space="preserve">
+    <value>Send To Back</value>
+  </data>
+  <data name="BasicCommands_SendToBack-zh-CN" xml:space="preserve">
+    <value>置于底层</value>
+  </data>
+  <data name="BasicCommands_UpdateCommand-en-US" xml:space="preserve">
+    <value>Update Data Command</value>
+  </data>
+  <data name="BasicCommands_UpdateCommand-zh-CN" xml:space="preserve">
+    <value>更新数据命令</value>
+  </data>
+  <data name="BasicCommands_UpdateCondition-en-US" xml:space="preserve">
+    <value>Update Condition Model</value>
+  </data>
+  <data name="BasicCommands_UpdateCondition-zh-CN" xml:space="preserve">
+    <value>更新条件模型</value>
+  </data>
+  <data name="BasicCommands_UpdateEntity-en-US" xml:space="preserve">
+    <value>Update Entity Model</value>
+  </data>
+  <data name="BasicCommands_UpdateEntity-zh-CN" xml:space="preserve">
+    <value>更新实体模型</value>
+  </data>
+  <data name="BasicCommands_UpdateTable-en-US" xml:space="preserve">
+    <value>Refresh Table Info</value>
+  </data>
+  <data name="BasicCommands_UpdateTable-zh-CN" xml:space="preserve">
+    <value>更新表结构</value>
+  </data>
+  <data name="Database_Functions-en-US" xml:space="preserve">
+    <value>Functions</value>
+  </data>
+  <data name="Database_Functions-zh-CN" xml:space="preserve">
+    <value>函数</value>
+  </data>
+  <data name="Database_Tables-en-US" xml:space="preserve">
+    <value>Tables</value>
+  </data>
+  <data name="Database_Tables-zh-CN" xml:space="preserve">
+    <value>表</value>
+  </data>
+  <data name="Database_Views-en-US" xml:space="preserve">
+    <value>Views</value>
+  </data>
+  <data name="Database_Views-zh-CN" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="DesignerValidation_BoolRequiredAttribute-en-US" xml:space="preserve">
+    <value>Support the validation attribute with conditional</value>
+  </data>
+  <data name="DesignerValidation_BoolRequiredAttribute-zh-CN" xml:space="preserve">
+    <value>提供判断条件的必输验证特性。</value>
+  </data>
+  <data name="DesignerValidation_CompareAttribute-en-US" xml:space="preserve">
+    <value>提供一个比较模型的两个属性的特性</value>
+  </data>
+  <data name="DesignerValidation_CompareAttribute-zh-CN" xml:space="preserve">
+    <value>提供一个比较模型的两个属性的特性</value>
+  </data>
+  <data name="DesignerValidation_EnumType-en-US" xml:space="preserve">
+    <value>Enum Type</value>
+  </data>
+  <data name="DesignerValidation_EnumType-zh-CN" xml:space="preserve">
+    <value>枚举类型</value>
+  </data>
+  <data name="DesignerValidation_ErrorMessage-en-US" xml:space="preserve">
+    <value>获取或设置一条在验证失败的情况下与验证控件关联的错误消息。</value>
+  </data>
+  <data name="DesignerValidation_ErrorMessage-zh-CN" xml:space="preserve">
+    <value>获取或设置一条在验证失败的情况下与验证控件关联的错误消息。</value>
+  </data>
+  <data name="DesignerValidation_IsGenerate-en-US" xml:space="preserve">
+    <value>当前设置是否需要生成属性的特性</value>
+  </data>
+  <data name="DesignerValidation_IsGenerate-zh-CN" xml:space="preserve">
+    <value>当前设置是否需要生成属性的特性</value>
+  </data>
+  <data name="DesignerValidation_Length-en-US" xml:space="preserve">
+    <value>数组或字符串允许的最大长度</value>
+  </data>
+  <data name="DesignerValidation_Length-zh-CN" xml:space="preserve">
+    <value>数组或字符串允许的最大长度</value>
+  </data>
+  <data name="DesignerValidation_Maximum-en-US" xml:space="preserve">
+    <value>所允许的数据字段最大值</value>
+  </data>
+  <data name="DesignerValidation_Maximum-zh-CN" xml:space="preserve">
+    <value>所允许的数据字段最大值</value>
+  </data>
+  <data name="DesignerValidation_MaximumLength-en-US" xml:space="preserve">
+    <value>获取或设置字符串的最大长度</value>
+  </data>
+  <data name="DesignerValidation_MaximumLength-zh-CN" xml:space="preserve">
+    <value>获取或设置字符串的最大长度</value>
+  </data>
+  <data name="DesignerValidation_MaxLengthAttribute-en-US" xml:space="preserve">
+    <value>表示数组或字符串允许的最大长度的特性</value>
+  </data>
+  <data name="DesignerValidation_MaxLengthAttribute-zh-CN" xml:space="preserve">
+    <value>表示数组或字符串允许的最大长度的特性</value>
+  </data>
+  <data name="DesignerValidation_Minimum-en-US" xml:space="preserve">
+    <value>所允许的数据字段最小值</value>
+  </data>
+  <data name="DesignerValidation_Minimum-zh-CN" xml:space="preserve">
+    <value>所允许的数据字段最小值</value>
+  </data>
+  <data name="DesignerValidation_MinimumLength-en-US" xml:space="preserve">
+    <value>获取或设置字符串的最小长度</value>
+  </data>
+  <data name="DesignerValidation_MinimumLength-zh-CN" xml:space="preserve">
+    <value>获取或设置字符串的最小长度</value>
+  </data>
+  <data name="DesignerValidation_Operator-en-US" xml:space="preserve">
+    <value>比较运算符</value>
+  </data>
+  <data name="DesignerValidation_Operator-zh-CN" xml:space="preserve">
+    <value>比较运算符</value>
+  </data>
+  <data name="DesignerValidation_OtherProperty-en-US" xml:space="preserve">
+    <value>需要与当前属性比较的属性名称</value>
+  </data>
+  <data name="DesignerValidation_OtherProperty-zh-CN" xml:space="preserve">
+    <value>需要与当前属性比较的属性名称</value>
+  </data>
+  <data name="DesignerValidation_Pattern-en-US" xml:space="preserve">
+    <value>用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_Pattern-zh-CN" xml:space="preserve">
+    <value>用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_RegularExpressionAttribute-en-US" xml:space="preserve">
+    <value>指定用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_RegularExpressionAttribute-zh-CN" xml:space="preserve">
+    <value>指定用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_RequiredValue-en-US" xml:space="preserve">
+    <value>目标属性为何值时，当前属性必输</value>
+  </data>
+  <data name="DesignerValidation_RequiredValue-zh-CN" xml:space="preserve">
+    <value>目标属性为何值时，当前属性必输</value>
+  </data>
+  <data name="DesignerValidation_StringLengthAttribute-en-US" xml:space="preserve">
+    <value>指定数据字段中允许的最小和最大字符长度</value>
+  </data>
+  <data name="DesignerValidation_StringLengthAttribute-zh-CN" xml:space="preserve">
+    <value>指定数据字段中允许的最小和最大字符长度</value>
+  </data>
+  <data name="DesignerValidation_ValidationDataType-en-US" xml:space="preserve">
+    <value>表示需要比较的数据类型</value>
+  </data>
+  <data name="DesignerValidation_ValidationDataType-zh-CN" xml:space="preserve">
+    <value>表示需要比较的数据类型</value>
+  </data>
+  <data name="DisplayFormat_ApplyFormatInEditMode-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示数据字段处于编辑模式时，是否将 System.ComponentModel.DataAnnotations.DisplayFormatAttribute.DataFormatString 属性指定的格式设置字符串应用于字段值。</value>
+  </data>
+  <data name="DisplayFormat_ApplyFormatInEditMode-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示数据字段处于编辑模式时，是否将 System.ComponentModel.DataAnnotations.DisplayFormatAttribute.DataFormatString 属性指定的格式设置字符串应用于字段值。</value>
+  </data>
+  <data name="DisplayFormat_ConvertEmptyStringToNull-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示在数据源中更新数据字段时是否将空字符串值 ("") 自动转换为 null。</value>
+  </data>
+  <data name="DisplayFormat_ConvertEmptyStringToNull-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示在数据源中更新数据字段时是否将空字符串值 ("") 自动转换为 null。</value>
+  </data>
+  <data name="DisplayFormat_DataFormatString-en-US" xml:space="preserve">
+    <value>获取或设置字段值的显示格式。</value>
+  </data>
+  <data name="DisplayFormat_DataFormatString-zh-CN" xml:space="preserve">
+    <value>获取或设置字段值的显示格式。</value>
+  </data>
+  <data name="DisplayFormat_HtmlEncode-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否应经过 HTML 编码。</value>
+  </data>
+  <data name="DisplayFormat_HtmlEncode-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否应经过 HTML 编码。</value>
+  </data>
+  <data name="DisplayFormat_NullDisplayText-en-US" xml:space="preserve">
+    <value>获取或设置字段值为 null 时为字段显示的文本。</value>
+  </data>
+  <data name="DisplayFormat_NullDisplayText-zh-CN" xml:space="preserve">
+    <value>获取或设置字段值为 null 时为字段显示的文本。</value>
+  </data>
+  <data name="DisplayName_ConverterName-en-US" xml:space="preserve">
+    <value>获取或设置属性的本地显示名称的转换器名称</value>
+  </data>
+  <data name="DisplayName_ConverterName-zh-CN" xml:space="preserve">
+    <value>获取或设置属性的本地显示名称的转换器名称</value>
+  </data>
+  <data name="DisplayName_Description-en-US" xml:space="preserve">
+    <value>表示属性的显示名称格式设置</value>
+  </data>
+  <data name="DisplayName_Description-zh-CN" xml:space="preserve">
+    <value>表示属性的显示名称格式设置</value>
+  </data>
+  <data name="DisplayName_DisplayName-en-US" xml:space="preserve">
+    <value>获取或设置属性的显示名称</value>
+  </data>
+  <data name="DisplayName_DisplayName-zh-CN" xml:space="preserve">
+    <value>获取或设置属性的显示名称</value>
+  </data>
+  <data name="DisplayName_DisplayType-en-US" xml:space="preserve">
+    <value>获取或设置显示特性的类型</value>
+  </data>
+  <data name="DisplayName_DisplayType-zh-CN" xml:space="preserve">
+    <value>获取或设置显示特性的类型</value>
+  </data>
+  <data name="GetDefaultExtensionFailed" xml:space="preserve">
+    <value>The call to GetDefaultExtension() has failed due to the exception:</value>
+  </data>
+  <data name="GetDefaultExtensionFailed-en-US" xml:space="preserve">
+    <value>The call to GetDefaultExtension() has failed due to the exception:</value>
+  </data>
+  <data name="GetDefaultExtensionFailed-zh-CN" xml:space="preserve">
+    <value>调用方法 GetDefaultExtension() 失败，异常信息:</value>
+  </data>
+  <data name="LocalizationResource_Category" xml:space="preserve">
+    <value>资源信息</value>
+  </data>
+  <data name="LocalizationResource_Category-en-US" xml:space="preserve">
+    <value>资源信息</value>
+  </data>
+  <data name="LocalizationResource_Category-zh-CN" xml:space="preserve">
+    <value>资源信息</value>
+  </data>
+  <data name="LocalizationResource_Comment" xml:space="preserve">
+    <value>关于资源的附加信息。此属性仅在设计时有意义。</value>
+  </data>
+  <data name="LocalizationResource_Comment-en-US" xml:space="preserve">
+    <value>关于资源的附加信息。此属性仅在设计时有意义。</value>
+  </data>
+  <data name="LocalizationResource_Comment-zh-CN" xml:space="preserve">
+    <value>关于资源的附加信息。此属性仅在设计时有意义。</value>
+  </data>
+  <data name="LocalizationResource_CultureCategory" xml:space="preserve">
+    <value>本地化资源信息</value>
+  </data>
+  <data name="LocalizationResource_CultureCategory-en-US" xml:space="preserve">
+    <value>本地化资源信息</value>
+  </data>
+  <data name="LocalizationResource_CultureCategory-zh-CN" xml:space="preserve">
+    <value>本地化资源信息</value>
+  </data>
+  <data name="LocalizationResource_CultureDescription" xml:space="preserve">
+    <value>关于{0} 的本地化资源信息</value>
+  </data>
+  <data name="LocalizationResource_CultureDescription-en-US" xml:space="preserve">
+    <value>关于{0} 的本地化资源信息</value>
+  </data>
+  <data name="LocalizationResource_CultureDescription-zh-CN" xml:space="preserve">
+    <value>关于{0} 的本地化资源信息</value>
+  </data>
+  <data name="LocalizationResource_Group" xml:space="preserve">
+    <value>用于在代码中标识的资源分组名称。</value>
+  </data>
+  <data name="LocalizationResource_Group-en-US" xml:space="preserve">
+    <value>用于在代码中标识的资源分组名称。</value>
+  </data>
+  <data name="LocalizationResource_Group-zh-CN" xml:space="preserve">
+    <value>用于在代码中标识的资源分组名称。</value>
+  </data>
+  <data name="LocalizationResource_Name" xml:space="preserve">
+    <value>用于在代码中标识的资源名称。</value>
+  </data>
+  <data name="LocalizationResource_Name-en-US" xml:space="preserve">
+    <value>用于在代码中标识的资源名称。</value>
+  </data>
+  <data name="LocalizationResource_Name-zh-CN" xml:space="preserve">
+    <value>用于在代码中标识的资源名称。</value>
+  </data>
+  <data name="LocalizationResource_Value" xml:space="preserve">
+    <value>资源值。</value>
+  </data>
+  <data name="LocalizationResource_Value-en-US" xml:space="preserve">
+    <value>资源值。</value>
+  </data>
+  <data name="LocalizationResource_Value-zh-CN" xml:space="preserve">
+    <value>资源值。</value>
+  </data>
+  <data name="Package_CreateResourceFailed" xml:space="preserve">
+    <value>本地化资源创建失败</value>
+  </data>
+  <data name="Package_CreateResourceSuccessful" xml:space="preserve">
+    <value>当前数据持久类资源已经创建成功，且已经复制进系统剪贴板。</value>
+  </data>
+  <data name="Package_Description-en-US" xml:space="preserve">
+    <value>ASP.NET MVC Data Persistent</value>
+  </data>
+  <data name="Package_Description-zh-CN" xml:space="preserve">
+    <value>ASP.NET MVC 数据持久类</value>
+  </data>
+  <data name="Package_ResourceDescription" xml:space="preserve">
+    <value>下列资源已经创建成功，且已经复制进系统剪贴板。</value>
+  </data>
+  <data name="PersistentCategory_Attributes-en-US" xml:space="preserve">
+    <value>Property Attributes</value>
+  </data>
+  <data name="PersistentCategory_Attributes-zh-CN" xml:space="preserve">
+    <value>属性特性</value>
+  </data>
+  <data name="PersistentCategory_CheckCommands-en-US" xml:space="preserve">
+    <value>Check Command</value>
+  </data>
+  <data name="PersistentCategory_CheckCommands-zh-CN" xml:space="preserve">
+    <value>检测命令</value>
+  </data>
+  <data name="PersistentCategory_CodeGenerator-en-US" xml:space="preserve">
+    <value>CodeGenerator</value>
+  </data>
+  <data name="PersistentCategory_CodeGenerator-zh-CN" xml:space="preserve">
+    <value>代码生成</value>
+  </data>
+  <data name="PersistentCategory_Collections-en-US" xml:space="preserve">
+    <value>Collection List</value>
+  </data>
+  <data name="PersistentCategory_Collections-zh-CN" xml:space="preserve">
+    <value>数据集合列表</value>
+  </data>
+  <data name="PersistentCategory_Column-en-US" xml:space="preserve">
+    <value>Table Column</value>
+  </data>
+  <data name="PersistentCategory_Column-zh-CN" xml:space="preserve">
+    <value>数据库表列信息</value>
+  </data>
+  <data name="PersistentCategory_Content-en-US" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="PersistentCategory_Content-zh-CN" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="PersistentCategory_DataCommand-en-US" xml:space="preserve">
+    <value>DataCommand</value>
+  </data>
+  <data name="PersistentCategory_DataCommand-zh-CN" xml:space="preserve">
+    <value>数据命令</value>
+  </data>
+  <data name="PersistentCategory_DataCondition-en-US" xml:space="preserve">
+    <value>Search Condition</value>
+  </data>
+  <data name="PersistentCategory_DataCondition-zh-CN" xml:space="preserve">
+    <value>查询条件类</value>
+  </data>
+  <data name="PersistentCategory_Display-en-US" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="PersistentCategory_Display-zh-CN" xml:space="preserve">
+    <value>显示格式</value>
+  </data>
+  <data name="PersistentCategory_DynamicCommand-en-US" xml:space="preserve">
+    <value>Dynamic Command</value>
+  </data>
+  <data name="PersistentCategory_DynamicCommand-zh-CN" xml:space="preserve">
+    <value>动态命令</value>
+  </data>
+  <data name="PersistentCategory_NewCommands-en-US" xml:space="preserve">
+    <value>New Command</value>
+  </data>
+  <data name="PersistentCategory_NewCommands-zh-CN" xml:space="preserve">
+    <value>新值命令</value>
+  </data>
+  <data name="PersistentCategory_Parameter-en-US" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="PersistentCategory_Parameter-zh-CN" xml:space="preserve">
+    <value>命令参数</value>
+  </data>
+  <data name="PersistentCategory_Property-en-US" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="PersistentCategory_Property-zh-CN" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="PersistentDescription_BaseAccess-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类需要继承的基类类型。</value>
+  </data>
+  <data name="PersistentDescription_BaseAccess-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类需要继承的基类类型。</value>
+  </data>
+  <data name="PersistentDescription_CheckCommand-en-US" xml:space="preserve">
+    <value>检测实体属性是否允许执行此命令，检测通过则允许执行，否则返回异常信息。</value>
+  </data>
+  <data name="PersistentDescription_CheckCommand-zh-CN" xml:space="preserve">
+    <value>检测实体属性是否允许执行此命令，检测通过则允许执行，否则返回异常信息。</value>
+  </data>
+  <data name="PersistentDescription_ColumnComputed-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates is a compute field</value>
+  </data>
+  <data name="PersistentDescription_ColumnComputed-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否为计算列</value>
+  </data>
+  <data name="PersistentDescription_ColumnDbType-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates is a DbTypeEnum of table's column</value>
+  </data>
+  <data name="PersistentDescription_ColumnDbType-zh-CN" xml:space="preserve">
+    <value>获取或设置数据库字段的 DbType。</value>
+  </data>
+  <data name="PersistentDescription_ColumnName-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates column name of entity's property </value>
+  </data>
+  <data name="PersistentDescription_ColumnName-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示实体属性所对应的字段名称</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrecision-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum number of digits used to represent the Value property.</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrecision-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrimaryKey-en-US" xml:space="preserve">
+    <value>Gets or sets a value, this value is primary key</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrimaryKey-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否为数据库表主键</value>
+  </data>
+  <data name="PersistentDescription_ColumnProfix-en-US" xml:space="preserve">
+    <value>Table alias Name</value>
+  </data>
+  <data name="PersistentDescription_ColumnProfix-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段所属表的别名</value>
+  </data>
+  <data name="PersistentDescription_ColumnScale-en-US" xml:space="preserve">
+    <value>Gets or sets the number of decimal places to which Value is resolved</value>
+  </data>
+  <data name="PersistentDescription_ColumnScale-zh-CN" xml:space="preserve">
+    <value>获取或设置数据库参数值解析为的小数位数</value>
+  </data>
+  <data name="PersistentDescription_ColumnSize-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum size, in bytes, of the data within the column</value>
+  </data>
+  <data name="PersistentDescription_ColumnSize-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PersistentDescription_Comment-en-US" xml:space="preserve">
+    <value>Property Comment</value>
+  </data>
+  <data name="PersistentDescription_Comment-zh-CN" xml:space="preserve">
+    <value>属性描述</value>
+  </data>
+  <data name="PersistentDescription_DataConditionProperties-en-US" xml:space="preserve">
+    <value>当前命令执行时需要传入的条件类实例。</value>
+  </data>
+  <data name="PersistentDescription_DataConditionProperties-zh-CN" xml:space="preserve">
+    <value>当前命令执行时需要传入的条件类实例。</value>
+  </data>
+  <data name="PersistentDescription_Description-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类的描述信息</value>
+  </data>
+  <data name="PersistentDescription_Description-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类的描述信息</value>
+  </data>
+  <data name="PersistentDescription_EntityFolder-en-US" xml:space="preserve">
+    <value>实体类文件所在的项目文件夹</value>
+  </data>
+  <data name="PersistentDescription_EntityFolder-zh-CN" xml:space="preserve">
+    <value>实体类文件所在的项目文件夹</value>
+  </data>
+  <data name="PersistentDescription_EntityName-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类，数据实体类的名称</value>
+  </data>
+  <data name="PersistentDescription_EntityName-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类，数据实体类的名称</value>
+  </data>
+  <data name="PersistentDescription_EntityProject-en-US" xml:space="preserve">
+    <value>实体文件所在项目</value>
+  </data>
+  <data name="PersistentDescription_EntityProject-zh-CN" xml:space="preserve">
+    <value>实体文件所在项目</value>
+  </data>
+  <data name="PersistentDescription_Generate-en-US" xml:space="preserve">
+    <value>实体类初始化操作类型，默认为生成多个实体类。</value>
+  </data>
+  <data name="PersistentDescription_Generate-zh-CN" xml:space="preserve">
+    <value>实体类初始化操作类型，默认为生成多个实体类。</value>
+  </data>
+  <data name="PersistentDescription_Modifier-en-US" xml:space="preserve">
+    <value>获取或设置实体类的访问修饰符</value>
+  </data>
+  <data name="PersistentDescription_Modifier-zh-CN" xml:space="preserve">
+    <value>获取或设置实体类的访问修饰符</value>
+  </data>
+  <data name="PersistentDescription_NewCommand-en-US" xml:space="preserve">
+    <value>从数据库中创建实体属性的新值。</value>
+  </data>
+  <data name="PersistentDescription_NewCommand-zh-CN" xml:space="preserve">
+    <value>从数据库中创建实体属性的新值。</value>
+  </data>
+  <data name="PersistentDescription_Parameter-en-US" xml:space="preserve">
+    <value>表示 DbCommand 的参数，也可以是它到 DataSet/DataTable 列的映射。</value>
+  </data>
+  <data name="PersistentDescription_Parameter-zh-CN" xml:space="preserve">
+    <value>表示 DbCommand 的参数，也可以是它到 DataSet/DataTable 列的映射。</value>
+  </data>
+  <data name="PersistentDescription_ParameterCollection-en-US" xml:space="preserve">
+    <value>表示与 DbCommand 相关联的参数的集合以及各个参数到 DataSet/DataTable 中列的映射。</value>
+  </data>
+  <data name="PersistentDescription_ParameterCollection-zh-CN" xml:space="preserve">
+    <value>表示与 DbCommand 相关联的参数的集合以及各个参数到 DataSet/DataTable 中列的映射。</value>
+  </data>
+  <data name="PersistentDescription_PropertyComment-en-US" xml:space="preserve">
+    <value>Comment for Property of entity </value>
+  </data>
+  <data name="PersistentDescription_PropertyComment-zh-CN" xml:space="preserve">
+    <value>实体属性的描述</value>
+  </data>
+  <data name="PersistentDescription_PropertyDefaultValue-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates whether the property accepts null values</value>
+  </data>
+  <data name="PersistentDescription_PropertyDefaultValue-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示实体属性的默认值</value>
+  </data>
+  <data name="PersistentDescription_PropertyInheritance-en-US" xml:space="preserve">
+    <value>is inheritance property.</value>
+  </data>
+  <data name="PersistentDescription_PropertyInheritance-zh-CN" xml:space="preserve">
+    <value>是否为继承属性，如果是继承属性，则在当前类实例中不写入属性信息。</value>
+  </data>
+  <data name="PersistentDescription_PropertyName-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the dataentity's property</value>
+  </data>
+  <data name="PersistentDescription_PropertyName-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类中属性的名称</value>
+  </data>
+  <data name="PersistentDescription_PropertyNullable-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates whether the property accepts null values</value>
+  </data>
+  <data name="PersistentDescription_PropertyNullable-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示实体属性是否接受空值</value>
+  </data>
+  <data name="PersistentDescription_PropertyType-en-US" xml:space="preserve">
+    <value>Gets or sets the type of the dataentity's property</value>
+  </data>
+  <data name="PersistentDescription_PropertyType-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类中属性的类型</value>
+  </data>
+  <data name="PersistentDescription_TableName-en-US" xml:space="preserve">
+    <value>获取当前数据持久类的表名称</value>
+  </data>
+  <data name="PersistentDescription_TableName-zh-CN" xml:space="preserve">
+    <value>获取当前数据持久类的表名称</value>
+  </data>
+  <data name="PersistentDescription_ViewName-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类的视图名称</value>
+  </data>
+  <data name="PersistentDescription_ViewName-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类的视图名称</value>
+  </data>
+  <data name="PropertyDescription_Attributes-en-US" xml:space="preserve">
+    <value>表示验证特性集合</value>
+  </data>
+  <data name="PropertyDescription_Attributes-zh-CN" xml:space="preserve">
+    <value>表示验证特性集合</value>
+  </data>
+  <data name="PropertyDescription_DataFormatString-en-US" xml:space="preserve">
+    <value>Output display format</value>
+  </data>
+  <data name="PropertyDescription_DataFormatString-zh-CN" xml:space="preserve">
+    <value>输出格式</value>
+  </data>
+  <data name="PropertyDescription_DbType-en-US" xml:space="preserve">
+    <value>Column Type</value>
+  </data>
+  <data name="PropertyDescription_DbType-zh-CN" xml:space="preserve">
+    <value>字段类型</value>
+  </data>
+  <data name="PropertyDescription_Direction-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter</value>
+  </data>
+  <data name="PropertyDescription_Direction-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是只可输入、只可输出、双向还是存储过程返回值参数</value>
+  </data>
+  <data name="PropertyDescription_DisplayFormat-en-US" xml:space="preserve">
+    <value>Specify how to display the data field and how to set the format of the data fields</value>
+  </data>
+  <data name="PropertyDescription_DisplayFormat-zh-CN" xml:space="preserve">
+    <value>指定如何显示数据字段以及如何设置数据字段的格式</value>
+  </data>
+  <data name="PropertyDescription_EntityNamespace-en-US" xml:space="preserve">
+    <value>Gets or sets namespace of the data persistent class's entity</value>
+  </data>
+  <data name="PropertyDescription_EntityNamespace-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类包含的实体类的命名空间</value>
+  </data>
+  <data name="PropertyDescription_Name-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the dataentity</value>
+  </data>
+  <data name="PropertyDescription_Name-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类名称</value>
+  </data>
+  <data name="PropertyDescription_NameSpace-en-US" xml:space="preserve">
+    <value>Gets or sets namespace of the data persistent class</value>
+  </data>
+  <data name="PropertyDescription_NameSpace-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类的命名空间</value>
+  </data>
+  <data name="PropertyDescription_Nullable-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates whether the parameter accepts null values</value>
+  </data>
+  <data name="PropertyDescription_Nullable-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是否接受空值</value>
+  </data>
+  <data name="PropertyDescription_ParameterName-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the Parameter</value>
+  </data>
+  <data name="PropertyDescription_ParameterName-zh-CN" xml:space="preserve">
+    <value>获取或设置 Parameter 的名称</value>
+  </data>
+  <data name="PropertyDescription_ParameterType-en-US" xml:space="preserve">
+    <value>Gets or sets the DbType of the parameter</value>
+  </data>
+  <data name="PropertyDescription_ParameterType-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数数据库参数的类型</value>
+  </data>
+  <data name="PropertyDescription_Precision-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum number of digits used to represent the Value property.</value>
+  </data>
+  <data name="PropertyDescription_Precision-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PropertyDescription_Property-en-US" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="PropertyDescription_Property-zh-CN" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="PropertyDescription_Scale-en-US" xml:space="preserve">
+    <value>Gets or sets the number of decimal places to which Value is resolved</value>
+  </data>
+  <data name="PropertyDescription_Scale-zh-CN" xml:space="preserve">
+    <value>获取或设置数据库参数值解析为的小数位数</value>
+  </data>
+  <data name="PropertyDescription_Size-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum size, in bytes, of the data within the column</value>
+  </data>
+  <data name="PropertyDescription_Size-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PropertyDescription_SourceColumn-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the source column mapped to the DataSet/Entity and used for loading or returning the Value</value>
+  </data>
+  <data name="PropertyDescription_SourceColumn-zh-CN" xml:space="preserve">
+    <value>获取或设置源列的名称，该源列映射到 DataSet/Entity 并用于加载或返回 Value</value>
+  </data>
+</root>

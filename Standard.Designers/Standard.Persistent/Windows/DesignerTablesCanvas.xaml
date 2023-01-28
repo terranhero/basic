@@ -1,0 +1,13 @@
+﻿<ItemsControl xmlns:bcs="http://developer.goldsofttech.com/basic/2014/xaml" x:Class="Basic.Windows.DesignerTablesCanvas"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				  xmlns:my="clr-namespace:Basic.Windows">
+	<ItemsControl.Template>
+		<ControlTemplate>
+			<Border BorderThickness="{TemplateBinding BorderThickness}">
+				<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+					<my:DesignerCanvas x:Name="PART_Canvas" IsItemsHost="True" VisualChildrenChanged="DesignerCanvas_VisualChildrenChanged" />
+				</ScrollViewer>
+			</Border>
+		</ControlTemplate>
+	</ItemsControl.Template>
+</ItemsControl>

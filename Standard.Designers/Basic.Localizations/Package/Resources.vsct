@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<Extern href="stdidcmd.h"/>
+	<Extern href="vsshlids.h"/>
+	<Extern href="sharedids.h"/>
+	<Extern href="virtkeys.h"/>
+	<Extern href="sccmnid.h"/>
+	<Commands package="GUID_PACKAGE">
+		<Menus>
+			<Menu guid="GUID_CONTEXTMENU" type="Context" id="IDM_CONTEXTMENU" priority="1">
+				<Strings>
+					<CommandName>字符资源快捷菜单</CommandName>
+					<ButtonText>字符资源快捷菜单</ButtonText>
+				</Strings>
+			</Menu>
+			<Menu guid="GUID_CONTEXTMENU" type="Menu" id="IDM_ADD_CULTURES" priority="0x2010">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_CULTURES"/>
+				<Strings>
+					<CommandName>添加...</CommandName>
+					<MenuText>添加...</MenuText>
+					<ButtonText>添加...</ButtonText>
+				</Strings>
+			</Menu>
+			<Menu guid="GUID_CONTEXTMENU" type="Menu" id="IDM_REMOVE_CULTURES" priority="0x2020">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_CULTURES"/>
+				<Strings>
+					<CommandName>移除...</CommandName>
+					<MenuText>移除...</MenuText>
+					<ButtonText>移除...</ButtonText>
+				</Strings>
+			</Menu>
+		</Menus>
+		<Groups>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_CULTURES" priority="0x2010">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_ITEMS" priority="0x2030">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_GROUPING" priority="0x2040">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+
+			<Group guid="GUID_CONTEXTMENU" id="IDG_STANDARDCMDS" priority="0x2050">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_PROPERTIES" priority="0x2060">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+
+			<!--弹出菜单子菜单（添加语言资源）-->
+			<Group guid="GUID_CONTEXTMENU" id="IDG_ADD_CULTURES" priority="0x2010">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_ADD_CULTURES"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_REMOVE_CULTURES" priority="0x2020">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_REMOVE_CULTURES"/>
+			</Group>
+
+			<!--枚举提取资源快捷菜单（添加语言资源）-->
+			<Group guid="GUID_RESOURCE_GROUP" id="IDG_EXTRACTENUM" priority="0x0100">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
+			</Group>
+		</Groups>
+		<Buttons>
+			<Button guid="GUID_ADD_CULTURES" id="IDB_ADD_CULTURE_ZH_CN" priority="0x2012" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ADD_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>zh-CN</ButtonText>
+					<MenuText>zh-CN</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_ADD_CULTURES" id="IDB_ADD_CULTURE_EN_US" priority="0x2014" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ADD_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>en-US</ButtonText>
+					<MenuText>en-US</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_ADD_CULTURES" id="IDB_ADD_CULTURE_ZH_HANS" priority="0x2016" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ADD_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>zh-Hans</ButtonText>
+					<MenuText>zh-Hans</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_ADD_CULTURES" id="IDB_ADD_CULTURE_ZH_HANT" priority="0x2017" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ADD_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>zh-Hant</ButtonText>
+					<MenuText>zh-Hant</MenuText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_REMOVE_CULTURES" id="IDB_REMOVE_CULTURE_ZH_CN" priority="0x2012" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_REMOVE_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>zh-CN</ButtonText>
+					<MenuText>zh-CN</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_REMOVE_CULTURES" id="IDB_REMOVE_CULTURE_EN_US" priority="0x2014" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_REMOVE_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>en-US</ButtonText>
+					<MenuText>en-US</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_REMOVE_CULTURES" id="IDB_REMOVE_CULTURE_ZH_HANS" priority="0x2016" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_REMOVE_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>zh-Hans</ButtonText>
+					<MenuText>zh-Hans</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_REMOVE_CULTURES" id="IDB_REMOVE_CULTURE_ZH_HANT" priority="0x2017" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_REMOVE_CULTURES" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>zh-Hant</ButtonText>
+					<MenuText>zh-Hant</MenuText>
+				</Strings>
+			</Button>
+			
+			<Button guid="GUID_CONTEXTMENU" id="IDB_INSERTITEM" priority="0x2031" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ITEMS" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>插入..</ButtonText>
+					<MenuText>插入...</MenuText>
+					<ToolTipText>插入..</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="IDB_APPENDITEM" priority="0x2032" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ITEMS" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>追加..</ButtonText>
+					<MenuText>追加...</MenuText>
+					<ToolTipText>追加..</ToolTipText>
+				</Strings>
+			</Button>
+			
+			<Button guid="GUID_CONTEXTMENU" id="IDB_GROUP" priority="0x2041" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPING" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>分组显示</ButtonText>
+					<MenuText>分组显示.</MenuText>
+					<ToolTipText>分组显示</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="IDB_UNGROUP" priority="0x2042" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPING" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>取消分组</ButtonText>
+					<MenuText>取消分组</MenuText>
+					<ToolTipText>取消分组</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_STANDARDCMDS" id="IDB_CUT" priority="0x0000" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_STANDARDCMDS"/>
+				<Icon guid="guidVsShellIcons" id="25"/>
+				<!--测试到guidVsShellIcons=>71-->
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>剪切(&amp;X)</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="IDB_COPY" priority="0x0001" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_STANDARDCMDS"/>
+				<Icon guid="guidVsShellIcons" id="23"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>复制(&amp;C)</ButtonText>
+					<MenuText>复制(&amp;C)</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="IDB_PASTE" priority="0x0002" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_STANDARDCMDS"/>
+				<Icon guid="guidVsShellIcons" id="74"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>粘贴(&amp;P)</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="IDB_DELETE" priority="0x0004" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_STANDARDCMDS"/>
+				<Icon guid="guidVsShellIcons" id="27"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>删除(&amp;D)</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_STANDARDCMDS" id="IDB_PROPERTIES" priority="0x2061" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_PROPERTIES"/>
+				<Icon guid="guidVsShellIcons" id="27"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>属性</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_RESOURCE_GROUP" id="IDC_EXTRACTENUM" priority="0x0403" type="Button">
+				<Parent guid="GUID_RESOURCE_GROUP" id="IDG_EXTRACTENUM" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>提取枚举资源..</ButtonText>
+					<MenuText>提取枚举资源...</MenuText>
+					<CommandName>提取枚举资源</CommandName>
+					<ToolTipText>提取枚举资源</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_RESOURCE_GROUP" id="IDC_SVN_VERSION" priority="0x0404" type="Button">
+				<Parent guid="GUID_RESOURCE_GROUP" id="IDG_EXTRACTENUM" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>Svn 最新版本..</ButtonText>
+					<MenuText>Svn 最新版本...</MenuText>
+					<CommandName>Svn 最新版本</CommandName>
+					<ToolTipText>Svn 最新版本</ToolTipText>
+				</Strings>
+			</Button>
+		</Buttons>
+	</Commands>
+	<KeyBindings>
+		<KeyBinding guid="GUID_CONTEXTMENU" id="IDB_INSERTITEM" editor="GUID_EDITOR" key1="VK_INSERT"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="IDB_CUT" editor="GUID_EDITOR"  key1="X" mod1="Control"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="IDB_COPY" editor="GUID_EDITOR" key1="C" mod1="Control"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="IDB_PASTE" editor="GUID_EDITOR" key1="V" mod1="Control"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="IDB_DELETE" editor="GUID_EDITOR" key1="VK_DELETE"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="IDB_PROPERTIES" editor="GUID_EDITOR" key1="VK_F4"/>
+	</KeyBindings>
+	<Symbols>
+		<GuidSymbol name="GUID_PACKAGE" value="{F9316CC5-5C97-4E30-8E2E-2436DCD1B14E}" />
+		<GuidSymbol name="GUID_EDITOR" value="{A1DCBEBC-9B0C-45C0-9DDC-089B61F4430B}"/>
+		<!-- This is the guid used to group the menu commands together -->
+		<GuidSymbol name="GUID_RESOURCE_GROUP" value="{81B3CD54-E17E-46A0-87EF-988C25A0FDD0}">
+			<IDSymbol name="IDM_TOPMENU" value="0x1000"/>
+			<IDSymbol name="IDG_EXTRACTENUM" value="0x1010"/>
+			<IDSymbol name="IDC_EXTRACTENUM" value="0x1011"/>
+			<IDSymbol name="IDC_SVN_VERSION" value="0x1021"/>
+		</GuidSymbol>
+		<GuidSymbol name="GUID_CONTEXTMENU" value="{C12A8C09-CA08-4D26-B859-CF061F7F178E}">
+			<IDSymbol name="IDM_CONTEXTMENU" value="0x2000"/>
+
+			<IDSymbol name="IDG_CULTURES" value="0x2100"/>
+
+			<IDSymbol name="IDG_ADD_CULTURES" value="0x2010"/>
+			<IDSymbol name="IDM_ADD_CULTURES" value="0x2011"/>
+			
+
+			<IDSymbol name="IDG_REMOVE_CULTURES" value="0x2020"/>
+			<IDSymbol name="IDM_REMOVE_CULTURES" value="0x2021"/>
+			
+
+			<IDSymbol name="IDG_ITEMS" value="0x2030"/>
+			<IDSymbol name="IDB_INSERTITEM" value="0x2031"/>
+			<IDSymbol name="IDB_APPENDITEM" value="0x2032"/>
+
+			<IDSymbol name="IDG_GROUPING" value="0x2040"/>
+			<IDSymbol name="IDB_GROUP" value="0x2041"/>
+			<IDSymbol name="IDB_UNGROUP" value="0x2042"/>
+
+			<IDSymbol name="IDG_STANDARDCMDS" value="0x2050"/>
+
+			<IDSymbol name="IDG_PROPERTIES" value="0x2060"/>
+
+		</GuidSymbol>
+		<GuidSymbol name ="GUID_STANDARDCMDS" value="{5efc7975-14bc-11cf-9b2b-00aa00573819}">
+			<IDSymbol name="IDB_COPY" value="0x0F" />
+			<IDSymbol name="IDB_CUT" value="0x10" />
+			<IDSymbol name="IDB_DELETE" value="0x11" />
+			<IDSymbol name="IDB_PASTE" value="0X1A" />
+			<IDSymbol name="IDB_PROPERTIES" value="28" />
+		</GuidSymbol>
+		<GuidSymbol name ="GUID_ADD_CULTURES" value="{8ABB68B0-55A2-492A-8842-374099D6D94F}">
+			<IDSymbol name="IDB_ADD_CULTURE_ZH_CN" value="0x0804"/>
+			<IDSymbol name="IDB_ADD_CULTURE_EN_US" value="0x0409"/>
+			<IDSymbol name="IDB_ADD_CULTURE_ZH_HANS" value="0x0004"/>
+			<IDSymbol name="IDB_ADD_CULTURE_ZH_HANT" value="0x7C04"/>
+		</GuidSymbol>
+		<GuidSymbol name ="GUID_REMOVE_CULTURES" value="{DAD0B384-F058-4962-83DC-C139B757F2F0}">
+			<IDSymbol name="IDB_REMOVE_CULTURE_ZH_CN" value="0x0804"/>
+			<IDSymbol name="IDB_REMOVE_CULTURE_EN_US" value="0x0409"/>
+			<IDSymbol name="IDB_REMOVE_CULTURE_ZH_HANS" value="0x0004"/>
+			<IDSymbol name="IDB_REMOVE_CULTURE_ZH_HANT" value="0x2026"/>
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>

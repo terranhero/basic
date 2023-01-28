@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
+	<PropertyGroup>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
+	<ItemGroup>
+	  <None Update="ChildWindow\Themes\Aero2.NormalColor.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	  <None Update="ChildWindow\Themes\Generic.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	  <None Update="ExplorerBar\Themes\Generic.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	  <None Update="LinkButton\Themes\Generic.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	  <None Update="Themes\Generic.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	</ItemGroup>
+</Project>

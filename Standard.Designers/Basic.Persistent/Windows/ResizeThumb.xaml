@@ -1,0 +1,12 @@
+﻿<Thumb x:Class="Basic.Windows.ResizeThumb" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            DragDelta="ResizeThumb_DragDelta" DragStarted="ResizeThumb_DragStarted">
+	<Thumb.Template>
+		<ControlTemplate>
+			<Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+					  BorderThickness="1" BorderBrush="DarkGray" Background="{TemplateBinding Background}">
+				<Control IsHitTestVisible="False" Background="DarkGray"/>
+			</Border>
+		</ControlTemplate>
+	</Thumb.Template>
+</Thumb>

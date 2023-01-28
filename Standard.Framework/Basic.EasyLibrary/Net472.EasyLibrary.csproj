@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0B68E804-B606-4D3B-82D9-F779E536CBC1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>Basic.EasyLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <RootNamespace>Basic</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.11.3.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.11.3\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Configuration.ConfigurationManager.5.0.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Packaging.5.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.AccessControl.5.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Permissions.5.0.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataGrid\Column\DataGridArraysColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridRow.cs" />
+    <Compile Include="DataGrid\Column\DataGridFooterColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridJsonColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridEnumColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridHeaderColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridArrayColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridBoolColumn.cs" />
+    <Compile Include="DataGrid\Column\ButtonColumn.cs" />
+    <Compile Include="DataGrid\Column\NumberColumn.cs" />
+    <Compile Include="DataGrid\DataGrid.cs" />
+    <Compile Include="DataGrid\DataGridExtension.cs" />
+    <Compile Include="DataGrid\Footer\FooterCell.cs" />
+    <Compile Include="DataGrid\Footer\FooterInfo.cs" />
+    <Compile Include="DataGrid\Group\GroupInfo.cs" />
+    <Compile Include="DataGrid\Group\GroupCell.cs" />
+    <Compile Include="DataGrid\IDataGrid.cs" />
+    <Compile Include="DataGrid\Column\IDataGridColumn.cs" />
+    <Compile Include="DataGrid\Render\ContentRender.cs" />
+    <Compile Include="DataGrid\Render\ReportRender.cs" />
+    <Compile Include="DataGrid\Render\HtmlTextWriterExtension.cs" />
+    <Compile Include="DataGrid\Render\XlsxRender.cs" />
+    <Compile Include="DataGrid\Render\Providers.cs" />
+    <Compile Include="DataGrid\Render\HtmlRender.cs" />
+    <Compile Include="DataGrid\Render\IRender.cs" />
+    <Compile Include="DataGrid\Render\DataRender.cs" />
+    <Compile Include="DataGrid\DataGridResult.cs" />
+    <Compile Include="Enums\PagePosition.cs" />
+    <Compile Include="Enums\RowType.cs" />
+    <Compile Include="Extension\ComboBoxExtension.cs" />
+    <Compile Include="Extension\ComboTreeExtension.cs" />
+    <Compile Include="Extension\EasyComboItem.cs" />
+    <Compile Include="Extension\EasyNodeResult.cs" />
+    <Compile Include="EasyLibrary\EasyStrings.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EasyStrings.localresx</DependentUpon>
+    </Compile>
+    <Compile Include="Extension\EasyToolBarExtension.cs" />
+    <Compile Include="Extension\EasyTreeNode.cs" />
+    <Compile Include="Extension\EntityComboResult.cs" />
+    <Compile Include="Extension\EntityTreeResult.cs" />
+    <Compile Include="Extension\TableTreeResult.cs" />
+    <Compile Include="Extension\TreeGridResult.cs" />
+    <Compile Include="Extension\TreeViewExtensions.cs" />
+    <Compile Include="Extension\WebDateExtension.cs" />
+    <Compile Include="Extension\WebDateTimeExtension.cs" />
+    <Compile Include="Extension\WebNumberBoxExtension.cs" />
+    <Compile Include="Extension\WebTimeExtension.cs" />
+    <Compile Include="Extension\WebTreeNode.cs" />
+    <Compile Include="HtmlAttributes\ButtonOptions.cs" />
+    <Compile Include="HtmlAttributes\ComboBoxOptions.cs" />
+    <Compile Include="HtmlAttributes\ComboOptions.cs" />
+    <Compile Include="HtmlAttributes\TreeTableOptions.cs" />
+    <Compile Include="HtmlAttributes\TreeGridOptions.cs" />
+    <Compile Include="HtmlAttributes\DataGridOptions.cs" />
+    <Compile Include="HtmlAttributes\EasyOptions.cs" />
+    <Compile Include="HtmlAttributes\ComboGridOptions.cs" />
+    <Compile Include="HtmlAttributes\NumberBoxOptions.cs" />
+    <Compile Include="HtmlAttributes\DateBoxOptions.cs" />
+    <Compile Include="HtmlAttributes\ButtonTypeEnum.cs" />
+    <Compile Include="HtmlAttributes\TimeSpinnerOptions.cs" />
+    <Compile Include="HtmlAttributes\SpinnerOptions.cs" />
+    <Compile Include="HtmlAttributes\NumberSpinnerOptions.cs" />
+    <Compile Include="HtmlAttributes\ComboTreeOptions.cs" />
+    <Compile Include="HtmlAttributes\TreeOptions.cs" />
+    <Compile Include="Properties\EasyUIStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EasyUIStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EasyLibrary\EasyStrings.resx">
+      <DependentUpon>EasyStrings.localresx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EasyUIStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EasyUIStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EasyLibrary\EasyStrings.localresx">
+      <Generator>ResourceGenerator</Generator>
+      <LastGenOutput>EasyStrings.designer.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Standard.Configuration\Standard.Configuration.csproj">
+      <Project>{9b3517f6-1698-427c-8cbb-1a7c87c773f9}</Project>
+      <Name>Standard.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj">
+      <Project>{1602c15f-d88c-4def-8eac-6f9e481fdd0e}</Project>
+      <Name>Standard.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj">
+      <Project>{1f3bcf3c-529b-45f6-a003-376cbb485644}</Project>
+      <Name>Standard.EntityLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Basic.MvcLibrary\Net472.MvcLibrary.csproj">
+      <Project>{2bdfaffd-6f46-4363-9fd2-bc8a3c76ee4e}</Project>
+      <Name>Net472.MvcLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)packages\Version-v472.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

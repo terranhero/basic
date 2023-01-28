@@ -1,0 +1,666 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BasicDpdlSchema" targetNamespace="http://dev.goldsoft.com/2013/BasicPersistentSchema-5.0.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+	xmlns:tns="http://dev.goldsoft.com/2013/BasicPersistentSchema-5.0.xsd" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="typeCommandText">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCommandType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Text" />
+			<xs:enumeration value="StoredProcedure" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDisplayType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DisplayAttribute" />
+			<xs:enumeration value="WebDisplayAttribute" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCommandTimeout">
+		<xs:restriction base="xs:int">
+			<xs:maxInclusive value="2147483647" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNewTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EveryTime" />
+			<xs:enumeration value="OnlyOnce" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeExecutable">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Text" />
+			<xs:enumeration value="StoredProcedure" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeConfigurationKind">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Other" />
+			<xs:enumeration value="AddNew" />
+			<xs:enumeration value="Modify" />
+			<xs:enumeration value="Remove" />
+			<xs:enumeration value="SearchTable" />
+			<xs:enumeration value="Insert" />
+			<xs:enumeration value="Update" />
+			<xs:enumeration value="Delete" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDynamicConfigurationType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Other" />
+			<xs:enumeration value="Select" />
+			<xs:enumeration value="SelectKey" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDbType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None" />
+			<xs:enumeration value="Guid" />
+			<xs:enumeration value="Boolean" />
+			<xs:enumeration value="Int16" />
+			<xs:enumeration value="Int32" />
+			<xs:enumeration value="Int64" />
+			<xs:enumeration value="Decimal" />
+			<xs:enumeration value="Single" />
+			<xs:enumeration value="Double" />
+			<xs:enumeration value="Binary" />
+			<xs:enumeration value="VarBinary" />
+			<xs:enumeration value="Image" />
+			<xs:enumeration value="Char" />
+			<xs:enumeration value="VarChar" />
+			<xs:enumeration value="Text" />
+			<xs:enumeration value="NChar" />
+			<xs:enumeration value="NVarChar" />
+			<xs:enumeration value="NText" />
+			<xs:enumeration value="Date" />
+			<xs:enumeration value="Time" />
+			<xs:enumeration value="Timestamp" />
+			<xs:enumeration value="DateTime" />
+			<xs:enumeration value="DateTime2" />
+			<xs:enumeration value="DateTimeOffset" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeDirection">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Input" />
+			<xs:enumeration value="Output" />
+			<xs:enumeration value="InputOutput" />
+			<xs:enumeration value="ReturnValue" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeParameters" mixed="false">
+		<xs:sequence>
+			<xs:element name="Parameter"  minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent msdata:ColumnName="Parameter_Text" msdata:Ordinal="6">
+						<xs:extension base="xs:string">
+							<xs:attribute name="Column" use="required" type="xs:Name" />
+							<xs:attribute name="DbType" use="required" type="tns:typeDbType" />
+							<xs:attribute name="Size" use="optional">
+								<xs:simpleType id="sizeType1">
+									<xs:restriction base="xs:int">
+										<xs:maxInclusive value="8000" />
+										<xs:minInclusive value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="Precision" use="optional">
+								<xs:simpleType>
+									<xs:restriction base="xs:unsignedByte">
+										<xs:maxInclusive value="255" />
+										<xs:minInclusive value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="Scale" use="optional">
+								<xs:simpleType>
+									<xs:restriction base="xs:unsignedByte">
+										<xs:maxInclusive value="255" />
+										<xs:minInclusive value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="Direction" type="tns:typeDirection" use="optional" default="Input"/>
+							<xs:attribute name="Nullable" type="xs:boolean" use="optional" default="false"  />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeCheckCommands">
+		<xs:sequence>
+			<xs:element name="CheckCommand" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CommandText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+						<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters">
+							<xs:key name="keyCheckCommandParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="@Column"/>
+							</xs:key>
+							<xs:unique name="uniqueCheckCommandParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="."/>
+							</xs:unique>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="Name" use="required" type="xs:NCName" />
+					<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+					<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+					<xs:attribute name="ErrorCode" use="required" type="xs:string" />
+					<xs:attribute name="Converter" use="optional" type="xs:string" />
+					<xs:attribute name="PropertyName" use="optional" type="xs:string" />
+					<xs:attribute name="CheckExist" use="optional" type="xs:boolean" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeNewValues">
+		<xs:sequence>
+			<xs:element name="NewValue" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CommandText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+						<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters">
+							<xs:key name="keyNewValueParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="@Column"/>
+							</xs:key>
+							<xs:unique name="uniqueNewValueParameters">
+								<xs:selector xpath="./Parameter"/>
+								<xs:field xpath="."/>
+							</xs:unique>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="Name" use="required" type="xs:NCName" />
+					<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+					<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+					<xs:attribute name="NewType" use="optional" type="tns:typeNewTypeEnum" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="typeMethodModifier">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Public"/>
+			<xs:enumeration value="Private" />
+			<xs:enumeration value="Internal" />
+			<xs:enumeration value="Protected" />
+			<xs:enumeration value="ProtectedInternal" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typePropertyType">
+		<xs:restriction base="xs:string">
+			<xs:annotation ></xs:annotation>
+			<xs:enumeration value="System.Boolean" />
+			<xs:enumeration value="System.Byte" />
+			<xs:enumeration value="System.Byte[]" />
+			<xs:enumeration value="System.Char" />
+			<xs:enumeration value="System.DateTime" />
+			<xs:enumeration value="System.DateTimeOffset" />
+			<xs:enumeration value="System.Decimal" />
+			<xs:enumeration value="System.Double" />
+			<xs:enumeration value="System.Guid" />
+			<xs:enumeration value="System.Int16" />
+			<xs:enumeration value="System.Int32" />
+			<xs:enumeration value="System.Int64" />
+			<xs:enumeration value="System.Object" />
+			<xs:enumeration value="System.Single" />
+			<xs:enumeration value="System.SByte" />
+			<xs:enumeration value="System.String" />
+			<xs:enumeration value="System.TimeSpan" />
+			<xs:enumeration value="System.UInt16" />
+			<xs:enumeration value="System.UInt32" />
+			<xs:enumeration value="System.UInt64" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeSize">
+		<xs:restriction base="xs:int">
+			<xs:maxInclusive value="8000" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeNumeric">
+		<xs:restriction base="xs:unsignedByte">
+			<xs:maxInclusive value="255" />
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeColumn">
+		<xs:attribute name="Profix"  type="xs:string" use="optional" />
+		<xs:attribute name="Name"  use="required" type="xs:Name" />
+		<xs:attribute name="Source"  use="required" type="xs:Name" />
+		<xs:attribute name="DbType" use="required" type="tns:typeDbType"/>
+		<xs:attribute name="PKey"  type="xs:boolean" use="optional" />
+		<xs:attribute name="Size" use="optional" type="tns:typeSize"/>
+		<xs:attribute name="Precision" use="optional" type="tns:typeNumeric"/>
+		<xs:attribute name="Scale" use="optional" type="tns:typeNumeric"/>
+	</xs:complexType>
+	<xs:complexType name="typeDisplayFormat">
+		<xs:attribute name="ApplyFormatInEditMode"  type="xs:boolean" use="optional" />
+		<xs:attribute name="ConvertEmptyStringToNull"  use="optional" type="xs:boolean" />
+		<xs:attribute name="DataFormatString" use="optional" type="xs:string"/>
+		<xs:attribute name="HtmlEncode" use="optional" type="xs:boolean"/>
+		<xs:attribute name="NullDisplayText" use="optional" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="typeDisplayName">
+		<xs:attribute name="Name" use="required" type="xs:string" />
+		<xs:attribute name="Converter" use="optional" type="xs:string"/>
+		<xs:attribute name="Prompt" use="optional" type="xs:string"/>
+		<xs:attribute name="DisplayType" use="optional" type="tns:typeDisplayType"/>
+	</xs:complexType>
+	<xs:complexType name="typeRequired">
+	</xs:complexType>
+	<xs:complexType name="typeBoolRequired">
+		<xs:attribute name="OtherProperty" use="required"  type="xs:string" />
+		<xs:attribute name="PropertyType" use="required" type="tns:typePropertyType"/>
+		<xs:attribute name="RequiredValue"  use="required" type="xs:string" />
+	</xs:complexType>
+	<xs:simpleType name="typeValidationDataType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Date" />
+			<xs:enumeration value="TimeSpan" />
+			<xs:enumeration value="DateTime" />
+			<xs:enumeration value="String" />
+			<xs:enumeration value="Short" />
+			<xs:enumeration value="Integer" />
+			<xs:enumeration value="Long" />
+			<xs:enumeration value="Double" />
+			<xs:enumeration value="Decimal" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCompareOperator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Equal" />
+			<xs:enumeration value="NotEqual" />
+			<xs:enumeration value="GreaterThan" />
+			<xs:enumeration value="GreaterThanEqual" />
+			<xs:enumeration value="LessThan" />
+			<xs:enumeration value="LessThanEqual" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeCompareAttribute">
+		<xs:attribute name="OtherProperty" use="required"  type="xs:string" />
+		<xs:attribute name="DataType" use="optional" type="tns:typeValidationDataType"/>
+		<xs:attribute name="Operator"  use="optional" type="tns:typeCompareOperator" />
+	</xs:complexType>
+	<xs:complexType name="typeMaxLengthAttribute">
+		<xs:attribute name="Length" use="required"  type="xs:int" />
+	</xs:complexType>
+	<xs:complexType name="typeRangeAttribute">
+		<xs:attribute name="Minimum" use="optional"  type="xs:string" />
+		<xs:attribute name="Maximum" use="optional" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="typeRegularExpressionAttribute">
+		<xs:attribute name="Pattern" use="required"  type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="typeStringLengthAttribute">
+		<xs:attribute name="MaximumLength" use="required"  type="xs:int" />
+		<xs:attribute name="MinimumLength" use="optional"  type="xs:int" />
+	</xs:complexType>
+	<xs:complexType name="typeEqualToAttribute">
+		<xs:attribute name="OtherProperty" use="required"  type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="typeDesignerInfo">
+		<xs:attribute name="Expander" use="optional" type="xs:boolean" />
+		<xs:attribute name="Width" use="optional" type="xs:double" />
+		<xs:attribute name="Height" use="optional" type="xs:double" />
+		<xs:attribute name="Left" use="optional" type="xs:double" />
+		<xs:attribute name="Top" use="optional" type="xs:double" />
+	</xs:complexType>
+	<xs:complexType name="typeDataContract">
+		<xs:attribute name="Generate" use="optional" type="xs:boolean" />
+		<xs:attribute name="IsReference" use="optional" type="xs:boolean" />
+		<xs:attribute name="Name" use="optional" type="xs:string" />
+		<xs:attribute name="Namespace" use="optional" type="xs:string" />
+	</xs:complexType>
+	<xs:simpleType name="typePropertyModifier">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Public"/>
+			<xs:enumeration value="Internal"/>
+			<xs:enumeration value="Private"/>
+			<xs:enumeration value="Protected"/>
+			<xs:enumeration value="ProtectedInternal"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeGenerator">
+		<xs:attribute name="Modifier"  type="tns:typePropertyModifier" use="optional" />
+		<xs:attribute name="Member"  type="xs:boolean" use="optional" />
+		<xs:attribute name="Inherit"  type="xs:boolean" use="optional" />
+		<xs:attribute name="Override"  type="xs:boolean" use="optional" />
+		<xs:attribute name="Virtual"  type="xs:boolean" use="optional" />
+	</xs:complexType>
+	<xs:complexType name ="typeProperty">
+		<xs:all>
+			<xs:element name="Generator" minOccurs="0" maxOccurs="1"  type="tns:typeGenerator"/>
+			<xs:element name="DisplayName" minOccurs="0" maxOccurs="1"  type="tns:typeDisplayName"/>
+			<xs:element name="Comment" minOccurs="0" maxOccurs="1"  type="xs:string"/>
+			<xs:element name="Column" minOccurs="0" maxOccurs="1"  type="tns:typeColumn"/>
+			<xs:element name="DisplayFormatAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeDisplayFormat"/>
+			<xs:element name="RequiredAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeRequired"/>
+			<xs:element name="BoolRequiredAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeBoolRequired"/>
+			<xs:element name="CompareAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeCompareAttribute"/>
+			<xs:element name="RangeAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeRangeAttribute"/>
+			<xs:element name="RegularExpressionAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeRegularExpressionAttribute"/>
+			<xs:element name="StringLengthAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeStringLengthAttribute"/>
+			<xs:element name="EqualToAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeEqualToAttribute"/>
+			<xs:element name="MaxLengthAttribute" minOccurs="0" maxOccurs="1"  type="tns:typeMaxLengthAttribute"/>
+		</xs:all>
+		<xs:attribute name="Name"  use="required" type="xs:Name" />
+		<xs:attribute name="Type" use="required" type="tns:typePropertyType" />
+		<xs:attribute name="PKey"  type="xs:boolean" use="optional" />
+		<xs:attribute name="Nullable"  use="optional" type="xs:boolean" />
+	</xs:complexType>
+	<xs:simpleType name="typeClassModifier">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Public"/>
+			<xs:enumeration value="Internal"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeGenerateMode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Entity"/>
+			<xs:enumeration value="Table"/>
+			<xs:enumeration value="EntityAndTable"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeGenerateAction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Single"/>
+			<xs:enumeration value="Multiple"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="typeWithClauses">
+		<xs:sequence>
+			<xs:element name="WithClause" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Definition" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+						<xs:element name="Query" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+					</xs:sequence>
+					<xs:attribute name="TableName" use="required" type="xs:Name" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="typeAbstractDefinition">
+		<xs:sequence>
+			<xs:element name="BaseClass" type="xs:string" minOccurs="1" maxOccurs="1"  />
+			<xs:element name="Comment" type="xs:string" minOccurs="0" maxOccurs="1"  />
+			<xs:element name="Properties"  minOccurs="1" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Property"  minOccurs="0" maxOccurs="unbounded" type="tns:typeProperty"/>
+					</xs:sequence>
+				</xs:complexType>
+				<xs:key name="entityPropertyNameKey">
+					<xs:selector xpath="./Property"/>
+					<xs:field xpath="@Name"/>
+				</xs:key>
+				<xs:unique name="uniqueColumnName">
+					<xs:selector xpath="./Property/Column"/>
+					<xs:field xpath="@Name"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="ConditionProperties"  minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Property"  minOccurs="0" maxOccurs="unbounded" type="tns:typeProperty"/>
+					</xs:sequence>
+					<xs:attribute name="BaseClass"  use="required" type="xs:string" />
+					<xs:attribute name="Guid"  use="optional" type="xs:string" />
+					<xs:attribute name="Expanded"  use="optional" type="xs:boolean" />
+				</xs:complexType>
+				<xs:key name="entityConditionPropertyNameKey">
+					<xs:selector xpath="./Property"/>
+					<xs:field xpath="@Name"/>
+				</xs:key>
+				<xs:unique name="uniqueConditionColumnName">
+					<xs:selector xpath="./Property/Column"/>
+					<xs:field xpath="@Name"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Name"  use="required" type="xs:string" />
+		<xs:attribute name="TableName" type="xs:string" />
+		<xs:attribute name="Modifier" use="optional" type="tns:typeClassModifier" />
+		<xs:attribute name="Abstract" use="optional" type="xs:boolean" default="false"/>
+		<xs:attribute name="Expanded" use="optional" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="typeStaticCommand">
+		<xs:all>
+			<xs:element name="CommandText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="CheckCommands" minOccurs="0" maxOccurs="1" type="tns:typeCheckCommands" />
+			<xs:element name="NewValues" minOccurs="0" maxOccurs="1" type="tns:typeNewValues"/>
+			<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters">
+				<xs:key name="keyCommandParameters">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="@Column"/>
+				</xs:key>
+				<xs:unique name="uniqueCommandParameters">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="."/>
+				</xs:unique>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="Name" use="required" type="xs:NCName" />
+		<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+		<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+		<xs:attribute name="Modifier" use="optional" type="tns:typeMethodModifier" />
+		<xs:attribute name="Kind" use="optional" type="tns:typeConfigurationKind" />
+		<xs:attribute name="Executable" use="optional" type="xs:string" />
+		<xs:attribute name="Comment" use="optional" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="typeDynamicCommand">
+		<xs:all>
+			<xs:element name="Condition" minOccurs="1" maxOccurs="1" type="xs:string" />
+			<xs:element name="WithClauses" minOccurs="0" maxOccurs="1" type="tns:typeWithClauses"></xs:element>
+			<xs:element name="SelectText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="FromText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="WhereText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText"  />
+			<xs:element name="GroupText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="OrderText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="HavingText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="JoinOnText" minOccurs="0" maxOccurs="1" type="tns:typeCommandText" />
+			<xs:element name="Parameters" minOccurs="0" maxOccurs="1" type="tns:typeParameters">
+				<xs:key name="keyCommandParameters1">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="@Column"/>
+				</xs:key>
+				<xs:unique name="uniqueCommandParameters1">
+					<xs:selector xpath="./Parameter"/>
+					<xs:field xpath="."/>
+				</xs:unique>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="Name" use="required" type="xs:NCName" />
+		<xs:attribute name="CommandType" use="optional" type="tns:typeCommandType" />
+		<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
+		<xs:attribute name="Modifier" use="optional" type="tns:typeMethodModifier" />
+		<xs:attribute name="Kind" use="optional" type="tns:typeConfigurationKind" />
+		<xs:attribute name="Executable" use="optional" type="xs:string" />
+		<xs:attribute name="Comment" use="optional" type="xs:string" />
+	</xs:complexType>
+	<xs:complexType name="typeEntityDefinition">
+		<xs:complexContent>
+			<xs:extension base="tns:typeAbstractDefinition">
+				<xs:sequence>
+					<xs:element name="DataContract" minOccurs="0" maxOccurs="1" type="tns:typeDataContract" />
+					<xs:element name="DesignerInfo" minOccurs="1" maxOccurs="1" type="tns:typeDesignerInfo" />
+					<xs:element name="DataCommands" minOccurs="1"  maxOccurs="1">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:choice minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="StaticCommand"  minOccurs="0" maxOccurs="unbounded" type="tns:typeStaticCommand"/>
+									<xs:element name="DynamicCommand"  minOccurs="0" maxOccurs="unbounded" type="tns:typeDynamicCommand"/>
+								</xs:choice>
+							</xs:sequence>
+						</xs:complexType>
+						<xs:unique name="uniqueDataComandsName">
+							<xs:selector xpath="./StaticCommand|./DynamicCommand"/>
+							<xs:field xpath="@Name"/>
+						</xs:unique>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="GenerateMode"  type="tns:typeGenerateMode" use="optional" />
+				<xs:attribute name="EnabledValidation"  type="xs:boolean" use="optional" />
+				<xs:attribute name="Guid"  type="xs:string" use="optional" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="typeEntityProject">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="Name" use="required" type="xs:string"/>
+				<xs:attribute name="Unique" use="required" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="typeMessageConverter">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="Name" use="required" type="xs:string"/>
+				<xs:attribute name="Group" use="optional" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="typePersistentGenerator">
+		<xs:attribute name="Modifier" use="optional" type="tns:typeClassModifier" />
+		<xs:attribute name="Generate" use="optional" type="tns:typeGenerateAction" />
+		<xs:attribute name="ResxMode" use="optional" type="tns:typeGenerateAction" />
+		<xs:attribute name="Support" use="optional" type="tns:typeGenerateAction" />
+		<xs:attribute name="Access" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="AbstractAccess"/>
+					<xs:enumeration value="AbstractDbAccess"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="ac" use="optional" type="xs:boolean" default="true">
+			<xs:annotation>
+				<xs:documentation>获取或设置当前数据库上下文类是否指定连接名称</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="PersistentConfiguration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EntityProject" minOccurs="0" maxOccurs="1" msdata:Ordinal="4" form="qualified" type="tns:typeEntityProject"/>
+				<xs:element name="EntityFolder" minOccurs="0" maxOccurs="1" msdata:Ordinal="5" form="qualified"></xs:element>
+				<xs:element name="MessageConverter" minOccurs="0" maxOccurs="1" msdata:Ordinal="5" form="qualified" type="tns:typeMessageConverter"/>
+				<xs:element name="PersistentGenerator" minOccurs="0" maxOccurs="1" msdata:Ordinal="1" form="qualified" type="tns:typePersistentGenerator"/>
+				<xs:element name="TableInfo" minOccurs="1" maxOccurs="1" msdata:Ordinal="10" form="qualified">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TableColumns" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TableColumn" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:simpleContent msdata:ColumnName="ColumnName" msdata:Ordinal="6">
+													<xs:extension base="xs:string">
+														<xs:attribute name="Name" type="xs:string" use="required"/>
+														<xs:attribute name="DbType" type="xs:string" use="required"/>
+														<xs:attribute name="Nullable" type="xs:boolean" use="optional"/>
+														<xs:attribute name="Size" type="xs:int" use="optional"/>
+														<xs:attribute name="Precision" type="xs:int" use="optional"/>
+														<xs:attribute name="Scale" type="xs:int" use="optional"/>
+														<xs:attribute name="PKey" type="xs:boolean" use="optional"/>
+														<xs:attribute name="Default" type="xs:string" use="optional"/>
+														<xs:attribute name="Property" type="xs:string" use="optional"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="UniqueConstraint" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+									<xs:attribute name="Columns" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="PrimaryKeyConstraint" minOccurs="0" maxOccurs="1">
+								<xs:annotation>
+									<xs:documentation>主键约束</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Name" type="xs:string" use="required"/>
+									<xs:attribute name="Columns" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="UniqueConstraints" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="UniqueConstraint" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="Name" type="xs:string" use="required"/>
+												<xs:attribute name="Columns" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="TableName" type="xs:string" use="required"/>
+						<xs:attribute name="ViewName" type="xs:string" use="required"/>
+						<xs:attribute name="Owner" type="xs:string" use="optional"/>
+						<xs:attribute name="ObjectType" type="xs:string" use="optional"/>
+						<xs:attribute name="EntityName" type="xs:string" use="optional"/>
+						<xs:attribute name="Description" type="xs:string" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Namespace" minOccurs="1" maxOccurs="1" msdata:Ordinal="30" form="qualified" type="xs:string" />
+				<xs:element name="Namespaces" minOccurs="0" maxOccurs="1" msdata:Ordinal="40" form="qualified">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Namespace" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+						<xs:attribute name="Description" type="xs:string" fixed="Using Namespace List" use="optional"/>
+					</xs:complexType>
+					<xs:unique name="namespaceUnique">
+						<xs:selector xpath="Namespace" />
+						<xs:field xpath="."/>
+					</xs:unique>
+				</xs:element>
+				<xs:element name="DataEntityElements" minOccurs="1"  maxOccurs="1" msdata:Ordinal="50" form="qualified">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DataEntityElement" minOccurs="0" maxOccurs="unbounded" type="tns:typeEntityDefinition" />
+						</xs:sequence>
+						<xs:attribute name="Namespace" use="required" type="xs:NCName" />
+					</xs:complexType>
+					<xs:unique name="uniqueDataEntityName">
+						<xs:selector xpath="./DataEntityElement"/>
+						<xs:field xpath="@Name"/>
+					</xs:unique>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Version" default="4.0.0.0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d+.\d+(.\d+){1,2}" />
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Modifier" use="optional" type="tns:typeClassModifier" />
+			<xs:attribute name="Generate" use="optional" type="tns:typeGenerateAction" />
+			<xs:attribute name="Access" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="AbstractAccess"/>
+						<xs:enumeration value="AbstractDbAccess"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="Guid" use="optional" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

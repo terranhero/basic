@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
+	<PropertyGroup Label="Globals">
+		<SccProjectName>Svn</SccProjectName>
+		<SccProvider></SccProvider>
+		<SccAuxPath>Svn</SccAuxPath>
+		<SccLocalPath>Svn</SccLocalPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AssemblyName>Basic.OracleAccess</AssemblyName>
+		<RootNamespace>Basic</RootNamespace>
+		<TargetFrameworks>netstandard2.1;net6.0;</TargetFrameworks>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.80" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
+		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="OracleBatchCommand.cs" />
+		<Compile Update="OracleCheckCommand.cs" />
+		<Compile Update="OracleDynamicCommand.cs" />
+		<Compile Update="OracleNewValueCommand.cs" />
+		<Compile Update="OracleStaticAdapter.cs" />
+		<Compile Update="OracleStaticCommand.cs" />
+	</ItemGroup>
+
+	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
+</Project>

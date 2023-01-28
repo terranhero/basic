@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<cultureInfos>
+		<cultureInfo lcid="2052" name="zh-CN" />
+	</cultureInfos>
+	<resxDatas>
+		<resxData name="Button_Cancel" group="Button">
+			<value>取消</value>
+			<comment>取消按钮</comment>
+		</resxData>
+		<resxData name="Button_Cancel_en-US" group="Button">
+			<value>Cancel</value>
+		</resxData>
+		<resxData name="Button_Close" group="Button">
+			<value>关闭</value>
+			<comment>关闭</comment>
+		</resxData>
+		<resxData name="Button_Close_en-US" group="Button">
+			<value>Close</value>
+			<comment>d</comment>
+		</resxData>
+		<resxData name="Button_ComplexSearch" group="Button">
+			<value>高级查询</value>
+			<comment>高级查询</comment>
+		</resxData>
+		<resxData name="Button_ComplexSearch_en-US" group="Button">
+			<value>Complex Search</value>
+			<comment>高级查询</comment>
+		</resxData>
+		<resxData name="Button_Create" group="Button">
+			<value>新增</value>
+			<comment>新增</comment>
+		</resxData>
+		<resxData name="Button_Create_en-US" group="Button">
+			<value>Create</value>
+			<comment>新增</comment>
+		</resxData>
+		<resxData name="Button_Delete" group="Button">
+			<value>删除</value>
+			<comment>删除</comment>
+		</resxData>
+		<resxData name="Button_Delete_en-US" group="Button">
+			<value>Delete</value>
+			<comment>删除</comment>
+		</resxData>
+		<resxData name="Button_Edit" group="Button">
+			<value>修改</value>
+			<comment>修改</comment>
+		</resxData>
+		<resxData name="Button_Edit_en-US" group="Button">
+			<value>Edit</value>
+			<comment>修改</comment>
+		</resxData>
+		<resxData name="Button_Export" group="Button">
+			<value>导出</value>
+			<comment>导出</comment>
+		</resxData>
+		<resxData name="Button_Export_en-US" group="Button">
+			<value>Export</value>
+			<comment>导出</comment>
+		</resxData>
+		<resxData name="Button_Import" group="Button">
+			<value>导入</value>
+			<comment>导入</comment>
+		</resxData>
+		<resxData name="Button_Import_en-US" group="Button">
+			<value>Import</value>
+			<comment>导入</comment>
+		</resxData>
+		<resxData name="Button_Options" group="Button">
+			<value>操作</value>
+		</resxData>
+		<resxData name="Button_Options_en-US" group="Button">
+			<value>Options</value>
+		</resxData>
+		<resxData name="Button_Print" group="Button">
+			<value>打印</value>
+			<comment>打印</comment>
+		</resxData>
+		<resxData name="Button_Print_en-US" group="Button">
+			<value>Print</value>
+			<comment>打印</comment>
+		</resxData>
+		<resxData name="Button_Save" group="Button">
+			<value>保存</value>
+		</resxData>
+		<resxData name="Button_Save_en-US" group="Button">
+			<value>Save</value>
+		</resxData>
+		<resxData name="Button_Search" group="Button">
+			<value>查询</value>
+			<comment>查询</comment>
+		</resxData>
+		<resxData name="Button_Search_en-US" group="Button">
+			<value>Search</value>
+			<comment>查询</comment>
+		</resxData>
+	</resxDatas>
+</root>

@@ -1,0 +1,717 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<Extern href="stdidcmd.h"/>
+	<Extern href="vsshlids.h"/>
+	<Extern href="sharedids.h"/>
+	<Extern href="virtkeys.h"/>
+
+	<Commands package="guidPackage">
+		<Menus>
+			<Menu guid="GUID_CONTEXTMENU" type="Context" id="IDM_CONTEXTMENU" priority="1">
+				<Strings>
+					<CommandName>数据持久类快捷菜单</CommandName>
+					<ButtonText>数据持久类快捷菜单</ButtonText>
+				</Strings>
+			</Menu>
+			<Menu guid="GUID_CONTEXTMENU" type="Menu" id="IDM_ORDERCOMMAND" priority="1">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ORDERCOMMAND"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>调整位置</CommandName>
+					<MenuText>调整位置</MenuText>
+					<ButtonText>调整位置</ButtonText>
+				</Strings>
+			</Menu>
+
+			<Menu guid="GUID_CONTEXTMENU" type="Menu" id="IDM_DATACOMMAND" priority="1">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPUPDATE"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<CommandName>数据命令</CommandName>
+					<MenuText>数据命令</MenuText>
+					<ButtonText>数据命令</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<CommandName>Data Command</CommandName>
+					<MenuText>Data Command</MenuText>
+					<ButtonText>Data Command</ButtonText>
+				</Strings>
+			</Menu>
+
+			<Menu guid="GUID_PERSISTENTMENU" type="Menu" id="IDM_CONFIGURATION" priority="0x0101">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_SOLUTION_CONFIG"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<CommandName>金软配置文件</CommandName>
+					<MenuText>金软配置文件</MenuText>
+					<ButtonText>金软配置文件</ButtonText>
+					<LocCanonicalName>金软配置文件</LocCanonicalName>
+				</Strings>
+			</Menu>
+		</Menus>
+		<Groups>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_GROUPCONNECTION" priority="0x001">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_GROUPUPDATE" priority="0x002">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_ENTITYPROPERTIES" priority="0x003">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+
+			<Group guid="GUID_CONTEXTMENU" id="IDG_GROUPRESOURCE" priority="0x010">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_ORDERCOMMAND" priority="0x005">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+			<Group guid="GUID_STANDARDCMDS" id="IDG_ORDERCOMMAND" priority="0x001">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_ORDERCOMMAND"/>
+			</Group>
+
+			<Group guid="GUID_CONTEXTMENU" id="IDG_STATICCOMMAND" priority="0x001">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_DATACOMMAND"/>
+			</Group>
+			<Group guid="GUID_CONTEXTMENU" id="IDG_DYNAMICCOMMAND" priority="0x002">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_DATACOMMAND"/>
+			</Group>
+
+			<Group guid="GUID_CONTEXTMENU" id="IDG_EDIT_CUTCOPY" priority="0x018">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+
+			<Group guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" priority="0x019">
+				<Parent guid="GUID_CONTEXTMENU" id="IDM_CONTEXTMENU"/>
+			</Group>
+
+			<Group guid="GUID_PERSISTENTMENU" id="IDG_CONFIGURATION" priority="0x0100">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDM_CONFIGURATION"/>
+			</Group>
+			<Group guid="GUID_PERSISTENTMENU" id="IDG_SOLUTION_CONFIG" priority="0x0100">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+			</Group>
+			<Group guid="GUID_PERSISTENTMENU" id="idConverterFolderGroup" priority="0x0200">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>
+			</Group>
+			<Group guid="GUID_PERSISTENTMENU" id="idConverterProjGroup" priority="0x0300">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+			</Group>
+			<Group guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" priority="200">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CSCD_PROJECT_ADD"/>
+			</Group>
+		</Groups>
+		<Buttons>
+			<Button guid="GUID_PERSISTENTMENU" id="ID_SOLUTION_SHOWCONTEXTCODE" priority="0x0100" type="Button">
+				<Parent guid="guidSHLMainMenu" id="IDG_VS_PROJ_TOOLBAR3" />
+				<Icon guid="guidSHLMainMenu" id="25"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>查看业务逻辑代码</ButtonText>
+				</Strings>
+			</Button>
+			<!--<Button guid="GUID_PERSISTENTMENU" id="ID_SOLUTION_SHOWACCESSCODE" priority="0x0101" type="Button">
+				<Parent guid="guidSHLMainMenu" id="IDG_VS_PROJ_TOOLBAR3" />
+				<Icon guid="guidSHLMainMenu" id="25"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>查看数据控制代码</ButtonText>
+				</Strings>
+			</Button>-->
+			<!--数据持久类设计文件快捷菜单-->
+			<Button guid="GUID_CONTEXTMENU" id="ID_UPDATEENTITIES" priority="0x2013" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPCONNECTION" />
+				<Icon guid="GUID_TABLEICON" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>更新实体模型</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_UPDATETABLE" priority="0x2012" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPCONNECTION" />
+				<Icon guid="guidVsShellIcons" id="56"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>更新数据表</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_UPDATEENTITY" priority="0x2042" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPUPDATE" />
+				<Icon guid="GUID_TABLEICON" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>更新实体模型</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Update Data Model</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_UPDATECONDITION" priority="0x2043" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPUPDATE" />
+				<Icon guid="GUID_TABLEICON" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>更新条件模型</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Update Condition Model</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_UPDATECOMMAND" priority="0x2044" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPUPDATE" />
+				<Icon guid="GUID_SQLICON" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>更新数据命令</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Update Command</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_CONTEXTMENU" id="ID_INSERTPROPERTY" priority="0x2031" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ENTITYPROPERTIES" />
+				<Icon guid="guidObjectBrowserButtons" id="20"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>插入新属性</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Insert Property</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_CREATEPROPERTY" priority="0x2032" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ENTITYPROPERTIES" />
+				<Icon guid="guidObjectBrowserButtons" id="20"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>添加新属性</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Create Property</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_CONTEXTMENU" id="ID_CREATECOMMAND" priority="1" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_STATICCOMMAND" />
+				<Icon guid="guidObjectBrowserButtons" id="2"/>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>新建数据命令</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_EDITCOMMAND" priority="2" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_STATICCOMMAND" />
+				<Icon guid="GUID_OBJICONS" id="14"/>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>修改数据命令</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_PASTESTATICCOMMAND" priority="3" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_STATICCOMMAND" />
+				<Icon guid="GUID_OBJICONS" id="14"/>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>粘帖为静态命令</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_CREATERESOURCE" priority="301" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPRESOURCE" />
+				<Icon guid="GUID_DBICONS" id="8"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>创建本地化资源</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Create Localization Strings</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_CREATEPROPERTYRESOURCE" priority="302" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPRESOURCE" />
+				<Icon guid="GUID_DBICONS" id="8"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>创建属性资源信息</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Create Property Strings</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_CREATECOMMANDRESOURCE" priority="303" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPRESOURCE" />
+				<Icon guid="GUID_DBICONS" id="8"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>创建命令异常资源</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Create Command Strings</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_RESETRESOURCE" priority="304" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_GROUPRESOURCE" />
+				<Icon guid="GUID_DBICONS" id="8"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>设置属性的资源键</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Set Resource Key</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_SIZETOFIT" priority="600" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_ORDERCOMMAND" />
+				<Icon guid="guidVsShellIcons" id="104"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>重置形状宽度</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_BRINGTOFRONT" priority="601" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_ORDERCOMMAND" />
+				<Icon guid="guidVsShellIcons" id="11"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>移至首位</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_BRINGFORWARD" priority="602" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_ORDERCOMMAND" />
+				<Icon guid="guidVsShellIcons" id="11"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>前移一位</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_SENDBACKWARD" priority="603" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_ORDERCOMMAND" />
+				<Icon guid="guidVsShellIcons" id="99"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>后移一位</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_SENDTOBACK" priority="604" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_ORDERCOMMAND" />
+				<Icon guid="guidVsShellIcons" id="99"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>移至末位</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="GUID_CONTEXTMENU" id="ID_CUT" priority="0x0000" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_EDIT_CUTCOPY"/>
+				<Icon guid="guidVsShellIcons" id="25"/>
+				<!--测试到guidVsShellIcons=>71-->
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>剪切(&amp;X)</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_COPY" priority="0x0001" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_EDIT_CUTCOPY"/>
+				<Icon guid="guidVsShellIcons" id="23"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>复制(&amp;C)</ButtonText>
+					<MenuText>复制(&amp;C)</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_PASTE" priority="0x0002" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_EDIT_CUTCOPY"/>
+				<Icon guid="guidVsShellIcons" id="74"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>粘贴(&amp;P)</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_CONTEXTMENU" id="ID_DELETE" priority="0x0004" type="Button">
+				<Parent guid="GUID_CONTEXTMENU" id="IDG_EDIT_CUTCOPY"/>
+				<Icon guid="guidVsShellIcons" id="27"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>删除(&amp;D)</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_COPYSQL" priority="802" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES"/>
+				<Icon guid="guidVsShellIcons" id="23"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>复制命令(&amp;C)</ButtonText>
+					<MenuText>复制命令(&amp;C)</MenuText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_COPYCODE" priority="803" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
+				<Icon guid="guidSHLMainMenu" id="25"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>复制代码</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Copy Code</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_EDITCODE" priority="801" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
+				<Icon guid="guidSHLMainMenu" id="25"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<Strings>
+					<ButtonText>编辑代码</ButtonText>
+				</Strings>
+				<Strings language="en-us">
+					<ButtonText>Edit Code</ButtonText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_STANDARDCMDS" id="ID_PROPERTIES" priority="804" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
+				<Icon guid="guidVsShellIcons" id="80"/>
+				<Strings>
+					<ButtonText>属性</ButtonText>
+				</Strings>
+			</Button>
+			<!--解决方案文件快捷菜单扩展-->
+			<!--<Button guid="GUID_PERSISTENTMENU" id="ID_CONVERTER" priority="0x0101" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_SOLUTION_CONFIG" />
+				<Icon guid="guidConverter" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>转换为新版数据持久类</ButtonText>
+					<MenuText>转换为新版数据持久类</MenuText>
+					<CommandName>Basic.ConvertFormat</CommandName>
+					<ToolTipText>将选择的数据持久文件转换为新版</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU" id="idConverterAll" priority="0x0201" type="Button">
+				<Icon guid="guidConverter" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>转换为新版数据持久类</ButtonText>
+					<MenuText>转换为新版数据持久类</MenuText>
+					<CommandName>Basic.ConvertAllFormat</CommandName>
+					<ToolTipText>将此路径下所有数据持久文件转换为新版</ToolTipText>
+				</Strings>
+			</Button>-->
+			<!--<Button guid="GUID_PERSISTENTMENU" id="ID_ADD_CLASSIC_VIEW" priority="0x0401" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>标准视图(S&amp;)...</ButtonText>
+					<MenuText>标准视图(S&amp;)...</MenuText>
+					<CommandName>标准视图(MVC)</CommandName>
+					<ToolTipText>添加 Razor 标准视图</ToolTipText>
+				</Strings>
+			</Button>-->
+			<Button guid="GUID_PERSISTENTMENU" id="ID_ADD_MVC_VIEW" priority="0x0402" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>Razor视图(V&amp;)...</ButtonText>
+					<MenuText>Razor视图(V&amp;)...</MenuText>
+					<CommandName>Razor视图(MVC)</CommandName>
+					<ToolTipText>添加 Razor 标准视图</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU" id="idAddController" priority="0x0403" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>标准控制器(C&amp;)...</ButtonText>
+					<MenuText>标准控制器(C&amp;)...</MenuText>
+					<CommandName>标准控制器(MVC)</CommandName>
+					<ToolTipText>添加标准控制器</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU" id="idAddWpfClassicForm" priority="0x0410" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>WPF 标准视图(S&amp;)...</ButtonText>
+					<MenuText>WPF 标准视图(S&amp;)...</MenuText>
+					<CommandName>WPF 标准视图</CommandName>
+					<ToolTipText>WPF 标准视图(S&amp;)...</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU" id="idAddWpfForm" priority="0x0411" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>WPF窗体(S&amp;)...</ButtonText>
+					<MenuText>WPF窗体(S&amp;)...</MenuText>
+					<CommandName>WPF窗体(S&amp;)...</CommandName>
+					<ToolTipText>WPF窗体(S&amp;)...</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU" id="IDC_PERSISTENT" priority="0x0412" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>数据持久类(C&amp;)...</ButtonText>
+					<MenuText>数据持久类(C&amp;)...</MenuText>
+					<CommandName>数据持久类(C&amp;)...</CommandName>
+					<ToolTipText>添加数据持久类文件(C&amp;)...</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU" id="IDC_ADDCONNECTION" priority="0x0411" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_CONFIGURATION" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>添加数据库配置...</ButtonText>
+					<MenuText>添加数据库配置...</MenuText>
+					<CommandName>添加数据库配置...</CommandName>
+					<ToolTipText>添加数据库配置...</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU" id="IDC_RESETCONNECTION" priority="0x04121" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_CONFIGURATION" />
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<ButtonText>重置连接信息...</ButtonText>
+					<MenuText>重置连接信息...</MenuText>
+					<CommandName>重置连接信息...</CommandName>
+					<ToolTipText>重置连接信息...</ToolTipText>
+				</Strings>
+			</Button>
+		</Buttons>
+		<!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
+		<Bitmaps>
+			<Bitmap guid="guidConverter" resID="ID_CONVERTER" usedList="1"/>
+			<Bitmap guid="GUID_TABLEICON" resID="TABLEICON" usedList="1"/>
+			<Bitmap guid="GUID_PROCICON" resID="ICONPROC" usedList="1"/>
+			<Bitmap guid="GUID_SQLICON" resID="ICONSQL" usedList="1"/>
+			<Bitmap guid="GUID_DBICONS" resID="DBICONS" usedList="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17"/>
+			<Bitmap guid="GUID_OBJICONS" resID="OBJICONS" usedList="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"/>
+			<!--
+			<Bitmap guid="guidErrorListIcon" resID="IDBMP_ERRORLIST" usedList="1"/>
+    <Bitmap guid="guidSHLMainMenu" resID="IDBMP_SHELLCUSTOMBUTTONS" usedList="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+	18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38"/>
+    <Bitmap guid="guidObjectBrowserButtons" resID="IDBMP_OBJECTBROWSERBUTTONS" usedList="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+	15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38"/>
+    <Bitmap guid="guidBuildCmdIcons" resID="IDBMP_BUILD_BUTTONS" usedList="1, 2, 3, 4"/>
+    <Bitmap guid="guidUFindIcon" resID="IDBMP_UFINDBUTTONS" usedList="1, 2, 3"/>
+    <Bitmap guid="guidBookmarkIcon" resID="IDBMP_BOOKMARKBUTTONS" usedList="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18"/>
+    <Bitmap guid="guidCallBrowserButtons" resID="IDBMP_CALLBROWSERBUTTONS" usedList="1, 2, 3, 4, 5, 6"/>
+    <Bitmap guid="guidCallHierarchyButtons" resID="IDBMP_CALLHIERARCHYBUTTONS" usedList="1"/>
+    <Bitmap guid="guidCodeDefViewButtons" resID="IDBMP_CODEDEFVIEWBUTTONS" usedList="1"/>
+    <Bitmap guid="guidToolWindowGotoButtons" resID="IDBMP_TOOLWINDOWGOTOBUTTONS" usedList="1, 2, 3, 4, 5, 6"/>
+    <Bitmap guid="guidServerExpIcon" resID="IDBMP_SERVEREXP_IMAGES" usedList="1, 2, 3, 4, 5, 6, 7"/>
+    <Bitmap guid="guidExtensionManagerIcon" href="ExtensionMgrIcon.png" usedList="1"/>
+    <Bitmap guid="guidPublishWebIcon" href="1_click_publish_32bit.bmp" usedList="1"/>
+    <Bitmap guid="guidVsShellIcons" href="ShellIcons.png" usedList="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 
+            41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92,
+            93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135,
+            136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149"/> 
+			-->
+		</Bitmaps>
+	</Commands>
+	<CommandPlacements>
+		<CommandPlacement guid="GUID_PERSISTENTMENU" id="idConverterAll" priority="1">
+			<Parent guid="GUID_PERSISTENTMENU" id="idConverterFolderGroup"/>
+		</CommandPlacement>
+		<CommandPlacement guid="GUID_PERSISTENTMENU" id="idConverterAll" priority="1">
+			<Parent guid="GUID_PERSISTENTMENU" id="idConverterProjGroup"/>
+		</CommandPlacement>
+	</CommandPlacements>
+	<KeyBindings>
+		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_INSERTPROPERTY" editor="guidDpdlEditor" key1="VK_INSERT"/>
+		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_CREATEPROPERTY" editor="guidDpdlEditor" key1="N" mod1="Control"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="ID_PROPERTIES" editor="guidDpdlEditor" key1="VK_F4"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="ID_EDITCODE" editor="guidDpdlEditor"  key1="VK_F7"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="ID_COPYCODE" editor="guidDpdlEditor"  key1="VK_F6"/>
+		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_CUT" editor="guidDpdlEditor"  key1="X" mod1="Control"/>
+		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_COPY" editor="guidDpdlEditor" key1="C" mod1="Control"/>
+		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_PASTE" editor="guidDpdlEditor" key1="V" mod1="Control"/>
+		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_DELETE" editor="guidDpdlEditor" key1="VK_DELETE"/>
+	</KeyBindings>
+	<Symbols>
+		<!--solution item context menu guid  guidSHLMainMenu=d309f791-903f-11d0-9efc-00a0c911004f-->
+		<GuidSymbol name="guidSolutionContextMenu" value="{D309F791-903F-11D0-9EFC-00A0C911004F}">
+			<IDSymbol name="idProject" value="1026"/>
+			<IDSymbol name="idCodeWindow" value="0x040D"/>
+			<IDSymbol name="idProjectFolder" value="0x0431"/>
+			<IDSymbol name="idProjectItem" value="0x0430"/>
+			<IDSymbol name="idAddNewItem" value="0x0352"/>
+			<!--IDM_VS_CSCD_PROJECT_ADD               0x0352;IDM_VS_CSCD_SOLUTION_ADD              0x0350-->
+		</GuidSymbol>
+		<GuidSymbol name="guidConverter" value="{B9FA88E5-4384-4D0E-9B16-A87F8186FF08}">
+			<IDSymbol name="ID_CONVERTER" value="5007"/>
+		</GuidSymbol>
+		<GuidSymbol name="guidDpdlEditor" value="{F8E15BA8-1E0A-4F34-A44D-5B55B8B52117}"/>
+		<GuidSymbol name="guidPackage" value="{145F3668-0AC2-4719-B7E6-4A65FDEC774E}" />
+		<GuidSymbol name="GUID_PERSISTENTMENU" value="{F7015F70-C95E-4E28-B76C-FBE57087E854}">
+			<IDSymbol name="idMenu" value="0x1000"/>
+			<IDSymbol name="IDG_SOLUTION_CONFIG" value="0x0100"/>
+			<IDSymbol name="ID_CONVERTER" value="0x0101"/>
+			<IDSymbol name="idConverterProjGroup" value="0x0200"/>
+			<IDSymbol name="idConverterFolderGroup" value="0x0300"/>
+			<IDSymbol name="idConverterAll" value="0x0201"/>
+			<IDSymbol name="IDG_PROJECT_ADD" value="0x0400"/>
+			<IDSymbol name="ID_ADD_CLASSIC_VIEW" value="0x0401"/>
+			<IDSymbol name="ID_ADD_MVC_VIEW" value="0x0402"/>
+			<IDSymbol name="idAddController" value="0x0403"/>
+			<IDSymbol name="idAddWpfClassicForm" value="0x0410"/>
+			<IDSymbol name="idAddWpfForm" value="0x0411"/>
+			<IDSymbol name="IDC_PERSISTENT" value="0x0412"/>
+			<IDSymbol name="IDM_CONFIGURATION" value="0x0500"/>
+			<IDSymbol name="IDG_CONFIGURATION" value="0x0510"/>
+			<IDSymbol name="IDC_ADDCONNECTION" value="0x0511"/>
+			<IDSymbol name="IDC_RESETCONNECTION" value="0x0512"/>
+
+			<IDSymbol name="IDG_SOLUTION_GROUP" value="0x0600"/>
+			<IDSymbol name="ID_SOLUTION_SHOWCONTEXTCODE" value="0x0601"/>
+			<IDSymbol name="ID_SOLUTION_SHOWACCESSCODE" value="0x0602"/>
+		</GuidSymbol>
+
+		<GuidSymbol name="GUID_CONTEXTMENU" value="{739E35C9-1A1A-4507-936F-C7433642AC55}">
+			<IDSymbol name="IDM_CONTEXTMENU" value="0x2000"/>
+
+			<IDSymbol name="IDM_ORDERCOMMAND" value="0x2100"/>
+			<IDSymbol name="IDG_ORDERCOMMAND" value="0x2110"/>
+
+			<IDSymbol name="IDG_EDIT_CUTCOPY" value="0x2080"/>
+			<IDSymbol name="ID_CUT" value="0x2081"/>
+			<IDSymbol name="ID_COPY" value="0x2082"/>
+			<IDSymbol name="ID_PASTE" value="0x2083"/>
+			<IDSymbol name="ID_DELETE" value="0x2085"/>
+
+			<IDSymbol name="IDG_ENTITYPROPERTIES" value="0x2030"/>
+			<IDSymbol name="ID_INSERTPROPERTY" value="0x2031"/>
+			<IDSymbol name="ID_CREATEPROPERTY" value="0x2032"/>
+
+			<IDSymbol name="IDM_DATACOMMAND" value="0x2200"/>
+			<IDSymbol name="IDG_STATICCOMMAND" value="0x2210"/>
+			<IDSymbol name="ID_CREATECOMMAND" value="0x2211"/>
+			<IDSymbol name="ID_EDITCOMMAND" value="0x2212"/>
+			<IDSymbol name="ID_PASTESTATICCOMMAND" value="0x2213"/>
+
+			<IDSymbol name="IDG_DYNAMICCOMMAND" value="0x2220"/>
+			<IDSymbol name="ID_PASTEDYNAMICCOMMAND" value="0x2221"/>
+
+			<IDSymbol name="IDG_GROUPCONNECTION" value="0x2010"/>
+			<!--<IDSymbol name="ID_RESETCONNECTION" value="0x2011"/>-->
+			<IDSymbol name="ID_UPDATETABLE" value="0x2012"/>
+			<IDSymbol name="ID_UPDATEENTITIES" value="0x2013"/>
+
+
+			<IDSymbol name="IDG_GROUPRESOURCE" value="0x2020"/>
+			<IDSymbol name="ID_CREATERESOURCE" value="0x2021"/>
+			<IDSymbol name="ID_RESETRESOURCE" value="0x2022"/>
+			<IDSymbol name="ID_CREATEPROPERTYRESOURCE" value="0x2023"/>
+			<IDSymbol name="ID_CREATECOMMANDRESOURCE" value="0x2024"/>
+
+			<IDSymbol name="IDG_GROUPUPDATE" value="0x2040"/>
+			<IDSymbol name="ID_UPDATEENTITY" value="0x2042"/>
+			<IDSymbol name="ID_UPDATECONDITION" value="0x2043"/>
+			<IDSymbol name="ID_UPDATECOMMAND" value="0x2044"/>
+		</GuidSymbol>
+
+		<GuidSymbol name ="GUID_STANDARDCMDS" value="{5efc7975-14bc-11cf-9b2b-00aa00573819}">
+			<IDSymbol name="IDG_ORDERCOMMAND" value="0x2050"/>
+			<IDSymbol name="ID_COPY" value="0x0F" />
+			<IDSymbol name="ID_CUT" value="0x10" />
+			<IDSymbol name="ID_DELETE" value="0x11" />
+			<IDSymbol name="ID_PASTE" value="0X1A" />
+			<IDSymbol name="IDG_PROPERTIES" value="0x2060" />
+			<IDSymbol name="ID_PROPERTIES" value="28" />
+			<IDSymbol name="ID_EDITCODE" value="0x2061" />
+			<IDSymbol name="ID_COPYCODE" value="0x2062" />
+			<IDSymbol name="ID_EDITCODEASYNC" value="0x2063" />
+			<IDSymbol name="ID_COPYSQL" value="0x2064" />
+
+
+			<IDSymbol name="ID_SENDBACKWARD" value="0x20" />
+			<IDSymbol name="ID_SENDTOBACK" value="0x21" />
+			<IDSymbol name="ID_BRINGFORWARD" value="10" />
+			<IDSymbol name="ID_BRINGTOFRONT" value="11" />
+			<IDSymbol name="ID_SIZETOFIT" value="0x26"/>
+		</GuidSymbol>
+		<GuidSymbol name="GUID_TABLEICON" value="{2A3A0C45-9CA3-4D79-94BB-976C42E00ED1}" >
+			<IDSymbol name="TABLEICON" value="5000" />
+		</GuidSymbol>
+		<GuidSymbol name="GUID_PROCICON" value="{359394FB-F354-4A9D-866B-65205EA4996D}" >
+			<IDSymbol name="ICONPROC" value="5001" />
+		</GuidSymbol>
+		<GuidSymbol name="GUID_SQLICON" value="{F4EEBE9A-72D0-480F-8885-2DE63CCFAC6C}" >
+			<IDSymbol name="ICONSQL" value="5002" />
+		</GuidSymbol>
+		<GuidSymbol name="GUID_DBICONS" value="{87C64893-96DE-42F9-BE90-BC55D4C17643}" >
+			<IDSymbol name="DBICONS" value="5003" />
+		</GuidSymbol>
+		<GuidSymbol name="GUID_OBJICONS" value="{672EFC6D-AB2A-4DDA-A344-1E2A0FD8FF38}" >
+			<IDSymbol name="OBJICONS" value="5004" />
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>

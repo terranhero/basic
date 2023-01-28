@@ -1,0 +1,5 @@
+﻿[assembly: System.Reflection.AssemblyTitle("Basic.Localizations")]
+[assembly: System.Reflection.AssemblyDescription("ASP.NET MVC 本地化资源编辑器")]
+[assembly: System.Reflection.AssemblyProduct("Basic.Localizations")]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Runtime.InteropServices.Guid("FB46A196-DFD8-429A-A134-12B0B737FFDE")]

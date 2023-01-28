@@ -1,0 +1,31 @@
+﻿<ItemsControl  x:Class="Basic.Windows.DesignerEntitiesCanvas"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:bcs="clr-namespace:Basic.Windows"
+               ItemsSource="{Binding DataEntities}">
+	<ItemsControl.Resources>
+		<Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
+			<Setter Property="OverridesDefaultStyle" Value="true" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Separator}">
+						<Border Height="1" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</ItemsControl.Resources>
+	<ItemsControl.ItemTemplate>
+		<DataTemplate>
+			<bcs:DesignerEntity SelectionChanged="DesignerEntity_SelectionChanged" MouseDoubleClick="DesignerEntity_MouseDoubleClick"/>
+		</DataTemplate>
+	</ItemsControl.ItemTemplate>
+	<ItemsControl.Template>
+		<ControlTemplate>
+			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Focusable="False">
+				<bcs:DesignerCanvas x:Name="PART_Canvas" IsItemsHost="True" VisualChildrenChanged="DesignerCanvas_VisualChildrenChanged"/>
+				<!--<UniformGrid x:Name="PART_Canvas" IsItemsHost="True" ></UniformGrid>-->
+			</ScrollViewer>
+		</ControlTemplate>
+	</ItemsControl.Template>
+</ItemsControl>

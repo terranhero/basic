@@ -1,0 +1,45 @@
+﻿<TabItem x:Class="Basic.Windows.SelectTabItem" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:bcs="clr-namespace:Basic.Windows"
+			Header="SELECT" >
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="Auto"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<bcs:ColumnBoxList x:Name="ckhColumns" ItemsSource="{Binding Columns}" Grid.ColumnSpan="2"/>
+		<DataGrid x:Name="dgInsertCheckedColumns" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding CheckedColumns}">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+				<DataGridTextColumn Header="DbType" Binding="{Binding DbType}" Width="*" IsReadOnly="True"/>
+				<DataGridCheckBoxColumn Header="Nullable" Binding="{Binding Nullable}" Width="*" IsReadOnly="True"/>
+				<DataGridTextColumn Header="Comment" Binding="{Binding Comment}" Width="*" IsReadOnly="True"/>
+				<DataGridTemplateColumn Header="Default" Width="*" >
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding UseDefault,Mode=TwoWay}" IsEnabled="{Binding CanUseDefault}" Content="{Binding DefaultValue}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<BulletDecorator>
+								<BulletDecorator.Bullet>
+									<CheckBox IsChecked="{Binding UseDefault}" IsEnabled="False"/>
+								</BulletDecorator.Bullet>
+								<TextBlock Margin="4,0,0,0" Text="{Binding DefaultValue}"/>
+							</BulletDecorator>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+		<TextBox x:Name="txtInsertText" Grid.Row="2" Grid.ColumnSpan="2"/>
+		<Button Content="OK" Grid.Row="3" Click="OnCreateInsertCommand" />
+		<Button Content="Cancel" Grid.Column="1" Grid.Row="3" Click="OnCancelClick" />
+	</Grid>
+</TabItem>

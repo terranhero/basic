@@ -1,0 +1,16 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+	<TemplateData>
+		<DefaultName>Localization.localresx</DefaultName>
+		<Name Package="{F9316CC5-5C97-4E30-8E2E-2436DCD1B14E}" ID="110" />
+		<Description Package="{F9316CC5-5C97-4E30-8E2E-2436DCD1B14E}" ID="111" />
+		<Icon Package="{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}" ID="4565" />
+		<ProjectType>CSharp</ProjectType>
+		<SortOrder>100</SortOrder>
+		<TemplateID>Basic.Localization.localresx</TemplateID>
+		<RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+	</TemplateData>
+	<TemplateContent>
+		<ProjectItem TargetFileName="$fileinputname$.localresx" CustomTool="ResourceGenerator" ReplaceParameters="true">Localization.localresx</ProjectItem>
+	</TemplateContent>
+</VSTemplate>

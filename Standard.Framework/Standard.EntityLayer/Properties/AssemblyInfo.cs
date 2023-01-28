@@ -1,0 +1,23 @@
+﻿#if !NETSTD
+[assembly: System.Reflection.AssemblyTitle("Basic.EntityLayer")]
+[assembly: System.Reflection.AssemblyProduct("Basic.EntityLayer")]
+#endif
+[assembly: System.Reflection.AssemblyAlgorithmId(System.Configuration.Assemblies.AssemblyHashAlgorithm.MD5)]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Runtime.InteropServices.Guid("E35946B8-F96D-433E-9F90-68F7EB3A8B7D")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_SqlClientAccess)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_DataAccess)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_EasyLibrary)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_Windows)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_MvcLibrary)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_Persistent)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_MySqlAccess)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_OracleAccess)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_DB2Access)]
+
+//[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic.OraAccess)]
+//[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic.EntityBuilder)]
+//[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic.Builder)]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1005:可简化委托调用。", Justification = "<挂起>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:删除未使用的参数", Justification = "<挂起>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:使用模式匹配", Justification = "<挂起>")]

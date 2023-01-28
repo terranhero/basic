@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vs="http://schemas.microsoft.com/Visual-Studio-Intellisense"
+		   elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="typeConnectionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SqlConnection" />
+			<xs:enumeration value="OracleConnection" />
+			<xs:enumeration value="OleDbConnection" />
+			<xs:enumeration value="MySqlConnection" />
+			<xs:enumeration value="NpgSqlConnection" />
+
+			<!--<xs:enumeration value="IbmDb2Connection" />-->
+			<!--<xs:enumeration value="OdbcConnection" />-->
+			<!--<xs:enumeration value="SQLiteConnection" />-->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeConnectionPropertyEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ConfigFolder">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[如果配置文件采用本地存储，则为配置文件相对或绝对路径，此选项可以忽略]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Application Name">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[与连接字符串关联的应用程序的名称，如果未提供名称，则为“.NET SqlClient Data Provider”[SQL Server]]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Initial Catalog">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[与该连接关联的数据库的名称[SQL Server]]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Connection Timeout">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[在终止尝试并产生错误之前，等待与服务器连接的时间长度（以秒为单位）]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DataSource">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[要连接到的数据库实例的名称或网络地址]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="User ID">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[连接到 SQL Server或其它数据库时要使用的用户 ID。]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Password">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[帐户的密码]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AttachDBFilename">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[包含主数据文件名称的字符串。 该字符串包括可附加数据库的完整路径名]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AsynchronousProcessing">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[一个布尔值，该值指定使用此连接字符串创建的连接是否允许异步处理]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pooling">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[一个布尔值，该值指示每次请求连接时该连接是汇入连接池还是显式打开]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Max Pool Size">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[针对此特定连接字符串连接池中所允许的最大连接数]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Min Pool Size">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[针对此特定连接字符串连接池中所允许的最小连接数]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeCultureEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="zh-CN" />
+			<xs:enumeration value="en-US" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeLogLevelEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Information" />
+			<xs:enumeration value="Warning" />
+			<xs:enumeration value="Error" />
+			<xs:enumeration value="Debug" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeLogSave">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None" />
+			<xs:enumeration value="LocalFile" />
+			<xs:enumeration value="DataBase" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeSmallBoolean">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="false" />
+			<xs:enumeration value="true" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeBoolean">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="false" />
+			<xs:enumeration value="true" />
+			<xs:enumeration value="True" />
+			<xs:enumeration value="False" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typeMailAddress">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="typePageList">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9,]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="basic.configuration">
+		<xs:annotation>
+			<xs:documentation>苏州工业园区金软科技有限公司基础类配置信息。</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="basic.connections" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence maxOccurs="unbounded">
+							<xs:element name="basic.connection">
+								<xs:annotation>
+									<xs:documentation>数据库连接中添加连接字符串信息。</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice minOccurs="1" maxOccurs="unbounded">
+										<xs:element name="add">
+											<xs:annotation>
+												<xs:documentation>向数据库连接字符串中添加连接信息。</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:attribute name="name" use="required">
+													<xs:simpleType>
+														<xs:union memberTypes="typeConnectionPropertyEnum xs:string"/>
+													</xs:simpleType>
+												</xs:attribute>
+												<xs:attribute name="value" use="required" type="xs:string"/>
+												<xs:attribute name="lockAttributes" type="xs:string" use="optional" />
+												<xs:attribute name="lockAllAttributesExcept" type="xs:string" use="optional" />
+												<xs:attribute name="lockElements" type="xs:string" use="optional" />
+												<xs:attribute name="lockAllElementsExcept" type="xs:string" use="optional" />
+												<xs:attribute name="lockItem" type="typeSmallBoolean" use="optional" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="clear" minOccurs="0">
+											<xs:complexType />
+										</xs:element>
+									</xs:choice>
+									<xs:attribute name="name" use="required" type="xs:Name"></xs:attribute>
+									<xs:attribute name="connectionType" use="required" type="typeConnectionType"></xs:attribute>
+									<xs:attribute name="version" use="optional" type="xs:int"></xs:attribute>
+									<xs:attribute name="enabled" use="optional" type="typeSmallBoolean"/>
+								</xs:complexType>
+								<xs:key name="keyConnection">
+									<xs:selector xpath="./add"/>
+									<xs:field xpath="@name"/>
+								</xs:key>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="defaultName" type="xs:Name" use="required" />
+					</xs:complexType>
+					<xs:key name="keyConnections">
+						<xs:selector xpath="./basic.connection"/>
+						<xs:field xpath="@name"/>
+					</xs:key>
+					<xs:keyref name="keyrefConnections" refer="keyConnections">
+						<xs:selector xpath="." />
+						<xs:field xpath="@defaultName"/>
+					</xs:keyref>
+				</xs:element>
+				<xs:element name="basic.cultures" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element name="basic.culture">
+								<xs:complexType>
+									<xs:choice minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="add">
+											<xs:annotation>
+												<xs:documentation>如果系统存在所需语言，则在此处进行转换。</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:attribute name="name" use="required">
+													<xs:simpleType>
+														<xs:union memberTypes="typeCultureEnum xs:string"/>
+													</xs:simpleType>
+												</xs:attribute>
+												<xs:attribute name="lcid" use="required" type="xs:integer"></xs:attribute>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="clear">
+											<xs:complexType />
+										</xs:element>
+									</xs:choice>
+									<xs:attribute name="name" use="required">
+										<xs:simpleType>
+											<xs:union memberTypes="typeCultureEnum xs:string"/>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="lcid" use="required" type="xs:integer"></xs:attribute>
+									<xs:attribute name="description" use="required" type="xs:string"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="clear">
+								<xs:complexType />
+							</xs:element>
+						</xs:choice>
+						<xs:attribute name="defaultName" type="xs:Name" use="required" />
+					</xs:complexType>
+					<xs:key name="keyCultures">
+						<xs:selector xpath="./basic.culture"/>
+						<xs:field xpath="@name"/>
+					</xs:key>
+					<xs:keyref name="keyrefCultures" refer="keyCultures">
+						<xs:selector xpath="." />
+						<xs:field xpath="@defaultName"/>
+					</xs:keyref>
+				</xs:element>
+				<xs:element name="basic.mailConfig" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence minOccurs="0" maxOccurs="1">
+							<xs:element name="basic.mailFrom">
+								<xs:complexType>
+									<xs:attribute name="address" use="required" type="xs:string"></xs:attribute>
+									<xs:attribute name="user" use="required" type="xs:string"></xs:attribute>
+									<xs:attribute name="password" use="optional" type="xs:string"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="host" use="required" type="xs:string"></xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="basic.eventLogs" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="basic.eventLog">
+									<xs:complexType>
+										<xs:sequence minOccurs="0" maxOccurs="unbounded">
+											<xs:element name="mailTo">
+												<xs:complexType>
+													<xs:attribute name="address" use="required" type="typeMailAddress"></xs:attribute>
+													<xs:attribute name="displayName" use="optional" type="xs:string"></xs:attribute>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+										<xs:attribute name="logLevel" use="required" type="typeLogLevelEnum">
+											<xs:annotation>
+												<xs:documentation>日志级别</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+										<xs:attribute name="saveType" use="required" type="typeLogSave">
+											<xs:annotation>
+												<xs:documentation>日志存储类型</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+										<xs:attribute name="enabled" use="optional" type="xs:boolean" default="true">
+											<xs:annotation>
+												<xs:documentation>是否启用该级别日志记录</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+										<xs:attribute name="sendMail" use="optional" type="xs:boolean" default="false">
+											<xs:annotation>
+												<xs:documentation>此级别日志是否需要发送邮件通知管理员</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="clear">
+									<xs:complexType />
+								</xs:element>
+							</xs:choice>
+						</xs:sequence>
+						<xs:attribute name="tableName" use="optional" type="xs:string"/>
+					</xs:complexType>
+					<xs:key name="keyEventLogLevel">
+						<xs:selector xpath="./basic.eventLog"/>
+						<xs:field xpath="@logLevel"/>
+					</xs:key>
+				</xs:element>
+				<xs:element name="basic.messagers" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice minOccurs="1" maxOccurs="unbounded">
+								<xs:element name="add">
+									<xs:complexType>
+										<xs:attribute name="name" use="required" type="xs:string"></xs:attribute>
+										<xs:attribute name="type" use="required" type="xs:string"></xs:attribute>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="remove">
+									<xs:complexType>
+										<xs:attribute name="name" use="required" type="xs:string"></xs:attribute>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="clear" >
+									<xs:complexType />
+								</xs:element>
+							</xs:choice>
+						</xs:sequence>
+						<xs:attribute name="defaultConverter" use="required" type="xs:string"/>
+					</xs:complexType>
+					<xs:key name="keyAddMessageConverter">
+						<xs:selector xpath="./add"/>
+						<xs:field xpath="@name"/>
+					</xs:key>
+					<xs:key name="keyRemoveMessageConverter">
+						<xs:selector xpath="./remove"/>
+						<xs:field xpath="@name"/>
+					</xs:key>
+					<xs:keyref name="keyrefMessageConverter" refer="keyAddMessageConverter">
+						<xs:selector xpath="." />
+						<xs:field xpath="@defaultConverter"/>
+					</xs:keyref>
+				</xs:element>
+				<xs:element name="basic.easyLibrary" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="easyGrid" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:attribute name="pageList" use="optional" type="typePageList"/>
+									<xs:attribute name="pageSize" use="optional" type="xs:int"/>
+									<xs:attribute name="fit" use="optional" type="typeSmallBoolean"/>
+									<xs:attribute name="checkOnSelect" use="optional" type="typeSmallBoolean"/>
+									<xs:attribute name="selectOnCheck" use="optional" type="typeSmallBoolean"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+			<xs:anyAttribute namespace="http://schemas.microsoft.com/XML-Document-Transform" processContents="strict"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

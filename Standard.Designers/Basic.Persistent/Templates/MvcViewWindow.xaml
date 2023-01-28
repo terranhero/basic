@@ -1,0 +1,60 @@
+﻿<ui:DialogWindow x:Class="Basic.Windows.MvcViewWindow"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+	xmlns:bcs="http://developer.goldsofttech.com/basic/2014/xaml" Title="添加 Rzaor 视图" SizeToContent="Height" ShowInTaskbar="False" 
+	Width="700" WindowStartupLocation="CenterOwner" Loaded="DialogWindow_Loaded"
+                 xmlns:my="clr-namespace:Basic.Builders" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<ui:DialogWindow.CommandBindings>
+		<CommandBinding Command="Save" Executed="OnSaveExecuted"/>
+	</ui:DialogWindow.CommandBindings>
+	<ui:DialogWindow.Resources>
+		<Style TargetType="ui:DialogButton">
+			<Setter Property="Margin" Value="10,5,0,0"/>
+		</Style>
+		<Style TargetType="ComboBox">
+			<Setter Property="Margin" Value="0,5,5,5"/>
+		</Style>
+		<Style TargetType="TextBox">
+			<Setter Property="Margin" Value="0,5,5,5"/>
+		</Style>
+	</ui:DialogWindow.Resources>
+	<Grid Margin="15,15,10,15">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Label Grid.Row="0" Grid.Column="0" Content="视图模板(Razors)"/>
+		<ComboBox Grid.Row="1" Grid.Column="0" Name="cmbTemplates" 
+				  ItemsSource="{Binding Templates}" SelectionChanged="cmbTemplates_SelectionChanged"
+                  SelectedValuePath="Path" DisplayMemberPath="Name" 
+				  SelectedValue="{Binding SelectedTemplate,Mode=TwoWay}"/>
+		
+		<Label Grid.Row="2" Grid.Column="0" Content="视图名称" />
+		<TextBox Grid.Row="3" Grid.Column="0" Name="txtViewName" />
+		
+		<Label Grid.Row="0" Grid.Column="1" Content="数据持久文件" />
+		<ComboBox Grid.Row="1" Grid.Column="1" Name="cmbPersistents" ItemsSource="{Binding Files}" 
+				  SelectedValuePath="Path" DisplayMemberPath="Name" SelectedValue="{Binding SelectedFile, Mode=TwoWay}" />
+		<Label Grid.Row="2" Grid.Column="1" Content="实体模型列表" />
+		<ComboBox Grid.Row="3" Grid.Column="1" Name="cmbModels" ItemsSource="{Binding Models}" 
+                   SelectedValue="{Binding ModelName,Mode=TwoWay}" SelectionChanged="cmbModels_SelectionChanged"/>
+
+		<Label Grid.Row="6" Grid.ColumnSpan="2" Content="视图代码"/>
+		<TextBox Grid.Row="7" Grid.ColumnSpan="2" TextWrapping="Wrap" x:Name="txtCode" Height="240" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"></TextBox>
+		<StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+			<ui:DialogButton Name="btnOk"  Content="确   定..." Command="Save" IsEnabled="{Binding OkEnabled}"/>
+			<ui:DialogButton Name="btnCancel" Content="取  消" IsCancel="True"/>
+		</StackPanel>
+	</Grid>
+</ui:DialogWindow>

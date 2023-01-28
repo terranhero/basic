@@ -1,0 +1,2162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PersistentCategory_CodeGenerator-en-US" xml:space="preserve">
+    <value>CodeGenerator</value>
+  </data>
+  <data name="PersistentCategory_CodeGenerator-zh-CN" xml:space="preserve">
+    <value>代码生成</value>
+  </data>
+  <data name="PersistentCategory_Collections-en-US" xml:space="preserve">
+    <value>Collection List</value>
+  </data>
+  <data name="PersistentCategory_Collections-zh-CN" xml:space="preserve">
+    <value>数据集合列表</value>
+  </data>
+  <data name="PersistentCategory_Column-en-US" xml:space="preserve">
+    <value>Table Column</value>
+  </data>
+  <data name="PersistentCategory_Column-zh-CN" xml:space="preserve">
+    <value>字段信息</value>
+  </data>
+  <data name="PersistentCategory_Content-en-US" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="PersistentCategory_Content-zh-CN" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="PersistentCategory_DataCommand-en-US" xml:space="preserve">
+    <value>DataCommand</value>
+  </data>
+  <data name="PersistentCategory_DataCommand-zh-CN" xml:space="preserve">
+    <value>数据命令</value>
+  </data>
+  <data name="PersistentCategory_Property-en-US" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="PersistentCategory_Property-zh-CN" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="PersistentDescription_ColumnDbType-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates is a DbTypeEnum of table's column</value>
+  </data>
+  <data name="PersistentDescription_ColumnDbType-zh-CN" xml:space="preserve">
+    <value>获取或设置数据库字段的 DbType。</value>
+  </data>
+  <data name="PersistentDescription_ColumnName-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates column name of entity's property </value>
+  </data>
+  <data name="PersistentDescription_ColumnName-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示实体属性所对应的字段名称</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrecision-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum number of digits used to represent the Value property.</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrecision-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrimaryKey-en-US" xml:space="preserve">
+    <value>Is primary key column</value>
+  </data>
+  <data name="PersistentDescription_ColumnPrimaryKey-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否为数据库表主键</value>
+  </data>
+  <data name="PersistentDescription_ColumnProfix-en-US" xml:space="preserve">
+    <value>Table alias Name</value>
+  </data>
+  <data name="PersistentDescription_ColumnProfix-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段所属表的别名</value>
+  </data>
+  <data name="PersistentDescription_ColumnScale-en-US" xml:space="preserve">
+    <value>Gets or sets the number of decimal places to which Value is resolved</value>
+  </data>
+  <data name="PersistentDescription_ColumnScale-zh-CN" xml:space="preserve">
+    <value>获取或设置数据库参数值解析为的小数位数</value>
+  </data>
+  <data name="PersistentDescription_ColumnSize-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum size, in bytes, of the data within the column</value>
+  </data>
+  <data name="PersistentDescription_ColumnSize-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PersistentDescription_Comment-en-US" xml:space="preserve">
+    <value>Property Comment</value>
+  </data>
+  <data name="PersistentDescription_Comment-zh-CN" xml:space="preserve">
+    <value>属性描述</value>
+  </data>
+  <data name="PersistentDescription_Modifier-en-US" xml:space="preserve">
+    <value>获取或设置实体类的访问修饰符</value>
+  </data>
+  <data name="PersistentDescription_Modifier-zh-CN" xml:space="preserve">
+    <value>获取或设置实体类的访问修饰符</value>
+  </data>
+  <data name="PersistentDescription_PropertyComment-en-US" xml:space="preserve">
+    <value>Comment for Property of entity </value>
+  </data>
+  <data name="PersistentDescription_PropertyComment-zh-CN" xml:space="preserve">
+    <value>实体属性的描述</value>
+  </data>
+  <data name="PersistentDescription_PropertyInheritance-en-US" xml:space="preserve">
+    <value>is inheritance property.</value>
+  </data>
+  <data name="PersistentDescription_PropertyInheritance-zh-CN" xml:space="preserve">
+    <value>是否为继承属性，如果是继承属性，则在当前类实例中不写入属性信息。</value>
+  </data>
+  <data name="PersistentDescription_PropertyName-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the dataentity's property</value>
+  </data>
+  <data name="PersistentDescription_PropertyName-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类中属性的名称</value>
+  </data>
+  <data name="PersistentDescription_PropertyNullable-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates whether the property accepts null values</value>
+  </data>
+  <data name="PersistentDescription_PropertyNullable-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示实体属性是否接受空值</value>
+  </data>
+  <data name="PersistentDescription_PropertyType-en-US" xml:space="preserve">
+    <value>Gets or sets the type of the dataentity's property</value>
+  </data>
+  <data name="PersistentDescription_PropertyType-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类中属性的类型</value>
+  </data>
+  <data name="PropertyDescription_DataFormatString-en-US" xml:space="preserve">
+    <value>Output display format</value>
+  </data>
+  <data name="PropertyDescription_DataFormatString-zh-CN" xml:space="preserve">
+    <value>输出格式</value>
+  </data>
+  <data name="PropertyDescription_DbType-en-US" xml:space="preserve">
+    <value>Column Type</value>
+  </data>
+  <data name="PropertyDescription_DbType-zh-CN" xml:space="preserve">
+    <value>字段类型</value>
+  </data>
+  <data name="PropertyDescription_Direction-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter</value>
+  </data>
+  <data name="PropertyDescription_Direction-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是只可输入、只可输出、双向还是存储过程返回值参数</value>
+  </data>
+  <data name="PropertyDescription_DisplayFormat-en-US" xml:space="preserve">
+    <value>Specify how to display the data field and how to set the format of the data fields</value>
+  </data>
+  <data name="PropertyDescription_DisplayFormat-zh-CN" xml:space="preserve">
+    <value>指定如何显示数据字段以及如何设置数据字段的格式</value>
+  </data>
+  <data name="PropertyDescription_EntityNamespace-en-US" xml:space="preserve">
+    <value>Gets or sets namespace of the data persistent class's entity</value>
+  </data>
+  <data name="PropertyDescription_EntityNamespace-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类包含的实体类的命名空间</value>
+  </data>
+  <data name="PropertyDescription_Name-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the dataentity</value>
+  </data>
+  <data name="PropertyDescription_Name-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类名称</value>
+  </data>
+  <data name="PropertyDescription_NameSpace-en-US" xml:space="preserve">
+    <value>Gets or sets namespace of the data persistent class</value>
+  </data>
+  <data name="PropertyDescription_NameSpace-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类的命名空间</value>
+  </data>
+  <data name="PropertyDescription_Nullable-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates whether the parameter accepts null values</value>
+  </data>
+  <data name="PropertyDescription_Nullable-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数是否接受空值</value>
+  </data>
+  <data name="PropertyDescription_ParameterName-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the Parameter</value>
+  </data>
+  <data name="PropertyDescription_ParameterName-zh-CN" xml:space="preserve">
+    <value>获取或设置 Parameter 的名称</value>
+  </data>
+  <data name="PropertyDescription_ParameterType-en-US" xml:space="preserve">
+    <value>Gets or sets the DbType of the parameter</value>
+  </data>
+  <data name="PropertyDescription_ParameterType-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示参数数据库参数的类型</value>
+  </data>
+  <data name="PropertyDescription_Precision-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum number of digits used to represent the Value property.</value>
+  </data>
+  <data name="PropertyDescription_Precision-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PropertyDescription_Property-en-US" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="PropertyDescription_Property-zh-CN" xml:space="preserve">
+    <value>属性</value>
+  </data>
+  <data name="PropertyDescription_Scale-en-US" xml:space="preserve">
+    <value>Gets or sets the number of decimal places to which Value is resolved</value>
+  </data>
+  <data name="PropertyDescription_Scale-zh-CN" xml:space="preserve">
+    <value>获取或设置数据库参数值解析为的小数位数</value>
+  </data>
+  <data name="PropertyDescription_Size-en-US" xml:space="preserve">
+    <value>Gets or sets the maximum size, in bytes, of the data within the column</value>
+  </data>
+  <data name="PropertyDescription_Size-zh-CN" xml:space="preserve">
+    <value>获取或设置列中数据的最大大小（以字节为单位）</value>
+  </data>
+  <data name="PropertyDescription_SourceColumn-en-US" xml:space="preserve">
+    <value>Gets or sets the name of the source column mapped to the DataSet/Entity and used for loading or returning the Value</value>
+  </data>
+  <data name="PropertyDescription_SourceColumn-zh-CN" xml:space="preserve">
+    <value>获取或设置源列的名称，该源列映射到 DataSet/Entity 并用于加载或返回 Value</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="DataExplorerIcon_AggregateFunction" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        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
+</value>
+  </data>
+  <data name="DataExplorerIcon_CheckConstraint" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f39/f39/f39/f39MjENMf39/f39/fX1DfX9/Q39/f39
+        /f39/f39/f31/f0y/V719fX1DS319TH99f39Mf2C/6+v1NQJ1An1/fX9/TL9XrOCXv//917U9f0N/f0x
+        /ff/////////1PX9Lf39Mv1e0fde//9eXq8N/Q39/Qf9Cf+z//////+vLf0y/f02/YL/gl7///f3r/X9
+        Df39B/2G////////9v/1/TH9/Tb9X19eXzo3NjcOEv0y/f0H/WOHCWNfX187Xw/9Mf39Wv1fXl9fXzY3
+        Ng8O/TL9/Vr9/f39/f39/f39/f01/f1aXlpa/f39/f39BzYHMv3//wAAh+EAAL/9AACgBQAAoAUAAKAF
+        AACgBQAAoAUAAKAFAACgBQAAoAUAAKAFAACgBQAAoAUAAL/9AACH4QAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAc1lG/3JXQ/9vVkL/bVNA/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAGVKNf9kSTT/Y0gz/2NIM/8AAAAAAAAAAHVcSP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABjSTP/AAAAAAAAAAB5X0z/AAAAALeik/9jSTX/Y0k1/2NJ
+        Nf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJNf8AAAAAZUs1/wAAAAAAAAAAfGNQ/wAAAAC3opP///fz/+nd
+        2P/p2dH/6dXL/+nRxf/pzr//6cm5/+nEsP9jSTX/AAAAAGhNOP8AAAAAAAAAAIBmVP8AAAAAt6KT///3
+        8/+6ppj/taCR////////////uqaY/7Wgkf/pz8P/Y0k1/wAAAABqTzv/AAAAAAAAAACEa1j/AAAAALql
+        lv////////fz///+/v/////////////18P//9/P/6dTK/2NJNf8AAAAAbFI9/wAAAAAAAAAAh29c/wAA
+        AAC+qZr///fz/7qmmP+1oJH///////////+6ppj/taCR/+nZ0v9jSTX/AAAAAG5UQP8AAAAAAAAAAIpy
+        YP8AAAAAw66e////////9/P///////////////////39///38//p39n/Y0k1/wAAAABxV0T/AAAAAAAA
+        AACOdmX/AAAAAMiyo///9/P/uqaY/7Wgkf///////////7qmmP+1oJH/6ePf/2NJNf8AAAAAdVtH/wAA
+        AAAAAAAAknpp/wAAAADMtqf////////////////////////////////////////7+v9jSTX/AAAAAHde
+        S/8AAAAAAAAAAJV+bf8AAAAA6qqL/+imhv/moX//45p2/+GTbf/djGP/2oNZ/9d8T//Rbj3/z2k2/wAA
+        AAB7Yk7/AAAAAAAAAACagnL/AAAAAOqqi///wqL//b6c//y4k//6r4n/+Kd+//agdP/0mmv/85Vl/85p
+        Nv8AAAAAfmVS/wAAAAAAAAAAnYZ2/wAAAADqqov/6KaG/+agf//jmnb/4JNt/92MY//ahFn/13xP/9Bu
+        Pf/PaTf/AAAAAIFpVv8AAAAAAAAAAKCKev8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAACFbVr/AAAAAAAAAACljn//o4x8/6CKev+eiHf/AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAj3hl/411ZP+Kc2H/iHFf/wAAAAD///39h+H9/b/9/f2gBf39oAUxDaAF/f2gBf31oAX1/aAF
+        /f2gBf39oAX9/aAF9f2gBf1eoAX19b/99fWH4fX9
+</value>
+  </data>
+  <data name="DataExplorerIcon_Column" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f1e9fUN
+        9fUt9fUt9Q39/f39gv+v1AjUCdQICQkt/f39/V7/9v8HBwcHr68J9f39/f33//+v/6+zr/av1PX9/f39
+        Xv///wcHBwev9gkx/f39/YL/////9vav/7PU9f39/f1e////BzYHB6/2ry39/f39hv//////////9q/1
+        /f39/YL///8HBwcH//+vDf39/f0J9vb///////b///X9/f39Xl9fXl9eNzY3EjIO/f39/QkJCQlfY19f
+        XztfE/39/f1fX19fX143Njc2Dw79/f39/f39/f39/f39/f39/f3//wAA//8AAMADAADAAwAAwAMAAMAD
+        AADAAwAAwAMAAMADAADAAwAAwAMAAMADAADAAwAAwAMAAMADAAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC3opP/ZEo2/2RKNv9kSjb/ZEo2/2RK
+        Nv9kSjb/ZEo2/2RKNv9kSjb/ZEo2/2RKNv8AAAAAAAAAAAAAAAAAAAAAt6KT///69//p4d3/6d3Y/+nZ
+        0f/p1cv/6dHF/+nOv//pybn/6ca0/+nEsP9kSjb/AAAAAAAAAAAAAAAAAAAAALeik//++/r//fj2//z2
+        8/+FfXX/hX11/4V9df+FfXX/9+Tb//bh1v/pxrX/ZEo2/wAAAAAAAAAAAAAAAAAAAAC3opP//v79//78
+        +//9+vj//Pf1//v08f/78ez/+e3n//jq4v/35t3/6cu8/2RKNv8AAAAAAAAAAAAAAAAAAAAAt6KT////
+        /////////v39/4V9df+FfXX/hX11/4V9df/67+r/+ezl/+nPw/9kSjb/AAAAAAAAAAAAAAAAAAAAALql
+        lv///////////////////v7//vz8//35+P/89/X//PTw//vx7P/p1Mr/ZEo2/wAAAAAAAAAAAAAAAAAA
+        AAC+qZr/////////////////hX11/4V9df+FfXX/hX11//349//99vP/6dnS/2RKNv8AAAAAAAAAAAAA
+        AAAAAAAAw66e/////////////////////////////////////v/+/Pv//fr4/+nf2f9kSjb/AAAAAAAA
+        AAAAAAAAAAAAAMiyo/////////////////+FfXX/hX11/4V9df+FfXX///////79/P/p49//ZEo2/wAA
+        AAAAAAAAAAAAAAAAAADMtqf//////////////////////////////////////////////////v7+/2RK
+        Nv8AAAAAAAAAAAAAAAAAAAAA6qqL/+qqi//opob/5qGA/+Oad//hk27/3Yxk/9qDWv/XfVD/03ZG/9Fv
+        Pv/Pajf/AAAAAAAAAAAAAAAAAAAAAOqqi///wqL//8Ki//2+nP/8uJP/+q+J//inf//2oHX/9Jps//OV
+        Zv/zlWb/zmo3/wAAAAAAAAAAAAAAAAAAAADqqov/6qqL/+imhv/moID/45p3/+CTbv/djGT/2oRa/9d9
+        UP/UdUb/0G8+/89qOP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///39///9/cAD/f3AA/39wAP9/cAD/f3AA/39wAP9/cAD
+        XvXAA/X1wAP1LcAD/f3AA4L/wAMI1MADCAn///39
+</value>
+  </data>
+  <data name="DataExplorerIcon_Component" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+        AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQExMQ319fX19fUBAQEBAQExr4L391paWlo29Qle
+        WgEBNtGvCK/UCKuGWvUIgl4JWgez9q+vCAgICVr1r9SGAQFa9q/2r6+v1Aha9QEBAQEBXv/29q/2CK8I
+        WvUBAQEBAV7///b2r6+vrwj1AQEBAQEB915eWgc2BzEyAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+        AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH//wAA//8AAP//AAD//wAA/AEAAPgA
+        AAAYAAAAAAAAABgAAAD4AAAA+AAAAPwBAAD//wAA//8AAP//AAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAB1W0b/blVB/2pQO/9mSzf/Y0gz/2NIM/9jSDP/Y0gz/2NIM/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AACFbVr/7ebj/7+nmv+4n5D/speI/6uQgP+liXn/oIRy/5uAbv+WfGn/Y0gz/8y5rfe2nI3/pIt8/gAA
+        AAAAAAAAjnZk//Lt6v/u5uL/6eDc/+TZ1P/f0sv/2svD/9XFvP/RvrT/mn9s/2NIM//czcX/x7Gl/7ac
+        jv/HsaX/qo5+/5eAb//28vH/8u3q/+3m4//o4Nz/5NnT/9/Sy//azMP/1cW8/52Dcf9jSDP/7ebj99vN
+        xv/JuK/+AAAAAAAAAACginr/+ff2//by8f/y7er/7efj/+ng3P/k2dT/39LM/9rMw/+ih3X/Y0gz/wAA
+        AAAAAAAAAAAAAAAAAAAAAAAAqZSE//37/P/59/f/9vPw//Lt6v/t5+P/6eDc/+TZ1P/f0sz/pox7/2VK
+        Nf8AAAAAAAAAAAAAAAAAAAAAAAAAALKdjv///////Pz7//r49//28vH/8u3q/+7n4//p4Nv/5NnU/9/S
+        y/9pTjr/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtqGT/66ai/+nkYH/n4l5/5eAb/+Pd2X/h29d/39n
+        U/94X0z/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wEB//8BAf//AQH//wEB/AEBAfgAAQEYAAEBAAABARgA
+        AQH4AAEB+AABAfwBAQH//wEB//8BAf//AQH//wEB
+</value>
+  </data>
+  <data name="DataExplorerIcon_Connection" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAMAEBAQAAAAAAAoAQAANgAAABAQAAABAAgAaAUAAF4BAAAQEAAAAQAgAGgEAADGBgAAKAAAABAA
+        AAAgAAAAAQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAACAgACAAAAAgACAAICA
+        AACAgIAAwMDAAAAA/wAA/wAAAP//AP8AAAD/AP8A//8AAP///wARERERERERERERERERERERERERERER
+        ERERERERERERERERFwAAERERERd4szMBERERe/s7MzARERF/u7MzMBEREXv7OzMAERERf7uzMzARERF7
+        93ADABEREXd7v7AAEREReLj7+7AREREXe7+3cREREREXd3EREREREREREREREf//AAD//wAA//8AAP//
+        AAD4PwAA4B8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADgHwAA+H8AAP//AAAoAAAAEAAAACAA
+        AAABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICA
+        gADA3MAA8MqmAKo/KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqf
+        KgD/nyoAAL8qAFW/KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUA
+        VQCqAFUA/wBVAAAfVQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/
+        VQBVf1UAqn9VAP9/VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/f
+        VQAA/1UAVf9VAKr/VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/
+        fwD/P38AAF9/AFVffwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/
+        fwCqv38A/79/AADffwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAf
+        qgBVH6oAqh+qAP8fqgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/
+        qgAAn6oAVZ+qAKqfqgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/
+        qgD//6oAAADUAFUA1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf
+        1ACqX9QA/1/UAAB/1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf
+        1ABV39QAqt/UAP/f1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU/
+        /wCqP/8A/z//AABf/wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC/
+        /wBVv/8Aqr//AP+//wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//
+        zAAAfwAAVX8AAKp/AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrf
+        AAD/3wAAVf8AAKr/AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSg
+        oACAgIAAAAD/AAD/AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f39/f39/f39/f39/f39/f39/f39
+        /f39/f39/f39/aaBWVlVfYH9/f39/f39/YGprdDPyqSgWf39/f39/f19z9DQrsqkpFT9/f39/f39fc+u
+        0M/LxqRV/f39/f39/YHPz9DPqMakVP39/f39/f2By9DTrcukpFX9/f39/f39gc/Q0M/KpKRZ/f39/f39
+        /YHPrdDQqMakVP39/f39/f2By9DQrcqkpH39/f39/f39pc/Q09DQz8tZ/f39/f39/YXQ9tP29tOuff39
+        /f39/f39qoGBgYGBqv39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f3//wAA//8AAPAf
+        AADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA4A8AAOAPAADgDwAA8B8AAP//AAD//wAAKAAAABAA
+        AAAgAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARZS4K0eF
+        oK5Xh5rsXYOW/0p2jf80bYz/JmmN8CZliLMhZYo3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEV/
+        mtBRsNH/hNXo/6Hr9v9z5P//JL7z/wOf3v8Ui77/K1+B2QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AABTj6r/Tdf//5Dq+v+h6/b/cdn0/yS88v8Bp+j/A5za/ypjhP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAVJGu/0zS+v+N5Pb/oev2/3DX8/8kue//Aafo/wOc2v8sZYb/AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAFeVsP9O0vr/jeT0/6Hr9v9w1/L/JLnu/wGn6P8DnNr/L2iI/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAABZmbX/T9H7/47k9f+h6/b/cNfy/yS57v8Bp+j/A5za/zBriv8AAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAXJu3/0/Q+f+N4/X/oev2/3LZ8v8kue7/Aafo/wOc2v8ybY3/AAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAF6euv9N0Pn/jeP0/6Hr9v9v1/L/H7fu/wGn6P8DnNr/NG+P/wAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABforz/R873/4vj9P+h6/b/btby/x+37v8Bp+j/A5za/zFw
+        kv8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa6nA/1bU+v+c7Pr/q+/6/6bt+P+U5/j/cdn2/zy9
+        6f9DfJf/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICzxf+b3uv/xfn9/8X5/f/F+f3/xfn9/8X5
+        /f+g3+r/ZpGi/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIxNNjgLfK1naruv9wo7P/bJ2v/2ub
+        rv9vorT/cqS32XatwG8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///39///9/eAP/f3gD/394A/9/eAP
+        /f3gD/394A/9/eAP/f3gD1lZ4A+B/eAP/f3gD/2B4A/Qz///oFn///39
+</value>
+  </data>
+  <data name="DataExplorerIcon_DataType" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f1eDS31DfUN9Q31DvX9/f39969egoJe9173XoL1/f39/YKv
+        9q8Ir9TU1AmCDf39/f1er6+vr68I1AjUXvX9/f39Xv+zr6+vr68J1Pf1/f39/YKv/6+vr6+v1AkJ9a+C
+        XoaChoKChoKGg4bUgvXUCC0IrzGvCC2GrzGCr14Nry3/LdEHry2vLdQHgq/39dQILYaz968ILQmvXoKz
+        g/Wv9/8ILQj/B7MILQiCr4IN1DH/Lf8ts1XRLbP1goJe9a8x9oYt9/Yxs4Ythgn1MfWv1K/UCK/U1K/U
+        1K+CCfX9/f39/QnR9vbR////gg39/f39/f0JCAkJCAmGCYL9/f3wAAAA8AAAAPAAAADwAAAA8AAAAPAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAPADAADwBwAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC3opP/Y0k1/2NJNf9jSTX/Y0k1/2NJ
+        Nf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJNf8AAAAAAAAAAAAAAAAAAAAAt6KT//fl3P+3opP/t6KT/7ei
+        k/+3opP/t6KT/7eik/+3opP/t6KT/7eik/9jSTX/AAAAAAAAAAAAAAAAAAAAALeik//56eL/+Obd//fi
+        2P/13tP/9NvO//PXyv/y1MX/8dDB//DNvP+3opP/Y0k1/wAAAAAAAAAAAAAAAAAAAAC3opP/+eni//jm
+        3f/34tj/9d7T//Tbzv/z18r/8tTF//HQwf/wzbz/t6KT/2NJNf8AAAAAAAAAAAAAAAAAAAAAt6KT//nu
+        6P/46uP/+Obe//fj2f/139X/9dvQ//PYy//y1cb/8dHC/7eik/9jSTX/AAAAAAAAAAAAAAAAAAAAALei
+        k//78u3/+u7p//nq5P/45+D/9+Ta//bh1f/13NH/9NjM//PVx/+3opP/Y0k1//PYy//AraX/wK2l/8Ct
+        pf/AraX/wK2l/8Ctpf/AraX/wK2l/8Ctpf/AraX/wK2l/8Ctpf/z2s3/t6KT/2NJNf/z2Mv/187L/0tK
+        Sf/OxL//+/Lu/2FcWv/67eb/2MnC/0pFQv/Vxr7/9uLY/2NaVv/AraX/9d/T/7eik/9jSTX/89jL/0tL
+        S//++ff/S0pI//z08P9zbmz/+u/p/0pGRP/46OH/SkVC//fj2v9sZF//wK2l//bi2v+3opP/Y0k1//PY
+        y//VzMj/Tk1M/8e+uf/89vL/nZaS//rw6//TxsD/TEhF/9bGv//35dz/p5yW/8Ctpf/46N//t6KT/2NJ
+        Nf/z2Mv/p6Sj//77+v/QzMv/S0pJ/97Tzf/88u7/jYaD//ns5v/cz8j/SkVC/9DBuf/AraX/+ezm/7ei
+        k/9jSTX/89jL/2NhX//+/fz/TEtK//349/9LSUj//PPv/25qZ//67ej/SkZE//jp4f9KREL/wK2l/7ei
+        k/+3opP/ZEo2//PYy/9sbGz//v79/7m3t/9MS0r/rqqo//z18f9iXl3/+vDq/9HFvf9KRkT/yry1/8Ct
+        pf9kSjb/ZEo2/2RKNv/z2Mv/89jL//PYy//z2Mv/89jL//PYy//z2Mv/89jL//PYy//z2Mv/89jL//PY
+        y//AraX/1MW6/2NJNf+ii3qpAAAAAAAAAAAAAAAAAAAAANjCsv//////////////////////////////
+        //////7/wKuc/2NJNf+ii3qoAAAAAAAAAAAAAAAAAAAAAAAAAADYwrL/2MKy/9jCsv/YwrL/2MKy/9jC
+        sv/Uvq7/z7mp/8mzpP/Js6SLAAAAAAAAAADwAP398AAt9fAADfXwAA718AD9/fAAXoIAAPdeAACC9QAA
+        /f0AAPavAADU1AAAgg0AAP39AACvr/ABCNTwA171
+</value>
+  </data>
+  <data name="DataExplorerIcon_File" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f39/f39/f39/f39/V4tDfUN9fUN9Q319f39/f1er/f3
+        916C9/eC9w39/f39gq+vr68IrwmLCV4K/f39/V72r6+vr9TU1NSCDf39/f33rwgJggmG9/eLgvX9/f39
+        Xv/Rs9Gvr6+vr4L1/f39/YL/CYIJXoKCXq9e9f39/f1e//b/9tGzs6+v9w39/f39gvYJggmCgl73r4P1
+        /f39/Qn2////s/bRr7OC9f39/f2C///////Rs/+CXg39/f39Cf////////9e9S31/f39/Yb/////////
+        9wkNWv39/f0J0fb20f///4L1Wv39/f39CQgJCQgJhgmCCf39/f3//wAAwAMAAMADAADAAwAAwAMAAMAD
+        AADAAwAAwAMAAMADAADAAwAAwAMAAMADAADAAwAAwAMAAMAHAADADwAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALeik/9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJ
+        Nf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/wAAAAAAAAAAAAAAAAAAAAC3opP/9+Xc/7eik/+3opP/t6KT/7ei
+        k/+3opP/t6KT/7eik/+3opP/t6KT/2NJNf8AAAAAAAAAAAAAAAAAAAAAt6KT//np4v/45t3/9+LY//Xe
+        0//0287/89fK//LUxf/x0MH/8M28/7eik/9jSTX/AAAAAAAAAAAAAAAAAAAAALeik//57uj/+Orj//jm
+        3v/349n/9d/V//Xb0P/z2Mv/8tXG//HRwv+3opP/Y0k1/wAAAAAAAAAAAAAAAAAAAAC3opP/+/Lt/9TE
+        uv/PvLH/ybSp/8Suov/AqZz/u6KV/7Wcjf/z1cf/t6KT/2NJNf8AAAAAAAAAAAAAAAAAAAAAt6KT//z2
+        8//78u7/++/q//nr5v/56OH/9+Xb//bh1//03tP/89rN/7eik/9jSTX/AAAAAAAAAAAAAAAAAAAAALql
+        lv/9+fb/1MS6/8+8sf/JtKn/xK6i/8CpnP+7opX/tZyN//Xf0/+3opP/Y0k1/wAAAAAAAAAAAAAAAAAA
+        AAC+qZr//vz7//35+P/99/T//PTw//vx7f/67uj/+Ork//fn3//24tr/t6KT/2NJNf8AAAAAAAAAAAAA
+        AAAAAAAAw66e//7+/v/UxLr/z7yx/8m0qf/ErqL/wKmc/7uilf+1nI3/+Ojf/7eik/9jSTX/AAAAAAAA
+        AAAAAAAAAAAAAMiyo//////////////9/P/9+/n//fn2//z18v/78u7/++/q//ns5v+3opP/Y0k1/wAA
+        AAAAAAAAAAAAAAAAAADMtqf///////////////////39//77+v/9+ff//Pbz//v07/+3opP/t6KT/2RK
+        Nv8AAAAAAAAAAAAAAAAAAAAA0bur/////////////////////////v3//vv7//35+P+3opP/ZEo2/2RK
+        Nv9kSjb/AAAAAAAAAAAAAAAAAAAAANW/r//////////////////////////////+/v/+/Pv/uaSV/9TF
+        uv9jSTX/oot6qQAAAAAAAAAAAAAAAAAAAADYwrL////////////////////////////////////+/8Cr
+        nP9jSTX/oot6qAAAAAAAAAAAAAAAAAAAAAAAAAAA2MKy/9jCsv/YwrL/2MKy/9jCsv/YwrL/1L6u/8+5
+        qf/Js6T/ybOkiwAAAAAAAAAAAAAAAAAAAAD///39wAP9/cAD/f3AA/39wANeLcADDfXAA/UNwAP9/cAD
+        Xq/AA/dewAP3gsAD/f3AA4KvwAOvCMAHiwnAD/39
+</value>
+  </data>
+  <data name="DataExplorerIcon_Folder" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        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
+</value>
+  </data>
+  <data name="DataExplorerIcon_ForeignKey" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        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
+</value>
+  </data>
+  <data name="DataExplorerIcon_Index" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f0PDgr9
+        Mw4K/Q8OCv39/f39O68O/TuvDv07rw79/f39/WNfEv1jOxL9Y18P/f39/f39Nv39/TL9/f0N/f39/f39
+        /Qf9/f0x/f399f39/f39/f1a/f39Mv39/Q79/f39/f39XloHNgc1MjEx/f39/f39/f39/f02/f39/f39
+        /f39/f39/f39B/39/f39/f39/f39/f39Dw4O/f39/f39/f39/f39/TuvDv39/f39/f39/f39/f1jXw/9
+        /f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f3//wAA//8AAMRHAADERwAAxEcAAO7v
+        AADu7wAA7u8AAOAPAAD+/wAA/v8AAPx/AAD8fwAA/H8AAP//AAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADebzb/wl0r/59NJP8AAAAA3m82/8Jd
+        K/+fTST/AAAAAN5vNv/CXSv/n00k/wAAAAAAAAAAAAAAAAAAAAAAAAAA/5di//ji1P/CXSr/AAAAAP+X
+        Yv/44tT/wl0q/wAAAAD/l2L/+OLU/8JdKv8AAAAAAAAAAAAAAAAAAAAAAAAAAP+whf//oGz/3m42/wAA
+        AAD/sIX//6Bs/95uNv8AAAAA/7CF//+gbP/ebjb/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAl39v/wAA
+        AAAAAAAAAAAAAHthT/8AAAAAAAAAAAAAAABnSzf/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ2H
+        dv8AAAAAAAAAAAAAAACBaVb/AAAAAAAAAAAAAAAAa087/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AACkjX3/AAAAAAAAAAAAAAAAh29c/wAAAAAAAAAAAAAAAG5UQf8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAqpSF/6OMfP+chXT/lX1s/412ZP+Gblz/gGdU/3lgTf9zWkb/AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACUfWz/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmoNz/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3m82/8JdK/+fTST/AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP+XYv/44tT/wl0q/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/sIX//6Bs/95uNv8AAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///39///9/cRH/f3ER/39xEf9/e7v/f3u7/397u/9/eAP
+        Dw7+/zMO/v8PDvx//f38fzuv/H87r///O6////39
+</value>
+  </data>
+  <data name="DataExplorerIcon_InputParameter" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f0HLTEH/f39/f39/f39/TEHCP//gvX9/f39/f39/TH3////
+        9vb29f39/f39/f0t9vXwCPUtB/b19Q31DfWCBwgAqwcAhvcHr6+v1NT1B4b/AAj/8Af/Lf82Mg6v9QcH
+        /y0x//fx9veC/6+vr/X99f/28AiCANGG9182/6/1OfCG9tExBzGGB/b//6+v9RH9LQj///b/qvX/N///
+        r/U5/f31MYYJBy32////9q8NOf39/ff3BwljY/////+v9RX9Nf0J9vb29vb/9vb2//X9NTU1Xl9fX19f
+        Wl83DzcO/f01/QkJCQkJCWNfXl87Dv39/f1fXwlfX19fXzs3EjPw/wAAwH8AAIA/AACAAAAAAAAAAAAA
+        AAAAAAAAgAAAAAAAAABAAAAAYAAAAHAAAABQAAAAgAAAANAAAADwAAAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////PLS0tKOBgYHlTExM/UNDQ/FpaWnAxsbGSAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////XFRUVPB+fn7/z8/P////////////r6+v/zU1
+        NfVwcHCPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////PFRUVPCenp7/////////////////////////
+        ////////NTU19YGBgWEAAAAAAAAAAAAAAAAAAAAAAAAAAOTk5JU9PT3//////z09Pf8tLS3/z8/P/z09
+        Pf89PT3/fn5+/+/v7/9EQD3/Y0k1/2NJNf9jSTX/Y0k1/2NJNf+kpKTffn5+/7+/v/8AAAD/39/f/25u
+        bv8AAAD/v7+//56env+Ojo7/7N3W//Xf1P/03ND/89fJ//HRwf9jSTX/fHx8/L+/v///////AAAA/8/P
+        z///////HR0d/35+fv//////TU1N///+/v/GgmD/rlw3/6ZYM//y08X/Y0k1/3Fxceh+fn7//////01N
+        Tf9eXl7//////46Ojv8tLS3//////56env+0qKT//ff1//318f/57ef/89fJ/2NJNf+MjIyxPT09////
+        ///v7+//LS0t/7+/v/+/v7//AAAA/+/v7/+/v7//mpeR/+2zlv/Rc0X/+/Dr//Tazf9jSTX/TpVF/ycn
+        J/i/v7///////+/v7/9eXl7/bm5u/15eXv+/v7//e3Rv///+/f/++/v//vr4//zz7//13dL/Y0k1/06V
+        Rf/X19dmNTU19c/Pz///////////////////////z83M/zw6Of///////pRf//78+//89fL/9uHW/2NJ
+        Nf9OlUX/AAAAAJ6enlQmJibkbWVg/6+vr//Pz87/jY6M/zw8Of///////////////////v7//fn2//fk
+        2/9jSTX/TpVF/wAAAAAAAAAAAAAAAL6pmv+vr6v/hWte///BoP//vJn//7eQ//////////////////76
+        +f/459//Y0k1/06VRf8AAAAATpVF/wAAAADIsqP/////////////////////////////////////////
+        /////v7//fn3/2NJNf9OlUUxTpVF/06VRf9OlUX/6qqL/+qqi//qqov/6qqL/+mlhP/pn3r/55du/+aO
+        Yv/lhlb/4nI5/+JyOf/IYi//AAAAAAAAAABOlUX/AAAAAOqqi///wqL//8Ki//7An//9vZr//LmW//u1
+        kP/6sIv/+auE//Wdcf/zlWX/zWUx/wAAAAAAAAAAAAAAAAAAAADqqov/6qqL/+qqi//qqov/6qqL/+qm
+        hv/poX//6Jt2/+eUbP/kgU7/43Y+/+JyOf/Af/39gD8xBwAf/f0AAP39AAAxBwAA/4IAAP39AAD9/QAA
+        9/8AAPb2QAD9/XAA/f1QAPb1AAD1LdAA9fXwAA31
+</value>
+  </data>
+  <data name="DataExplorerIcon_OutputParameter" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f39qwctMQf9/f39/f39/f39MQcI//+C9YL9/f39/f39
+        Mff////29v/1CIL1DS0NgvX/9fQI8S0H9jFe/6+vr1oHqgCrBwCG9wf/gv/2N4cHhv8ACP/wB/8t/17/
+        ////WQf/9TH/9/H294aC//87h/f19vbwCIIA0Qj3Xv/////28ar20TEHMaoH/YL//2NfX/b1CP////YI
+        9P2G//////////VVhoJe9f399///h2Nj/////6/1/f05/Qn/9v//9v/29vb/9f0VNTlfX19eX19aXzcP
+        Nw79/RX9XwmHCQkJY19eXzsO/f05/V9fX19fX19fOzcSMxU5/f3/BwAA/gEAAPwAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAABAAAAAQAAAAMAAAANAAAACAAAAA0AAAANAAAAAwAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///88tLS0o4GB
+        geVMTEz9Q0ND8WlpacDGxsZIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///9cVFRU8H5+
+        fv/Pz8////////////+vr6//NTU19XBwcI8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///88VFRU8J6e
+        nv////////////////////////////////81NTX1gYGBYbeik/9jSTX/Y0k1/2NJNf9jSTX/rqSb/z09
+        Pf//////PT09/y0tLf/Pz8//PT09/z09Pf9+fn7/7+/v/z4+PtW3opP//v38//jp4f/45t//9+Xc/6GZ
+        lP9+fn7/v7+//wAAAP/f39//bm5u/wAAAP+/v7//np6e/46Ojv/////Qt6KT//////////7/74dU//LD
+        q/9+fX3/v7+///////8AAAD/z8/P//////8dHR3/fn5+//////9NTU3/////+beik///////////////
+        ///+/f3/dnBt/35+fv//////TU1N/15eXv//////jo6O/y0tLf//////np6e/7W1tdy6pZb/////////
+        ////nGn//8Kj/6yppP89PT3//////+/v7/8tLS3/v7+//7+/v/8AAAD/7+/v/7+/v/95eXm5vqma////
+        ////////////////////////LCko/7+/v///////7+/v/15eXv9ubm7/Xl5e/7+/v/9zc3Prnp6eVMOu
+        nv////////////+xh///qnz//6Ny//////89PDz/z8/P///////////////////////IyMjfGhoa2AAA
+        AADIsqP//////////////////////////////////////z06Of9tbGr/r6+u/760r/9paWnAERER0AAA
+        ABAAAAAAvqma/////////////8Gg//+8mf//t5D//////////////////vr5//jn3/9aLRL/AAAAMAAA
+        AABOlUX/AAAAAMiyo//////////////////////////////////////////////+/v/9+ff/Y0k1/wAA
+        AABOlUX/TpVF/06VRf/qqov/6qqL/+qqi//qqov/6aWE/+mfev/nl27/5o5i/+WGVv/icjn/4nI5/8hi
+        L/8AAAAAAAAAAE6VRf8AAAAA6qqL///Cov//wqL//sCf//29mv/8uZb/+7WQ//qwi//5q4T/9Z1x//OV
+        Zf/NZTH/AAAAAE6VRTFOlUX/AAAAAOqqi//qqov/6qqL/+qqi//qqov/6qaG/+mhf//om3b/55Rs/+SB
+        Tv/jdj7/4nI5/06VRf9OlUX/TpVFMQAAAAD+A/39/AH9/fgALTEAAP39AAD9/QAA/TEAAP//AACC/QAA
+        /f0AATH3AAH/9gAF9QgACA0tAA31/wAJCPEAAfYx
+</value>
+  </data>
+  <data name="DataExplorerIcon_PrimaryKey" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f1ZVf39/f39/f39/f39/f2qpFn9/f39/f39/f39/f39
+        gcekWf39/f39/f39/f39/YHLVf39/f39/f39/f39/f2lqXx5/f39/f39/f39/f39gcekWf39/f39/f39
+        /f39/aWpVf39/f39/f39/f39/aqlqVWB/f39/f39/f39/aqB0MakVYH9/f39/f39/aqpz6SopKRVgf39
+        /f39/f2q0MvKy8uooFn9/f39/f39hdDPpYHLxqRZ/f39/f39/ab2z1X9gqSkff39/f39/f2u9tCkVMak
+        gaX9/f39/f39/arQ9tDLgaX9/f39/f39/f39rqr3gar9/f39/f3+fwAA/H8AAPw/AAD8fwAA/D8AAPw/
+        AAD8fwAA+D8AAPAfAADgDwAA4A8AAOAPAADhDwAA4A8AAPAfAAD4PwAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABDc47zQ2qC/AAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3hqx/Kp/P/zRx
+        j/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ4anykOx
+        6f8Altn/TnCG/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEeI
+        qspEsen/TnCG/yd7pDMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AABJjK3KRLHp/wCDt/9KdY7/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAATY+xykSy6f8AnN//RHGL+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAE+TtMpEsur/P19z/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAT6bLG1OewaJTl7fgRLPs8z9fc/83gqaiKoKsGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAYK/RJmmmwtFVosT/c9T7/wKo6f8AlM//P19z/zt8ndEpgKkmAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAHKwzLFgrc7/c9f//w6v7P8ntev/AKTm/wCUz/8/X3P/NH2hsQAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAACFr8Xwv+z9/zrE+f8ntev/OsT5/zrE+f8Bp+f/AJPN/1d1iP8AAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAlay+/8Hu//9u1///JaTX/2+Wreg6xPn/Aafn/wCTzf9XdIj/AAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAI2zx/DS9///btf+/zZnhv9robwsfJ+0/w2m5PsAldD/S4Cb8AAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACJu9Cx0vf//6Lj/v8lpNf/NmeG/xiu5/8kpNf+PJO6/z+K
+        rbEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjMTXJou4zNHS9///0vf//6Lk//9Et/D/S53A/1CS
+        sNE3krsmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACKxNcbh7vQpomwxO+Mprj+dJ61/1me
+        vq1EncMbAAAAAAAAAAAAAAAAAAAAAAAAAAD+f/39/H/9Wfw//f38P/39/D/9/fw/qqT8f/398B/9/eAP
+        /f3gD4HH4A/9/eAP/f3gD/394A+By+AP/f3wH/39
+</value>
+  </data>
+  <data name="DataExplorerIcon_ReturnValue" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/ff1DS31
+        9fX19Q319TH9/f1e/6+vCK+vrxCvrwj1/f39gv/2Nzf2CRARgq/U9f39/V7///b/CDk5FREUETmK/f2C
+        //9frzmGYTlhXmE5EQj9Xv////YIYYZdXTlhXWE5/V7/9l9fCa9hOf//r4Y5Of2C///////2r2H//68N
+        /V39hv/29vb////2//b29f1i/V9fX19fXjc6NzYTNw6G/f1fCQkJCQkJY19jXjcO/f39X19fX19fXzdf
+        Nzc3E/39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f3//wAA//8AAIADAACAAwAAgAMAAIAB
+        AACAAAAAgAAAAIAAAACAAgAAgAIAAIABAACAAwAAgAMAAP//AAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALeik/9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJ
+        Nf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJNf8AAAAAAAAAAAAAAAC3opP//v38//jp4f/45t//9+Xc//bi
+        2f/24db/9d/U/xZ+H//0287/9NjL//HRwf9jSTX/AAAAAAAAAAAAAAAAt6KT//////////7/54JR/9Fy
+        R//9+fj/4bKa/yeLMP8xjDr/0KeU//Ln4v/y08X/Y0k1/wAAAAAAAAAAAAAAAL6pmv//////////////
+        ////////1+fX/0KVS/9KnFr/O5FE/y+IN/8rizT/NZI+/0KUSv8AeQtGAAAAAAAAAADDrp7/////////
+        ///unnj//9fC/0ugVf+MxZT/a7V7/1KcWv9rrXP/a617/3O1e/9SnFr/MYQx/wB5C0YAAAAAyLKj////
+        ///////////////////X59f/c7V7/5zOpf9rrXP/Y61z/2Ola/9jrWv/WqVr/2Ota/9apWP/AAAAAL6p
+        mv///////////+6sjf/up4b//9W9/9fn1/9ztXv/UqVj//7+/f/+/Pz/+Off/6XOrf9jrWv/Upxa/wAA
+        AADDrp7/////////////////////////////////1+fX/3u9jP///////v7+//nq5P9jSTX/MYQxRlql
+        a/8AAAAAyLKj///////////////////////////////////////q8ur////////////9+ff/Y0k1/wAA
+        AACMxZT/AAAAAOqqi//qqov/6qqL/+qqi//ppYT/6Z96/+eXbv/mjmL/5YZW/+N9Sv/jdkD/4nI5/8hi
+        L/+MxZT/MYQxMQAAAADqqov//8Ki///Cov/+wJ///b2a//y5lv/7tZD/+rCL//mrhP/4p33/9qJ3//OV
+        Zf/NZTH/AAAAAAAAAAAAAAAA6qqL/+qqi//qqov/6qqL/+qqi//qpob/6aF//+ibdv/nlGz/5o5i/+WH
+        WP/jdj7/4nI5/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///39///9/YAD/f2AA/39gAP9/YAB/f2AAP39gAD9/YAA
+        9Q2AAPX1gAIN9YAA/f2AA/+vgAOvr///r6////39
+</value>
+  </data>
+  <data name="DataExplorerIcon_ScalarFunction" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/dSChoKCggmCXoKCggn9/f2vCPUI/zGvCC0IrzGC/f391C3/
+        LdExry2vLa8xhv39/a8ILYaz99EI9Qiv94L9/f3U9/8ILQizWvYILQmG/f39rzH/Lf8t/1WvLa/1ghIO
+        Eg4SDhIOEhIx9gkthoYO/17///b///YOr9QI1K/3Ev8OYvYOYgr2Ev39/f39/Q7/Yg72Yw4J/w79/f05
+        /f0S//YOCA6GDvYS/f0VNRX9Dv8ODg42////Dv39/Tn9/RL//14O/6///xL9/f0V/f0O////Ng46//8O
+        /f39Of39Ev//////////Ejk5Ff39/RIOEg4SDhIOEg79/f39/f3gAAAA4AAAAOAAAADgAAAA4AAAAOAA
+        AAAAAAAAAAAAAAA/AAAAOwAAADEAAAA7AAAAOwAAADsAAAAHAAAAPwAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPPYy//AraX/wK2l/8Ctpf/AraX/wK2l/8Ct
+        pf/AraX/wK2l/8Ctpf/AraX/wK2l/8Ctpf8AAAAAAAAAAAAAAADz2Mv/187L/0tKSf/OxL//+/Lu/2Fc
+        Wv/67eb/2MnC/0pFQv/Vxr7/9uLY/2NaVv/AraX/AAAAAAAAAAAAAAAA89jL/0tLS//++ff/S0pI//z0
+        8P9zbmz/+u/p/0pGRP/46OH/SkVC//fj2v9sZF//wK2l/wAAAAAAAAAAAAAAAPPYy//VzMj/Tk1M/8e+
+        uf/89vL/nZaS//rw6//TxsD/TEhF/9bGv//35dz/p5yW/8Ctpf8AAAAAAAAAAAAAAADz2Mv/p6Sj//77
+        +v/QzMv/S0pJ/97Tzf/88u7/jYaD//ns5v/cz8j/SkVC/9DBuf/AraX/AAAAAAAAAAAAAAAA89jL/2Nh
+        X//+/fz/TEtK//349/9LSUj//PPv/25qZ//67ej/SkZE//jp4f9KREL/wK2l/6xyM/+scjP/rHIz/6xy
+        M/+scjP/rHIz/6xyM/+scjP/rHIz/6xyM/9iXl3/+vDq/9HFvf9KRkT/yry1/8Ctpf+scjP//////8Wk
+        gf////////////////////////////////+scjP/89jL//PYy//z2Mv/89jL//PYy//AraX/rHIz////
+        //+gbTb/07SS//////+TWRr/3r6c/5NZGv//////rHIz/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKxy
+        M///////17KK/6JnKP//////4sGc/5NZGv/gwJ7//////6xyM/8AAAAAAAAAAAAAAABOlUX/AAAAAAAA
+        AACscjP///////////+mbTD/4cOh/5NZGv/bxKv/k1ka//////+scjP/AAAAAAAAAABOlUX/TpVF/06V
+        Rf8AAAAArHIz//////+TWRr/k1ka/6BvOf+yiFz/////////////////rHIz/wAAAAAAAAAAAAAAAE6V
+        Rf8AAAAAAAAAAKxyM////////////8irjP+TWRr///////Hl2P///////////6xyM/8AAAAAAAAAAAAA
+        AABOlUX/AAAAAAAAAACscjP/////////////////uo9h/5dgJ//Bl2n///////////+scjP/AAAAAAAA
+        AABOlUVGTpVF/wAAAAAAAAAArHIz////////////////////////////////////////////rHIz/06V
+        Rf9OlUX/TpVF/06VRUYAAAAAAAAAAKxyM/+scjP/rHIz/6xyM/+scjP/rHIz/6xyM/+scjP/rHIz/6xy
+        M/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgAP3U4ACCguAAgl7gAIIJ4AD9r+AACP8AAAgtAAAxggA/
+        /dQAOy3RADEtrwA7MYYAO/2vADOGswADCPUAP/eC
+</value>
+  </data>
+  <data name="DataExplorerIcon_StoredProcedure" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AAAAAAAAAAAAAAAAAAAAAABe9fUN9Q319fX19fX19fX19/+vr6+v
+        r6+vr9Sv1K8JLV7//zc39g4ODg4ODq+v1A33////////9tGz0favr6/1Xv//Ozs39jcS0bOv9q+v9YL/
+        ////////////9q/2r/WC//9jX1//O///9q//r6/1Cf//////////////r/+vDV7//4eHY/////////b/
+        r/WC/////////////////6/1hvb29vb29vb2///////29V8JX19fX183NzYTNg8SNw5fCQkJCQlfCV9f
+        XztfNzsOX19fX19fX187Nzc3NxM3DwAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC3opP/Y0k1/2NJNf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJ
+        Nf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJNf9jSTX/t6KT//79/P/46eH/+Obf//fl3P/24tn/9uHW//Xf
+        1P/03ND/9NvO//TYy//z18n/8tXG//LSw//x0cH/Y0k1/7eik//////////+/++HVP/ifk3//fn4/8Zs
+        QP+5ZDr/rlw3/6ZYM/+mWDP/plgz//jn4P/35tz/8tPF/2NJNf+3opP//////////////////v39//77
+        +v/9+vf//ff1//318f/78+//+/Dr//nt5//56uT/+Ojh//PXyf9jSTX/uqWW/////////////5xp//+V
+        YP/4jln//vz7/+B8S//Rc0X//PXy//zy7v/78Ov/+u3o//nr5P/02s3/Y0k1/76pmv//////////////
+        ///////////////+/f/++/v//vr4//349v/89fL//PPv//vw7P/57uj/9d3S/2NJNf/Drp7/////////
+        ////sYf//6p8//+jcv///////pRf//78+//++vj//fj2//z18v/88+//+vDs//bh1v9jSTX/yLKj////
+        /////////////////////////////////////v7///z7//36+P/9+fb//fbz//zz7//35Nv/Y0k1/76p
+        mv/////////////BoP//vJn//7eQ//////////////////7+/f/+/Pz//vr5//349v/89vP/+Off/2NJ
+        Nf/Drp7//////////////////////////////////////////////////v7+//79+//++/n//fn2//nq
+        5P9jSTX/yLKj/////////////////////////////////////////////////////////v7//v38//77
+        +f/9+ff/Y0k1/+qqi//qqov/6qqL/+qqi//ppYT/6Z96/+eXbv/mjmL/5YZW/+N9Sv/jdkD/4nI5/+Jy
+        Of/icjn/4nI5/8hiL//qqov//8Ki///Cov/+wJ///b2a//y5lv/7tZD/+rCL//mrhP/4p33/9qJ3//Wd
+        cf/1mWr/85Vl//OVZf/NZTH/6qqL/+qqi//qqov/6qqL/+qqi//qpob/6aF//+ibdv/nlGz/5o5i/+WH
+        WP/kgU7/5HtG/+N2Pv/jdj7/4nI5/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAD1DQAA9fUAAPX1AAD19QAA
+        r68AAK+vAADUrwAACS0AAP83AAAODgAADg7//9QN
+</value>
+  </data>
+  <data name="DataExplorerIcon_Table" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        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
+</value>
+  </data>
+  <data name="DataExplorerIcon_TabularFunction" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39/RISEhIOEg4SDhL9/f39/f0O/17/9vb20f8O/f39/f39
+        EvYOYv8OYwb/Ev39/f39/Q7/Yw7/CfUJ9g5eDS319S0S//YOhg4JDv8S9/+v1AgJDvYODhI2////Dl7/
+        XvevXhL//14O/6///xKC//////8O////Ng46//8OXv+CXv9aEv//////////Evf//////xIODhIyEg4S
+        DhIJ9vde/1oHswcxCfX9/f39hv////b29vb2s68x/f39/V9jXztfOzs3NzY3Dv39/f2Hh4eHX2NfX187
+        Nzb9/f39Y19jXztfNzs3NzYP/f39/f39/f39/f39/f39/f39/f38AAAA/AAAAPwAAAD8AAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAA8AAAAPAAAADwAAAA8AAAAPAAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKxyM/+scjP/rHIz/6xy
+        M/+scjP/rHIz/6xyM/+scjP/rHIz/6xyM/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACscjP//////8Wk
+        gf////////////////////////////////+scjP/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArHIz////
+        //+gbTb/07SS//////+TWRr/3r6c/5NZGv//////rHIz/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKxy
+        M///////17KK/6JnKP//////4sGc/5NZGv/gwJ7//////6xyM/+3opP/Y0k1/2NJNf9jSTX/Y0k1/2NJ
+        Nf+scjP///////////+mbTD/4cOh/5NZGv/bxKv/k1ka//////+scjP/t6KT//37+f/h3Nj/4NfS/9/O
+        w//dyLv/rHIz//////+TWRr/k1ka/6BvOf+yiFz/////////////////rHIz/7eik//+/v7/uqaY/7Wg
+        kf/77OP/pI1+/6xyM////////////8irjP+TWRr///////Hl2P///////////6xyM/+6pZb//v7+//7+
+        /v/+/v7//fv5//338/+scjP/////////////////uo9h/5dgJ//Bl2n///////////+scjP/vqma//7+
+        /v+6ppj/tKGS//7+/v+jjn7/rHIz////////////////////////////////////////////rHIz/8Ou
+        nv/+/v7//v7+//7+/v/+/v7//v7+/6xyM/+scjP/rHIz/6xyM/+scjP/rHIz/6xyM/+scjP/rHIz/6xy
+        M//IsqP//v7+/7qmmP+0oJH//v7+/6SOfv+ZhHL//ffz/4hxXv+Da1j/0cG2/2NJNf8AAAAAAAAAAAAA
+        AAAAAAAAzLan//7+/v/+/v7//v7+//7+/v/+/v7//v7+//37+f/99/P//PLs//vs4/9jSTX/AAAAAAAA
+        AAAAAAAAAAAAAP+2j///sYb//6t9//+ldP//nmv//5hk//2SXf/1jFj/7IVS/+F9TP/Wdkf/ym5C/wAA
+        AAAAAAAAAAAAAAAAAAD/to///8Ki//7An//9vZr/+7WQ//qwi//4p33/9qJ3//Wdcf/1mWr/85Vl/8pu
+        Qv8AAAAAAAAAAAAAAAAAAAAA/7aP//+xhv//q33//6V0//+ea///mGT//ZJd//WMWP/shVL/4X1M/9Z2
+        R//KbkL/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8AP39/AASEvwADhL8AA4SAAD9/QAADv8AAPb2AAD/DgAA
+        /f0AABL2AA//DgAP/xIAD/39AA8O/wAP/wn///YO
+</value>
+  </data>
+  <data name="DataExplorerIcon_Trigger" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AAAAAAAAAAAAAAAAAAAAAABe9fX1LfX19S319fX19fX19/+vCIJ5
+        hgkJCYYJCQkJ9V7///+qz3mqs6+vr6+vgvX3////9qrQear//6/2rwn1Xv////8IqdB5qrPRr9EI9YL/
+        //+BgVmp0Hmqs/avCfWC////qdPQ0KmmLfbRrwj1Cf////bL0qV9//b/s/YJ9V7////2qdDMpVX////R
+        CPWC//////ap08umLf///wn1hvb29vb2rsutqql9///29V8JX19fX183NzYTNg8SNw5fCQkJCQlfCV9f
+        XztfNzsOX19fX19fX187Nzc3NxM3DwAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC3opP/Y0k1/2NJNf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJ
+        Nf9jSTX/Y0k1/2NJNf9jSTX/Y0k1/2NJNf9jSTX/t6KT//79/P/h3Nj/4NfS/5Wst/9TXLH/w7Wt/9zD
+        s//bv63/27un/9u7p//bu6f/27un/9u7p//PtKP/Y0k1/7eik//////////+//79/f+uyNb/fNz8/1Nc
+        sf/Excn/+/Lu//rw6v/57ef/+evj//jn4P/35tz/z7Sj/2NJNf+3opP/////////////////8fX3/5rF
+        2f9+4Pz/WmK4/8XFyf/78+//+/Dr//nt5//56uT/+Ojh/8+0o/9jSTX/uqWW////////////////////
+        ///M2t//ebfM/4Dk/P9TXLH/xMXJ//zy7v/78Ov/+u3o//nr5P/Quav/Y0k1/76pmv//////////////
+        //9dobr/V5Kl/1aCjv92u9L/gOT8/1piuP/Excn//PPv//vw7P/57uj/0cG2/2NJNf/Drp7/////////
+        ////////Wcjn/4v6//+L5v//jtD3/33C5f+Rnsz/MEde//z18v/88+//+vDs/9HBtv9jSTX/yLKj////
+        /////////////97z+P9ZyOf/i/r//22W3P9Fi6D///z7//36+P/9+fb//fbz//zz7//Rwbb/Y0k1/76p
+        mv/////////////////8/v7/Wcjn/5Po+P99yev/eZvk/0hiav/+/Pz//vr5//349v/89vP/0cG2/2NJ
+        Nf/Drp7//////////////////////9rx+P9ZyOf/i/r//3zB8f99lOP/S1NY//79+//++/n//fn2/9HB
+        tv9jSTX/yLKj///////////////////////8/v7/vOTu/1nI5/+O0+v/icnj/4Oy0v9rk6b//v38//77
+        +f/9+ff/Y0k1/+qqi//qqov/6qqL/+qqi//ppYT/6Z96/+eXbv/mjmL/5YZW/+N9Sv/jdkD/4nI5/+Jy
+        Of/icjn/4nI5/8hiL//qqov//8Ki///Cov/+wJ///b2a//y5lv/7tZD/+rCL//mrhP/4p33/9qJ3//Wd
+        cf/1mWr/85Vl//OVZf/NZTH/6qqL/+qqi//qqov/6qqL/+qqi//qpob/6aF//+ibdv/nlGz/5o5i/+WH
+        WP/kgU7/5HtG/+N2Pv/jdj7/4nI5/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAD19QAA9fUAAPX1AAD19QAA
+        rwgAAIYJAACGCQAACfUAAP//AAB5qgAAr6///4L1
+</value>
+  </data>
+  <data name="DataExplorerIcon_UniqueKey" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AP39/f39NjYNDjb9/f39/f39/f39XotjYzs2Ev39/f39/f39Xq8J
+        XjZfYzY2/f39/f39/QmvrzavNmM6Dv39/f39/f1e9q8JEl5jYw79/f39/f39CbOvrwkJCTsy/f39/f39
+        /QkJr7OvCV42Ov39/f39/f39CYavrwkSNv39/f39/f39/f2vX/8OXv39/f39/f39/f39/WL2Dv39/f39
+        /f39/f39/f0Js182/f39/f39/f39/f39CfY2Nv39/f39/f39/f39/QmvNv39/f39/f39/f39/f0J/zo2
+        /f39/f39/f39/f39CQk2/f39/f39/f39/f39/f0JXv39/f39/f34PwAA8B8AAOAPAADgDwAA4A8AAOAP
+        AADgDwAA8B8AAPg/AAD8fwAA/D8AAPw/AAD8fwAA/D8AAPx/AAD+fwAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADarYAytYZX/6l2Qv+hazT/m2Qp/6qA
+        VP/WqHkbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgs4Y8x6B3//bRrf/qu4z/57F7/92h
+        Zf/JkVb/o3E//8udbiYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1K+I//vm0f/42r3/0aZ8/7aB
+        S//ZpG3/7rFz/8iNUP+sglX/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANm0j//87N7/+uTO/6J0
+        Rf/arH0svopW/++3f//dn1//oW45/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADeupX//vLp//zq
+        2//hw6X/oG89/9Wnef/xwI7/5q1y/5tjKP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA47+b//jp
+        3P/35tb/+d3D//fRq//0y6P/8saY/+CrdP+icDv/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOvP
+        s//lyav/+Onc//3w5P/427//9s+q/9+wgv+Yajv/uY1g6gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AADouosm58en/+PGqP/149L//u7h//PHmP+Yajv/t4pc+LqMXUYAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAN+xghvmyqu82bSP///06/+Yajv/v5Nm4LyOXzMAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAN66lf//9u//mGo7/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADiwJv///bv/9aoef+rfU//AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA5sWh///27/+7jV7/r4FS/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOvJp///9u//qnxN/7WHWFwAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADoxqL///bv/9GjdP+qfE3/AAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA5cGd/+/Wv/+qfE3/AAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADduJP/u5l2/wAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwH/394A82DeAP/f3gD/394A/9/eAPY2PgDxL94A/9/fAf
+        /V78f142/D82Nvw//f38P/0J/D82r/x/Og7+f/39
+</value>
+  </data>
+  <data name="DataExplorerIcon_View" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAIAEBAAAAEACABoBQAAJgAAABAQAAABACAAaAQAAI4FAAAoAAAAEAAAACAAAAABAAgAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADA3MAA8MqmAKo/
+        KgD/PyoAAF8qAFVfKgCqXyoA/18qAAB/KgBVfyoAqn8qAP9/KgAAnyoAVZ8qAKqfKgD/nyoAAL8qAFW/
+        KgCqvyoA/78qAADfKgBV3yoAqt8qAP/fKgAA/yoAVf8qAKr/KgD//yoAAABVAFUAVQCqAFUA/wBVAAAf
+        VQBVH1UAqh9VAP8fVQAAP1UAVT9VAKo/VQD/P1UAAF9VAFVfVQCqX1UA/19VAAB/VQBVf1UAqn9VAP9/
+        VQAAn1UAVZ9VAKqfVQD/n1UAAL9VAFW/VQCqv1UA/79VAADfVQBV31UAqt9VAP/fVQAA/1UAVf9VAKr/
+        VQD//1UAAAB/AFUAfwCqAH8A/wB/AAAffwBVH38Aqh9/AP8ffwAAP38AVT9/AKo/fwD/P38AAF9/AFVf
+        fwCqX38A/19/AAB/fwBVf38Aqn9/AP9/fwAAn38AVZ9/AKqffwD/n38AAL9/AFW/fwCqv38A/79/AADf
+        fwBV338Aqt9/AP/ffwAA/38AVf9/AKr/fwD//38AAACqAFUAqgCqAKoA/wCqAAAfqgBVH6oAqh+qAP8f
+        qgAAP6oAVT+qAKo/qgD/P6oAAF+qAFVfqgCqX6oA/1+qAAB/qgBVf6oAqn+qAP9/qgAAn6oAVZ+qAKqf
+        qgD/n6oAAL+qAFW/qgCqv6oA/7+qAADfqgBV36oAqt+qAP/fqgAA/6oAVf+qAKr/qgD//6oAAADUAFUA
+        1ACqANQA/wDUAAAf1ABVH9QAqh/UAP8f1AAAP9QAVT/UAKo/1AD/P9QAAF/UAFVf1ACqX9QA/1/UAAB/
+        1ABVf9QAqn/UAP9/1AAAn9QAVZ/UAKqf1AD/n9QAAL/UAFW/1ACqv9QA/7/UAADf1ABV39QAqt/UAP/f
+        1AAA/9QAVf/UAKr/1AD//9QAVQD/AKoA/wAAH/8AVR//AKof/wD/H/8AAD//AFU//wCqP/8A/z//AABf
+        /wBVX/8Aql//AP9f/wAAf/8AVX//AKp//wD/f/8AAJ//AFWf/wCqn/8A/5//AAC//wBVv/8Aqr//AP+/
+        /wAA3/8AVd//AKrf/wD/3/8AVf//AKr//wD/zMwA/8z/AP//MwD//2YA//+ZAP//zAAAfwAAVX8AAKp/
+        AAD/fwAAAJ8AAFWfAACqnwAA/58AAAC/AABVvwAAqr8AAP+/AAAA3wAAVd8AAKrfAAD/3wAAVf8AAKr/
+        AAAAACoAVQAqAKoAKgD/ACoAAB8qAFUfKgCqHyoA/x8qAAA/KgBVPyoA8Pv/AKSgoACAgIAAAAD/AAD/
+        AAAA//8A/wAAAAAAAAD//wAA////AC71LQ31MfUNLQ31/f39/f0N/f39/f39/f39Mf39/f39Lf0Nr4Ze
+        CQj1CPVaXlr3Xg39CC3///b19q8Nr6/UCFr1/dT/rwiv9tQJLa+ChtReMf0I9vb////2/w2vr68IWvX9
+        r/+vrwj/1AgN0YaG1F4N/a/1//b29f//La+zr9QHLf0N9q+vr//11A3/goav9w39r//////////1/7PR
+        CF71MfUtDfUtDfUN9f+ChtRa/f0I//b/9v/R9vb29vb2Xv39CdQJCQkJCQlfCV9fX179/QnUr4vU1NQJ
+        h4cJCQlf/f0J1AnUCQkJhwkJXwlfX/39/f39/f39/f39/f39/f0AHwAAf98AAEAAAABAAAAAQAAAAEAA
+        AABAAAAAQAAAAEAAAABAAAAAAAAAAMAAAADAAAAAwAAAAMAAAAD//wAAKAAAABAAAAAgAAAAAQAgAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAGhOOv9oTjr/aE46/2hOOv9oTjr/aE46/2hOOv9oTjr/aE46/2hO
+        Ov9oTjr/AAAAAAAAAAAAAAAAAAAAAAAAAABoTjr/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAaE46/wAAAAAAAAAAAAAAAAAAAAAAAAAAaE46/wAAAABoTjr/39jT/8W5sP+yopb/xbmw/9PL
+        xP9oTjr/xbmw/2hOOv9jSTWZY0k1mWNJNZljSTWZY0k1mWhOOv8AAAAA5NfO/2hOOv/9+vj//ff0//z0
+        7/9oTjr/++7m//rr4v9oTjr/27unmdu7p5nbu6eZz7SjmWNJNZloTjr/AAAAAOTXzv//////697W/+nb
+        0//m2M/////+/+DRx//dzcP/aE46//bWwpmdf2yZmntnmc+0o5ljSTWZaE46/wAAAADk187/////////
+        //////////////////////7////6/2hOOv/328mZ9tbCmfbSvJnPtKOZY0k1mWhOOv8AAAAA5NfO////
+        ///s4Nf/6t3V/+ja0f//////4tPK/9/Pxf9oTjr/+OHSmZ+CcJmcfWqZz7SjmWNJNZloTjr/AAAAAObZ
+        0P9oTjr/////////////////aE46////////////aE46//rn25n44dKZ99vJmdC5q5ljSTWZaE46/wAA
+        AABoTjr//////+3h2f/r39f/6NzU//////9oTjr/4NHI/2hOOv/77OOZoYZ0mZ2BbpnRwbaZY0k1mWhO
+        Ov8AAAAA69/V//////////////////////////////////////9oTjr//PLsmfvs45n659uZ0cG2mWNJ
+        NZloTjr/aE46/2hOOv9oTjr/aE46/2hOOv9oTjr/aE46/2hOOv9oTjr/aE46//3385mjiXiZn4RymdHB
+        tpljSTWZAAAAAAAAAADMtqeZ/v7+mf7+/pn+/v6Z/v7+mf7+/pn+/v6Z/v7+mf7+/pn9+/mZ/ffzmfzy
+        7Jn77OOZY0k1mQAAAAAAAAAA6qqLmeqqi5nqqouZ6aWEmemfepnnl26Z5o5imeWGVpnjfUqZ43ZAmeJy
+        OZnicjmZ4nI5mchiL5kAAAAAAAAAAOqqi5n/wqKZ/sCfmf29mpn8uZaZ+7WQmfqwi5n5q4SZ+Kd9mfai
+        d5n1nXGZ9ZlqmfOVZZnNZTGZAAAAAAAAAADqqouZ6qqLmeqqi5nqqouZ6qaGmemhf5nom3aZ55RsmeaO
+        Ypnlh1iZ5IFOmeR7Rpnjdj6Z4nI5mQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHy0Nf9/1DUAA9f1AAP39QAD9/UAA/f1AADH9QAD9/UAA
+        Da9AAAkIAAD1WsAA917AAAgtwAD29cAADa///wha
+</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\move.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="PersistentDescription_EntityProject-en-US" xml:space="preserve">
+    <value>实体文件所在项目</value>
+  </data>
+  <data name="PersistentDescription_EntityProject-zh-CN" xml:space="preserve">
+    <value>实体文件所在项目</value>
+  </data>
+  <data name="PersistentDescription_EntityFolder-en-US" xml:space="preserve">
+    <value>实体类文件所在的项目文件夹</value>
+  </data>
+  <data name="PersistentDescription_EntityFolder-zh-CN" xml:space="preserve">
+    <value>实体类文件所在的项目文件夹</value>
+  </data>
+  <data name="DesignerValidation_BoolRequiredAttribute-en-US" xml:space="preserve">
+    <value>Support the validation attribute with conditional</value>
+  </data>
+  <data name="DesignerValidation_BoolRequiredAttribute-zh-CN" xml:space="preserve">
+    <value>提供判断条件的必输验证特性。</value>
+  </data>
+  <data name="DesignerValidation_CompareAttribute-en-US" xml:space="preserve">
+    <value>提供一个比较模型的两个属性的特性</value>
+  </data>
+  <data name="DesignerValidation_CompareAttribute-zh-CN" xml:space="preserve">
+    <value>提供一个比较模型的两个属性的特性</value>
+  </data>
+  <data name="DesignerValidation_EnumType-en-US" xml:space="preserve">
+    <value>Enum Type</value>
+  </data>
+  <data name="DesignerValidation_EnumType-zh-CN" xml:space="preserve">
+    <value>枚举类型</value>
+  </data>
+  <data name="DesignerValidation_ErrorMessage-en-US" xml:space="preserve">
+    <value>获取或设置一条在验证失败的情况下与验证控件关联的错误消息。</value>
+  </data>
+  <data name="DesignerValidation_ErrorMessage-zh-CN" xml:space="preserve">
+    <value>获取或设置一条在验证失败的情况下与验证控件关联的错误消息。</value>
+  </data>
+  <data name="DesignerValidation_IsGenerate-en-US" xml:space="preserve">
+    <value>当前设置是否需要生成属性的特性</value>
+  </data>
+  <data name="DesignerValidation_IsGenerate-zh-CN" xml:space="preserve">
+    <value>当前设置是否需要生成属性的特性</value>
+  </data>
+  <data name="DesignerValidation_Length-en-US" xml:space="preserve">
+    <value>数组或字符串允许的最大长度</value>
+  </data>
+  <data name="DesignerValidation_Length-zh-CN" xml:space="preserve">
+    <value>数组或字符串允许的最大长度</value>
+  </data>
+  <data name="DesignerValidation_Maximum-en-US" xml:space="preserve">
+    <value>所允许的数据字段最大值</value>
+  </data>
+  <data name="DesignerValidation_Maximum-zh-CN" xml:space="preserve">
+    <value>所允许的数据字段最大值</value>
+  </data>
+  <data name="DesignerValidation_MaximumLength-en-US" xml:space="preserve">
+    <value>获取或设置字符串的最大长度</value>
+  </data>
+  <data name="DesignerValidation_MaximumLength-zh-CN" xml:space="preserve">
+    <value>获取或设置字符串的最大长度</value>
+  </data>
+  <data name="DesignerValidation_MaxLengthAttribute-en-US" xml:space="preserve">
+    <value>表示数组或字符串允许的最大长度的特性</value>
+  </data>
+  <data name="DesignerValidation_MaxLengthAttribute-zh-CN" xml:space="preserve">
+    <value>表示数组或字符串允许的最大长度的特性</value>
+  </data>
+  <data name="DesignerValidation_Minimum-en-US" xml:space="preserve">
+    <value>所允许的数据字段最小值</value>
+  </data>
+  <data name="DesignerValidation_Minimum-zh-CN" xml:space="preserve">
+    <value>所允许的数据字段最小值</value>
+  </data>
+  <data name="DesignerValidation_MinimumLength-en-US" xml:space="preserve">
+    <value>获取或设置字符串的最小长度</value>
+  </data>
+  <data name="DesignerValidation_MinimumLength-zh-CN" xml:space="preserve">
+    <value>获取或设置字符串的最小长度</value>
+  </data>
+  <data name="DesignerValidation_Operator-en-US" xml:space="preserve">
+    <value>比较运算符</value>
+  </data>
+  <data name="DesignerValidation_Operator-zh-CN" xml:space="preserve">
+    <value>比较运算符</value>
+  </data>
+  <data name="DesignerValidation_OtherProperty-en-US" xml:space="preserve">
+    <value>需要与当前属性比较的属性名称</value>
+  </data>
+  <data name="DesignerValidation_OtherProperty-zh-CN" xml:space="preserve">
+    <value>需要与当前属性比较的属性名称</value>
+  </data>
+  <data name="DesignerValidation_Pattern-en-US" xml:space="preserve">
+    <value>用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_Pattern-zh-CN" xml:space="preserve">
+    <value>用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_RegularExpressionAttribute-en-US" xml:space="preserve">
+    <value>指定用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_RegularExpressionAttribute-zh-CN" xml:space="preserve">
+    <value>指定用于验证关联成员的正则表达式</value>
+  </data>
+  <data name="DesignerValidation_RequiredValue-en-US" xml:space="preserve">
+    <value>目标属性为何值时，当前属性必输</value>
+  </data>
+  <data name="DesignerValidation_RequiredValue-zh-CN" xml:space="preserve">
+    <value>目标属性为何值时，当前属性必输</value>
+  </data>
+  <data name="DesignerValidation_StringLengthAttribute-en-US" xml:space="preserve">
+    <value>指定数据字段中允许的最小和最大字符长度</value>
+  </data>
+  <data name="DesignerValidation_StringLengthAttribute-zh-CN" xml:space="preserve">
+    <value>指定数据字段中允许的最小和最大字符长度</value>
+  </data>
+  <data name="DesignerValidation_ValidationDataType-en-US" xml:space="preserve">
+    <value>表示需要比较的数据类型</value>
+  </data>
+  <data name="DesignerValidation_ValidationDataType-zh-CN" xml:space="preserve">
+    <value>表示需要比较的数据类型</value>
+  </data>
+  <data name="DisplayFormat_ApplyFormatInEditMode-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示数据字段处于编辑模式时，是否将 System.ComponentModel.DataAnnotations.DisplayFormatAttribute.DataFormatString 属性指定的格式设置字符串应用于字段值。</value>
+  </data>
+  <data name="DisplayFormat_ApplyFormatInEditMode-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示数据字段处于编辑模式时，是否将 System.ComponentModel.DataAnnotations.DisplayFormatAttribute.DataFormatString 属性指定的格式设置字符串应用于字段值。</value>
+  </data>
+  <data name="DisplayFormat_ConvertEmptyStringToNull-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示在数据源中更新数据字段时是否将空字符串值 ("") 自动转换为 null。</value>
+  </data>
+  <data name="DisplayFormat_ConvertEmptyStringToNull-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示在数据源中更新数据字段时是否将空字符串值 ("") 自动转换为 null。</value>
+  </data>
+  <data name="DisplayFormat_DataFormatString-en-US" xml:space="preserve">
+    <value>获取或设置字段值的显示格式。</value>
+  </data>
+  <data name="DisplayFormat_DataFormatString-zh-CN" xml:space="preserve">
+    <value>获取或设置字段值的显示格式。</value>
+  </data>
+  <data name="DisplayFormat_HtmlEncode-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否应经过 HTML 编码。</value>
+  </data>
+  <data name="DisplayFormat_HtmlEncode-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否应经过 HTML 编码。</value>
+  </data>
+  <data name="DisplayFormat_NullDisplayText-en-US" xml:space="preserve">
+    <value>获取或设置字段值为 null 时为字段显示的文本。</value>
+  </data>
+  <data name="DisplayFormat_NullDisplayText-zh-CN" xml:space="preserve">
+    <value>获取或设置字段值为 null 时为字段显示的文本。</value>
+  </data>
+  <data name="PersistentCategory_Display-en-US" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="PersistentCategory_Display-zh-CN" xml:space="preserve">
+    <value>显示格式</value>
+  </data>
+  <data name="PersistentCategory_Attributes-en-US" xml:space="preserve">
+    <value>Property Attributes</value>
+  </data>
+  <data name="PersistentCategory_Attributes-zh-CN" xml:space="preserve">
+    <value>属性特性</value>
+  </data>
+  <data name="PropertyDescription_Attributes-en-US" xml:space="preserve">
+    <value>表示验证特性集合</value>
+  </data>
+  <data name="PropertyDescription_Attributes-zh-CN" xml:space="preserve">
+    <value>表示验证特性集合</value>
+  </data>
+  <data name="PersistentCategory_CheckCommands-en-US" xml:space="preserve">
+    <value>Check Command</value>
+  </data>
+  <data name="PersistentCategory_CheckCommands-zh-CN" xml:space="preserve">
+    <value>检测命令</value>
+  </data>
+  <data name="PersistentCategory_NewCommands-en-US" xml:space="preserve">
+    <value>New Command</value>
+  </data>
+  <data name="PersistentCategory_NewCommands-zh-CN" xml:space="preserve">
+    <value>新值命令</value>
+  </data>
+  <data name="PersistentDescription_CheckCommand-en-US" xml:space="preserve">
+    <value>检测实体属性是否允许执行此命令，检测通过则允许执行，否则返回异常信息。</value>
+  </data>
+  <data name="PersistentDescription_CheckCommand-zh-CN" xml:space="preserve">
+    <value>检测实体属性是否允许执行此命令，检测通过则允许执行，否则返回异常信息。</value>
+  </data>
+  <data name="PersistentDescription_NewCommand-en-US" xml:space="preserve">
+    <value>从数据库中创建实体属性的新值。</value>
+  </data>
+  <data name="PersistentDescription_NewCommand-zh-CN" xml:space="preserve">
+    <value>从数据库中创建实体属性的新值。</value>
+  </data>
+  <data name="PersistentCategory_Parameter-en-US" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="PersistentCategory_Parameter-zh-CN" xml:space="preserve">
+    <value>命令参数</value>
+  </data>
+  <data name="PersistentDescription_Parameter-en-US" xml:space="preserve">
+    <value>表示 DbCommand 的参数，也可以是它到 DataSet/DataTable 列的映射。</value>
+  </data>
+  <data name="PersistentDescription_Parameter-zh-CN" xml:space="preserve">
+    <value>表示 DbCommand 的参数，也可以是它到 DataSet/DataTable 列的映射。</value>
+  </data>
+  <data name="PersistentDescription_ParameterCollection-en-US" xml:space="preserve">
+    <value>表示与 DbCommand 相关联的参数的集合以及各个参数到 DataSet/DataTable 中列的映射。</value>
+  </data>
+  <data name="PersistentDescription_ParameterCollection-zh-CN" xml:space="preserve">
+    <value>表示与 DbCommand 相关联的参数的集合以及各个参数到 DataSet/DataTable 中列的映射。</value>
+  </data>
+  <data name="PersistentCategory_DynamicCommand-en-US" xml:space="preserve">
+    <value>Dynamic Command</value>
+  </data>
+  <data name="PersistentCategory_DynamicCommand-zh-CN" xml:space="preserve">
+    <value>动态命令</value>
+  </data>
+  <data name="PersistentDescription_BaseAccess-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类需要继承的基类类型。</value>
+  </data>
+  <data name="PersistentDescription_BaseAccess-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类需要继承的基类类型。</value>
+  </data>
+  <data name="PersistentCategory_DataCondition-en-US" xml:space="preserve">
+    <value>Search Condition</value>
+  </data>
+  <data name="PersistentCategory_DataCondition-zh-CN" xml:space="preserve">
+    <value>查询条件类</value>
+  </data>
+  <data name="PersistentDescription_DataConditionProperties-en-US" xml:space="preserve">
+    <value>当前命令执行时需要传入的条件类实例。</value>
+  </data>
+  <data name="PersistentDescription_DataConditionProperties-zh-CN" xml:space="preserve">
+    <value>当前命令执行时需要传入的条件类实例。</value>
+  </data>
+  <data name="DisplayName_ConverterName-en-US" xml:space="preserve">
+    <value>获取或设置属性的本地显示名称的转换器名称</value>
+  </data>
+  <data name="DisplayName_ConverterName-zh-CN" xml:space="preserve">
+    <value>获取或设置属性的本地显示名称的转换器名称</value>
+  </data>
+  <data name="DisplayName_DisplayName-en-US" xml:space="preserve">
+    <value>获取或设置属性的显示名称</value>
+  </data>
+  <data name="DisplayName_DisplayName-zh-CN" xml:space="preserve">
+    <value>获取或设置属性的显示名称</value>
+  </data>
+  <data name="DisplayName_DisplayType-en-US" xml:space="preserve">
+    <value>获取或设置显示特性的类型</value>
+  </data>
+  <data name="DisplayName_DisplayType-zh-CN" xml:space="preserve">
+    <value>获取或设置显示特性的类型</value>
+  </data>
+  <data name="DisplayName_Description-en-US" xml:space="preserve">
+    <value>表示属性的显示名称格式设置</value>
+  </data>
+  <data name="DisplayName_Description-zh-CN" xml:space="preserve">
+    <value>表示属性的显示名称格式设置</value>
+  </data>
+  <data name="PersistentDescription_Generate-en-US" xml:space="preserve">
+    <value>实体类初始化操作类型，默认为生成多个实体类。</value>
+  </data>
+  <data name="PersistentDescription_Generate-zh-CN" xml:space="preserve">
+    <value>实体类初始化操作类型，默认为生成多个实体类。</value>
+  </data>
+  <data name="PersistentDescription_GeneratorMode-en-US" xml:space="preserve">
+    <value>获取或设置实体类生成方式，包含生成实体类，生成强类型DataTable，生成实体类和强类型DataTable。</value>
+  </data>
+  <data name="PersistentDescription_GeneratorMode-zh-CN" xml:space="preserve">
+    <value>获取或设置实体类生成方式，包含生成实体类，生成强类型DataTable，生成实体类和强类型DataTable。</value>
+  </data>
+  <data name="PropertyDescription_DefaultValue-en-US" xml:space="preserve">
+    <value>Gets or sets the default value of column.</value>
+  </data>
+  <data name="PropertyDescription_DefaultValue-zh-CN" xml:space="preserve">
+    <value>获取或设置数据列的默认值。</value>
+  </data>
+  <data name="PersistentDescription_TableInfo-en-US" xml:space="preserve">
+    <value>获取当前数据持久类对应的数据表信息</value>
+  </data>
+  <data name="PersistentDescription_TableInfo-zh-CN" xml:space="preserve">
+    <value>获取当前数据持久类对应的数据表信息</value>
+  </data>
+  <data name="PersistentDisplay_EntityFolder-en-US" xml:space="preserve">
+    <value>Folder Of Entity Class </value>
+  </data>
+  <data name="PersistentDisplay_EntityFolder-zh-CN" xml:space="preserve">
+    <value>实体文件夹</value>
+  </data>
+  <data name="PersistentDisplay_EntityNamespace-en-US" xml:space="preserve">
+    <value>Namespace Of Data Entity Class</value>
+  </data>
+  <data name="PersistentDisplay_EntityNamespace-zh-CN" xml:space="preserve">
+    <value>数据实体类命名空间</value>
+  </data>
+  <data name="PersistentDisplay_EntityProject-en-US" xml:space="preserve">
+    <value>File Of Entity Class </value>
+  </data>
+  <data name="PersistentDisplay_EntityProject-zh-CN" xml:space="preserve">
+    <value>实体文件项目</value>
+  </data>
+  <data name="PersistentDisplay_Namespace-en-US" xml:space="preserve">
+    <value>Namespace Of Data Persistent Class</value>
+  </data>
+  <data name="PersistentDisplay_Namespace-zh-CN" xml:space="preserve">
+    <value>数据持久类命名空间</value>
+  </data>
+  <data name="PersistentDescription_ColumnComputed-en-US" xml:space="preserve">
+    <value>Gets or sets a value that indicates is a compute field</value>
+  </data>
+  <data name="PersistentDescription_ColumnComputed-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示字段是否为计算列</value>
+  </data>
+  <data name="Database_Functions-en-US" xml:space="preserve">
+    <value>Functions</value>
+  </data>
+  <data name="Database_Functions-zh-CN" xml:space="preserve">
+    <value>函数</value>
+  </data>
+  <data name="Database_Tables-en-US" xml:space="preserve">
+    <value>Tables</value>
+  </data>
+  <data name="Database_Tables-zh-CN" xml:space="preserve">
+    <value>表</value>
+  </data>
+  <data name="Database_Views-en-US" xml:space="preserve">
+    <value>Views</value>
+  </data>
+  <data name="Database_Views-zh-CN" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="PersistentDescription_BaseClass-en-US" xml:space="preserve">
+    <value>Gets or sets the string value, this value is a base class's type of entity or condition.</value>
+  </data>
+  <data name="PersistentDescription_BaseClass-zh-CN" xml:space="preserve">
+    <value>获取或设置一个 String 值，该值指示当前实体类的基类类型。</value>
+  </data>
+  <data name="Package_Description-en-US" xml:space="preserve">
+    <value>ASP.NET MVC Data Persistent</value>
+  </data>
+  <data name="Package_Description-zh-CN" xml:space="preserve">
+    <value>ASP.NET MVC 数据持久类</value>
+  </data>
+  <data name="Package_ResourceDescription-en-US" xml:space="preserve">
+    <value>Resources has been created successfully, and has been copied into the system clipboard.</value>
+  </data>
+  <data name="Package_ResourceDescription-zh-CN" xml:space="preserve">
+    <value>下列资源已经创建成功，且已经复制进系统剪贴板。</value>
+  </data>
+  <data name="Package_ResourceIsNotExists-en-US" xml:space="preserve">
+    <value>Resource name does not exist the localized resource files:
+"{0}":</value>
+  </data>
+  <data name="Package_ResourceIsNotExists-zh-CN" xml:space="preserve">
+    <value>下列资源名不存在本地化资源文件：
+"{0}":</value>
+  </data>
+  <data name="Package_CreateResourceSuccessful-en-US" xml:space="preserve">
+    <value>Data Persistence resources has been created successfully.</value>
+  </data>
+  <data name="Package_CreateResourceSuccessful-zh-CN" xml:space="preserve">
+    <value>当前数据持久类资源已经创建成功。</value>
+  </data>
+  <data name="RequiredValidation_AllowEmptyStrings-en-US" xml:space="preserve">
+    <value>Get or set the value of a Boolean type, the value indicating whether allows an empty string by string type.
+If the property type is digital types of whether to allow to zero.
+If the property type is GUID types of whether to allow for the "00000000-0000-0000-0000-000000000000".</value>
+  </data>
+  <data name="RequiredValidation_AllowEmptyStrings-zh-CN" xml:space="preserve">
+    <value>获取或设置一个布尔类型的值，该值指示如果属性类型是字符型的是否允许空字符串。
+如果属性类型是数字类型的是否允许为零。
+如果属性类型是GUID类型的是否允许为"00000000-0000-0000-0000-000000000000"。</value>
+  </data>
+  <data name="DesignerValidation_Index-en-US" xml:space="preserve">
+    <value>Get or set a value, the value indicating import source is index.</value>
+  </data>
+  <data name="DesignerValidation_Index-zh-CN" xml:space="preserve">
+    <value>获取或设置当前属性导入时指定导入数据源的索引。</value>
+  </data>
+  <data name="DesignerValidation_Required-en-US" xml:space="preserve">
+    <value>Get or set a value, the value indicating current property is must import.</value>
+  </data>
+  <data name="DesignerValidation_Required-zh-CN" xml:space="preserve">
+    <value>获取或设置当前属性是否必须导入。</value>
+  </data>
+  <data name="DesignerValidation_Checked-en-US" xml:space="preserve">
+    <value>Get or set a value, the value indicating current property is import.</value>
+  </data>
+  <data name="DesignerValidation_Checked-zh-CN" xml:space="preserve">
+    <value>获取或设置当前属性是否需要导入。</value>
+  </data>
+  <data name="DesignerValidation_ImportPorpertyAttribute-en-US" xml:space="preserve">
+    <value>Support the import attribute for property of entity model.</value>
+  </data>
+  <data name="DesignerValidation_ImportPorpertyAttribute-zh-CN" xml:space="preserve">
+    <value>表示实体类属性导入配置特性信息。</value>
+  </data>
+  <data name="PersistentDescription_CommandText-en-US" xml:space="preserve">
+    <value>获取或设置要对数据源执行的 Transact-SQL 语句、表名或存储过程</value>
+  </data>
+  <data name="PersistentDescription_CommandText-zh-CN" xml:space="preserve">
+    <value>获取或设置要对数据源执行的 Transact-SQL 语句、表名或存储过程</value>
+  </data>
+  <data name="PersistentDescription_CommandText_Editor-en-US" xml:space="preserve">
+    <value>Edit Property : "{0}" </value>
+  </data>
+  <data name="PersistentDescription_CommandText_Editor-zh-CN" xml:space="preserve">
+    <value>修改 "{0}" 属性</value>
+  </data>
+  <data name="PropertyDescription_EnabledValidation-en-US" xml:space="preserve">
+    <value>Get or set a Boolean value for allowed to empty, the value indicating whether the this entity model enabled IDataErrorInfo's validation, if the setting values the cover AbstractEntity.GlobalEnabledValidation's value. GlobalEnabledValidation defaults to False.</value>
+  </data>
+  <data name="PropertyDescription_EnabledValidation-zh-CN" xml:space="preserve">
+    <value>获取或设置一个允许空的布尔值，该值指示当前实体模型是否启用 IDataErrorInfo接口验证，如果设置值则覆盖AbstractEntity.GlobalEnabledValidation的设置。
+GlobalEnabledValidation的默认值为 False。</value>
+  </data>
+  <data name="PersistentDescription_PropertyOverride-en-US" xml:space="preserve">
+    <value>Get or set a Boolean value, the value indicating whether to override a base class property.</value>
+  </data>
+  <data name="PersistentDescription_PropertyOverride-zh-CN" xml:space="preserve">
+    <value>获取或设置一个布尔值，该值指示是否需要重载基类属性。</value>
+  </data>
+  <data name="PersistentDescription_PropertyVirtual-en-US" xml:space="preserve">
+    <value>Get or set a Boolean value, the value indicating whether the virtual property.</value>
+  </data>
+  <data name="PersistentDescription_PropertyVirtual-zh-CN" xml:space="preserve">
+    <value>获取或设置一个布尔值，该值指示是否虚拟属性。</value>
+  </data>
+  <data name="PersistentDescription_PropertyDataMember-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示当前属性是否需要添加标记System.Runtime.Serialization.DataMemberAttribute</value>
+  </data>
+  <data name="PersistentDescription_PropertyDataMember-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示当前属性是否需要添加标记System.Runtime.Serialization.DataMemberAttribute</value>
+  </data>
+  <data name="Package_CreateResourceFailed-en-US" xml:space="preserve">
+    <value>created localization resource is failed，may be resource is exists in resource files.</value>
+  </data>
+  <data name="Package_CreateResourceFailed-zh-CN" xml:space="preserve">
+    <value>本地化资源创建失败，可能的原因是资源已经存在于资源文件中。</value>
+  </data>
+  <data name="PersistentDescription_DataContract-en-US" xml:space="preserve">
+    <value>表示当前对象是否需要使用数据契约。</value>
+  </data>
+  <data name="PersistentDescription_DataContract-zh-CN" xml:space="preserve">
+    <value>表示当前对象是否需要使用数据契约。</value>
+  </data>
+  <data name="PersistentCategory_DataContract-en-US" xml:space="preserve">
+    <value>Data Contract Generator</value>
+  </data>
+  <data name="PersistentCategory_DataContract-zh-CN" xml:space="preserve">
+    <value>数据协定代码生成</value>
+  </data>
+  <data name="PersistentDescription_DataContract_Generate-en-US" xml:space="preserve">
+    <value>Get or set a Boolean value, the value indicating the type need to use the data protoco.</value>
+  </data>
+  <data name="PersistentDescription_DataContract_Generate-zh-CN" xml:space="preserve">
+    <value>获取或设置类型是否使用数据协定。</value>
+  </data>
+  <data name="PersistentDescription_DataContract_IsReference-en-US" xml:space="preserve">
+    <value>Get or set a value, the value indicating whether to retain the object reference data.</value>
+  </data>
+  <data name="PersistentDescription_DataContract_IsReference-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示是否保留对象引用数据。</value>
+  </data>
+  <data name="PersistentDescription_DataContract_Name-en-US" xml:space="preserve">
+    <value>Get or set the name of data protocol.</value>
+  </data>
+  <data name="PersistentDescription_DataContract_Name-zh-CN" xml:space="preserve">
+    <value>获取或设置类型的数据协定的名称。</value>
+  </data>
+  <data name="PersistentDescription_DataContract_Namespace-en-US" xml:space="preserve">
+    <value>Get or set the namespace of data protocol.</value>
+  </data>
+  <data name="PersistentDescription_DataContract_Namespace-zh-CN" xml:space="preserve">
+    <value>获取或设置类型的数据协定的命名空间。</value>
+  </data>
+  <data name="PersistentGenerator_BaseAccess-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类需要继承的基类类型。</value>
+  </data>
+  <data name="PersistentGenerator_BaseAccess-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类需要继承的基类类型。</value>
+  </data>
+  <data name="PersistentGenerator_Description-en-US" xml:space="preserve">
+    <value>about information for data persistent class'generator.</value>
+  </data>
+  <data name="PersistentGenerator_Description-zh-CN" xml:space="preserve">
+    <value>表示当前数据持久类中关于生成代码部分的说明</value>
+  </data>
+  <data name="PersistentGenerator_GenerateMode-en-US" xml:space="preserve">
+    <value>实体类初始化操作类型，默认为生成多个实体类。</value>
+  </data>
+  <data name="PersistentGenerator_GenerateMode-zh-CN" xml:space="preserve">
+    <value>实体类初始化操作类型，默认为生成多个实体类。</value>
+  </data>
+  <data name="PersistentGenerator_Modifier-en-US" xml:space="preserve">
+    <value>获取或设置实体类的访问修饰符</value>
+  </data>
+  <data name="PersistentGenerator_Modifier-zh-CN" xml:space="preserve">
+    <value>获取或设置实体类的访问修饰符</value>
+  </data>
+  <data name="PersistentDescription_MessageConverter-en-US" xml:space="preserve">
+    <value>Converter Name of localization resource</value>
+  </data>
+  <data name="PersistentDescription_MessageConverter-zh-CN" xml:space="preserve">
+    <value>资源本地化转换器名称</value>
+  </data>
+  <data name="PersistentDisplay_MessageConverter-en-US" xml:space="preserve">
+    <value>Converter Name</value>
+  </data>
+  <data name="PersistentDisplay_MessageConverter-zh-CN" xml:space="preserve">
+    <value>转换器名称</value>
+  </data>
+  <data name="PersistentDescription_ArgumentsType-en-US" xml:space="preserve">
+    <value>call arguments type</value>
+  </data>
+  <data name="PersistentDescription_ArgumentsType-zh-CN" xml:space="preserve">
+    <value>调用参数类型。</value>
+  </data>
+  <data name="PropertyDescription_BooleanDisplay-en-US" xml:space="preserve">
+    <value>指定布尔类型的属性显示可选文本的定义</value>
+  </data>
+  <data name="PropertyDescription_BooleanDisplay-zh-CN" xml:space="preserve">
+    <value>指定布尔类型的属性显示可选文本的定义</value>
+  </data>
+  <data name="BooleanDisplay_FalseText-en-US" xml:space="preserve">
+    <value>False Option Text</value>
+  </data>
+  <data name="BooleanDisplay_FalseText-zh-CN" xml:space="preserve">
+    <value>False选项文本</value>
+  </data>
+  <data name="BooleanDisplay_TrueText-en-US" xml:space="preserve">
+    <value>True Option Text</value>
+  </data>
+  <data name="BooleanDisplay_TrueText-zh-CN" xml:space="preserve">
+    <value>True选项文本</value>
+  </data>
+  <data name="PersistentGenerator_GenerateContext-en-US" xml:space="preserve">
+    <value>当前数据持久类是否需要生成持久类上下文管理类</value>
+  </data>
+  <data name="PersistentGenerator_GenerateContext-zh-CN" xml:space="preserve">
+    <value>当前数据持久类是否需要生成持久类上下文管理类</value>
+  </data>
+  <data name="PersistentGenerator_SupportDatabases-en-US" xml:space="preserve">
+    <value>Get or set the data persistent class needs to support the database type</value>
+  </data>
+  <data name="PersistentGenerator_SupportDatabases-zh-CN" xml:space="preserve">
+    <value>获取或设置数据持久类需要支持的数据库类型</value>
+  </data>
+  <data name="PersistentGenerator_SupportDatabases_Display-en-US" xml:space="preserve">
+    <value>Support Databases</value>
+  </data>
+  <data name="PersistentGenerator_SupportDatabases_Display-zh-CN" xml:space="preserve">
+    <value>支持的数据库</value>
+  </data>
+  <data name="PersistentDescription_ClassName-en-US" xml:space="preserve">
+    <value>Gets or sets the EntityDefinition ClassName.</value>
+  </data>
+  <data name="PersistentDescription_ClassName-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示实体模型的类名称。</value>
+  </data>
+  <data name="PropertyDescription_Guid-en-US" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类型Guid。</value>
+  </data>
+  <data name="PropertyDescription_Guid-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示实体类型Guid。</value>
+  </data>
+  <data name="PersistentDescription_IsAbstract-en-US" xml:space="preserve">
+    <value>获取或设置一个值，该值指示当前实体是否生成首抽象类</value>
+  </data>
+  <data name="PersistentDescription_IsAbstract-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值指示当前实体是否生成首抽象类</value>
+  </data>
+  <data name="PropertyDescription_DataConditionGenerator-en-US" xml:space="preserve">
+    <value>表示条件模型生成器信息</value>
+  </data>
+  <data name="PropertyDescription_DataConditionGenerator-zh-CN" xml:space="preserve">
+    <value>表示条件模型生成器信息</value>
+  </data>
+  <data name="PropertyDescription_DataEntityGenerator-en-US" xml:space="preserve">
+    <value>表示实体模型生成器信息</value>
+  </data>
+  <data name="PropertyDescription_DataEntityGenerator-zh-CN" xml:space="preserve">
+    <value>表示实体模型生成器信息</value>
+  </data>
+  <data name="DisplayName_Prompt-en-US" xml:space="preserve">
+    <value>Get or set a value, the value will be used to prompt for the UI settings watermark.</value>
+  </data>
+  <data name="DisplayName_Prompt-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，该值将用于为用户界面中的提示设置水印。</value>
+  </data>
+  <data name="PersistentDescription_GroupName-en-US" xml:space="preserve">
+    <value>Get or set Resource's Group</value>
+  </data>
+  <data name="PersistentDescription_GroupName-zh-CN" xml:space="preserve">
+    <value>获取或设置资源组的名称</value>
+  </data>
+  <data name="PersistentDisplay_GroupName-en-US" xml:space="preserve">
+    <value>Private Resource's Group</value>
+  </data>
+  <data name="PersistentDisplay_GroupName-zh-CN" xml:space="preserve">
+    <value>私有资源组名称</value>
+  </data>
+  <data name="PersistentDescription_Columns-en-US" xml:space="preserve">
+    <value>Gets columns of table</value>
+  </data>
+  <data name="PersistentDescription_Columns-zh-CN" xml:space="preserve">
+    <value>获取数据库表中列集合</value>
+  </data>
+  <data name="PersistentDescription_Description-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类的描述信息</value>
+  </data>
+  <data name="PersistentDescription_Description-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类的描述信息</value>
+  </data>
+  <data name="PersistentDescription_EntityName-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类，数据实体类的名称</value>
+  </data>
+  <data name="PersistentDescription_EntityName-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类，数据实体类的名称</value>
+  </data>
+  <data name="PersistentDescription_TableName-en-US" xml:space="preserve">
+    <value>获取当前数据持久类的表名称</value>
+  </data>
+  <data name="PersistentDescription_TableName-zh-CN" xml:space="preserve">
+    <value>获取当前数据持久类的表名称</value>
+  </data>
+  <data name="PersistentDescription_ViewName-en-US" xml:space="preserve">
+    <value>获取或设置当前数据持久类的视图名称</value>
+  </data>
+  <data name="PersistentDescription_ViewName-zh-CN" xml:space="preserve">
+    <value>获取或设置当前数据持久类的视图名称</value>
+  </data>
+  <data name="PersistentDisplay_Columns-en-US" xml:space="preserve">
+    <value>Columns</value>
+  </data>
+  <data name="PersistentDisplay_Columns-zh-CN" xml:space="preserve">
+    <value>数据列集合</value>
+  </data>
+  <data name="PersistentDisplay_Description-en-US" xml:space="preserve">
+    <value>Persistent Description</value>
+  </data>
+  <data name="PersistentDisplay_Description-zh-CN" xml:space="preserve">
+    <value>持久类描述</value>
+  </data>
+  <data name="PersistentDisplay_EntityName-en-US" xml:space="preserve">
+    <value>Entity Model Name</value>
+  </data>
+  <data name="PersistentDisplay_EntityName-zh-CN" xml:space="preserve">
+    <value>实体模型名称</value>
+  </data>
+  <data name="PersistentDisplay_TableName-en-US" xml:space="preserve">
+    <value>Table Name</value>
+  </data>
+  <data name="PersistentDisplay_TableName-zh-CN" xml:space="preserve">
+    <value>数据库表名称</value>
+  </data>
+  <data name="PersistentDisplay_ViewName-en-US" xml:space="preserve">
+    <value>View Name</value>
+  </data>
+  <data name="PersistentDisplay_ViewName-zh-CN" xml:space="preserve">
+    <value>对应视图名称</value>
+  </data>
+  <data name="PersistentGenerator_ApplyConnection-en-US" xml:space="preserve">
+    <value>Whether the current database context class specifies the connection, if it is true the inherited from AbstractContext class or AbstractDataContext class, class inheritance in AbstractTableContext or AbstractDataContext otherwise</value>
+  </data>
+  <data name="PersistentGenerator_ApplyConnection-zh-CN" xml:space="preserve">
+    <value>当前数据库上下文类是否指定连接，如果为true则继承于AbstractContext类或AbstractDataContext类，否则继承于AbstractTableContext类或AbstractDataContext类</value>
+  </data>
+  <data name="DisplayName_AsyncGenerated-en-US" xml:space="preserve">
+    <value>AsyncGenerated</value>
+  </data>
+  <data name="DisplayName_AsyncGenerated-zh-CN" xml:space="preserve">
+    <value>生成异步方法</value>
+  </data>
+  <data name="DisplayName_AutoGenerated-en-US" xml:space="preserve">
+    <value>AutoGenerated</value>
+  </data>
+  <data name="DisplayName_AutoGenerated-zh-CN" xml:space="preserve">
+    <value>生成代码</value>
+  </data>
+  <data name="DisplayName_CommandName-en-US" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DisplayName_CommandName-zh-CN" xml:space="preserve">
+    <value>方法名称</value>
+  </data>
+  <data name="DisplayName_ConfigurationKind-en-US" xml:space="preserve">
+    <value>Command Type</value>
+  </data>
+  <data name="DisplayName_ConfigurationKind-zh-CN" xml:space="preserve">
+    <value>命令类型</value>
+  </data>
+  <data name="DisplayName_ExecutableMethod-en-US" xml:space="preserve">
+    <value>Method</value>
+  </data>
+  <data name="DisplayName_ExecutableMethod-zh-CN" xml:space="preserve">
+    <value>可执行方法</value>
+  </data>
+  <data name="DisplayName_Modifier-en-US" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="DisplayName_Modifier-zh-CN" xml:space="preserve">
+    <value>方法修饰符</value>
+  </data>
+  <data name="PersistentDisplay_ApplyConnection-en-US" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="PersistentDisplay_ApplyConnection-zh-CN" xml:space="preserve">
+    <value>指定数据连接</value>
+  </data>
+  <data name="PersistentGenerator_ResxMode-en-US" xml:space="preserve">
+    <value>Gets or sets the existence form of the database configuration file</value>
+  </data>
+  <data name="PersistentGenerator_ResxMode-zh-CN" xml:space="preserve">
+    <value>获取或设置数据库配置文件存在形式</value>
+  </data>
+  <data name="PersistentGenerator_ResxMode_Display-en-US" xml:space="preserve">
+    <value>Generation Operation</value>
+  </data>
+  <data name="PersistentGenerator_ResxMode_Display-zh-CN" xml:space="preserve">
+    <value>配置文件生成操作</value>
+  </data>
+  <data name="PersistentCategory_ConditionCodeGenerator-en-US" xml:space="preserve">
+    <value>Condition Code Generator</value>
+  </data>
+  <data name="PersistentCategory_ConditionCodeGenerator-zh-CN" xml:space="preserve">
+    <value>条件模型代码生成</value>
+  </data>
+  <data name="PersistentCategory_EntityCodeGenerator-en-US" xml:space="preserve">
+    <value>Model Code Generator</value>
+  </data>
+  <data name="PersistentCategory_EntityCodeGenerator-zh-CN" xml:space="preserve">
+    <value>实体模型代码生成</value>
+  </data>
+  <data name="PersistentDisplay_EntityComment-en-US" xml:space="preserve">
+    <value>Model Comment</value>
+  </data>
+  <data name="PersistentDisplay_EntityComment-zh-CN" xml:space="preserve">
+    <value>实体模型描述</value>
+  </data>
+  <data name="PersistentDisplay_GeneratorMode-en-US" xml:space="preserve">
+    <value>Generator Mode</value>
+  </data>
+  <data name="PersistentDisplay_GeneratorMode-zh-CN" xml:space="preserve">
+    <value>模型生成方式</value>
+  </data>
+  <data name="PersistentDescription_Condition_IsAbstract-en-US" xml:space="preserve">
+    <value>获取或设置条件模型类是否需要生成抽象类</value>
+  </data>
+  <data name="PersistentDescription_Condition_IsAbstract-zh-CN" xml:space="preserve">
+    <value>获取或设置条件模型类是否需要生成抽象类</value>
+  </data>
+  <data name="PersistentDescription_Condition_Modifier-en-US" xml:space="preserve">
+    <value>获取或设置条件模型类的访问修饰符</value>
+  </data>
+  <data name="PersistentDescription_Condition_Modifier-zh-CN" xml:space="preserve">
+    <value>获取或设置条件模型类的访问修饰符</value>
+  </data>
+  <data name="PersistentDisplay_Condition_ClassName-en-US" xml:space="preserve">
+    <value>Condition Model Class</value>
+  </data>
+  <data name="PersistentDisplay_Condition_ClassName-zh-CN" xml:space="preserve">
+    <value>条件模型类</value>
+  </data>
+  <data name="PersistentDisplay_Condition_IsAbstract-en-US" xml:space="preserve">
+    <value>Generate Abstract</value>
+  </data>
+  <data name="PersistentDisplay_Condition_IsAbstract-zh-CN" xml:space="preserve">
+    <value>生成抽象类</value>
+  </data>
+  <data name="PersistentDisplay_Condition_Modifier-en-US" xml:space="preserve">
+    <value>Class Modifier</value>
+  </data>
+  <data name="PersistentDisplay_Condition_Modifier-zh-CN" xml:space="preserve">
+    <value>访问修饰符</value>
+  </data>
+  <data name="PersistentDescription_Condition_BaseClass-en-US" xml:space="preserve">
+    <value>Gets or sets the string value, this value is a base class's type of condition model.</value>
+  </data>
+  <data name="PersistentDescription_Condition_BaseClass-zh-CN" xml:space="preserve">
+    <value>获取或设置一个 String 值，该值指示当前条件模型的基类类型。</value>
+  </data>
+  <data name="PersistentDescription_Condition_Guid-en-US" xml:space="preserve">
+    <value>获取或设置一个值，表示条件模型类型的Guid。</value>
+  </data>
+  <data name="PersistentDescription_Condition_Guid-zh-CN" xml:space="preserve">
+    <value>获取或设置一个值，表示条件模型类型的Guid。</value>
+  </data>
+  <data name="PersistentDisplay_Condition_BaseClass-en-US" xml:space="preserve">
+    <value>Base Class</value>
+  </data>
+  <data name="PersistentDisplay_Condition_BaseClass-zh-CN" xml:space="preserve">
+    <value>基类类型</value>
+  </data>
+  <data name="PersistentDisplay_Condition_Guid-en-US" xml:space="preserve">
+    <value>Model GUID</value>
+  </data>
+  <data name="PersistentDisplay_Condition_Guid-zh-CN" xml:space="preserve">
+    <value>类型GUID</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_Generate-en-US" xml:space="preserve">
+    <value>Generate Contract</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_Generate-zh-CN" xml:space="preserve">
+    <value>生成数据协定</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_IsReference-en-US" xml:space="preserve">
+    <value>Object Reference</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_IsReference-zh-CN" xml:space="preserve">
+    <value>保留对象引用</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_Name-en-US" xml:space="preserve">
+    <value>Contract Name</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_Name-zh-CN" xml:space="preserve">
+    <value>数据协定名称</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_Namespace-en-US" xml:space="preserve">
+    <value>Contract Namespace</value>
+  </data>
+  <data name="PersistentDisplay_DataContract_Namespace-zh-CN" xml:space="preserve">
+    <value>协定命名空间</value>
+  </data>
+  <data name="PersistentDisplay_PublicGroupName-en-US" xml:space="preserve">
+    <value>Public Resource</value>
+  </data>
+  <data name="PersistentDisplay_PublicGroupName-zh-CN" xml:space="preserve">
+    <value>公共资源组名称</value>
+  </data>
+  <data name="PersistentCategory_Resource-en-US" xml:space="preserve">
+    <value>Localization Resx</value>
+  </data>
+  <data name="PersistentCategory_Resource-zh-CN" xml:space="preserve">
+    <value>本地化资源</value>
+  </data>
+</root>

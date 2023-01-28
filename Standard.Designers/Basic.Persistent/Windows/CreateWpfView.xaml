@@ -1,0 +1,150 @@
+﻿<ui:DialogWindow x:Class="Basic.Windows.CreateWpfView"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+	xmlns:bcs="http://developer.goldsofttech.com/basic/2014/xaml" Title="添加WPF窗体" SizeToContent="Height" ShowInTaskbar="False" 
+	Width="700" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="DialogWindow_Loaded"
+                 xmlns:my="clr-namespace:Basic.Builders" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <ui:DialogWindow.CommandBindings>
+        <CommandBinding Command="Save" Executed="OnSaveExecuted"/>
+    </ui:DialogWindow.CommandBindings>
+    <ui:DialogWindow.Resources>
+        <ObjectDataProvider x:Key="keyViewType" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="my:ViewTypeEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <BooleanToVisibilityConverter x:Key="btvConverter"/>
+        <Style TargetType="ui:DialogButton">
+            <Setter Property="Margin" Value="10,5,0,0"/>
+        </Style>
+        <Style TargetType="Label">
+            <!--<Setter Property="Margin" Value="0,5"/>-->
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,5,5,5"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,5,5,5"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,5,5,5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="HeadersVisibility" Value="None"/>
+            <Setter Property="SelectionUnit" Value="Cell"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <!--<Setter Property="GridLinesVisibility" Value="Vertical"/>-->
+        </Style>
+    </ui:DialogWindow.Resources>
+    <Grid Margin="15,15,10,15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.ColumnSpan="3" Content="数据持久类文件" />
+        <ComboBox Grid.Row="1" Grid.ColumnSpan="3" Name="cmbPersistents" ItemsSource="{Binding Files}" 
+                  DisplayMemberPath="Name" SelectedValuePath="Path" SelectedValue="{Binding FileName,Mode=TwoWay}"/>
+        <Label Grid.Row="2" Grid.ColumnSpan="3" Content="视图列表"/>
+        <DataGrid Name="dgViews" Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding Views}" IsEnabled="{Binding SelectedFile}" Margin="0,0,0,28" Grid.RowSpan="2">
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="是否创建" Binding="{Binding Created, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="50">
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="视图名称" Binding="{Binding Name}" IsReadOnly="True" MinWidth="50">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn MinWidth="50" Header="视图类型">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ViewType}" ToolTip="视图类型" VerticalAlignment="Center" Margin="5"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding ViewType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ToolTip="视图类型"
+                                      ItemsSource="{Binding Source={StaticResource keyViewType}}" Margin="0,2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn MinWidth="180" Header="视图模型">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Entity.ClassName}" ToolTip="视图模型" VerticalAlignment="Center" Margin="5"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding Entity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ToolTip="视图模型"
+                                      ItemsSource="{Binding Entities}" DisplayMemberPath="ClassName"
+                                      Margin="0,2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="*" Header="视图模版">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Template}" ToolTip="视图模版" VerticalAlignment="Center" Margin="5"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding Template,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ToolTip="视图模版"
+                                      ItemsSource="{Binding TemplateFiles}" DisplayMemberPath="Name" SelectedValuePath="Name"
+                                       IsReadOnly="{Binding Created}" Margin="0,2"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <ui:DialogButton Grid.Row="4" Grid.Column="1" Name="btnOk"  Content="添  加..." Command="Save" IsEnabled="{Binding OkEnabled}"/>
+        <ui:DialogButton Grid.Row="4" Grid.Column="2" Name="btnCancel" Content="取  消" IsCancel="True"/>
+    </Grid>
+</ui:DialogWindow>

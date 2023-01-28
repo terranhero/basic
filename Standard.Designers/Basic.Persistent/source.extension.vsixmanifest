@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="D4E32AFF-92E4-4E4D-9585-C4423FA06A5A" Publisher="JACKY" Version="4.8.5397" Language="zh-Hans" />
+        <DisplayName>ASP.NET MVC 资源和数据持久设计器 2022</DisplayName>
+        <Description xml:space="preserve">ASP.NET MVC 资源和数据持久设计器 For Visual Studio 2022,
+支持 Microsoft SQL Server, ORACLE , MySQL等数据库</Description>
+        <License>license.txt</License>
+        <GettingStartedGuide>license.txt</GettingStartedGuide>
+        <ReleaseNotes>UpdateLog.txt</ReleaseNotes>
+        <Icon>goldsoft.ico</Icon>
+        <PreviewImage>goldsoft.ico</PreviewImage>
+        <Tags>MVC Basic GoldSoft</Tags>
+    </Metadata>
+    <Installation AllUsers="true">
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[17.0, 18.0)" Id="Microsoft.VisualStudio.Enterprise">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[17.0, 18.0)" Id="Microsoft.VisualStudio.Pro">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency d:Source="Installed" Id="Microsoft.VisualStudio.MPF.17.0" DisplayName="Visual Studio MPF 17.0" Version="[17.0,18.0)" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,18.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="%CurrentProject%" Path="ItemTemplates" d:TargetPath="|%CurrentProject%;TemplateProjectOutputGroup|" d:VsixSubPath="ItemTemplates" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.Registers" Path="|Standard.Registers|" AssemblyName="|Standard.Registers;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="RazorEngine.Core" Path="|RazorEngine.Core|" AssemblyName="|RazorEngine.Core;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.DataAccess" Path="|Standard.DataAccess|" AssemblyName="|Standard.DataAccess;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.EntityLayer" Path="|Standard.EntityLayer|" AssemblyName="|Standard.EntityLayer;AssemblyName|" />
+    </Assets>
+</PackageManifest>

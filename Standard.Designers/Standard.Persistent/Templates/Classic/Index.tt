@@ -1,0 +1,30 @@
+﻿<#@ template language="C#" debug="false" hostSpecific="false" #>
+<#@ output extension=".cshtml" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+@{ ViewBag.Title = "Index"; Layout = \"{0}\"; }
+@model Hrms.Administration.LoginUserCondition
+@{ ViewBag.Title = "Index"; Layout = "~/Master/_GridPage.cshtml";}
+@section Toolbar{
+	<ul class="toolbar">
+		<li>@Html.EasyLinkButton("BatchCreate", 99030101, "Button_BatchCreate", "icon-batch-create", new ButtonOptions() { id = "lbtBatchCreate" })</li>
+		<li>@Html.EasyCreate(99030101, new ButtonOptions() { width = 700 })</li>
+		<li>@Html.EasyEdit(99030102, new ButtonOptions() { width = 700, enabledState = PageStatus.SelectedRow })</li>
+		<li>@Html.EasyDelete(99030103, new ButtonOptions() { enabledState = PageStatus.SelectedRows | PageStatus.SelectedRow })</li>
+		<li>@Html.EasyLinkButton("InitializePassword", 99030110, "Button_InitializePassword", "icon-config", new ButtonOptions() { id = "lbtInitializePassword", enabledState = PageStatus.SelectedRows | PageStatus.SelectedRow })</li>
+		<li class="right">@Html.AuthorizeSelectFor(99030104, m => m.RoleKey, BH.GetAdminString("Role_Option"))</li>
+		<li class="right">@Html.AuthorizeSelectFor(99030104, m => m.GroupKey, BH.GetAdminString("Group_Option"))</li>
+		<li class="right">@Html.AuthorizeOrganizationFor(99030104, m => m.OrgKey, true)</li>
+		<li class="right">@Html.WebWaterMarkFor(99030104, m => m.LoginName)</li>
+		<li class="right">@Html.EasySearch(99030104, new ButtonOptions("searchfor", "#LoginName,#RoleKey,#GroupKey,#OrgKey"))</li>
+		<li class="right">@Html.EasyComplexSearch(99030105, new ButtonOptions() { width = 600 })</li>
+	</ul>
+}
+@{Html.RenderAction("Grid");}
+@section Script{
+<script type="text/javascript">
+function page_load(target) {
+}
+</script>}

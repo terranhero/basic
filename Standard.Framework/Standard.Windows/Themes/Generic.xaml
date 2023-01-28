@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						   xmlns:pri="clr-namespace:Basic.Primitives">
+	<ResourceDictionary.MergedDictionaries>
+        <pri:AssemblyResourceDictionary SourcePath="ExplorerBar/Themes/Generic.xaml"/>
+        <pri:AssemblyResourceDictionary SourcePath="LinkButton/Themes/Generic.xaml"/>
+        <pri:AssemblyResourceDictionary SourcePath="ChildWindow/Themes/Generic.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

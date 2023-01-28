@@ -1,0 +1,82 @@
+﻿@model System.Type
+@{ PropertyInfo[] properties = Model.GetProperties(BindingFlags.Public | BindingFlags.Instance);}
+@@model @Model.FullName
+@@{ bool isChinese = BH.IsChinese();}
+@@using (var form = BH.Form<@Model.FullName>("fEdit").Model("datas").SetRules("rules").SetErrors("errors").Action(null).SizeToSmall().LabelWidth(isChinese, 80, 110).Begin())
+{
+    @foreach (PropertyInfo property in properties)
+	{
+		if (property.Name.ToUpper() == "USERNAME") { continue; }
+		else if (property.Name.ToUpper() == "CREATEDTIME") { continue; }
+		else if (property.Name.ToUpper() == "MODIFIEDTIME") { continue; }
+        else if (property.PropertyType.IsEnum)
+        {
+			@(new RawString("\t\t<el-row>\r\n"));
+			@(new RawString(string.Concat("\t\t\t@using(BasicFormItem item = form.ItemFor(m => m.", property.Name, ").Begin())\r\n")));
+			@(new RawString("\t\t\t{\r\n"));
+            @(new RawString(string.Concat("\t\t\t\t@form.SelectFor(m => m.", property.Name, ").Options().ToHtml()\r\n")));
+			@(new RawString("\t\t\t}\r\n"));
+            @(new RawString("\t\t</el-row>\r\n"));
+        }
+        else if (property.PropertyType == typeof(bool))
+        {
+			@(new RawString("\t\t<el-row>\r\n"));
+			@(new RawString(string.Concat("\t\t\t@using(BasicFormItem item = form.ItemFor(m => m.", property.Name, ").Begin())\r\n")));
+			@(new RawString("\t\t\t{\r\n"));
+            @(new RawString(string.Concat("\t\t\t\t@form.RadioListFor(m => m.", property.Name, ").Buttons().ToHtml()\r\n")));
+			@(new RawString("\t\t\t}\r\n"));
+            @(new RawString("\t\t</el-row>\r\n"));
+       }
+        else
+        {
+			@(new RawString("\t\t<el-row>\r\n"));
+			@(new RawString(string.Concat("\t\t\t@using(BasicFormItem item = form.ItemFor(m => m.", property.Name, ").Begin())\r\n")));
+			@(new RawString("\t\t\t{\r\n"));
+            @(new RawString(string.Concat("\t\t\t\t@form.InputTextFor(m => m.", property.Name, ").Clearable().ToHtml()\r\n")));
+			@(new RawString("\t\t\t}\r\n"));
+            @(new RawString("\t\t</el-row>\r\n"));
+        }
+    }
+}
+    <script type="text/javascript">
+		export default {
+			el: "#fEdit",
+			data: {
+				datas: {
+					@@using(var provider = BH.PropertyInfo())
+					{
+							@foreach (PropertyInfo property in properties)
+                            {
+                                @(new RawString(string.Concat("\t\t\t\t\t\t\tprovider.Property(m => m.", property.Name,", true);\r\n")));
+                            }
+					}
+				},
+				rules: {
+					@@using(var provider = BH.ValidationInfo())
+					{
+							@foreach (PropertyInfo property in properties)
+                            {
+                                if (property.PropertyType.IsEnum)
+							{
+								@(new RawString(string.Concat("\t\t\t\t\t\t\tprovider.PropertyChanged(m => m.", property.Name, ", true);\r\n")));
+							}
+							else if (property.PropertyType == typeof(bool))
+							{
+								@(new RawString(string.Concat("\t\t\t\t\t\t\tprovider.PropertyChanged(m => m.", property.Name, ", true);\r\n")));
+							}
+							else
+							{
+								@(new RawString(string.Concat("\t\t\t\t\t\t\tprovider.PropertyBlured(m => m.", property.Name, ", true);\r\n")));
+							}
+                            }
+					}
+				},
+				errors: { }
+			},
+			mounted: function () {
+			},
+			methods: {
+			}
+		}
+    </script>
+

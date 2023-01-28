@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2BDFAFFD-6F46-4363-9FD2-BC8A3C76EE4E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>Basic.MvcLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Basic</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DocumentationFile>..\bin\Net40 Release\Basic.MvcLibrary.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.11.3.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.11.3\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Configuration.ConfigurationManager.5.0.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Packaging.5.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.AccessControl.5.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Permissions.5.0.0\lib\net461\System.Security.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Adapters\WebEqualToAttributeAdapter.cs" />
+    <Compile Include="Attributes\AuthorizationAttribute.cs" />
+    <Compile Include="Attributes\DownloadFileAttribute.cs" />
+    <Compile Include="Attributes\ActionExecutingLogAttribute.cs" />
+    <Compile Include="Attributes\ActionExecutedLogAttribute.cs" />
+    <Compile Include="Attributes\ActionLogAttribute.cs" />
+    <Compile Include="Basic\MessageRequest.cs" />
+    <Compile Include="Basic\PropertyHelper.cs" />
+    <Compile Include="Basic\TypeHelper.cs" />
+    <Compile Include="Controller\AuthorizeContext.cs" />
+    <Compile Include="ActionResult\ExportResult.cs" />
+    <Compile Include="Controller\TreeData.cs" />
+    <Compile Include="DataGrid\Column\ButtonColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridArrayColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridArraysColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridBoolColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridEnumColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridFooterColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridHeaderColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridJsonColumn.cs" />
+    <Compile Include="DataGrid\Column\DataGridRow.cs" />
+    <Compile Include="DataGrid\Column\IDataGridColumn.cs" />
+    <Compile Include="DataGrid\Column\NumberColumn.cs" />
+    <Compile Include="DataGrid\DataGrid.cs" />
+    <Compile Include="DataGrid\DataGridExtension.cs" />
+    <Compile Include="DataGrid\DataGridResult.cs" />
+    <Compile Include="DataGrid\Footer\FooterCell.cs" />
+    <Compile Include="DataGrid\Footer\FooterInfo.cs" />
+    <Compile Include="DataGrid\Group\GroupCell.cs" />
+    <Compile Include="DataGrid\Group\GroupInfo.cs" />
+    <Compile Include="DataGrid\IDataGrid.cs" />
+    <Compile Include="DataGrid\Render\ContentRender.cs" />
+    <Compile Include="DataGrid\Render\DataRender.cs" />
+    <Compile Include="DataGrid\Render\HtmlRender.cs" />
+    <Compile Include="DataGrid\Render\HtmlTextWriterExtension.cs" />
+    <Compile Include="DataGrid\Render\IRender.cs" />
+    <Compile Include="DataGrid\Render\Providers.cs" />
+    <Compile Include="DataGrid\Render\ReportRender.cs" />
+    <Compile Include="DataGrid\Render\XlsxRender.cs" />
+    <Compile Include="EasyLibrary\EasyStrings.designer.cs">
+      <DependentUpon>EasyStrings.localresx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Elements\ElementTags.cs" />
+    <Compile Include="Elements\ViewTags.cs" />
+    <Compile Include="Enums\PagePosition.cs" />
+    <Compile Include="Enums\RowType.cs" />
+    <Compile Include="Extension\ComboBoxExtension.cs" />
+    <Compile Include="Extension\ComboTreeExtension.cs" />
+    <Compile Include="Extension\EasyComboItem.cs" />
+    <Compile Include="Extension\EasyNodeResult.cs" />
+    <Compile Include="Extension\EasyToolBarExtension.cs" />
+    <Compile Include="Extension\EasyTreeNode.cs" />
+    <Compile Include="Extension\EntityComboResult.cs" />
+    <Compile Include="Extension\EntityTreeResult.cs" />
+    <Compile Include="Extension\TableTreeResult.cs" />
+    <Compile Include="Extension\TreeGridResult.cs" />
+    <Compile Include="Extension\TreeViewExtensions.cs" />
+    <Compile Include="Extension\WebDateExtension.cs" />
+    <Compile Include="Extension\WebDateTimeExtension.cs" />
+    <Compile Include="Extension\WebNumberBoxExtension.cs" />
+    <Compile Include="Extension\WebTimeExtension.cs" />
+    <Compile Include="Extension\WebTreeNode.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HtmlAttributes\ButtonOptions.cs" />
+    <Compile Include="HtmlAttributes\ButtonTypeEnum.cs" />
+    <Compile Include="HtmlAttributes\ComboBoxOptions.cs" />
+    <Compile Include="HtmlAttributes\ComboGridOptions.cs" />
+    <Compile Include="HtmlAttributes\ComboOptions.cs" />
+    <Compile Include="HtmlAttributes\ComboTreeOptions.cs" />
+    <Compile Include="HtmlAttributes\DataGridOptions.cs" />
+    <Compile Include="HtmlAttributes\DateBoxOptions.cs" />
+    <Compile Include="HtmlAttributes\EasyOptions.cs" />
+    <Compile Include="HtmlAttributes\NumberBoxOptions.cs" />
+    <Compile Include="HtmlAttributes\NumberSpinnerOptions.cs" />
+    <Compile Include="HtmlAttributes\SpinnerOptions.cs" />
+    <Compile Include="HtmlAttributes\TimeSpinnerOptions.cs" />
+    <Compile Include="HtmlAttributes\TreeGridOptions.cs" />
+    <Compile Include="HtmlAttributes\TreeOptions.cs" />
+    <Compile Include="HtmlAttributes\TreeTableOptions.cs" />
+    <Compile Include="Inputs\Span.cs" />
+    <Compile Include="MvcLibrary\JsonConverter.cs" />
+    <Compile Include="Properties\EasyUIStrings.Designer.cs">
+      <DependentUpon>EasyUIStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\GlobalSuppressions.cs" />
+    <Compile Include="Inputs\CheckList.cs" />
+    <Compile Include="Inputs\EmployeeChooser.cs" />
+    <Compile Include="Inputs\InputDate.cs" />
+    <Compile Include="Inputs\Label.cs" />
+    <Compile Include="Inputs\RadioList.cs" />
+    <Compile Include="MvcLibrary\ControllerExtension.cs" />
+    <Compile Include="MvcLibrary\ModelResult.cs" />
+    <Compile Include="MvcLibrary\JsonResult.cs" />
+    <Compile Include="Providers\ComplexSearch.cs" />
+    <Compile Include="Providers\IButtonsProvider.cs" />
+    <Compile Include="Providers\InputProvider.cs" />
+    <Compile Include="Toolbar\ButtonExtension.cs" />
+    <Compile Include="Inputs\Cascader.cs" />
+    <Compile Include="Inputs\InputNumber.cs" />
+    <Compile Include="Inputs\Input.cs" />
+    <Compile Include="Inputs\InputText.cs" />
+    <Compile Include="Inputs\Select.cs" />
+    <Compile Include="MvcLibrary\CultureDataAnnotationsModelValidatorProvider.cs" />
+    <Compile Include="MvcLibrary\CultureModelMetadata.cs" />
+    <Compile Include="MvcLibrary\CultureModelMetadataProvider.cs" />
+    <Compile Include="Enums\RenderMode.cs" />
+    <Compile Include="Basic\BasicContext.cs" />
+    <Compile Include="Extension\BooleanExtension.cs" />
+    <Compile Include="Extension\ControllerExtension.cs" />
+    <Compile Include="Enums\TextAlign.cs" />
+    <Compile Include="Extension\SessionExtension.cs" />
+    <Compile Include="Extension\WebDiaplayExtension.cs" />
+    <Compile Include="Extension\WebFileExtension.cs" />
+    <Compile Include="Controller\PageStatus.cs" />
+    <Compile Include="Extension\EnumExtension.cs" />
+    <Compile Include="HtmlAttributes\HtmlAttrs.cs" />
+    <Compile Include="MvcLibrary\DataEntityArrayModelBinder.cs" />
+    <Compile Include="MvcLibrary\DataEntityModelBinder.cs" />
+    <Compile Include="MvcLibrary\DataEntityModelBinderProvider.cs" />
+    <Compile Include="MvcLibrary\WebStrings.designer.cs">
+      <DependentUpon>WebStrings.localresx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="MvcLibrary\MessageCulture.cs" />
+    <Compile Include="MvcLibrary\TagHtmlWriter.cs" />
+    <Compile Include="MvcLibrary\Unit.cs" />
+    <Compile Include="MvcLibrary\UnitConverter.cs" />
+    <Compile Include="Views\BasicForm.cs" />
+    <Compile Include="Templates\ListItemTemplate.cs" />
+    <Compile Include="Views\FormCell.cs" />
+    <Compile Include="Views\BasicFormItem.cs" />
+    <Compile Include="Views\GridRow.cs" />
+    <Compile Include="Views\ListView.cs" />
+    <Compile Include="Inputs\Options.cs" />
+    <Compile Include="Properties\JsonStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JsonStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\MvcStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MvcStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Providers\IPropertyProvider.cs" />
+    <Compile Include="Providers\IValidationProvider.cs" />
+    <Compile Include="Resource\TextUtils.cs" />
+    <Compile Include="SelectList\MultiSelectListResult.cs" />
+    <Compile Include="Controller\HtmlHelpString.cs" />
+    <Compile Include="ActionResult\JsonMvcResult.cs" />
+    <Compile Include="Exception\GridViewException.cs" />
+    <Compile Include="Extension\CssExtension.cs" />
+    <Compile Include="Extension\TagBuilderExtension.cs" />
+    <Compile Include="Extension\WebValidationExtension.cs" />
+    <Compile Include="Extension\WebButtonExtension.cs" />
+    <Compile Include="Extension\WebCheckBoxExtension.cs" />
+    <Compile Include="Extension\WebHiddenExtension.cs" />
+    <Compile Include="Extension\WebLinkExtension.cs" />
+    <Compile Include="Extension\WebLabelExtension.cs" />
+    <Compile Include="Extension\WebPasswordExtension.cs" />
+    <Compile Include="Extension\WebRadioButtonExtension.cs" />
+    <Compile Include="Extension\WebSpanExtension.cs" />
+    <Compile Include="Extension\WebTextAreaExtension.cs" />
+    <Compile Include="Extension\WebTextBoxExtension.cs" />
+    <Compile Include="Extension\WebTimeStampExtension.cs" />
+    <Compile Include="HtmlAttributes\IHtmlAttrs.cs" />
+    <Compile Include="SelectList\CheckBoxList.cs" />
+    <Compile Include="SelectList\RadioButtonList.cs" />
+    <Compile Include="SelectList\RepeatLayout.cs" />
+    <Compile Include="SelectList\WebCheckBoxListExtension.cs" />
+    <Compile Include="SelectList\WebRadioListExtension.cs" />
+    <Compile Include="SelectList\WebSelectExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Enums\SelectAction.cs" />
+    <Compile Include="Templates\ITemplateView.cs" />
+    <Compile Include="Templates\ToolbarTemplate.cs" />
+    <Compile Include="Templates\TreeNodeTemplate.cs" />
+    <Compile Include="Toolbar\Button.cs" />
+    <Compile Include="Toolbar\ButtonType.cs" />
+    <Compile Include="Toolbar\IToolbar.cs" />
+    <Compile Include="Toolbar\ToolbarExtension.cs" />
+    <Compile Include="Views\GridView.cs" />
+    <Compile Include="Views\TableDefinition\GridViewHeaderColumn.cs" />
+    <Compile Include="Views\TableDefinition\GridViewColumn.cs" />
+    <Compile Include="Views\TableDefinition\GridViewColumnCollection.cs" />
+    <Compile Include="Views\TableDefinition\GridViewRootColumn.cs" />
+    <Compile Include="Views\TableDefinition\IColumnsProvider.cs" />
+    <Compile Include="Views\TableDefinition\IGridViewColumn.cs" />
+    <Compile Include="Views\TreeView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EasyLibrary\EasyStrings.resx">
+      <DependentUpon>EasyStrings.localresx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MvcLibrary\WebStrings.resx">
+      <DependentUpon>WebStrings.localresx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EasyUIStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EasyUIStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\JsonStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>JsonStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MvcStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MvcStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Resources.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EasyLibrary\EasyStrings.localresx">
+      <Generator>ResourceGenerator</Generator>
+      <LastGenOutput>EasyStrings.designer.cs</LastGenOutput>
+    </None>
+    <None Include="MvcLibrary\WebStrings.localresx">
+      <Generator>ResourceGenerator</Generator>
+      <LastGenOutput>WebStrings.designer.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj">
+      <Project>{0a213752-7c72-4f29-822d-b3c02e5fa103}</Project>
+      <Name>Standard.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj">
+      <Project>{1f3bcf3c-529b-45f6-a003-376cbb485644}</Project>
+      <Name>Standard.EntityLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SolutionDir)\packages\Version-v472.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

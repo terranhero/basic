@@ -1,0 +1,55 @@
+﻿@model System.Type
+@{ PropertyInfo[] properties = Model.GetProperties(BindingFlags.Public | BindingFlags.Instance);}
+@@model @Model.FullName
+@@{ ViewBag.Title = "Index"; Layout = "~/Master/_VueLayout.cshtml";}
+@@using (var view = BH.TreeView<@Model.FullName>("tTree")
+	.Width(350).DefaultExpandedKeys("expandedKeys").Prop("props", "defaultProps")
+	.ExpandOnClickNode(false).OnCurrentChange("onNodeChanged")
+	.Action("GetTree").NodeKey("").Event("load-success", "onLoadSuccess").Accordion(true).Begin())
+{
+	using (var itb = view.Toolbar())
+	{
+		<li>@@itb.Create(01).Status(PageStatus.SelectedNode).Action("Create").ToHtml()</li>
+		<li>@@itb.Update(02).Status(PageStatus.SelectedNode).Action("Edit").ToHtml()</li>
+		<li>@@itb.Delete(03).Status(PageStatus.SelectedNode).ToHtml()</li>
+	}
+	using (var toolbar = view.NodeTemplate())
+	{
+		<span :class="['icon-user']"></span>
+	}
+	<el-container style="height:100%;">
+		<el-header style="height:auto; padding:0px 0px 0px 0px;">
+			<table class="detail-table">
+				@foreach (PropertyInfo property in properties)
+				{
+				<tr>
+					<td>@@view.TextFor(m => m.@property.Name)</td>
+					<td>{{node.@property.Name}}</td>
+				</tr>
+				}
+			</table>
+		</el-header>
+	</el-container>
+}
+<script type="text/javascript">
+	function vue_load(opts) {
+		return {
+			el: "#tTree",
+			data: { node: {}, expandedKeys: [], defaultProps: { label: "" } },
+			mounted: function () {  },
+			methods: {
+				onLoadSuccess: function (nodes) {
+					this.expandedKeys = nodes.map(function (item) { return item.EmpKey; });
+				},
+				onNodeChanged: function (data, target, node) {
+					let self = this; var url = '@Url.Action("Detail")';
+					topVue.loading();
+					axios.post(url, { EmpKey: data.EmpKey }).then(function (res) {
+						let result = res.data; topVue.loaded();
+						if (result.Success) { self.node = result.row;}
+					}).catch(function (res) { topVue.loaded(); });
+				}
+			}
+		}
+	}
+</script>

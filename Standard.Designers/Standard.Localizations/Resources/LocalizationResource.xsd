@@ -1,0 +1,36 @@
+﻿<xsd:schema id="root" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="cultureInfos">
+					<xsd:complexType>
+						<xsd:sequence maxOccurs="unbounded" minOccurs="0">
+							<xsd:element name="cultureInfo">
+								<xsd:complexType>
+									<xsd:attribute name="lcid" type="xsd:int" msdata:Ordinal="1" />
+									<xsd:attribute name="name" type="xsd:string" use="optional" msdata:Ordinal="2" />
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="resxDatas">
+					<xsd:complexType>
+						<xsd:sequence maxOccurs="unbounded" minOccurs="0">
+							<xsd:element name="resxData">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+										<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+									</xsd:sequence>
+									<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+									<xsd:attribute name="group" type="xsd:string" msdata:Ordinal="2" />
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

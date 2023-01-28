@@ -1,0 +1,18 @@
+﻿#if !NETSTD
+[assembly: System.Reflection.AssemblyTitle("Basic.DataAccess")]
+[assembly: System.Reflection.AssemblyProduct("Basic.DataAccess")]
+#endif
+//[assembly: System.Reflection.AssemblyDescription("GoldSoft Technology Database Access")]
+[assembly: System.Reflection.AssemblyAlgorithmId(System.Configuration.Assemblies.AssemblyHashAlgorithm.MD5)]
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: System.Runtime.InteropServices.Guid("361EFCA6-A1B5-4659-AE89-4D3CA7905190")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_SqlClientAccess)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_OracleAccess)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_DB2Access)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_MySqlAccess)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_EntityBuilder)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_Persistent)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Hrms_Authentication)]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:不需要赋值", Justification = "<挂起>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:使用模式匹配", Justification = "<挂起>")]
+
