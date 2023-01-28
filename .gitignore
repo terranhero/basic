@@ -187,3 +187,4 @@ FakesAssemblies/
 
 visual studio dicrionary
 .vs/
+.vs/*
