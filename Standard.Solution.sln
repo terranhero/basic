@@ -52,6 +52,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.OracleAccess", "St
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.DB2Access", "Standard.Framework\Standard.Db2Access\Standard.DB2Access.csproj", "{DF9DDAEB-1877-4235-8D36-42C89F3E794A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{F27A3D5A-7192-4ED0-ADDA-3D64756BF157}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
