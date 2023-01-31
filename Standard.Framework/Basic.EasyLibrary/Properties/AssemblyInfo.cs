@@ -1,6 +1,0 @@
-﻿[assembly: System.Reflection.AssemblyTitle("Basic.EasyLibrary")]
-[assembly: System.Reflection.AssemblyDescription("ASP.NET MVC EasyUI Library")]
-[assembly: System.Reflection.AssemblyProduct("Basic.EasyLibrary")]
-[assembly: System.Reflection.AssemblyAlgorithmId(System.Configuration.Assemblies.AssemblyHashAlgorithm.MD5)]
-[assembly: System.Runtime.InteropServices.ComVisible(false)]
-[assembly: System.Runtime.InteropServices.Guid("62CD6D7A-F196-48A1-BFED-AB6185D6BC6E")]
