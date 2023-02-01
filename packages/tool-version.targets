@@ -16,7 +16,7 @@
 	</ItemGroup>
 	<PropertyGroup>
 		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
+		<AssemblyOriginatorKeyFile>..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<Target Name="BeforeBuild"></Target>
 	<Target Name="AfterBuild"></Target>

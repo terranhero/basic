@@ -14,7 +14,7 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<SignAssembly>true</SignAssembly>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
+		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(AssemblyName)' == 'Basic.Authentication'">
 		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>

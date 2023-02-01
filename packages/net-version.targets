@@ -23,7 +23,7 @@
 	<PropertyGroup>
 		<SignAssembly>true</SignAssembly>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
+		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="..\..\packages\AssemblyPublic.cs" />

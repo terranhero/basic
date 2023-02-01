@@ -6,9 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReferenceAssembly", "ReferenceAssembly", "{87C4661A-770E-49C3-8ED0-3E84E6BDC887}"
 	ProjectSection(SolutionItems) = preProject
 		packages\Assembly.Tools.cs = packages\Assembly.Tools.cs
-		packages\GoldSoft.pfx = packages\GoldSoft.pfx
-		packages\GoldSoft.snk = packages\GoldSoft.snk
-		packages\GoldSoft.txt = packages\GoldSoft.txt
+		packages\basic.snk = packages\basic.snk
 		packages\net-version.targets = packages\net-version.targets
 	EndProjectSection
 EndProject
@@ -259,10 +257,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE7F0F9B-E6CF-43EC-A81F-7B067DBB2B67}
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Basic.Solution.vsmdi
