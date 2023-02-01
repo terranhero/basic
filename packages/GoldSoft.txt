@@ -1,8 +1,3 @@
-GoldSoft.pfx
-密码：goldsoft&*1220
-
-
-
 		/// <summary>向当前视图文件输出字符串</summary>
 		/// <param name="builder"></param>
 		/// <param name="expression">需要输出的Lambda表达式。</param>
