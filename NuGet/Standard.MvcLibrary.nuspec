@@ -7,6 +7,7 @@
         <authors>JACKY</authors>
         <owners>JACKY</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<projectUrl>https://gitee.com/terran-hero/basic</projectUrl>
         <description>Asp.Net Mvc Core Supporting</description>
         <copyright>@SIP GoldSoft Technology Limited. All Rights Reserved.</copyright>
         <language>zh-CN</language>

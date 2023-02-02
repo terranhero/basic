@@ -20,7 +20,7 @@ basic ORM 于2012 年发布、2023 年正式开源，该组件已在数百个成
 
 ![添加持久类截图](https://foruda.gitee.com/images/1675321661518283746/d0f9f8f5_665445.png "append.png")
 
-#不使用分布式事务
+### 不使用分布式事务
 ```c#
 using(xxxAccess access = new xxxAccess(connectionstring))
 {
@@ -28,17 +28,15 @@ using(xxxAccess access = new xxxAccess(connectionstring))
 }
 ```
 
-#使用分布式事务
+### 使用分布式事务
 ```c#
 using(xxxAccess access = new xxxAccess(connectionstring, true))
-
 {   
     access.Create(entity); or await access.CreateAsync(entity);
     access.SetComplate();
 }
 
 using(xxxAccess access = new xxxAccess(connectionstring, TimeSpan.FromSeconds(60)))
-
 {   
     access.Create(entity); or await access.CreateAsync(entity);
     access.SetComplate();

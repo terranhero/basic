@@ -7,6 +7,7 @@
     <authors>JACKY</authors>
     <owners>JACKY</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<projectUrl>https://gitee.com/terran-hero/basic</projectUrl>
     <description>金软科技基础开发框架数据持久类运行时文件</description>
     <copyright>@GoldSoft Technology. All Rights Reserved.</copyright>
     <language>zh-CN</language>
