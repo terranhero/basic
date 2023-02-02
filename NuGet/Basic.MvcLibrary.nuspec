@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Basic.MvcLibrary</id>
+        <version>$version$</version>
+        <title>Basic.MvcLibrary</title>
+        <authors>JACKY</authors>
+        <owners>JACKY</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Asp.Net Mvc Supporting</description>
+        <copyright>@SIP GoldSoft Technology Limited. All Rights Reserved.</copyright>
+        <language>zh-CN</language>
+        <dependencies>
+			<group targetFramework=".NETFramework4.7.2">
+				<dependency id="Standard.EntityLayer" version="$version$" />
+	                <dependency id="DocumentFormat.OpenXml" version="2.11.3" />
+	                <dependency id="Microsoft.AspNet.Mvc" version="5.2.7" />
+	                <dependency id="Microsoft.AspNet.Razor" version="3.2.7" />
+	                <dependency id="Microsoft.AspNet.WebPages" version="3.2.7" />
+	                <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+			</group>
+        </dependencies>
+    </metadata>
+    <files>
+		<file src="..\bin\Net472 Release\Basic.MvcLibrary.dll" target="lib\net472\Basic.MvcLibrary.dll" />
+        <file src="..\bin\Net472 Release\Basic.MvcLibrary.xml" target="lib\net472\Basic.MvcLibrary.xml" />
+    </files>
+</package>

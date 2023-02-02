@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Standard.DataAccess</id>
+    <version>$version$</version>
+    <title>Standard.DataAccess</title>
+    <authors>JACKY</authors>
+    <owners>JACKY</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>金软科技基础开发框架数据持久类运行时文件</description>
+    <copyright>@GoldSoft Technology. All Rights Reserved.</copyright>
+    <language>zh-CN</language>
+	<frameworkAssemblies>
+		<frameworkAssembly assemblyName="System.Configuration" targetFramework=".NETFramework4.5" />
+		<frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5" />
+		<frameworkAssembly assemblyName="System.Runtime.Caching" targetFramework=".NETFramework4.5" />
+		<frameworkAssembly assemblyName="System.Transactions" targetFramework=".NETFramework4.5" />
+	</frameworkAssemblies>
+	<dependencies>
+		<group targetFramework=".NETStandard2.0">
+			<dependency id="Standard.EntityLayer" version="$version$" />
+			<dependency id="System.Configuration.ConfigurationManager" version="4.7.0" exclude="Build,Analyzers" />
+			<dependency id="System.Runtime.Caching" version="4.7.0" exclude="Build,Analyzers" />
+		</group>
+		<group targetFramework=".NETFramework4.5">
+			<dependency id="Standard.EntityLayer" version="$version$" />
+		</group>
+	</dependencies>
+  </metadata>
+  <files>
+    <file src="..\bin\netstandard2.0\Basic.DataAccess.dll" target="lib\netstandard2.0\Basic.DataAccess.dll" />
+    <file src="..\bin\netstandard2.0\Basic.DataAccess.pdb" target="lib\netstandard2.0\Basic.DataAccess.pdb" />
+    <file src="..\bin\netstandard2.0\Basic.DataAccess.xml" target="lib\netstandard2.0\Basic.DataAccess.xml" />
+		
+	<file src="..\bin\net45\Basic.DataAccess.dll" target="lib\net45\Basic.DataAccess.dll" />
+    <file src="..\bin\net45\Basic.DataAccess.pdb" target="lib\net45\Basic.DataAccess.pdb" />
+    <file src="..\bin\net45\Basic.DataAccess.xml" target="lib\net45\Basic.DataAccess.xml" />
+  </files>
+</package>
