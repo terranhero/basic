@@ -10,8 +10,35 @@ basic ORM 于2012 年发布、2023 年正式开源，该组件已在数百个成
 
 简单的事务处理，自动化事务提交，回滚
 
-# using(xxxxxAccess access = new xxxxxAccess(connectionstring, true))
-{
-         access.SetComplate();
+设计器文件目录
 
+ - 设计器文件(*.dpdl)
+    - 数据持久类代码(xxxAccess.cs)
+    - 数据持久类代码(xxxAccess.designer.cs)
+    - 业务逻辑类代码(xxxContext.cs)
+    - 业务逻辑类代码(xxxContext.designer.cs)
+
+#不使用分布式事务
+```c#
+using(xxxAccess access = new xxxAccess(connectionstring))
+{
+   access.Create(entity); or await access.CreateAsync(entity);
 }
+```
+
+#使用分布式事务
+```c#
+using(xxxAccess access = new xxxAccess(connectionstring, true))
+
+{   
+    access.Create(entity); or await access.CreateAsync(entity);
+    access.SetComplate();
+}
+
+using(xxxAccess access = new xxxAccess(connectionstring, TimeSpan.FromSeconds(60)))
+
+{   
+    access.Create(entity); or await access.CreateAsync(entity);
+    access.SetComplate();
+}
+```
