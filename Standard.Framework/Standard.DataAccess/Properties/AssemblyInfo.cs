@@ -15,4 +15,4 @@
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Hrms_Authentication)]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:不需要赋值", Justification = "<挂起>")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:使用模式匹配", Justification = "<挂起>")]
-
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]

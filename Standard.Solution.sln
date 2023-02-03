@@ -5,9 +5,12 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReferenceAssembly", "ReferenceAssembly", "{87C4661A-770E-49C3-8ED0-3E84E6BDC887}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		packages\Assembly.Tools.cs = packages\Assembly.Tools.cs
 		packages\basic.snk = packages\basic.snk
+		LICENSE = LICENSE
 		packages\net-version.targets = packages\net-version.targets
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Standard.Designers", "Standard.Designers", "{2EB5956E-32DA-43EA-A607-772E9F88522E}"
@@ -49,13 +52,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.OracleAccess", "Standard.Framework\Standard.OracleAccess\Standard.OracleAccess.csproj", "{2F41C901-771B-49B7-8533-4CD20B881C02}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.DB2Access", "Standard.Framework\Standard.Db2Access\Standard.DB2Access.csproj", "{DF9DDAEB-1877-4235-8D36-42C89F3E794A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{F27A3D5A-7192-4ED0-ADDA-3D64756BF157}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-		LICENSE = LICENSE
-		README.md = README.md
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

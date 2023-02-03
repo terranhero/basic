@@ -376,31 +376,6 @@ namespace Basic.DataAccess
 		/// <returns>接口 IPagination 的实例</returns>
 		public async Task<IPagination<T>> ToPaginationAsync(Pagination<T> pagination)
 		{
-			//dynamicCommand.CreateWhere(lambdaCollection);
-			//TaskCompletionSource<IPagination<T>> tcs = new TaskCompletionSource<IPagination<T>>();
-			//try
-			//{
-			//	pagination.PageIndex = PageIndex; pagination.PageSize = PageSize;
-			//	dynamicCommand.InitializeCommandText(PageSize, PageIndex);
-			//	dynamicCommand.ExecuteReaderAsync().ContinueWith(delegate (Task<DbDataReader> tt)
-			//	{
-			//		if (tt.IsCompleted)
-			//		{
-			//			using (DbDataReader reader = tt.Result)
-			//			{
-			//				ReaderToPagination(reader, pagination);
-			//				if (reader.NextResult()) { ReadToRecordRows(reader, pagination); }
-			//			}
-			//			tcs.SetResult(pagination);
-			//		}
-			//	}).Wait();
-			//}
-			//finally
-			//{
-			//	dynamicCommand.ReleaseConnection();
-			//}
-			//return tcs.Task;
-
 			dynamicCommand.CreateWhere(lambdaCollection);
 
 			pagination.PageIndex = PageIndex;

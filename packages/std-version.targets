@@ -16,15 +16,6 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(AssemblyName)' == 'Basic.Authentication'">
-		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\GoldSoft.snk</AssemblyOriginatorKeyFile>
-		<OutputPath>$(ProjectDir)..\..\bin\</OutputPath>
-		<DocumentationFile></DocumentationFile>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(AssemblyName)' == 'Basic.Cryptography'">
-		<OutputPath>$(ProjectDir)..\..\bin\</OutputPath>
-		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-	</PropertyGroup>
 	<ItemGroup>
 		<None Include="..\..\packages\license.txt">
 			<Pack>False</Pack>
