@@ -13,7 +13,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageId>Standard.DataAccess</PackageId>
 		<Product>Standard.DataAccess</Product>
-		<PackageTags>Basic Access SQL MYSQL </PackageTags>
+		<PackageTags>ORM Linq Access MSSQL MYSQL ORACLE</PackageTags>
 		<Authors>JACKY</Authors>
 		<Description>Asp.Net Mvc Data Access Supporting</Description>
 	</PropertyGroup>
