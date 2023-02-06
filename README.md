@@ -26,9 +26,17 @@ using(xxxAccess access = new xxxAccess(connectionstring))
 {
    access.Create(entity); or await access.CreateAsync(entity);
 }
+
+//使用 Lambda 表达式查询数据
+using(xxxAccess access = new xxxAccess(connectionstring))
+{
+    var queries = access.GetEntities<XXX>(0,0);
+    queries.Where(m => m.Enabled == true).Where(m => m.Key >= 1);
+    return queries.ToPaginationAsync();
+}
 ```
 
-### 使用分布式事务
+### 使用分布式事务(xxxContext.cs)
 ```c#
 using(xxxAccess access = new xxxAccess(connectionstring, true))
 {   
