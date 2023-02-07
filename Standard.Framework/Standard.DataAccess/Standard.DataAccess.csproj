@@ -13,7 +13,10 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageId>Standard.DataAccess</PackageId>
 		<Product>Standard.DataAccess</Product>
+<<<<<<< HEAD
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+=======
+>>>>>>> 18bbba2271006fb44ebaaa2e21cf8baaaf142b5a
 		<PackageTags>ORM Linq Access MSSQL MYSQL ORACLE</PackageTags>
 		<Authors>JACKY</Authors>
 		<Description>Asp.Net Mvc Data Access Supporting</Description>
