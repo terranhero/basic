@@ -13,10 +13,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageId>Standard.DataAccess</PackageId>
 		<Product>Standard.DataAccess</Product>
-<<<<<<< HEAD
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
-=======
->>>>>>> 18bbba2271006fb44ebaaa2e21cf8baaaf142b5a
 		<PackageTags>ORM Linq Access MSSQL MYSQL ORACLE</PackageTags>
 		<Authors>JACKY</Authors>
 		<Description>Asp.Net Mvc Data Access Supporting</Description>
@@ -36,6 +33,9 @@
 	  <EmbeddedResource Include="LogInfo\SYS_EVENTLOG.myf" />
 	  <EmbeddedResource Include="LogInfo\SYS_EVENTLOG.oraf" />
 	  <EmbeddedResource Include="LogInfo\SYS_EVENTLOG.sqlf" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
