@@ -12,7 +12,8 @@
 		<DelaySign>false</DelaySign>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>Standard.EntityLayer</PackageId>
-		<PackageTags>Basic Entity</PackageTags>
+		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+		<PackageTags>ORM Linq Entity Lambda Simple LightWeight</PackageTags>
 		<Authors>JACKY</Authors>
 		<Description>Asp.Net Mvc Entity Model Supporting</Description>
 		<Product>Standard.EntityLayer</Product>

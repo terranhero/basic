@@ -54,7 +54,7 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		///	Create Post Action
 		/// </summary>
-        [AcceptVerbs(HttpVerbs.Post), ValidateAntiForgeryToken()]
+        [AcceptVerbs(HttpVerbs.Post), ValidateAntiForgery()]
         public  ActionResult Create(<#= builder.NewEntityName #> entity)
         {
             if (ModelState.IsValid)
@@ -91,7 +91,7 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		///	Edit Post Action
 		/// </summary>
-        [AcceptVerbs(HttpVerbs.Post), ValidateAntiForgeryToken()]
+        [AcceptVerbs(HttpVerbs.Post), ValidateAntiForgery()]
         public ActionResult Edit(<#= builder.EditEntityName #> entity)
         {
             if (ModelState.IsValid)
@@ -112,7 +112,7 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		///	Delete Post Action
 		/// </summary>
-		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgeryToken()]
+		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgery()]
 		public ActionResult Delete(<#= builder.DeleteEntityName #>[] entities)
 		{
 			if (ModelState.IsValid)
@@ -136,7 +136,7 @@ namespace <#= defaultNamespance#>
 <# if(builder.SearchAsyncEnabled && builder.SearchEntityName != null) {#>
 
 		/// <summary>简单查询数据</summary>
-		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgeryToken()]
+		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgery()]
 		public async Task<ActionResult> Search(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
@@ -149,7 +149,7 @@ namespace <#= defaultNamespance#>
 		}
 <# }else if(builder.SearchEnabled && builder.SearchEntityName != null) {#>
 		/// <summary>简单查询数据</summary>
-		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgeryToken()]
+		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgery()]
 		public ActionResult Search(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
@@ -171,7 +171,7 @@ namespace <#= defaultNamespance#>
 		}
 
 		/// <summary>高级查询</summary>
-		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgeryToken()]
+		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgery()]
 		public async Task<ActionResult> ComplexSearch(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
@@ -196,7 +196,7 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		/// Complex Search Post Action
 		/// </summary>
-		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgeryToken()]
+		[AcceptVerbs(HttpVerbs.Post), ValidateAntiForgery()]
 		public ActionResult ComplexSearch(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using Basic.Enums;
 using Basic.Exceptions;
+using Microsoft.Extensions.Configuration;
 using SC = System.Configuration;
 
 namespace Basic.Configuration
@@ -72,6 +73,18 @@ namespace Basic.Configuration
 					element.ConnectionString, element.ConnectionString);
 				}
 				break;
+			}
+		}
+
+		/// <summary>初始化数据库连接参数</summary>
+		public static void InitializeConnection(IConfigurationRoot configuration)
+		{
+			string configName = ConfigurationGroup.ElementName;
+			string secName = ConnectionsSection.ElementName;
+			object section = configuration.GetSection(string.Concat(configName, "/", secName));
+			if (section != null && section is ConnectionsSection configurationSection)
+			{
+				InitializeConnection(configurationSection);
 			}
 		}
 
