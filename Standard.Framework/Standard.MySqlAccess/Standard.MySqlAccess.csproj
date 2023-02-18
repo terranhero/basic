@@ -14,6 +14,7 @@
 		<PackageId>Standard.MySqlAccess</PackageId>
 		<Product>Standard.MySqlAccess</Product>
 		<Authors>JACKY</Authors>
+		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 	</PropertyGroup>
 	<!--<ItemGroup>
 	  <Compile Include="MySqlBatchCommand.cs" />
@@ -28,7 +29,7 @@
 	  <Compile Include="MySqlStaticCommand.cs" />
 	</ItemGroup>-->
 	<ItemGroup>
-		<PackageReference Include="MySql.Data" Version="8.0.31" />
+		<PackageReference Include="MySql.Data" Version="8.0.32" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
 		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
