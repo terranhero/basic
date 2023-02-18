@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using Basic.Enums;
 using Basic.Exceptions;
-using Microsoft.Extensions.Configuration;
 using SC = System.Configuration;
 
 namespace Basic.Configuration
@@ -76,17 +75,17 @@ namespace Basic.Configuration
 			}
 		}
 
-		/// <summary>初始化数据库连接参数</summary>
-		public static void InitializeConnection(IConfigurationRoot configuration)
-		{
-			string configName = ConfigurationGroup.ElementName;
-			string secName = ConnectionsSection.ElementName;
-			object section = configuration.GetSection(string.Concat(configName, "/", secName));
-			if (section != null && section is ConnectionsSection configurationSection)
-			{
-				InitializeConnection(configurationSection);
-			}
-		}
+		///// <summary>初始化数据库连接参数</summary>
+		//public static void InitializeConnection(IConfigurationRoot configuration)
+		//{
+		//	string configName = ConfigurationGroup.ElementName;
+		//	string secName = ConnectionsSection.ElementName;
+		//	object section = configuration.GetSection(string.Concat(configName, "/", secName));
+		//	if (section != null && section is ConnectionsSection configurationSection)
+		//	{
+		//		InitializeConnection(configurationSection);
+		//	}
+		//}
 
 		/// <summary>初始化数据库连接参数</summary>
 		internal static void InitializeConnection(ConnectionsSection section)
@@ -105,7 +104,7 @@ namespace Basic.Configuration
 
 		/// <summary>从指定配置文件中初始化数据库连接信息</summary>
 		/// <param name="fullName">配置文件路径</param>
-		internal static void InitializeConfiguration(string fullName)
+		public static void InitializeConfiguration(string fullName)
 		{
 			string sectionName = ConnectionsSection.ElementName;
 
