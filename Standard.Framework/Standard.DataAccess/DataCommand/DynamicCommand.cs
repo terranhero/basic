@@ -921,8 +921,8 @@ namespace Basic.DataAccess
 				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 			}
 			builder.Append("SELECT ");
-			if (!string.IsNullOrEmpty(SelectText))
-				builder.Append(SelectText);
+			if (DistinctStatus == true) { builder.Append("DISTINCT "); }
+			if (!string.IsNullOrEmpty(SelectText)) { builder.Append(SelectText); }
 			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
 				builder.Append(",").Append(joinCommand.SelectText);
 
