@@ -33,7 +33,11 @@ namespace Basic.DataContexts
 						string fileName = file.Name.ToLower();
 						if (fileName == "web.config" || fileName == "app.config")
 						{
-							return InitializeConfiguration(file.FullName);
+							InitializeConfiguration(file.FullName);
+						}
+						else if (fileName == "database.config" || fileName == "database.development.config")
+						{
+							InitializeConfiguration(file.FullName);
 						}
 					}
 				}
@@ -54,6 +58,10 @@ namespace Basic.DataContexts
 							{
 								string fileName = file.Name.ToLower();
 								if (fileName == "web.config" || fileName == "app.config")
+								{
+									return InitializeConfiguration(file.FullName);
+								}
+								else if (fileName == "database.config" || fileName == "database.development.config")
 								{
 									return InitializeConfiguration(file.FullName);
 								}
@@ -81,12 +89,6 @@ namespace Basic.DataContexts
 
 			SC.ConfigurationFileMap fileMap = new SC.ConfigurationFileMap(fullName);
 			SC.Configuration config = SC.ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
-			ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
-			if (section == null) { throw new ConfigurationFileException("Access_Configuration_GroupNotFound", fullName, sectionName); }
-			if (section is ConnectionsSection configurationSection)
-			{
-				ConnectionContext.InitializeConnection(configurationSection); return true;
-			}
 			ConfigurationSection section1 = config.GetSection("connections");
 			if (section1 != null && section1 is DefaultSection)
 			{
@@ -98,6 +100,13 @@ namespace Basic.DataContexts
 			{
 				ConnectionContext.InitializeConnection(connectionStrings); return true;
 			}
+			ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
+			if (section == null) { throw new ConfigurationFileException("Access_Configuration_GroupNotFound", fullName, sectionName); }
+			if (section is ConnectionsSection configurationSection)
+			{
+				ConnectionContext.InitializeConnection(configurationSection); return true;
+			}
+
 			_Service.WriteToOutput("系统读取数据库连接异常，请在 \"{0}\" 文件中添加 配置项", fullName);
 			_Service.WriteToOutput("<section name=\"connections\" type=\"System.Configuration.ConnectionStringsSection, System.Configuration\"/>");
 			_Service.WriteToOutput("<connections>");
@@ -122,6 +131,10 @@ namespace Basic.DataContexts
 						{
 							return InitializeConfiguration(file.FullName);
 						}
+						else if (fileName == "database.config" || fileName == "database.development.config")
+						{
+							return InitializeConfiguration(file.FullName);
+						}
 					}
 				}
 				EnvDTE.DTE dteClass = project.DTE;
@@ -141,6 +154,10 @@ namespace Basic.DataContexts
 							{
 								string fileName = file.Name.ToLower();
 								if (fileName == "web.config" || fileName == "app.config")
+								{
+									return InitializeConfiguration(file.FullName);
+								}
+								else if (fileName == "database.config" || fileName == "database.development.config")
 								{
 									return InitializeConfiguration(file.FullName);
 								}

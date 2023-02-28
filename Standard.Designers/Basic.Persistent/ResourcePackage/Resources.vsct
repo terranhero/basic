@@ -270,7 +270,7 @@
 				</Strings>
 			</Button>
 
-			<Button guid="GUID_GROUP_RESOURCE" id="IDC_SVN_VERSION" priority="0x0404" type="Button">
+			<!--<Button guid="GUID_GROUP_RESOURCE" id="IDC_SVN_VERSION" priority="0x0404" type="Button">
 				<Parent guid="GUID_GROUP_RESOURCE" id="IDG_EXTRACTENUM" />
 				<Icon guid="guidSHLMainMenu" id="1"/>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -282,7 +282,7 @@
 					<CommandName> 最新版本号...</CommandName>
 					<ToolTipText> 最新版本号...</ToolTipText>
 				</Strings>
-			</Button>
+			</Button>-->
 		</Buttons>
 	</Commands>
 	<KeyBindings>

@@ -35,6 +35,10 @@ namespace Basic.DataContexts
 						{
 							return InitializeConfiguration(file.FullName);
 						}
+						else if (fileName == "database.config" || fileName == "database.development.config")
+						{
+							return InitializeConfiguration(file.FullName);
+						}
 					}
 				}
 				EnvDTE.DTE dteClass = project.DTE;
@@ -57,6 +61,10 @@ namespace Basic.DataContexts
 								{
 									return InitializeConfiguration(file.FullName);
 								}
+								else if (fileName == "database.config" || fileName == "database.development.config")
+								{
+									return InitializeConfiguration(file.FullName);
+								}
 							}
 						}
 					}
@@ -66,9 +74,7 @@ namespace Basic.DataContexts
 			}
 			catch (Exception ex)
 			{
-				_Service.WriteToOutput(ex.Message);
-				_Service.WriteToOutput(ex.StackTrace);
-				_Service.WriteToOutput(ex.Source);
+				_Service.WriteToOutput(ex);
 				return false;
 			}
 		}
@@ -122,6 +128,10 @@ namespace Basic.DataContexts
 						{
 							return InitializeConfiguration(file.FullName);
 						}
+						else if (fileName == "database.config" || fileName == "database.development.config")
+						{
+							return InitializeConfiguration(file.FullName);
+						}
 					}
 				}
 				EnvDTE.DTE dteClass = project.DTE;
@@ -144,6 +154,10 @@ namespace Basic.DataContexts
 								{
 									return InitializeConfiguration(file.FullName);
 								}
+								else if (fileName == "database.config" || fileName == "database.development.config")
+								{
+									return InitializeConfiguration(file.FullName);
+								}
 							}
 						}
 					}
@@ -153,9 +167,7 @@ namespace Basic.DataContexts
 			}
 			catch (Exception ex)
 			{
-				_Service.WriteToOutput(ex.Message);
-				_Service.WriteToOutput(ex.StackTrace);
-				_Service.WriteToOutput(ex.Source);
+				_Service.WriteToOutput(ex);
 				return false;
 			}
 		}

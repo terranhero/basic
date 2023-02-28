@@ -485,7 +485,7 @@ namespace Basic.Configuration
 			}
 			catch (Exception ex)
 			{
-				ShowMessage(ex);
+				this.WriteToOutput(ex);
 			}
 		}
 		#endregion

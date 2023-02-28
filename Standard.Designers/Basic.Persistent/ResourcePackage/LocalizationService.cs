@@ -8,7 +8,6 @@ using Basic.Windows;
 using Microsoft;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Sharp;
 using STT = System.Threading.Tasks;
 //VSLangProj.prjKindVBProject for VB.NET projects.
 //VSLangProj.prjKindCSharpProject for C# projects.
@@ -212,18 +211,18 @@ namespace Basic.Localizations
 			if (dte2Class == null) { return; }
 			System.IO.FileInfo fileInfo = new System.IO.FileInfo(dte2Class.ActiveDocument.FullName);
 			long revision = 0;
-			using (Sharp.Client svnClient = new Sharp.Client())
-			{
-				PathTarget local = new PathTarget(fileInfo.FullName);
-				if (svnClient.GetInfo(local, out InfoEventArgs client) == true)
-				{
-					string repository = client.RepositoryRoot.ToString();
-					UriTarget repos = new UriTarget(repository);
+			//using (Sharp.Client svnClient = new Sharp.Client())
+			//{
+			//	PathTarget local = new PathTarget(fileInfo.FullName);
+			//	if (svnClient.GetInfo(local, out InfoEventArgs client) == true)
+			//	{
+			//		string repository = client.RepositoryRoot.ToString();
+			//		UriTarget repos = new UriTarget(repository);
 
-					if (svnClient.GetInfo(repos, out InfoEventArgs server) == true) { revision = server.Revision; }
-					else { revision = client.Revision; }
-				}
-			}
+			//		if (svnClient.GetInfo(repos, out InfoEventArgs server) == true) { revision = server.Revision; }
+			//		else { revision = client.Revision; }
+			//	}
+			//}
 			if (revision == 0) { return; }
 			if (fileInfo.Extension == ".targets")
 			{

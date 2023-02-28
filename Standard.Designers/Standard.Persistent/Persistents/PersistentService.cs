@@ -1178,6 +1178,13 @@ namespace Basic.Configuration
 			errorListProvider.Show();
 		}
 
+		internal void WriteToOutput(Exception ex)
+		{
+			WriteToOutput(ex.Message);
+			WriteToOutput(ex.StackTrace);
+			WriteToOutput(ex.Source);
+		}
+
 		private const string outputTitle = "Asp.Net Mvc Persistents";
 		private static string outputGuid;
 		internal void WriteToOutput(string message)

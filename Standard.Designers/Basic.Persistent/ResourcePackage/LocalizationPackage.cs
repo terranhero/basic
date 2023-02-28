@@ -12,7 +12,7 @@ namespace Basic.Localizations
 	[ProvideAutoLoad(UIContextGuids.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
 	[PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
 	[ProvideLoadKey("Standard", Consts.ProductVersion, "ResourcePackage", "SIP GoldSoft Technology Limited", 1)]
-	[InstalledProductRegistrationAttribute("#100", "#101", Consts.ProductVersion, IconResourceID = 510)]
+	[InstalledProductRegistrationAttribute("#100", "#111", Consts.ProductVersion, IconResourceID = 510)]
 	[ProvideEditorExtension(typeof(LocalizationFactory), ".localresx", 50, NameResourceID = 112, TemplateDir = "Templates",
 		 ProjectGuid = "{A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3}", DefaultName = "ASP.NET MVC Localization Resource")]
 	[ProvideKeyBindingTable(Consts.guidFactoryString, 112)]
