@@ -18,6 +18,7 @@ namespace Basic.EntityLayer
 	/// </summary>
 	public sealed class JsonConverter
 	{
+		private readonly static Type typePropertyCollectionAttribute = typeof(PropertyCollectionAttribute);
 		//private readonly HttpRequest mRequest;
 		private readonly System.Globalization.CultureInfo _CultureInfo;
 
@@ -190,11 +191,18 @@ namespace Basic.EntityLayer
 				if ((getMethod != null) && (getMethod.GetParameters().Length <= 0))
 				{
 					if (!flag) { sb.Append(','); }
+					object propValue = MethodInfoInvoke(getMethod, value, null);
+					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
+					{
+						SerializeDictionaryNoBreak(sb, dicValue, depth);
+						continue;
+					}
+
+
 					DataMemberAttribute dma = info2.GetCustomAttribute<DataMemberAttribute>();
 					if (dma != null && dma.Name != null) { SerializeString(sb, dma.Name, null); }
 					else { SerializeString(sb, info2.Name, null); }
 					sb.Append(':');
-					object propValue = MethodInfoInvoke(getMethod, value, null);
 					if (dfa != null) { SerializeValuePrivate(sb, propValue, true, depth, dfa.DataFormatString); }
 					else { SerializeValuePrivate(sb, propValue, true, depth, null); }
 
@@ -233,9 +241,8 @@ namespace Basic.EntityLayer
 			}
 			if (includeBrace == true) { sb.Append('}'); }
 		}
-		private void SerializeDictionary(StringBuilder sb, IDictionary value, int depth)
+		private void SerializeDictionaryNoBreak(StringBuilder sb, IDictionary value, int depth)
 		{
-			sb.Append('{');
 			bool flag = true;
 			bool flag2 = false;
 			if (value.Contains("__type"))
@@ -262,8 +269,13 @@ namespace Basic.EntityLayer
 					flag = false;
 				}
 			}
-			sb.Append('}');
+		}
 
+		private void SerializeDictionary(StringBuilder sb, IDictionary value, int depth)
+		{
+			sb.Append('{');
+			SerializeDictionaryNoBreak(sb, value, depth);
+			sb.Append('}');
 		}
 		private void SerializeDictionaryKeyValue(StringBuilder sb, string key, object value, int depth)
 		{
