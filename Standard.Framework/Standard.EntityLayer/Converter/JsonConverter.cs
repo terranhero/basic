@@ -195,7 +195,7 @@ namespace Basic.EntityLayer
 					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
 					{
 						SerializeDictionaryNoBreak(sb, dicValue, depth);
-						continue;
+						flag = false; continue;
 					}
 
 
