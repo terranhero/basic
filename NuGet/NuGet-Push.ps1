@@ -2,7 +2,7 @@
 if(Test-Path $path"\NuGet.exe")
 {
     #Start-Process NuGet.exe "setApiKey 7a3459c0-d9ce-4c81-aa2f-3a9faf36a81d"
-    $nugetApiKey = "oy2pruzl2dus2f34dijato3btf3bzgzedbileodkb3bfii"
+    $nugetApiKey = "oy2ca6ndmzmrwxnsk6gqvl7gvdfy7vaerbwlfuhxswx4ki"
     $nugetSource = "https://www.nuget.org/api/v2/package"
     $parentPath = Split-Path -Parent $path
     $binPath = $parentPath+"\bin\"
