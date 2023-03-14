@@ -268,7 +268,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="entities">包含数据的键值对数组</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
-		public virtual Task<Result> CreateAsync(params AbstractEntity[] entities)
+		public virtual Task<Result> CreateAsync<T>(params T[] entities) where T : AbstractEntity
 		{
 			return base.ExecuteNonQueryAsync(CreateCommand, entities);
 		}
@@ -382,7 +382,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="entities">包含数据的键值对数组</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
-		public virtual Task<Result> DeleteAsync(params AbstractEntity[] entities)
+		public virtual Task<Result> DeleteAsync<T>(params T[] entities) where T : AbstractEntity
 		{
 			return base.ExecuteNonQueryAsync(DeleteCommand, entities);
 		}
