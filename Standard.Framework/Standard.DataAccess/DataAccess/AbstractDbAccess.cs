@@ -2428,7 +2428,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="CommandName">命令名称</param>
 		/// <returns>返回StaticCommand结构信息</returns>
-		internal virtual StaticCommand CreateStaticCommand(string CommandName)
+		protected internal StaticCommand CreateStaticCommand(string CommandName)
 		{
 			return CreateDataCommand(CommandName) as StaticCommand;
 		}
@@ -2438,7 +2438,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="CommandName">命令名称</param>
 		/// <returns>返回SqlStruct结构信息</returns>
-		internal virtual DynamicCommand CreateDynamicCommand(string CommandName)
+		protected internal  DynamicCommand CreateDynamicCommand(string CommandName)
 		{
 			return CreateDataCommand(CommandName) as DynamicCommand;
 		}
