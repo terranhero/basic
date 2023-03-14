@@ -85,16 +85,12 @@ if(Test-Path $path"\NuGet.exe")
         #copy-item "$path\Package\Basic.Windows.$version.nupkg" -destination "C:\Users\JACKY\AppData\Local\NuGet\Cache"
         #Write-Host "复制NuGet包至NuGet缓存目录结束"
 
-        #Start-Process NuGet.exe "push ""$path\Package\Basic.Configuration.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
         Start-Process NuGet.exe "push ""$path\Package\Standard.EntityLayer.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
         Start-Process NuGet.exe "push ""$path\Package\Standard.DataAccess.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
         Start-Process NuGet.exe "push ""$path\Package\Basic.MvcLibrary.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
         Start-Process NuGet.exe "push ""$path\Package\Standard.MvcLibrary.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
         Start-Process NuGet.exe "push ""$path\Package\Standard.MySqlAccess.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
-        Start-Process NuGet.exe "push ""$path\Package\Standard.SqlAccess.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
-        #Start-Process NuGet.exe "push ""$path\Package\Basic.EasyLibrary.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
-        #Start-Process NuGet.exe "push ""$path\Package\Basic.WinForms.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
-        #Start-Process NuGet.exe "push ""$path\Package\Basic.Windows.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait
+        Start-Process NuGet.exe "push ""$path\Package\Standard.SqlAccess.$version.nupkg"" -Source ""$nugetSource"" -ApiKey $nugetApiKey" -NoNewWindow -Wait        
         Write-Host "向(https://www.nuget.org)推送NuGet包完成。"
     }
 }

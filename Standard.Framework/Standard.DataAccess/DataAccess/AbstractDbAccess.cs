@@ -2438,7 +2438,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="CommandName">命令名称</param>
 		/// <returns>返回SqlStruct结构信息</returns>
-		protected internal  DynamicCommand CreateDynamicCommand(string CommandName)
+		protected internal DynamicCommand CreateDynamicCommand(string CommandName)
 		{
 			return CreateDataCommand(CommandName) as DynamicCommand;
 		}
@@ -2458,6 +2458,24 @@ namespace Basic.DataAccess
 			dynamicCommand.FromText = fromText;
 			dynamicCommand.WhereText = whereText;
 			dynamicCommand.OrderText = orderText;
+			return dynamicCommand;
+		}
+
+		/// <summary>
+		/// 创建自定义动态命令
+		/// </summary>
+		/// <param name="selectText">要对数据源执行的 Transact-SQL 语句中 SELECT 数据库字段部分。</param>
+		/// <param name="fromText">要对数据源执行的 Transact-SQL 语句中 FROM 数据库表部分。</param>
+		/// <param name="whereText">要对数据源执行的 Transact-SQL 语句中 WHERE 条件部分。</param>
+		/// <param name="orderText">要对数据源执行的 Transact-SQL 语句中 ORDER BY 条件部分。</param>
+		/// <param name="groupText">要对数据源执行的 Transact-SQL 语句中 GROUP 部分</param>
+		/// <param name="havingText">要对数据源执行的 Transact-SQL 语句中 HANVING 条件部分</param>
+		/// <returns>返回创建成功的动态命令 DynamicCommand 子类实例(特定于某种数据库命令的实例)。</returns>
+		internal protected DynamicCommand CreateDynamicCommand(string selectText, string fromText, string whereText, string orderText, string groupText, string havingText)
+		{
+			DynamicCommand dynamicCommand = CreateDynamicCommand(selectText, fromText, whereText, orderText);
+			dynamicCommand.GroupText = groupText;
+			dynamicCommand.HavingText = havingText;
 			return dynamicCommand;
 		}
 
