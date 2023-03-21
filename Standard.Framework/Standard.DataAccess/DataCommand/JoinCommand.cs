@@ -79,7 +79,7 @@ namespace Basic.DataAccess
 			_GroupText = dbCommand.GroupText;
 			_HavingText = dbCommand.HavingText;
 			_OrderText = dbCommand.OrderText;
-			m_Parameters = dbCommand.DbParameters;
+			m_Parameters = dbCommand.DbParameters.ToArray();
 		}
 
 		private Expression RemoveUnary(Expression body)
@@ -92,7 +92,7 @@ namespace Basic.DataAccess
 			{
 				return (body as ConditionalExpression).Test;
 			}
-#if(NET35)
+#if (NET35)
             //else if (body is System.Linq.Expressions.BinaryExpression)
             //{
             //    return (body as BinaryExpression).ReduceExtensions();

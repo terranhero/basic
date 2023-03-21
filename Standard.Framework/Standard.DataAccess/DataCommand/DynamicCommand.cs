@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -503,11 +504,15 @@ namespace Basic.DataAccess
 		/// <summary>
 		/// 动态命令结构中静态参数列表
 		/// </summary>
-		protected internal DbParameter[] DbParameters;
+		protected internal readonly List<DbParameter> DbParameters = new List<DbParameter>(20);
 
 		/// <summary>添加动态查询的参数</summary>
 		/// <param name="parameters">需要添加的参数</param>
-		public void AddParameters(params DbParameter[] parameters) { DbParameters = parameters; }
+		public void AddParameters(params DbParameter[] parameters)
+		{
+			if (parameters == null || parameters.Length == 0) { return; }
+			DbParameters.AddRange(parameters);
+		}
 
 		/// <summary>
 		/// 将当前命令的参数复制到指定的集合中
@@ -781,8 +786,10 @@ namespace Basic.DataAccess
 			base.ReadXml(reader);
 			if (Parameters.Count > 0)
 			{
-				DbParameters = new DbParameter[Parameters.Count];
-				Parameters.CopyTo(DbParameters, 0);
+				DbParameters.AddRange(Parameters.Cast<DbParameter>());
+				//DbParameter[] parameters = new DbParameter[Parameters.Count];
+				//Parameters.CopyTo(parameters, 0);
+				//DbParameters.AddRange(parameters);
 			}
 		}
 

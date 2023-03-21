@@ -17,6 +17,11 @@
 		<Authors>JACKY</Authors>
 		<Description>Asp.Net Mvc Entity Model Supporting</Description>
 		<Product>Standard.EntityLayer</Product>
+		<Title>Standard.EntityLayer</Title>
+		<RepositoryUrl>https://gitee.com/terran-hero/basic</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
@@ -25,7 +30,7 @@
 	<ItemGroup>
 		<Compile Remove="Interfaces\IRequestContext.cs" />
 		<Compile Remove="Interfaces\IResponseContext.cs" />
-	</ItemGroup>
+	</ItemGroup>	
 	<ItemGroup>
 	  <Compile Update="Properties\Strings.Designer.cs">
 	    <DesignTime>True</DesignTime>

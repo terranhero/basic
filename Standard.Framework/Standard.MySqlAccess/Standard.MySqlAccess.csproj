@@ -29,7 +29,7 @@
 	  <Compile Include="MySqlStaticCommand.cs" />
 	</ItemGroup>-->
 	<ItemGroup>
-		<PackageReference Include="MySql.Data" Version="8.0.32" />
+		<PackageReference Include="MySql.Data" Version="8.0.32.1" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
 		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />

@@ -1,18 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using Basic.DataAccess;
-using Basic.Properties;
-using Basic.Exceptions;
-using Basic.Collections;
-using Basic.EntityLayer;
-using Basic.Interfaces;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using Basic.Enums;
 using System.Linq;
+using Basic.DataAccess;
+using Basic.Enums;
+using Basic.Properties;
 
 namespace Basic.SqlServer
 {
@@ -313,7 +308,7 @@ namespace Basic.SqlServer
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			SqlParameterConverter.ConvertSqlParameterType(parameter, dbType, 0, 0);
-			sqlCommand.Parameters.Add(parameter);
+			DbParameters.Add(parameter);
 			return parameter;
 		}
 
@@ -336,7 +331,7 @@ namespace Basic.SqlServer
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			SqlParameterConverter.ConvertSqlParameterType(parameter, dbType, precision, scale);
-			sqlCommand.Parameters.Add(parameter);
+			DbParameters.Add(parameter);
 			return parameter;
 		}
 
@@ -384,8 +379,10 @@ namespace Basic.SqlServer
 			lock (Parameters)
 			{
 				Parameters.Clear();
-				if (DbParameters != null && DbParameters.Length > 0)
-					Parameters.AddRange(DbParameters);
+				if (DbParameters != null && DbParameters.Count > 0)
+				{
+					Parameters.AddRange(DbParameters.ToArray());
+				}
 				if (joinCommand != null && joinCommand.Parameters.Length > 0)
 				{
 					foreach (SqlParameter parameter in joinCommand.Parameters)
@@ -414,14 +411,12 @@ namespace Basic.SqlServer
 			lock (this)
 			{
 				SqlDynamicCommand dynamicCommand = new SqlDynamicCommand();
-				if (this.DbParameters != null && this.DbParameters.Length >= 0)
+				if (this.DbParameters != null && this.DbParameters.Count >= 0)
 				{
-					List<SqlParameter> list = new List<SqlParameter>(this.DbParameters.Length);
-					foreach (SqlParameter parameter in this.DbParameters)
+					dynamicCommand.DbParameters.AddRange(DbParameters.Select(m =>
 					{
-						list.Add((parameter as ICloneable).Clone() as SqlParameter);
-					}
-					dynamicCommand.DbParameters = list.ToArray();
+						return (m as ICloneable).Clone() as SqlParameter;
+					}));
 				}
 				CopyTo(dynamicCommand);
 				return dynamicCommand;

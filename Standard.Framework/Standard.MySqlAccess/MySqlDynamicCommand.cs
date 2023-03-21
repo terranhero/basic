@@ -615,8 +615,10 @@ namespace Basic.MySqlAccess
 			lock (Parameters)
 			{
 				Parameters.Clear();
-				if (DbParameters != null && DbParameters.Length > 0)
-					Parameters.AddRange(DbParameters);
+				if (DbParameters != null && DbParameters.Count > 0)
+				{
+					Parameters.AddRange(DbParameters.ToArray());
+				}
 				if (joinCommand != null && joinCommand.Parameters.Length > 0)
 				{
 					foreach (MySqlParameter parameter in joinCommand.Parameters)
@@ -645,14 +647,12 @@ namespace Basic.MySqlAccess
 			lock (this)
 			{
 				MySqlDynamicCommand dynamicCommand = new MySqlDynamicCommand((MySqlCommand)_MySqlCommand.Clone());
-				if (this.DbParameters != null && this.DbParameters.Length >= 0)
+				if (this.DbParameters != null && this.DbParameters.Count >= 0)
 				{
-					dynamicCommand.DbParameters = new DbParameter[this.DbParameters.Length];
-					for (int index = 0; index < this.DbParameters.Length; index++)
+					dynamicCommand.DbParameters.AddRange(DbParameters.Select(m =>
 					{
-						MySqlParameter parameter = this.DbParameters[index] as MySqlParameter;
-						dynamicCommand.DbParameters[index] = (parameter as ICloneable).Clone() as MySqlParameter;
-					}
+						return (m as ICloneable).Clone() as MySqlParameter;
+					}));
 				}
 				CopyTo(dynamicCommand);
 				return dynamicCommand;

@@ -121,6 +121,17 @@ namespace Basic.Localizations
 		/// <summary>
 		/// 判断当前资源集合是否已经包含指定名称的资源键名称。
 		/// </summary>
+		/// <param name="name1">一个String类型的值，该值表示一个资源名称。</param>
+		/// <param name="name2">一个String类型的值，该值表示一个资源名称。</param>
+		/// <returns>如果存在则返回true，否则返回false。</returns>
+		public bool ContainsName(string name1, string name2)
+		{
+			return resourceCollection.ContainsKey(name1) || resourceCollection.ContainsKey(name2);
+		}
+
+		/// <summary>
+		/// 判断当前资源集合是否已经包含指定名称的资源键名称。
+		/// </summary>
 		/// <param name="name">一个String类型的值，该值表示一个资源名称。</param>
 		/// <returns>如果存在则返回true，否则返回false。</returns>
 		public bool ContainsName(string name)

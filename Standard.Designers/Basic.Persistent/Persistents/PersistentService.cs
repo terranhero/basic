@@ -348,50 +348,52 @@ namespace Basic.Configuration
 					foreach (DataEntityPropertyElement property in entity.Properties)
 					{
 						string resName = property.DisplayName.DisplayName;
+						string pubName = string.Concat(publicGroupName, "_", property.Name);
+
 						if (string.IsNullOrWhiteSpace(resName)) { resName = string.Concat(groupName, "_", property.Name); }
+
 						if (!Regex.IsMatch(resName, "^[A-Za-z0-9_]+$")) { continue; }
-						if (existResourceCollection.ContainsName(resName)) { continue; }
+						if (existResourceCollection.ContainsName(resName, pubName)) { continue; }
+
 						if (!resourceCollection.ContainsName(resName))
 						{
 							LocalizationItem resx = resourceCollection.Add(groupName, resName, property.Comment);
 							if (cultureInfo != null) { resx[cultureInfo.Name] = property.Name; }
 						}
-						resName = string.Concat(publicGroupName, "_", property.Name);
-						if (existResourceCollection.ContainsName(resName)) { continue; }
-						if (!resourceCollection.ContainsName(resName))
+						if (!resourceCollection.ContainsName(pubName))
 						{
-							LocalizationItem resx = resourceCollection.Add(publicGroupName, resName, property.Comment);
+							LocalizationItem resx = resourceCollection.Add(publicGroupName, pubName, property.Comment);
 							if (cultureInfo != null) { resx[cultureInfo.Name] = property.Name; }
 						}
 						if (property.Type != null && property.Type == typeof(bool))
 						{
 							resName = string.Concat(groupName, "_", property.Name, "_TrueText");
-							if (existResourceCollection.ContainsName(resName)) { continue; }
+							pubName = string.Concat(publicGroupName, "_", property.Name, "_TrueText");
+							if (existResourceCollection.ContainsName(resName, pubName)) { continue; }
+
 							if (!resourceCollection.ContainsName(resName))
 							{
 								LocalizationItem resx = resourceCollection.Add(groupName, resName, "是");
 								if (cultureInfo != null) { resx[cultureInfo.Name] = "True"; }
 							}
+							if (!resourceCollection.ContainsName(pubName))
+							{
+								LocalizationItem resx = resourceCollection.Add(groupName, pubName, "是");
+								if (cultureInfo != null) { resx[cultureInfo.Name] = "True"; }
+							}
+
 							resName = string.Concat(groupName, "_", property.Name, "_FalseText");
-							if (existResourceCollection.ContainsName(resName)) { continue; }
+							pubName = string.Concat(publicGroupName, "_", property.Name, "_FalseText");
+							if (existResourceCollection.ContainsName(resName, pubName)) { continue; }
+
 							if (!resourceCollection.ContainsName(resName))
 							{
 								LocalizationItem resx = resourceCollection.Add(groupName, resName, "否");
 								if (cultureInfo != null) { resx[cultureInfo.Name] = "False"; }
 							}
-
-							resName = string.Concat(publicGroupName, "_", property.Name, "_TrueText");
-							if (existResourceCollection.ContainsName(resName)) { continue; }
-							if (!resourceCollection.ContainsName(resName))
+							if (!resourceCollection.ContainsName(pubName))
 							{
-								LocalizationItem resx = resourceCollection.Add(publicGroupName, resName, "是");
-								if (cultureInfo != null) { resx[cultureInfo.Name] = "True"; }
-							}
-							resName = string.Concat(publicGroupName, "_", property.Name, "_FalseText");
-							if (existResourceCollection.ContainsName(resName)) { continue; }
-							if (!resourceCollection.ContainsName(resName))
-							{
-								LocalizationItem resx = resourceCollection.Add(publicGroupName, resName, "否");
+								LocalizationItem resx = resourceCollection.Add(groupName, pubName, "否");
 								if (cultureInfo != null) { resx[cultureInfo.Name] = "False"; }
 							}
 						}
@@ -594,35 +596,68 @@ namespace Basic.Configuration
 					ShowMessage(message);
 					return;
 				}
+				LocalizationCollection existResourceCollection = new LocalizationCollection();
+				string resourceFileName = System.IO.Path.GetFileName(fullName);
+				existResourceCollection.Load(fullName, m => File.OpenRead(m));
+
 				LocalizationCollection resourceCollection = new LocalizationCollection();
 				resourceCollection.AddEnabledCultureInfos();
 				CultureInfo cultureInfo = resourceCollection.GetCultureInfo(1033);
 				string groupName = _Persistent.GroupName;
+				string publicGroupName = _Persistent.PublicGroupName;
+
 				foreach (DataEntityElement entity in _Persistent.DataEntities)
 				{
 					#region 添加实体模型属性本地化资源：属性，验证，布尔可选
 					foreach (DataEntityPropertyElement property in entity.Properties)
 					{
 						string resName = property.DisplayName.DisplayName;
+						string pubName = string.Concat(publicGroupName, "_", property.Name);
+
 						if (string.IsNullOrWhiteSpace(resName)) { resName = string.Concat(groupName, "_", property.Name); }
+
 						if (!Regex.IsMatch(resName, "^[A-Za-z0-9_]+$")) { continue; }
+						if (existResourceCollection.ContainsName(resName, pubName)) { continue; }
+
 						if (!resourceCollection.ContainsName(resName))
 						{
 							LocalizationItem resx = resourceCollection.Add(groupName, resName, property.Comment);
 							if (cultureInfo != null) { resx[cultureInfo.Name] = property.Name; }
 						}
+						if (!resourceCollection.ContainsName(pubName))
+						{
+							LocalizationItem resx = resourceCollection.Add(publicGroupName, pubName, property.Comment);
+							if (cultureInfo != null) { resx[cultureInfo.Name] = property.Name; }
+						}
 						if (property.Type != null && property.Type == typeof(bool))
 						{
 							resName = string.Concat(groupName, "_", property.Name, "_TrueText");
+							pubName = string.Concat(publicGroupName, "_", property.Name, "_TrueText");
+							if (existResourceCollection.ContainsName(resName, pubName)) { continue; }
+
 							if (!resourceCollection.ContainsName(resName))
 							{
 								LocalizationItem resx = resourceCollection.Add(groupName, resName, "是");
 								if (cultureInfo != null) { resx[cultureInfo.Name] = "True"; }
 							}
+							if (!resourceCollection.ContainsName(pubName))
+							{
+								LocalizationItem resx = resourceCollection.Add(groupName, pubName, "是");
+								if (cultureInfo != null) { resx[cultureInfo.Name] = "True"; }
+							}
+
 							resName = string.Concat(groupName, "_", property.Name, "_FalseText");
+							pubName = string.Concat(publicGroupName, "_", property.Name, "_FalseText");
+							if (existResourceCollection.ContainsName(resName, pubName)) { continue; }
+
 							if (!resourceCollection.ContainsName(resName))
 							{
 								LocalizationItem resx = resourceCollection.Add(groupName, resName, "否");
+								if (cultureInfo != null) { resx[cultureInfo.Name] = "False"; }
+							}
+							if (!resourceCollection.ContainsName(pubName))
+							{
+								LocalizationItem resx = resourceCollection.Add(groupName, pubName, "否");
 								if (cultureInfo != null) { resx[cultureInfo.Name] = "False"; }
 							}
 						}
@@ -968,7 +1003,7 @@ namespace Basic.Configuration
 				string resInfo = StringUtils.GetString("Package_ResourceIsNotExists", resourceFileName);
 				if (notExists.Count > 0)
 				{
-					ShowMessage(string.Concat(resInfo, Environment.NewLine, string.Join(Environment.NewLine, notExists)));
+					ShowMessage(string.Concat(resInfo, Environment.NewLine, string.Join(Environment.NewLine, notExists.Distinct())));
 				}
 			}
 			catch (Exception ex)

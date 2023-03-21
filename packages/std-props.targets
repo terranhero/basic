@@ -7,6 +7,9 @@
 		<DefineConstants>Release,NETSTD</DefineConstants>
 		<!--<BaseIntermediateOutputPath>$(ProjectDir)..\..\bin\obj\$(TargetFramework)\$(AssemblyName)\</BaseIntermediateOutputPath>-->
 		<UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
 		<OutputPath>$(ProjectDir)..\..\bin\</OutputPath>
@@ -15,5 +18,18 @@
 		<DefineConstants>Debug,NETSTD</DefineConstants>
 		<!--<BaseIntermediateOutputPath>$(ProjectDir)..\..\bin\obj\$(TargetFramework)\$(AssemblyName)\</BaseIntermediateOutputPath>-->
 		<UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 </Project>

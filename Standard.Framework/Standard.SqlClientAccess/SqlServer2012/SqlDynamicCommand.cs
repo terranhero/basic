@@ -24,7 +24,7 @@ namespace Basic.SqlServer2012
 		/// <summary>
 		/// 初始化 SqlDynamicCommand 类的新实例。 
 		/// </summary>
-		public SqlDynamicCommand() : base(new SqlCommand()) { sqlCommand = dataDbCommand as SqlCommand; }
+		public SqlDynamicCommand() : this(new SqlCommand()) { }
 
 		/// <summary>
 		/// 根据数据库命令，初始化 SqlDynamicCommand 类的新实例，主要克隆实例时使用。
@@ -194,9 +194,8 @@ namespace Basic.SqlServer2012
 		/// <returns>返回带存储过程符号的参数名称</returns>
 		public override string CreateParameterName(string parameterName)
 		{
-			if (parameterName.StartsWith("@"))
-				return parameterName;
-			return string.Format("@{0}", parameterName);
+			if (parameterName.StartsWith("@")) { return parameterName; }
+			return string.Concat("@", parameterName);
 		}
 
 		/// <summary>
@@ -393,7 +392,8 @@ namespace Basic.SqlServer2012
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			SqlParameterConverter.ConvertSqlParameterType(parameter, dbType, 0, 0);
-			sqlCommand.Parameters.Add(parameter);
+			//sqlCommand.Parameters.Add(parameter);
+			DbParameters.Add(parameter);
 			return parameter;
 		}
 
@@ -416,7 +416,8 @@ namespace Basic.SqlServer2012
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			SqlParameterConverter.ConvertSqlParameterType(parameter, dbType, precision, scale);
-			sqlCommand.Parameters.Add(parameter);
+			//sqlCommand.Parameters.Add(parameter);
+			DbParameters.Add(parameter);
 			return parameter;
 		}
 
@@ -464,8 +465,10 @@ namespace Basic.SqlServer2012
 			lock (Parameters)
 			{
 				Parameters.Clear();
-				if (DbParameters != null && DbParameters.Length > 0)
-					Parameters.AddRange(DbParameters);
+				if (DbParameters != null && DbParameters.Count > 0)
+				{
+					Parameters.AddRange(DbParameters.ToArray());
+				}
 				if (joinCommand != null && joinCommand.Parameters.Length > 0)
 				{
 					foreach (SqlParameter parameter in joinCommand.Parameters)
@@ -494,14 +497,19 @@ namespace Basic.SqlServer2012
 			lock (this)
 			{
 				SqlDynamicCommand dynamicCommand = new SqlDynamicCommand();
-				if (this.DbParameters != null && this.DbParameters.Length >= 0)
+				if (this.DbParameters != null && this.DbParameters.Count >= 0)
 				{
-					List<SqlParameter> list = new List<SqlParameter>(this.DbParameters.Length);
-					foreach (SqlParameter parameter in this.DbParameters)
+					dynamicCommand.DbParameters.AddRange(DbParameters.Select(m =>
 					{
-						list.Add((parameter as ICloneable).Clone() as SqlParameter);
-					}
-					dynamicCommand.DbParameters = list.ToArray();
+						return (m as ICloneable).Clone() as SqlParameter;
+					}));
+
+					//List<SqlParameter> list = new List<SqlParameter>(this.DbParameters.Length);
+					//foreach (SqlParameter parameter in this.DbParameters)
+					//{
+					//	list.Add((parameter as ICloneable).Clone() as SqlParameter);
+					//}
+					//dynamicCommand.DbParameters = list.ToArray();
 				}
 				CopyTo(dynamicCommand);
 				return dynamicCommand;

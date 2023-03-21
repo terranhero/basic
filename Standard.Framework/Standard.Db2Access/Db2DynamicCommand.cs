@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Windows.Input;
 using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Properties;
@@ -19,18 +18,18 @@ namespace Basic.DB2Access
 	[System.Xml.Serialization.XmlRoot(DataCommand.DynamicCommandConfig)]
 	internal sealed class DB2DynamicCommand : DynamicCommand, IDisposable, ICloneable
 	{
-		private readonly DB2Command dbCommand;
+		private readonly DB2Command db2Command;
 
 		/// <summary>
 		/// 初始化 DB2DynamicCommand 类的新实例。 
 		/// </summary>
-		public DB2DynamicCommand() : base(new DB2Command()) { dbCommand = dataDbCommand as DB2Command; }
+		public DB2DynamicCommand() : this(new DB2Command()) { db2Command = dataDbCommand as DB2Command; }
 
-		///// <summary>
-		///// 根据数据库命令，初始化 DB2DynamicCommand 类的新实例，主要克隆实例时使用。
-		///// </summary>
-		///// <param name="dbCommand">表示 DB2Command 类实例。</param>
-		//private DB2DynamicCommand(DB2Command dbCommand) : base(dbCommand) { sqlCommand = dbCommand; }
+		/// <summary>
+		/// 根据数据库命令，初始化 DB2DynamicCommand 类的新实例，主要克隆实例时使用。
+		/// </summary>
+		/// <param name="dbCommand">表示 DB2Command 类实例。</param>
+		private DB2DynamicCommand(DB2Command dbCommand) : base(dbCommand) { db2Command = dbCommand; }
 
 		/// <summary>当前命令的数据库类型</summary>
 		public override ConnectionType ConnectionType { get { return ConnectionType.Db2Connection; } }
@@ -64,7 +63,7 @@ namespace Basic.DB2Access
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync()
 		{
-			return dbCommand.ExecuteReaderAsync();
+			return db2Command.ExecuteReaderAsync();
 		}
 
 		/// <summary>
@@ -74,7 +73,7 @@ namespace Basic.DB2Access
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior)
 		{
-			return dbCommand.ExecuteReaderAsync(behavior);
+			return db2Command.ExecuteReaderAsync(behavior);
 		}
 
 		/// <summary>
@@ -121,7 +120,7 @@ namespace Basic.DB2Access
 		/// <returns>一个 DbParameter 对象。</returns>
 		public override DbParameter CreateParameter()
 		{
-			return dbCommand.CreateParameter();
+			return db2Command.CreateParameter();
 		}
 
 		/// <summary>
@@ -136,7 +135,7 @@ namespace Basic.DB2Access
 		internal protected override DbParameter CreateParameter(string parameterName, string sourceColumn, DataTypeEnum dbType,
 			int size, ParameterDirection direction, bool isNullable)
 		{
-			DB2Parameter parameter = dbCommand.CreateParameter();
+			DB2Parameter parameter = db2Command.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
@@ -159,7 +158,7 @@ namespace Basic.DB2Access
 		internal protected override DbParameter CreateParameter(string parameterName, string sourceColumn, DataTypeEnum dbType,
 			byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			DB2Parameter parameter = dbCommand.CreateParameter();
+			DB2Parameter parameter = db2Command.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -222,7 +221,7 @@ namespace Basic.DB2Access
 		public override DbParameter CreateParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			 int size, ParameterDirection direction, bool isNullable)
 		{
-			DB2Parameter parameter = dbCommand.CreateParameter();
+			DB2Parameter parameter = db2Command.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
@@ -245,7 +244,7 @@ namespace Basic.DB2Access
 		public override DbParameter CreateParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			 byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			DB2Parameter parameter = dbCommand.CreateParameter();
+			DB2Parameter parameter = db2Command.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -301,14 +300,14 @@ namespace Basic.DB2Access
 		public override DbParameter CreateAddParameter(string parameterName, string sourceColumn, DbTypeEnum dbType, int size,
 			ParameterDirection direction, bool isNullable)
 		{
-			DB2Parameter parameter = dbCommand.CreateParameter();
+			DB2Parameter parameter = db2Command.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			DB2ParameterConverter.ConvertDB2ParameterType(parameter, dbType, 0, 0);
-			dbCommand.Parameters.Add(parameter);
+			db2Command.Parameters.Add(parameter);
 			return parameter;
 		}
 
@@ -323,7 +322,7 @@ namespace Basic.DB2Access
 		public override DbParameter CreateAddParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			DB2Parameter parameter = dbCommand.CreateParameter();
+			DB2Parameter parameter = db2Command.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -331,7 +330,7 @@ namespace Basic.DB2Access
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			DB2ParameterConverter.ConvertDB2ParameterType(parameter, dbType, precision, scale);
-			dbCommand.Parameters.Add(parameter);
+			db2Command.Parameters.Add(parameter);
 			return parameter;
 		}
 		#endregion
@@ -343,7 +342,7 @@ namespace Basic.DB2Access
 		/// <returns>执行Transact-SQL命令结果，返回受影响的记录数。</returns>
 		internal protected override int Fill(DataTable table)
 		{
-			DB2DataAdapter dataAdapter = new DB2DataAdapter(dbCommand);
+			DB2DataAdapter dataAdapter = new DB2DataAdapter(db2Command);
 			return dataAdapter.Fill(table);
 		}
 
@@ -354,7 +353,7 @@ namespace Basic.DB2Access
 		/// <returns>已在 DataSet 中成功添加或刷新的行数。 这不包括受不返回行的语句影响的行。 </returns>
 		internal protected override int Fill(DataSet dataSet)
 		{
-			DB2DataAdapter dataAdapter = new DB2DataAdapter(dbCommand);
+			DB2DataAdapter dataAdapter = new DB2DataAdapter(db2Command);
 			return dataAdapter.Fill(dataSet);
 		}
 
@@ -364,7 +363,7 @@ namespace Basic.DB2Access
 		/// <param name="parameters"></param>
 		internal protected override void CopyParametersTo(ICollection<DbParameter> parameters)
 		{
-			foreach (DB2Parameter parameter in dbCommand.Parameters)
+			foreach (DB2Parameter parameter in db2Command.Parameters)
 			{
 				parameters.Add((parameter as ICloneable).Clone() as DB2Parameter);
 			}
@@ -378,8 +377,10 @@ namespace Basic.DB2Access
 			lock (Parameters)
 			{
 				Parameters.Clear();
-				if (DbParameters != null && DbParameters.Length > 0)
-					Parameters.AddRange(DbParameters);
+				if (DbParameters != null && DbParameters.Count > 0)
+				{
+					Parameters.AddRange(DbParameters.ToArray());
+				}
 				if (joinCommand != null && joinCommand.Parameters.Length > 0)
 				{
 					foreach (DB2Parameter parameter in joinCommand.Parameters)
@@ -408,14 +409,12 @@ namespace Basic.DB2Access
 			lock (this)
 			{
 				DB2DynamicCommand dynamicCommand = new DB2DynamicCommand();
-				if (this.DbParameters != null && this.DbParameters.Length >= 0)
+				if (this.DbParameters != null && this.DbParameters.Count >= 0)
 				{
-					List<DB2Parameter> list = new List<DB2Parameter>(this.DbParameters.Length);
-					foreach (DB2Parameter parameter in this.DbParameters)
+					dynamicCommand.DbParameters.AddRange(DbParameters.Select(m =>
 					{
-						list.Add((parameter as ICloneable).Clone() as DB2Parameter);
-					}
-					dynamicCommand.DbParameters = list.ToArray();
+						return (m as ICloneable).Clone() as DB2Parameter;
+					}));
 				}
 				CopyTo(dynamicCommand);
 				return dynamicCommand;

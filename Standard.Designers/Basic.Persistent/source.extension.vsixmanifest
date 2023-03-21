@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="D4E32AFF-92E4-4E4D-9585-C4423FA06A5A" Publisher="JACKY" Version="4.8.5401" Language="zh-Hans" />
+        <Identity Id="D4E32AFF-92E4-4E4D-9585-C4423FA06A5A" Publisher="JACKY" Version="4.8.5402" Language="zh-Hans" />
         <DisplayName>ASP.NET MVC 资源和数据持久设计器 2022</DisplayName>
         <Description xml:space="preserve">ASP.NET MVC 资源和数据持久设计器 For Visual Studio 2022, 支持 Microsoft SQL Server, ORACLE , MySQL等数据库</Description>
         <License>license.txt</License>
