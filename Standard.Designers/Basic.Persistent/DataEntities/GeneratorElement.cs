@@ -13,6 +13,7 @@ namespace Basic.DataEntities
 	{
 		internal const string XmlElementName = "Generator";
 		internal const string ModifierAttribute = "Modifier";
+		internal const string IgnoreAttribute = "Ignore";
 		internal const string MemberAttribute = "Member";
 		internal const string InheritAttribute = "Inherit";
 		internal const string OverrideAttribute = "Override";
@@ -64,6 +65,25 @@ namespace Basic.DataEntities
 				{
 					_Modifier = value;
 					RaisePropertyChanged("Modifier");
+				}
+			}
+		}
+
+		private bool _Ignore = false;
+		/// <summary>是否为属性添加 IgnorePropertyAttribute 特性标记</summary>
+		/// <value>是否 IgnoreProperty 标记属性，true 表示添加特性标记。默认值为 false。</value>
+		[Basic.Designer.PersistentDescription("PersistentDescription_PropertyIgnore")]
+		[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryCodeGenerator)]
+		[System.ComponentModel.DefaultValue(false)]
+		public bool Ignore
+		{
+			get { return _Ignore; }
+			set
+			{
+				if (_Ignore != value)
+				{
+					_Ignore = value;
+					base.RaisePropertyChanged("Ignore");
 				}
 			}
 		}
@@ -160,7 +180,7 @@ namespace Basic.DataEntities
 			get
 			{
 				if (_Modifier != PropertyModifierEnum.Public) { return false; }
-				else if (_DataMember || _Inheritance || _Override || _Virtual) { return false; }
+				else if (_DataMember || _Ignore || _Inheritance || _Override || _Virtual) { return false; }
 				return true;
 			}
 		}
@@ -175,6 +195,7 @@ namespace Basic.DataEntities
 		{
 			if (name == ModifierAttribute) { Enum.TryParse<PropertyModifierEnum>(value, out _Modifier); }
 			else if (name == MemberAttribute) { _DataMember = Convert.ToBoolean(value); return true; }
+			else if (name == IgnoreAttribute) { _Ignore = Convert.ToBoolean(value); return true; }
 			else if (name == InheritAttribute) { _Inheritance = Convert.ToBoolean(value); return true; }
 			else if (name == OverrideAttribute) { _Override = Convert.ToBoolean(value); return true; }
 			else if (name == VirtualAttribute) { _Virtual = Convert.ToBoolean(value); return true; }
@@ -195,6 +216,7 @@ namespace Basic.DataEntities
 		{
 			if (_Modifier != PropertyModifierEnum.Public)
 				writer.WriteAttributeString(ModifierAttribute, _Modifier.ToString());
+			if (_Ignore) { writer.WriteAttributeString(IgnoreAttribute, Convert.ToString(_Ignore).ToLower()); }
 			if (_DataMember)
 				writer.WriteAttributeString(MemberAttribute, Convert.ToString(_DataMember).ToLower());
 			if (_Inheritance)

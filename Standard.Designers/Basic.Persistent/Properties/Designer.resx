@@ -2213,4 +2213,10 @@ GlobalEnabledValidation的默认值为 False。</value>
   <data name="Package_CreateLocalizationDialog_Title-zh-CN" xml:space="preserve">
     <value>添加本地化资源文件...</value>
   </data>
+  <data name="PersistentDescription_PropertyIgnore-en-US" xml:space="preserve">
+    <value>Whether to add IgnorePropertyAttribute attribute tag</value>
+  </data>
+  <data name="PersistentDescription_PropertyIgnore-zh-CN" xml:space="preserve">
+    <value>是否添加 IgnorePropertyAttribute 特性标记</value>
+  </data>
 </root>

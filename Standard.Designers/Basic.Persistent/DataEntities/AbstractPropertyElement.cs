@@ -1,4 +1,5 @@
 ﻿using Basic.Designer;
+using Basic.EntityLayer;
 using Basic.Enums;
 using EnvDTE;
 using System;
@@ -163,6 +164,24 @@ namespace Basic.DataEntities
 				{
 					generatorElement.Modifier = value;
 					RaisePropertyChanged("Modifier");
+				}
+			}
+		}
+
+		/// <summary>是否为属性添加 IgnorePropertyAttribute 特性标记</summary>
+		/// <value>是否 IgnoreProperty 标记属性，true 表示添加特性标记。默认值为 false。</value>
+		[Basic.Designer.PersistentDescription("PersistentDescription_PropertyIgnore")]
+		[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryCodeGenerator)]
+		[System.ComponentModel.DefaultValue(false)]
+		public bool Ignore
+		{
+			get { return generatorElement.Ignore; }
+			set
+			{
+				if (generatorElement.Ignore != value)
+				{
+					generatorElement.Ignore = value;
+					base.RaisePropertyChanged("Ignore");
 				}
 			}
 		}
@@ -651,6 +670,13 @@ namespace Basic.DataEntities
 				CodeTypeReference dataMemberTypeReference = new CodeTypeReference(typeof(DataMemberAttribute), CodeTypeReferenceOptions.GlobalReference);
 				CodeAttributeDeclaration dataMemberAttribute = new CodeAttributeDeclaration(dataMemberTypeReference);
 				property.CustomAttributes.Add(dataMemberAttribute);
+			}
+
+			if (Ignore)
+			{
+				CodeTypeReference ignoreTypeReference = new CodeTypeReference(typeof(IgnorePropertyAttribute), CodeTypeReferenceOptions.GlobalReference);
+				CodeAttributeDeclaration ignoreAttribute = new CodeAttributeDeclaration(ignoreTypeReference);
+				property.CustomAttributes.Add(ignoreAttribute);
 			}
 
 			#region 主键信息

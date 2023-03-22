@@ -73,8 +73,8 @@ namespace Basic.DataEntities
 		{
 			private IWindowsFormsEditorService _editorService;
 			private AbstractValidationCollection _attributes;
-			private readonly List<Type> supportAttributes = new List<Type>(new Type[] { typeof(DisplayFormat),
-				typeof(ImportPorpertyAttribute),typeof(RequiredValidation),typeof(BoolRequiredValidation),
+			private readonly List<Type> supportAttributes = new List<Type>(new Type[] {
+				typeof(DisplayFormat), typeof(ImportPorpertyAttribute),typeof(RequiredValidation),typeof(BoolRequiredValidation),
 				typeof(CompareValidation), typeof(RangeValidation) ,typeof(RegularExpressionValidation),
 				typeof(MaxLengthValidation), typeof(StringLengthValidation), typeof(CustomValidationAttribute)
 			});
