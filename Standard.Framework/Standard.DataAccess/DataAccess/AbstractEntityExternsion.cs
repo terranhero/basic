@@ -72,7 +72,7 @@ namespace Basic.DataAccess
 					EntityPropertyMeta[] propertyDescriptors = entity.GetProperties();
 					foreach (EntityPropertyMeta propertyInfo in propertyDescriptors)
 					{
-						if (propertyInfo.PrimaryKey || propertyInfo.IgnoreProperty) { continue; }
+						if (propertyInfo.PrimaryKey || propertyInfo.Ignore) { continue; }
 						if (propertyInfo.Mapping != null)
 						{
 							int index = reader.GetOrdinal(propertyInfo.Mapping.ColumnName);
@@ -104,7 +104,7 @@ namespace Basic.DataAccess
 			int whereLength = whereBuilder.Length;
 			foreach (EntityPropertyMeta propertyInfo in propertyDescriptors)
 			{
-				if (propertyInfo.IgnoreProperty == true) { continue; }
+				if (propertyInfo.Ignore == true) { continue; }
 				ColumnMappingAttribute cma = propertyInfo.Mapping;
 				if (cma == null || string.IsNullOrEmpty(cma.ColumnName)) { continue; }
 				if (propertyInfo.PrimaryKey)

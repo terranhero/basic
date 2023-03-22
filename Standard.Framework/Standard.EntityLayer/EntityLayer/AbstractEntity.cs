@@ -352,7 +352,7 @@ namespace Basic.EntityLayer
 			{
 				foreach (EntityPropertyMeta property in _EntityProperties)
 				{
-					if (!property.PrimaryKey && property.IgnoreProperty) { continue; }
+					if (!property.PrimaryKey && property.Ignore) { continue; }
 					if (property.IsReadOnly) { continue; }
 					object obj = property.GetValue(this);
 					if (obj == null || obj == DBNull.Value) { continue; }

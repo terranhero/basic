@@ -20,16 +20,15 @@ namespace Basic.EntityLayer
 		private readonly DisplayFormatAttribute fieldDisplayFormat;
 		private readonly WebDisplayAttribute fieldWebDisplay;
 		private readonly ImportAttribute fieldImport;
-		private readonly ValidationCollection fieldValidations;
+		private readonly ValidationCollection fieldValidations = new ValidationCollection();
 		private readonly GroupNameAttribute _GroupName;
 		private readonly static long _Int32Max = Convert.ToInt64(int.MaxValue);
 		private readonly bool _PrimaryKey = false;
-		private readonly bool _IgnoreProperty = false;
+
 		internal EntityPropertyMeta(PropertyInfo info)
 			: base(info.Name, Attribute.GetCustomAttributes(info))
 		{
 			_PropertyInfo = info;
-			fieldValidations = new ValidationCollection();
 			object[] attributes = info.GetCustomAttributes(true);
 			if (attributes == null || attributes.Length == 0) { return; }
 			foreach (System.Attribute attribute in attributes)
@@ -43,11 +42,12 @@ namespace Basic.EntityLayer
 				else if (attribute is DisplayFormatAttribute) { fieldDisplayFormat = attribute as DisplayFormatAttribute; }
 				else if (attribute is ImportAttribute) { fieldImport = attribute as ImportAttribute; }
 				else if (attribute is PrimaryKeyAttribute) { _PrimaryKey = true; }
-				else if (attribute is IgnorePropertyAttribute) { _IgnoreProperty = true; }
+				else if (attribute is IgnorePropertyAttribute) { Ignore = true; }
 				else if (attribute is WebDisplayAttribute) { fieldWebDisplay = attribute as WebDisplayAttribute; }
 				else if (attribute is ValidationAttribute) { fieldValidations.Add(attribute as ValidationAttribute); }
 				else if (attribute is GroupNameAttribute) { _GroupName = attribute as GroupNameAttribute; }
 				else if (attribute is JoinFieldAttribute) { fieldJoinField = attribute as JoinFieldAttribute; }
+				else if (attribute is PropertyCollectionAttribute) { PropertyCollection = true; }
 			}
 		}
 
@@ -66,6 +66,10 @@ namespace Basic.EntityLayer
 		/// <summary>获取一个值，该值指示此属性是否可写。</summary>
 		/// <value>如果此属性可写，则为 true；否则，为 false。</value>
 		public bool CanWrite { get { return _PropertyInfo.CanWrite; } }
+
+		/// <summary>获取一个值该值标志属性是否使用 PropertyCollectionAttribute 特性标记。</summary>
+		/// <value>如果存在 PropertyCollectionAttribute 特性标记则返回true，否则返回 false。</value>
+		public bool PropertyCollection { get; private set; } = false;
 
 		/// <summary>获取当前属性导入特性信息。</summary>
 		public ImportAttribute Import { get { return fieldImport; } }
@@ -130,14 +134,14 @@ namespace Basic.EntityLayer
 		/// <value>为该成员显示的名称。</value>
 		public override string DisplayName { get { return CultureDisplayName; } }
 
-		/// <summary>
-		/// 获取当前属性是否需要序列化
-		/// 在SelectByKey查询时是否需要。
-		/// </summary>
-		public bool IgnoreProperty { get { return _IgnoreProperty; } }
+		///// <summary>
+		///// 获取当前属性是否需要序列化
+		///// 在SelectByKey查询时是否需要。
+		///// </summary>
+		//public bool IgnoreProperty { get { return _IgnoreProperty; } }
 
 		/// <summary>当前属性是否有 IgnorePropertyAttribute 特性标记</summary>
-		public bool Ignore { get { return _IgnoreProperty; } }
+		public bool Ignore { get; private set; } = false;
 
 		/// <summary>
 		/// 获取当前属性是否为主键。
@@ -156,22 +160,22 @@ namespace Basic.EntityLayer
 				if (m_TypeConverter != null) { return m_TypeConverter; }
 				else if (_PropertyInfo.PropertyType == typeof(System.DateTime))
 				{
-					if (m_TypeConverter == null) { m_TypeConverter = new Basic.EntityLayer.DateTimeConverter(); }
+					if (m_TypeConverter == null) { m_TypeConverter = new DateTimeConverter(); }
 					return m_TypeConverter;
 				}
-				else if (_PropertyInfo.PropertyType == typeof(System.Nullable<System.DateTime>))
+				else if (_PropertyInfo.PropertyType == typeof(DateTime?))
 				{
-					if (m_TypeConverter == null) { m_TypeConverter = new Basic.EntityLayer.DateTimeConverter(); }
+					if (m_TypeConverter == null) { m_TypeConverter = new DateTimeConverter(); }
 					return m_TypeConverter;
 				}
-				else if (_PropertyInfo.PropertyType == typeof(bool) || _PropertyInfo.PropertyType == typeof(System.Nullable<bool>))
+				else if (_PropertyInfo.PropertyType == typeof(bool) || _PropertyInfo.PropertyType == typeof(bool?))
 				{
-					if (m_TypeConverter == null) { m_TypeConverter = new Basic.EntityLayer.BooleanConverter(); }
+					if (m_TypeConverter == null) { m_TypeConverter = new BooleanConverter(); }
 					return m_TypeConverter;
 				}
-				else if (_PropertyInfo.PropertyType == typeof(System.Guid) || _PropertyInfo.PropertyType == typeof(System.Nullable<System.Guid>))
+				else if (_PropertyInfo.PropertyType == typeof(Guid) || _PropertyInfo.PropertyType == typeof(Guid?))
 				{
-					if (m_TypeConverter == null) { m_TypeConverter = new Basic.EntityLayer.GuidConverter(); }
+					if (m_TypeConverter == null) { m_TypeConverter = new GuidConverter(); }
 					return m_TypeConverter;
 				}
 				return base.Converter;
@@ -183,7 +187,7 @@ namespace Basic.EntityLayer
 		public override bool CanResetValue(object component) { return _PropertyInfo.CanWrite; }
 
 		/// <summary>获取该属性绑定到的组件的类型。</summary>
-		public override System.Type ComponentType { get { return _PropertyInfo.DeclaringType; } }
+		public override Type ComponentType { get { return _PropertyInfo.DeclaringType; } }
 
 		/// <summary>获取指示该属性是否为只读的值。</summary>
 		public override bool IsReadOnly { get { return _PropertyInfo.CanWrite == false; } }
