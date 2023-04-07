@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.OracleAccess", "St
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.DB2Access", "Standard.Framework\Standard.Db2Access\Standard.DB2Access.csproj", "{DF9DDAEB-1877-4235-8D36-42C89F3E794A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic.TestSqlParser", "Standard.Designers\Basic.TestSqlParser\Basic.TestSqlParser.csproj", "{AC763A00-DB51-47E8-A005-545EAC193419}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -231,6 +233,18 @@ Global
 		{DF9DDAEB-1877-4235-8D36-42C89F3E794A}.Release|x64.Build.0 = Release|Any CPU
 		{DF9DDAEB-1877-4235-8D36-42C89F3E794A}.Release|x86.ActiveCfg = Release|Any CPU
 		{DF9DDAEB-1877-4235-8D36-42C89F3E794A}.Release|x86.Build.0 = Release|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Debug|x64.Build.0 = Debug|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Debug|x86.Build.0 = Debug|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Release|x64.ActiveCfg = Release|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Release|x64.Build.0 = Release|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Release|x86.ActiveCfg = Release|Any CPU
+		{AC763A00-DB51-47E8-A005-545EAC193419}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +264,7 @@ Global
 		{A94521F3-AB2C-4BFC-9D89-8CF1238AB92E} = {2EB5956E-32DA-43EA-A607-772E9F88522E}
 		{2F41C901-771B-49B7-8533-4CD20B881C02} = {C002AD54-6659-4E40-A4EF-0FADD931DCCA}
 		{DF9DDAEB-1877-4235-8D36-42C89F3E794A} = {C002AD54-6659-4E40-A4EF-0FADD931DCCA}
+		{AC763A00-DB51-47E8-A005-545EAC193419} = {2EB5956E-32DA-43EA-A607-772E9F88522E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE7F0F9B-E6CF-43EC-A81F-7B067DBB2B67}

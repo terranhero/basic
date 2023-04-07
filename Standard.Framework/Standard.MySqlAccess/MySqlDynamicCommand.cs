@@ -63,7 +63,7 @@ namespace Basic.MySqlAccess
 				builder.Append("WITH "); List<string> withList = new List<string>();
 				foreach (WithClause with in WithClauses)
 				{
-					withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
+					withList.Add(with.ToSql());
 				}
 				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 			}
@@ -106,7 +106,7 @@ namespace Basic.MySqlAccess
 				builder.Append("WITH "); List<string> withList = new List<string>();
 				foreach (WithClause with in WithClauses)
 				{
-					withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
+					withList.Add(with.ToSql());
 				}
 				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 			}
@@ -187,7 +187,7 @@ namespace Basic.MySqlAccess
 					builder.Append("WITH "); List<string> withList = new List<string>();
 					foreach (WithClause with in WithClauses)
 					{
-						withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
+						withList.Add(with.ToSql());
 					}
 					builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 				}
@@ -247,7 +247,7 @@ namespace Basic.MySqlAccess
 				builder.Append("WITH "); List<string> withList = new List<string>();
 				foreach (WithClause with in WithClauses)
 				{
-					withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
+					withList.Add(with.ToSql());
 				}
 				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 			}

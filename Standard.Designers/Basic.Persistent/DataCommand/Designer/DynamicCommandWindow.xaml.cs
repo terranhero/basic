@@ -59,7 +59,7 @@ namespace Basic.Designer
 				text.Append("WITH "); List<string> clauses = new List<string>(_DynamicCommand.WithClauses.Count + 2);
 				foreach (WithClause clause in _DynamicCommand.WithClauses)
 				{
-					clauses.Add(string.Concat(clause.TableName, "(", clause.TableDefinition, ") AS (", clause.TableQuery, ")"));
+					clauses.Add(clause.ToSql());
 				}
 				text.AppendLine(string.Join(",", clauses.ToArray()));
 			}

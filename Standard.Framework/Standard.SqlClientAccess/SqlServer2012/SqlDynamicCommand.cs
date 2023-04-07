@@ -84,11 +84,8 @@ namespace Basic.SqlServer2012
 				if (WithClauses.Count > 0)
 				{
 					builder.Append("WITH "); List<string> withList = new List<string>();
-					foreach (WithClause with in WithClauses)
-					{
-						withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
-					}
-					builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
+					foreach (WithClause with in WithClauses) { withList.Add(with.ToSql()); }
+					builder.Append(string.Join(Environment.NewLine + ", ", withList.ToArray())).AppendLine();
 				}
 				if (DistinctStatus == false) { builder.AppendFormat("SELECT COUNT(1) OVER() AS {0}", ReturnCountName); }
 				else { builder.AppendFormat("SELECT DISTINCT COUNT(1) OVER() AS {0}", ReturnCountName); }

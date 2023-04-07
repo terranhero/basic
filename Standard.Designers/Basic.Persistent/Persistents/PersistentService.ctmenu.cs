@@ -362,9 +362,12 @@ namespace Basic.Configuration
 					if (canvas.SelectedItem.SelectedObject is DynamicCommandElement)
 					{
 						DynamicCommandElement dynamicCommand = canvas.SelectedItem.SelectedObject as DynamicCommandElement;
-						if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, text))
+						using (StringReader reader = new StringReader(text))
 						{
-							Clipboard.Clear();
+							if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, reader))
+							{
+								Clipboard.Clear();
+							}
 						}
 					}
 					else
@@ -373,10 +376,12 @@ namespace Basic.Configuration
 						{
 							Name = string.Concat("DynamicCommand_", entityEntityElement.DataCommands.Count)
 						};
-						if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, text))
+						using (StringReader reader = new StringReader(text))
 						{
-							Clipboard.Clear();
-							entityEntityElement.DataCommands.Add(dynamicCommand);
+							if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, reader))
+							{
+								Clipboard.Clear(); entityEntityElement.DataCommands.Add(dynamicCommand);
+							}
 						}
 					}
 				}
@@ -439,8 +444,16 @@ namespace Basic.Configuration
 					{
 						DynamicCommandElement dataCommand = selectedItem.SelectedObject as DynamicCommandElement;
 						string text = Clipboard.GetText(TextDataFormat.UnicodeText);
-						if (!string.IsNullOrWhiteSpace(text) && TransactSqlResolver.Test(text))
-						{ if (TransactSqlResolver.PasteDynamicCommand(dataCommand, text)) { Clipboard.Clear(); } }
+						if (!string.IsNullOrWhiteSpace(text) && TransactSqlResolver.CanPaste(text))
+						{
+							using (StringReader reader = new StringReader(text))
+							{
+								if (TransactSqlResolver.PasteDynamicCommand(dataCommand, reader))
+								{
+									Clipboard.Clear();
+								}
+							}
+						}
 						else if (dataCommand.Kind == ConfigurationTypeEnum.SearchTable)
 						{ persistent.TableInfo.CreateSelectAllSqlStruct(dataCommand); }
 					}
@@ -523,7 +536,7 @@ namespace Basic.Configuration
 							textBuilder.Append("WITH "); List<string> clauses = new List<string>(dynamicCommand.WithClauses.Count + 2);
 							foreach (Basic.Designer.WithClause clause in dynamicCommand.WithClauses)
 							{
-								clauses.Add(string.Concat(clause.TableName, "(", clause.TableDefinition, ") AS (", clause.TableQuery, ")"));
+								clauses.Add(clause.ToSql());
 							}
 							textBuilder.AppendLine(string.Join(",", clauses.ToArray()));
 						}
@@ -863,7 +876,7 @@ namespace Basic.Configuration
 					text.Append("WITH "); List<string> clauses = new List<string>(dynamicCommand.WithClauses.Count + 2);
 					foreach (Designer.WithClause clause in dynamicCommand.WithClauses)
 					{
-						clauses.Add(string.Concat(clause.TableName, "(", clause.TableDefinition, ") AS (", newLine, clause.TableQuery, ")"));
+						clauses.Add(clause.ToSql()); 
 					}
 					text.AppendLine(string.Join("," + newLine, clauses.ToArray()));
 				}
@@ -976,7 +989,7 @@ namespace Basic.Configuration
 			else if (Clipboard.ContainsText(TextDataFormat.UnicodeText))
 			{
 				string text = Clipboard.GetText(TextDataFormat.UnicodeText);
-				menu.Enabled = menu.Visible = TransactSqlResolver.Test(text);
+				menu.Enabled = menu.Visible = TransactSqlResolver.CanPaste(text);
 			}
 		}
 
@@ -1094,8 +1107,13 @@ namespace Basic.Configuration
 					if (canvas.SelectedItem.SelectedObject is DynamicCommandElement)
 					{
 						DynamicCommandElement dynamicCommand = canvas.SelectedItem.SelectedObject as DynamicCommandElement;
-						if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, text))
-						{ Clipboard.Clear(); }
+						using (StringReader reader = new StringReader(text))
+						{
+							if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, reader))
+							{
+								Clipboard.Clear();
+							}
+						}
 					}
 					else
 					{
@@ -1103,10 +1121,12 @@ namespace Basic.Configuration
 						{
 							Name = string.Concat("DynamicCommand_", entityEntityElement.DataCommands.Count)
 						};
-						if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, text))
+						using (StringReader reader = new StringReader(text))
 						{
-							Clipboard.Clear();
-							entityEntityElement.DataCommands.Add(dynamicCommand);
+							if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, reader))
+							{
+								Clipboard.Clear(); entityEntityElement.DataCommands.Add(dynamicCommand);
+							}
 						}
 					}
 				}

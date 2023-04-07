@@ -986,8 +986,7 @@ where t1.object_id=object_id('{0}')", tableInfo.Name);
 			foreach (TransactTableInfo tableInfo in tableCollection)
 			{
 				string objName = string.Concat("object_id(N'", tableInfo.ObjectName, "')");
-				if (!tableList.Contains(objName))
-					tableList.Add(objName);
+				if (tableList.Contains(objName) == false) { tableList.Add(objName); }
 			}
 			sqlCommand.Parameters.Clear();
 			sqlCommand.CommandText = string.Format(@"SELECT t1.object_id AS TABLE_ID,t2.name as TABLE_NAME,t1.name as COLUMN_NAME,
@@ -1019,17 +1018,17 @@ where t1.object_id IN({0}) order by t1.object_id,t1.column_id", string.Join(",",
 		/// <summary>
 		/// 获取函数的参数信息
 		/// </summary>
-		/// <param name="tableInfo">表或视图名称。</param>
+		/// <param name="tableCollection">表或视图名称。</param>
 		/// <returns>如果获取数据成功则返回True，否则返回False。</returns>
 		public void GetParameters(TransactTableCollection tableCollection)
 		{
+			if (tableCollection.Count == 0) { return; }
 			List<string> tableList = new List<string>(tableCollection.Count);
 			foreach (TransactTableInfo tableInfo in tableCollection)
 			{
 				tableInfo.Parameters.Clear();
 				string objName = string.Concat("object_id(N'", tableInfo.ObjectName, "')");
-				if (!tableList.Contains(objName))
-					tableList.Add(objName);
+				if (tableList.Contains(objName) == false) { tableList.Add(objName); }
 			}
 			sqlCommand.CommandText = string.Format(@"SELECT t1.object_id,ts.name as OBJECT_NAME,t1.name as COLUMN_NAME,t3.name as TYPE_NAME,
 CASE WHEN t1.system_type_id iN(231,239,99) then t1.max_length/2 ELSE t1.PRECISION END as PRECISION,

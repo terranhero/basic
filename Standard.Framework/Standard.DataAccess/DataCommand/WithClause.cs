@@ -82,6 +82,14 @@ namespace Basic.DataAccess
 			return new WithClause(command, _TableName, _TableDefinition, _TableQuery);
 		}
 
+		/// <summary>将With子句拼装成可执行的 SQL 语句</summary>
+		/// <returns>返回可执行的 SQL 语句</returns>
+		public string ToSql()
+		{
+			if (string.IsNullOrWhiteSpace(_TableDefinition)) { return string.Concat(TableName, " AS (", TableQuery, ")"); }
+			return string.Concat(TableName, "(", TableDefinition, ") AS (", TableQuery, ")");
+		}
+
 		#region 接口 IXmlSerializable 默认实现
 		/// <summary>
 		/// 从对象的 XML 表示形式生成该对象。

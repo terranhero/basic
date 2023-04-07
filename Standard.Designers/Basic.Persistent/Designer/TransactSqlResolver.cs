@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using Basic.Configuration;
-using Basic.DataEntities;
-using Basic.Database;
 using Basic.Collections;
+using Basic.Configuration;
+using Basic.Database;
+using Basic.DataEntities;
 using Basic.Designer;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
 using MSTS = Microsoft.SqlServer.TransactSql.ScriptDom;
-using System.IO;
 
 namespace Basic.DataContexts
 {
@@ -27,6 +28,39 @@ namespace Basic.DataContexts
 	/// </summary>
 	internal static class TransactSqlResolver
 	{
+		private readonly static SqlScriptGeneratorOptions options = new SqlScriptGeneratorOptions();
+
+		static TransactSqlResolver()
+		{
+			options.MultilineSelectElementsList = false;
+			options.MultilineWherePredicatesList = false;
+			options.NewLineBeforeJoinClause = false;
+			options.NewLineBeforeFromClause = true;
+			options.NewLineBeforeWhereClause = true;
+			options.AlignClauseBodies = false;
+			options.IncludeSemicolons = false;
+			options.AsKeywordOnOwnLine = false;
+			options.NewLineBeforeJoinClause = false;
+			options.NewLineBeforeOutputClause = false;
+			options.NewLineBeforeOpenParenthesisInMultilineList = false;
+			options.NewLineBeforeCloseParenthesisInMultilineList = false;
+			options.KeywordCasing = KeywordCasing.Uppercase;
+			options.SqlVersion = SqlVersion.Sql120;
+		}
+
+		/// <summary>
+		/// 测试当前传入的 Transact-SQL 是否可以分解(是否符合预期的格式)。
+		/// </summary>
+		/// <param name="sql">需要测试分解的 Transact-SQL。</param>
+		/// <returns>如果测试成功则返回True，否则返回False。</returns>
+		public static bool CanPaste(string sql)
+		{
+			TSqlParser parser = new TSql120Parser(false); IList<ParseError> errors = null;
+			IList<TSqlParserToken> tokens = parser.GetTokenStream(new StringReader(sql), out errors);
+			if (errors == null || errors.Count == 0) { return tokens.Any(m => m.TokenType == TSqlTokenType.Select); }
+			return false;
+		}
+
 		/// <summary>
 		/// 测试当前传入的 Transact-SQL 是否可以分解(是否符合预期的格式)。
 		/// </summary>
@@ -153,106 +187,145 @@ namespace Basic.DataContexts
 		/// <returns></returns>
 		public static TransactTableCollection ResolverTransactSql(string sql)
 		{
-			MSTS.TSql80Parser parser = new MSTS.TSql80Parser(true);
-			MSTS.TSqlFragment tsql = parser.Parse(new StringReader(sql), out IList<MSTS.ParseError> errors);
-			//foreach (MSTS.ParseError error in errors)
-			//{
-			//	error.Message
-			//}
-			foreach (MSTS.TSqlParserToken token in tsql.ScriptTokenStream)
-			{
-				_ = token.TokenType == MSTS.TSqlTokenType.Select;
-			}
-
 			TransactTableCollection result = new TransactTableCollection(false);
-			if (string.IsNullOrWhiteSpace(sql)) { return result; }
-			string[] sqlLines = sql.Split(new char[] { '\x0a', '\x0d' }, StringSplitOptions.RemoveEmptyEntries);    //换行分割
-			LineType lineType = LineType.None;
-			foreach (string line in sqlLines)
+			TSqlParser parser = new TSql120Parser(true);
+			using (StringReader reader = new StringReader(sql))
 			{
-				string newLine = line.Trim();
-				if (string.IsNullOrWhiteSpace(newLine)) { continue; }
-				else if (newLine.StartsWith("DECLARE ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.None)
+				StatementList statementList = parser.ParseStatementList(reader, out IList<ParseError> errors);
+				foreach (TSqlStatement statement in statementList.Statements)
 				{
-					newLine = newLine.Remove(0, 7);
-				}
-				else if (newLine.StartsWith("WITH ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.None)
-				{
-					lineType = LineType.With; newLine = newLine.Remove(0, 5);
-				}
-				else if (newLine.StartsWith("SELECT ", StringComparison.OrdinalIgnoreCase) && (lineType == LineType.None || lineType == LineType.With))
-				{
-					lineType = LineType.Select; newLine = newLine.Remove(0, 7);
-				}
-				else if (newLine.StartsWith("FROM ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.Select)
-				{
-					lineType = LineType.From; newLine = newLine.Remove(0, 5);
-				}
-				else if (newLine.StartsWith("WHERE ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.From)
-				{
-					lineType = LineType.Where; newLine = newLine.Remove(0, 6);
-				}
-				else if (newLine.StartsWith("GROUP BY ", StringComparison.OrdinalIgnoreCase) && (lineType == LineType.Where || lineType == LineType.From))
-				{
-					lineType = LineType.GroupBy; newLine = newLine.Remove(0, 9);
-				}
-				else if (newLine.StartsWith("HAVING ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.GroupBy)
-				{
-					lineType = LineType.Having; newLine = newLine.Remove(0, 7);
-				}
-				else if (newLine.StartsWith("ORDER BY ", StringComparison.OrdinalIgnoreCase) &&
-					(lineType == LineType.Where || lineType == LineType.From || lineType == LineType.GroupBy || lineType == LineType.Having))
-				{
-					lineType = LineType.OrderBy; newLine = newLine.Remove(0, 9);
-				}
+					if (!(statement is SelectStatement)) { continue; }
+					SelectStatement selectStatement = (SelectStatement)statement;
 
-				switch (lineType)
-				{
-					case LineType.With:
-						if (result.WithBuilder.Length == 0)
-							result.WithBuilder.Append(newLine);
-						else
-							result.WithBuilder.Append(char.ToString('\x0a')).Append(newLine);
-						break;
-					case LineType.Select:
-						if (result.SelectBuilder.Length == 0)
-							result.SelectBuilder.Append(newLine);
-						else
-							result.SelectBuilder.Append(char.ToString('\x0a')).Append(newLine);
-						break;
-					case LineType.From:
-						if (result.FromBuilder.Length == 0)
-							result.FromBuilder.Append(newLine);
-						else
-							result.FromBuilder.Append(char.ToString('\x0a')).Append(newLine);
-						break;
-					case LineType.Where:
-						if (result.WhereBuilder.Length == 0)
-							result.WhereBuilder.Append(newLine);
-						else
-							result.WhereBuilder.Append(char.ToString('\x0a')).Append(newLine);
-						break;
-					case LineType.GroupBy:
-						if (result.GroupBuilder.Length == 0)
-							result.GroupBuilder.Append(newLine);
-						else
-							result.GroupBuilder.Append(char.ToString('\x0a')).Append(newLine);
-						break;
-					case LineType.Having:
-						if (result.HavingBuilder.Length == 0)
-							result.HavingBuilder.Append(newLine);
-						else
-							result.HavingBuilder.Append(char.ToString('\x0a')).Append(newLine);
-						break;
-					case LineType.OrderBy:
-						if (result.OrderBuilder.Length == 0)
-							result.OrderBuilder.Append(newLine);
-						else
-							result.OrderBuilder.Append(char.ToString('\x0a')).Append(newLine);
-						break;
+					if (selectStatement.WithCtesAndXmlNamespaces != null)
+					{
+						IList<CommonTableExpression> tableExpressions = selectStatement.WithCtesAndXmlNamespaces.CommonTableExpressions;
+						foreach (CommonTableExpression withClause in tableExpressions)
+						{
+							if (withClause.QueryExpression is QuerySpecification withQuery)
+							{
+								Console.WriteLine(GenerateScript(withQuery));
+								if (withQuery.FromClause != null)
+								{
+									foreach (TableReference tableReference in withQuery.FromClause.TableReferences)
+									{
+										PasteFromClause(result, tableReference);
+									}
+								}
+								if (withQuery.WhereClause != null) { Console.WriteLine(GenerateScript(withQuery.WhereClause)); }
+								if (withQuery.OrderByClause != null) { Console.WriteLine(GenerateScript(withQuery.OrderByClause)); }
+								if (withQuery.GroupByClause != null) { Console.WriteLine(GenerateScript(withQuery.GroupByClause)); }
+								if (withQuery.HavingClause != null) { Console.WriteLine(GenerateScript(withQuery.HavingClause)); }
+							}
+						}
+					}
+
+					if (selectStatement.QueryExpression is QuerySpecification select)
+					{
+						Console.WriteLine(GenerateScript(select));
+						if (select.FromClause != null)
+						{
+							foreach (TableReference tableReference in select.FromClause.TableReferences)
+							{
+								PasteFromClause(result, tableReference);
+							}
+						}
+						if (select.WhereClause != null) { Console.WriteLine(GenerateScript(select.WhereClause)); }
+						if (select.OrderByClause != null) { Console.WriteLine(GenerateScript(select.OrderByClause)); }
+						if (select.GroupByClause != null) { Console.WriteLine(GenerateScript(select.GroupByClause)); }
+						if (select.HavingClause != null) { Console.WriteLine(GenerateScript(select.HavingClause)); }
+					}
 				}
 			}
-			PasteFromText(result, result.FromText);
+			if (result.Count > 0) { result.TableName = result.First().Name; }
+			//if (string.IsNullOrWhiteSpace(sql)) { return result; }
+			//string[] sqlLines = sql.Split(new char[] { '\x0a', '\x0d' }, StringSplitOptions.RemoveEmptyEntries);    //换行分割
+			//LineType lineType = LineType.None;
+			//foreach (string line in sqlLines)
+			//{
+			//	string newLine = line.Trim();
+			//	if (string.IsNullOrWhiteSpace(newLine)) { continue; }
+			//	else if (newLine.StartsWith("DECLARE ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.None)
+			//	{
+			//		newLine = newLine.Remove(0, 7);
+			//	}
+			//	else if (newLine.StartsWith("WITH ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.None)
+			//	{
+			//		lineType = LineType.With; newLine = newLine.Remove(0, 5);
+			//	}
+			//	else if (newLine.StartsWith("SELECT ", StringComparison.OrdinalIgnoreCase) && (lineType == LineType.None || lineType == LineType.With))
+			//	{
+			//		lineType = LineType.Select; newLine = newLine.Remove(0, 7);
+			//	}
+			//	else if (newLine.StartsWith("FROM ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.Select)
+			//	{
+			//		lineType = LineType.From; newLine = newLine.Remove(0, 5);
+			//	}
+			//	else if (newLine.StartsWith("WHERE ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.From)
+			//	{
+			//		lineType = LineType.Where; newLine = newLine.Remove(0, 6);
+			//	}
+			//	else if (newLine.StartsWith("GROUP BY ", StringComparison.OrdinalIgnoreCase) && (lineType == LineType.Where || lineType == LineType.From))
+			//	{
+			//		lineType = LineType.GroupBy; newLine = newLine.Remove(0, 9);
+			//	}
+			//	else if (newLine.StartsWith("HAVING ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.GroupBy)
+			//	{
+			//		lineType = LineType.Having; newLine = newLine.Remove(0, 7);
+			//	}
+			//	else if (newLine.StartsWith("ORDER BY ", StringComparison.OrdinalIgnoreCase) &&
+			//		(lineType == LineType.Where || lineType == LineType.From || lineType == LineType.GroupBy || lineType == LineType.Having))
+			//	{
+			//		lineType = LineType.OrderBy; newLine = newLine.Remove(0, 9);
+			//	}
+
+			//	switch (lineType)
+			//	{
+			//		case LineType.With:
+			//			if (result.WithBuilder.Length == 0)
+			//				result.WithBuilder.Append(newLine);
+			//			else
+			//				result.WithBuilder.Append(char.ToString('\x0a')).Append(newLine);
+			//			break;
+			//		case LineType.Select:
+			//			if (result.SelectBuilder.Length == 0)
+			//				result.SelectBuilder.Append(newLine);
+			//			else
+			//				result.SelectBuilder.Append(char.ToString('\x0a')).Append(newLine);
+			//			break;
+			//		case LineType.From:
+			//			if (result.FromBuilder.Length == 0)
+			//				result.FromBuilder.Append(newLine);
+			//			else
+			//				result.FromBuilder.Append(char.ToString('\x0a')).Append(newLine);
+			//			break;
+			//		case LineType.Where:
+			//			if (result.WhereBuilder.Length == 0)
+			//				result.WhereBuilder.Append(newLine);
+			//			else
+			//				result.WhereBuilder.Append(char.ToString('\x0a')).Append(newLine);
+			//			break;
+			//		case LineType.GroupBy:
+			//			if (result.GroupBuilder.Length == 0)
+			//				result.GroupBuilder.Append(newLine);
+			//			else
+			//				result.GroupBuilder.Append(char.ToString('\x0a')).Append(newLine);
+			//			break;
+			//		case LineType.Having:
+			//			if (result.HavingBuilder.Length == 0)
+			//				result.HavingBuilder.Append(newLine);
+			//			else
+			//				result.HavingBuilder.Append(char.ToString('\x0a')).Append(newLine);
+			//			break;
+			//		case LineType.OrderBy:
+			//			if (result.OrderBuilder.Length == 0)
+			//				result.OrderBuilder.Append(newLine);
+			//			else
+			//				result.OrderBuilder.Append(char.ToString('\x0a')).Append(newLine);
+			//			break;
+			//	}
+			//}
+			//PasteFromText(result, result.FromText);
 			return result;
 		}
 
@@ -289,7 +362,7 @@ namespace Basic.DataContexts
 				textBuilder.Append("WITH "); List<string> clauses = new List<string>(dynamicCommand.WithClauses.Count + 2);
 				foreach (WithClause clause in dynamicCommand.WithClauses)
 				{
-					clauses.Add(string.Concat(clause.TableName, "(", clause.TableDefinition, ") AS (", clause.TableQuery, ")"));
+					clauses.Add(clause.ToSql());
 				}
 				textBuilder.AppendLine(string.Join(",", clauses.ToArray()));
 			}
@@ -334,6 +407,218 @@ namespace Basic.DataContexts
 			return UpdateDataCondition(entity, result, text);
 		}
 
+		private static void GenerateScript(TSqlFragment query, out string script)
+		{
+			options.MultilineWherePredicatesList = false;
+			options.NewLineBeforeJoinClause = false;
+			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
+			generator.GenerateScript(query, out script);
+		}
+
+		private static string GenerateScript(TSqlFragment query)
+		{
+			//options
+			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
+			generator.GenerateScript(query, out string scriptString);
+			return scriptString;
+		}
+		private static string GenerateScript(IList<Identifier> identifiers)
+		{
+			//options
+			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
+			List<string> columns = new List<string>(identifiers.Count + 3);
+			foreach (Identifier column in identifiers) { generator.GenerateScript(column, out string script); columns.Add(script); }
+			return string.Join(", ", columns);
+		}
+		private static string GenerateScript(IList<SelectElement> selectElements)
+		{
+			//options
+			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
+			List<string> columns = new List<string>(selectElements.Count + 3);
+			foreach (SelectElement column in selectElements) { generator.GenerateScript(column, out string script); columns.Add(script); }
+			return string.Join(", ", columns);
+		}
+
+		private static void PasteFromClause(TransactTableCollection result, TableReference tableReference)
+		{
+			if (tableReference is NamedTableReference named)
+			{
+				result.AddTable(named.SchemaObject.BaseIdentifier.Value, named.Alias.Value);
+			}
+			else if (tableReference is QualifiedJoin join)
+			{
+				PasteFromClause(result, join.FirstTableReference);
+				PasteFromClause(result, join.SecondTableReference);
+			}
+		}
+
+		/// <summary>
+		/// 将当前选中的 DynamicCommand 类型的命令，属性 CommandText 替换为传入的 sql 值。
+		/// </summary>
+		/// <param name="dynamicCommand">需要修改的 DynamicCommand 类型的命令。</param>
+		/// <param name="reader">需要替换的 Transact-SQL 查询语句。</param>
+		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
+		public static bool PasteCommand(TransactTableCollection result, DynamicCommandElement dynamicCommand, StringReader reader)
+		{
+			if (dynamicCommand == null) { return false; }
+
+			StringBuilder stringBuilder = new StringBuilder(1000);
+			MSTS.TSqlParser parser = new MSTS.TSql120Parser(true);
+			MSTS.StatementList statementList = parser.ParseStatementList(reader, out IList<MSTS.ParseError> errors);
+			foreach (TSqlStatement statement in statementList.Statements)
+			{
+				if (!(statement is SelectStatement)) { continue; }
+				SelectStatement selectStatement = (SelectStatement)statement;
+				if (selectStatement.WithCtesAndXmlNamespaces != null)
+				{
+					IList<CommonTableExpression> tableExpressions = selectStatement.WithCtesAndXmlNamespaces.CommonTableExpressions;
+					dynamicCommand.WithClauses.Clear();
+					foreach (CommonTableExpression withClause in tableExpressions)
+					{
+						Basic.Designer.WithClause clause = new Designer.WithClause(dynamicCommand);
+						clause.TableName = withClause.ExpressionName.Value;
+						clause.TableDefinition = GenerateScript(withClause.Columns);
+						if (withClause.QueryExpression is QuerySpecification withQuery)
+						{
+							stringBuilder.Clear();
+							stringBuilder.AppendLine(GenerateScript(withQuery));
+							if (withQuery.FromClause != null)
+							{
+								foreach (TableReference tableReference in withQuery.FromClause.TableReferences)
+								{
+									PasteFromClause(result, tableReference);
+								}
+								if (result.Count > 0) { result.TableName = result.First().Name; }
+							}
+							if (withQuery.WhereClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.WhereClause)); }
+							if (withQuery.GroupByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.GroupByClause)); }
+							if (withQuery.HavingClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.HavingClause)); }
+							if (withQuery.OrderByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.OrderByClause)); }
+							clause.TableQuery = stringBuilder.ToString();
+						}
+						dynamicCommand.WithClauses.Add(clause);
+					}
+				}
+				if (selectStatement.QueryExpression is QuerySpecification select)
+				{
+					dynamicCommand.SelectText = GenerateScript(select.SelectElements);
+					if (select.FromClause != null)
+					{
+						GenerateScript(select.FromClause, out string fromClause);
+						dynamicCommand.FromText = fromClause.TrimStart("FROM ".ToArray());
+						result.FromBuilder.Append(dynamicCommand.FromText);
+						foreach (TableReference tableReference in select.FromClause.TableReferences)
+						{
+							PasteFromClause(result, tableReference);
+						}
+						if (result.Count > 0) { result.TableName = result.First().Name; }
+					}
+					if (select.WhereClause != null)
+					{
+						GenerateScript(select.WhereClause, out string whereClause);
+						dynamicCommand.WhereText = whereClause.TrimStart("WHERE ".ToArray());
+						result.WhereBuilder.Append(dynamicCommand.WhereText);
+					}
+					if (select.OrderByClause != null)
+					{
+						GenerateScript(select.OrderByClause, out string fromClause);
+						dynamicCommand.OrderText = fromClause.TrimStart("ORDER BY ".ToArray());
+						result.OrderBuilder.Append(dynamicCommand.OrderText);
+					}
+					if (select.GroupByClause != null)
+					{
+						GenerateScript(select.GroupByClause, out string fromClause);
+						dynamicCommand.GroupText = fromClause.TrimStart("GROUP BY ".ToArray());
+						result.GroupBuilder.Append(dynamicCommand.GroupText);
+					}
+					if (select.HavingClause != null)
+					{
+						GenerateScript(select.HavingClause, out string fromClause);
+						dynamicCommand.HavingText = fromClause.TrimStart("HAVING ".ToArray());
+						result.HavingBuilder.Append(dynamicCommand.HavingText);
+					}
+				}
+				break;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// 将当前选中的 DynamicCommand 类型的命令，属性 CommandText 替换为传入的 sql 值。
+		/// </summary>
+		/// <param name="dynamicCommand">需要修改的 DynamicCommand 类型的命令。</param>
+		/// <param name="sql">需要替换的 Transact-SQL 查询语句。</param>
+		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
+		public static bool PasteDynamicCommand(DynamicCommandElement dynamicCommand, StringReader reader)
+		{
+			if (dynamicCommand == null) { return false; }
+			//TransactTableCollection result = ResolverTransactSql(sql);
+			StringBuilder stringBuilder = new StringBuilder(1000);
+			MSTS.TSqlParser parser = new MSTS.TSql120Parser(true);
+			MSTS.StatementList statementList = parser.ParseStatementList(reader, out IList<MSTS.ParseError> errors);
+			foreach (TSqlStatement statement in statementList.Statements)
+			{
+				if (!(statement is SelectStatement)) { continue; }
+				SelectStatement selectStatement = (SelectStatement)statement;
+
+				if (selectStatement.WithCtesAndXmlNamespaces != null)
+				{
+					IList<CommonTableExpression> tableExpressions = selectStatement.WithCtesAndXmlNamespaces.CommonTableExpressions;
+					foreach (CommonTableExpression withClause in tableExpressions)
+					{
+						Basic.Designer.WithClause clause = new Designer.WithClause(dynamicCommand);
+						clause.TableName = withClause.ExpressionName.Value;
+						clause.TableDefinition = GenerateScript(withClause.Columns);
+						if (withClause.QueryExpression is QuerySpecification withQuery)
+						{
+							stringBuilder.Clear();
+							stringBuilder.AppendLine(GenerateScript(withQuery));
+							if (withQuery.WhereClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.WhereClause)); }
+							if (withQuery.GroupByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.GroupByClause)); }
+							if (withQuery.HavingClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.HavingClause)); }
+							if (withQuery.OrderByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.OrderByClause)); }
+							clause.TableQuery = stringBuilder.ToString();
+						}
+						dynamicCommand.WithClauses.Add(clause);
+					}
+				}
+
+				if (selectStatement.QueryExpression is QuerySpecification select)
+				{
+					dynamicCommand.SelectText = GenerateScript(select.SelectElements);
+					if (select.FromClause != null)
+					{
+						GenerateScript(select.FromClause, out string fromClause);
+						dynamicCommand.FromText = fromClause.TrimStart("FROM ".ToArray());
+					}
+					if (select.WhereClause != null)
+					{
+						GenerateScript(select.WhereClause, out string whereClause);
+						dynamicCommand.WhereText = whereClause.TrimStart("WHERE ".ToArray());
+					}
+					if (select.OrderByClause != null)
+					{
+						GenerateScript(select.OrderByClause, out string fromClause);
+						dynamicCommand.OrderText = fromClause.TrimStart("ORDER BY ".ToArray());
+					}
+					if (select.GroupByClause != null)
+					{
+						GenerateScript(select.GroupByClause, out string fromClause);
+						dynamicCommand.GroupText = fromClause.TrimStart("GROUP BY ".ToArray());
+					}
+					if (select.HavingClause != null)
+					{
+						GenerateScript(select.HavingClause, out string fromClause);
+						dynamicCommand.HavingText = fromClause.TrimStart("HAVING ".ToArray());
+					}
+				}
+				break;
+			}
+
+			//CreateDynamicCommand(dynamicCommand, result);
+			return true;
+		}
+
 		/// <summary>
 		/// 将当前选中的 DynamicCommand 类型的命令，属性 CommandText 替换为传入的 sql 值。
 		/// </summary>
@@ -361,21 +646,25 @@ namespace Basic.DataContexts
 		public static bool PasteDynamicCommand(PersistentConfiguration persistent, string sql)
 		{
 			if (persistent == null) { return false; }
-			TransactTableCollection result = ResolverTransactSql(sql);
-			StringBuilder textBuilder = new StringBuilder("SELECT ", 500);
-			textBuilder.AppendLine(result.SelectText);
-			textBuilder.Append("FROM ").Append(result.FromText);
+			TransactTableCollection result = new TransactTableCollection(true);
+			//StringBuilder textBuilder = new StringBuilder("SELECT ", 500);
+			//textBuilder.AppendLine(result.SelectText);
+			//textBuilder.Append("FROM ").Append(result.FromText);
+
 			persistent.UpdatePropertyMapping(result.PropertyMapping);
 			DataEntityElement dataEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
 			DynamicCommandElement dynamicCommand = new DynamicCommandElement(dataEntityElement);
+			using (StringReader reader = new StringReader(sql))
+			{
+				PasteCommand(result, dynamicCommand, reader);
+			}
 			dynamicCommand.Name = string.Concat("DynamicCommand_", persistent.DataCommands.Count);
 			using (IDataContext context = DataContextFactory.CreateDbAccess())
 			{
 				context.GetParameters(result);
-				//context.GetTransactSql(result, textBuilder.ToString());
 				context.GetTransactSql(result, sql);
 			}
-			CreateDynamicCommand(dynamicCommand, result);
+			//CreateDynamicCommand(dynamicCommand, result);
 			dataEntityElement.DataCommands.Add(dynamicCommand);
 			result.CreateDataEntityElement(dataEntityElement);
 			result.CreateDataConditionElement(dataEntityElement.Condition);

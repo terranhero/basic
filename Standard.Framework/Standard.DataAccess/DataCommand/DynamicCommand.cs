@@ -434,12 +434,7 @@ namespace Basic.DataAccess
 		/// <param name="fieldName">排序字段。</param>
 		internal void OrderBy<T>(string fieldName)
 		{
-			if (string.IsNullOrEmpty(fieldName) == true) { return; }
-			AddToOrderList(fieldName, true);
-			//if (string.IsNullOrEmpty(TempOrderText) == true)
-			//	TempOrderText = fieldName;
-			//else if (TempOrderText.IndexOf(fieldName) == -1 && (OrderText == null || OrderText.IndexOf(fieldName) == -1))
-			//	TempOrderText = string.Concat(TempOrderText, ",", fieldName);
+			if (string.IsNullOrEmpty(fieldName) == false) { AddToOrderList(fieldName, true); }
 		}
 
 		/// <summary>
@@ -448,8 +443,7 @@ namespace Basic.DataAccess
 		/// <param name="fieldName">排序字段。</param>
 		internal void OrderByDescending<T>(string fieldName)
 		{
-			if (string.IsNullOrEmpty(fieldName) == true) { return; }
-			AddToOrderList(fieldName, false);
+			if (string.IsNullOrEmpty(fieldName) == false) { AddToOrderList(fieldName, false); }
 		}
 
 		/// <summary>根据键按降序对序列的元素排序。</summary>
@@ -460,7 +454,7 @@ namespace Basic.DataAccess
 			if (keySelector.Body is MemberExpression)
 			{
 				MemberExpression member = keySelector.Body as MemberExpression;
-				string fieldName = GetMemberFieldInfo(member.Member);
+				string fieldName = DynamicCommand.GetMemberFieldInfo(member.Member);
 				AddToOrderList(fieldName, false);
 			}
 		}
@@ -475,7 +469,7 @@ namespace Basic.DataAccess
 			if (keySelector.Body is MemberExpression)
 			{
 				MemberExpression member = keySelector.Body as MemberExpression;
-				string fieldName = GetMemberFieldInfo(member.Member);
+				string fieldName = DynamicCommand.GetMemberFieldInfo(member.Member);
 				AddToOrderList(fieldName, true);
 			}
 		}
@@ -485,7 +479,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="mi">属性信息</param>
 		/// <returns>返回字段名称，如果存在表别名，则同时包含表别名。</returns>
-		private string GetMemberFieldInfo(MemberInfo mi)
+		private static string GetMemberFieldInfo(MemberInfo mi)
 		{
 			ColumnMappingAttribute cma = (ColumnMappingAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnMappingAttribute));
 			if (cma != null)
@@ -854,10 +848,7 @@ namespace Basic.DataAccess
 			if (_WithClauses.Count > 0)
 			{
 				builder.Append("WITH "); List<string> withList = new List<string>();
-				foreach (WithClause with in _WithClauses)
-				{
-					withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
-				}
+				foreach (WithClause with in _WithClauses) { withList.Add(with.ToSql()); }
 				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 			}
 			builder.Append(" SELECT ");
@@ -921,10 +912,7 @@ namespace Basic.DataAccess
 			if (_WithClauses.Count > 0)
 			{
 				builder.Append("WITH "); List<string> withList = new List<string>();
-				foreach (WithClause with in _WithClauses)
-				{
-					withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
-				}
+				foreach (WithClause with in _WithClauses) { withList.Add(with.ToSql()); }
 				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 			}
 			builder.Append("SELECT ");
@@ -1009,10 +997,7 @@ namespace Basic.DataAccess
 				if (_WithClauses.Count > 0)
 				{
 					builder.Append("WITH "); List<string> withList = new List<string>();
-					foreach (WithClause with in _WithClauses)
-					{
-						withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
-					}
+					foreach (WithClause with in _WithClauses) { withList.Add(with.ToSql()); }
 					builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 				}
 				builder.AppendFormat("SELECT TOP {0} * ", pageSize);
@@ -1066,10 +1051,7 @@ namespace Basic.DataAccess
 			if (_WithClauses.Count > 0)
 			{
 				builder.Append("WITH "); List<string> withList = new List<string>();
-				foreach (WithClause with in _WithClauses)
-				{
-					withList.Add(string.Concat(with.TableName, "(", with.TableDefinition, ") AS (", with.TableQuery, ")"));
-				}
+				foreach (WithClause with in _WithClauses) { withList.Add(with.ToSql()); }
 				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
 			}
 			builder.Append("SELECT COUNT(1)");
@@ -1117,6 +1099,64 @@ namespace Basic.DataAccess
 			command.HavingText = HavingText;
 			command.OrderText = OrderText;
 		}
+		#region 克隆 DynamicCommand 命令
+		/// <summary>克隆当前动态查询命令</summary>
+		/// <param name="selectText">要对数据源执行的 Transact-SQL 语句中 SELECT 数据库字段部分。</param>
+		/// <param name="fromText">要对数据源执行的 Transact-SQL 语句中 FROM 数据库表部分。</param>
+		/// <returns>返回创建成功的动态命令 DynamicCommand 子类实例(特定于某种数据库命令的实例)。</returns>
+		public virtual DynamicCommand Clone(string selectText, string fromText)
+		{
+			DynamicCommand dynamicCommand = this.CloneCommand() as DynamicCommand;
+			CopyTo(dynamicCommand);
+			if (string.IsNullOrWhiteSpace(selectText) == false) { dynamicCommand.SelectText = selectText; }
+			if (string.IsNullOrWhiteSpace(fromText) == false) { dynamicCommand.FromText = fromText; }
+			return dynamicCommand;
+		}
+
+		/// <summary>克隆当前动态查询命令</summary>
+		/// <param name="selectText">要对数据源执行的 Transact-SQL 语句中 SELECT 数据库字段部分。</param>
+		/// <param name="fromText">要对数据源执行的 Transact-SQL 语句中 FROM 数据库表部分。</param>
+		/// <param name="whereText">要对数据源执行的 Transact-SQL 语句中 WHERE 条件部分。</param>
+		/// <returns>返回创建成功的动态命令 DynamicCommand 子类实例(特定于某种数据库命令的实例)。</returns>
+		public virtual DynamicCommand Clone(string selectText, string fromText, string whereText)
+		{
+			DynamicCommand dynamicCommand = Clone(selectText, fromText);
+			if (string.IsNullOrWhiteSpace(whereText) == false) { dynamicCommand.WhereText = whereText; }
+			return dynamicCommand;
+		}
+
+		/// <summary>克隆当前动态查询命令</summary>
+		/// <param name="selectText">要对数据源执行的 Transact-SQL 语句中 SELECT 数据库字段部分。</param>
+		/// <param name="fromText">要对数据源执行的 Transact-SQL 语句中 FROM 数据库表部分。</param>
+		/// <param name="whereText">要对数据源执行的 Transact-SQL 语句中 WHERE 条件部分。</param>
+		/// <param name="orderText">要对数据源执行的 Transact-SQL 语句中 ORDER BY 条件部分。</param>
+		/// <returns>返回创建成功的动态命令 DynamicCommand 子类实例(特定于某种数据库命令的实例)。</returns>
+		public virtual DynamicCommand Clone(string selectText, string fromText, string whereText, string orderText)
+		{
+			DynamicCommand dynamicCommand = Clone(selectText, fromText);
+			if (string.IsNullOrWhiteSpace(whereText) == false) { dynamicCommand.WhereText = whereText; }
+			if (string.IsNullOrWhiteSpace(orderText) == false) { dynamicCommand.OrderText = orderText; }
+			return dynamicCommand;
+		}
+
+		/// <summary>克隆当前动态查询命令</summary>
+		/// <param name="selectText">要对数据源执行的 Transact-SQL 语句中 SELECT 数据库字段部分。</param>
+		/// <param name="fromText">要对数据源执行的 Transact-SQL 语句中 FROM 数据库表部分。</param>
+		/// <param name="whereText">要对数据源执行的 Transact-SQL 语句中 WHERE 条件部分。</param>
+		/// <param name="orderText">要对数据源执行的 Transact-SQL 语句中 ORDER BY 条件部分。</param>
+		/// <param name="groupText">要对数据源执行的 Transact-SQL 语句中 GROUP 部分</param>
+		/// <param name="havingText">要对数据源执行的 Transact-SQL 语句中 HANVING 条件部分</param>
+		/// <returns>返回创建成功的动态命令 DynamicCommand 子类实例(特定于某种数据库命令的实例)。</returns>
+		public virtual DynamicCommand Clone(string selectText, string fromText, string whereText, string orderText, string groupText, string havingText)
+		{
+			DynamicCommand dynamicCommand = Clone(selectText, fromText);
+			if (string.IsNullOrWhiteSpace(whereText) == false) { dynamicCommand.WhereText = whereText; }
+			if (string.IsNullOrWhiteSpace(orderText) == false) { dynamicCommand.OrderText = orderText; }
+			if (string.IsNullOrWhiteSpace(groupText) == false) { dynamicCommand.GroupText = groupText; }
+			if (string.IsNullOrWhiteSpace(havingText) == false) { dynamicCommand.HavingText = havingText; }
+			return dynamicCommand;
+		}
+		#endregion
 
 		private readonly BD.WithClauseCollection _WithClauses;
 		/// <summary>获取或设置要对数据源执行的 Transact-SQL 语句中 WITH 子句部分。</summary>
