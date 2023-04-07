@@ -505,7 +505,7 @@ namespace Basic.DataContexts
 					if (select.FromClause != null)
 					{
 						GenerateScript(select.FromClause, out string fromClause);
-						dynamicCommand.FromText = fromClause.TrimStart("FROM ".ToArray());
+						dynamicCommand.FromText = fromClause.Replace("FROM ", "");
 						result.FromBuilder.Append(dynamicCommand.FromText);
 						foreach (TableReference tableReference in select.FromClause.TableReferences)
 						{
@@ -516,25 +516,25 @@ namespace Basic.DataContexts
 					if (select.WhereClause != null)
 					{
 						GenerateScript(select.WhereClause, out string whereClause);
-						dynamicCommand.WhereText = whereClause.TrimStart("WHERE ".ToArray());
+						dynamicCommand.WhereText = whereClause.Replace("WHERE ", "");
 						result.WhereBuilder.Append(dynamicCommand.WhereText);
 					}
 					if (select.OrderByClause != null)
 					{
 						GenerateScript(select.OrderByClause, out string fromClause);
-						dynamicCommand.OrderText = fromClause.TrimStart("ORDER BY ".ToArray());
+						dynamicCommand.OrderText = fromClause.Replace("ORDER BY ", "");
 						result.OrderBuilder.Append(dynamicCommand.OrderText);
 					}
 					if (select.GroupByClause != null)
 					{
 						GenerateScript(select.GroupByClause, out string fromClause);
-						dynamicCommand.GroupText = fromClause.TrimStart("GROUP BY ".ToArray());
+						dynamicCommand.GroupText = fromClause.Replace("GROUP BY ", "");
 						result.GroupBuilder.Append(dynamicCommand.GroupText);
 					}
 					if (select.HavingClause != null)
 					{
 						GenerateScript(select.HavingClause, out string fromClause);
-						dynamicCommand.HavingText = fromClause.TrimStart("HAVING ".ToArray());
+						dynamicCommand.HavingText = fromClause.Replace("HAVING ", "");
 						result.HavingBuilder.Append(dynamicCommand.HavingText);
 					}
 				}
@@ -589,27 +589,27 @@ namespace Basic.DataContexts
 					if (select.FromClause != null)
 					{
 						GenerateScript(select.FromClause, out string fromClause);
-						dynamicCommand.FromText = fromClause.TrimStart("FROM ".ToArray());
+						dynamicCommand.FromText = fromClause.Replace("FROM ", "");
 					}
 					if (select.WhereClause != null)
 					{
 						GenerateScript(select.WhereClause, out string whereClause);
-						dynamicCommand.WhereText = whereClause.TrimStart("WHERE ".ToArray());
+						dynamicCommand.WhereText = whereClause.Replace("WHERE ", "");
 					}
 					if (select.OrderByClause != null)
 					{
 						GenerateScript(select.OrderByClause, out string fromClause);
-						dynamicCommand.OrderText = fromClause.TrimStart("ORDER BY ".ToArray());
+						dynamicCommand.OrderText = fromClause.Replace("ORDER BY ", "");
 					}
 					if (select.GroupByClause != null)
 					{
 						GenerateScript(select.GroupByClause, out string fromClause);
-						dynamicCommand.GroupText = fromClause.TrimStart("GROUP BY ".ToArray());
+						dynamicCommand.GroupText = fromClause.Replace("GROUP BY ", "");
 					}
 					if (select.HavingClause != null)
 					{
 						GenerateScript(select.HavingClause, out string fromClause);
-						dynamicCommand.HavingText = fromClause.TrimStart("HAVING ".ToArray());
+						dynamicCommand.HavingText = fromClause.Replace("HAVING ", "");
 					}
 				}
 				break;
