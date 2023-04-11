@@ -295,11 +295,11 @@ namespace Basic.Configuration
 			string text = Clipboard.GetText(TextDataFormat.UnicodeText);
 			if (menu.CommandID == PasteStaticCommandID)
 			{
-				menu.Enabled = menu.Visible = TransactSqlResolver.Test(text);
+				menu.Enabled = menu.Visible = TransactSqlResolver.CanPaste(text);
 			}
 			else if (menu.CommandID == PasteDynamicCommandID)
 			{
-				menu.Enabled = menu.Visible = TransactSqlResolver.Test(text);
+				menu.Enabled = menu.Visible = TransactSqlResolver.CanPaste(text);
 			}
 		}
 
@@ -876,7 +876,7 @@ namespace Basic.Configuration
 					text.Append("WITH "); List<string> clauses = new List<string>(dynamicCommand.WithClauses.Count + 2);
 					foreach (Designer.WithClause clause in dynamicCommand.WithClauses)
 					{
-						clauses.Add(clause.ToSql()); 
+						clauses.Add(clause.ToSql());
 					}
 					text.AppendLine(string.Join("," + newLine, clauses.ToArray()));
 				}

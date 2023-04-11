@@ -8,6 +8,17 @@ namespace MyApp // Note: actual namespace depends on the project name.
 	internal class Program
 	{
 		const string sql1 = @"(EMPKEY,EMPLOYEECODE,CHINESENAME,CORPKEY,CORPNAME,ORGKEY,DEPARTCODE,DEPARTNAME,NODECODE,NODENAME) ";
+		const string slq2 = @"WITH TEMP_MENU(MENUKEY,MENUNAME,ENUSTEXT,MENUTEXT) AS (
+SELECT T1.MENUKEY,T1.MENUTEXT,T1.ENUSTEXT,T1.MENUTEXT FROM SYS_MENU T1 WHERE T1.SUPERKEY IS NULL UNION
+SELECT T1.MENUKEY,T1.MENUTEXT,T1.ENUSTEXT,T1.MENUTEXT FROM SYS_MENU T1 WHERE T1.SUPERKEY IS NULL UNION ALL
+SELECT T1.MENUKEY,T1.MENUTEXT,T1.ENUSTEXT,CAST(T2.MENUTEXT+N'/'+ T1.MENUTEXT AS NVARCHAR(100))
+FROM SYS_MENU T1 JOIN TEMP_MENU T2 ON T1.SUPERKEY=T2.MENUKEY
+WHERE 1=1)
+
+
+SELECT T1.REPORTKEY, T1.SUMMARYTYPE, T1.REPORTNAME, T1.REPORTFILE, T1.REPORTALIAS, T1.DESIGNCONTENT, T1.REPORTCONTENT, T1.MENUKEY, T2.MENUTEXT, T1.ENABLED, T1.USERNAME, T1.CREATEDTIME, T1.MODIFIEDTIME, T1.DESCRIPTION
+FROM PSM_SUMMARYREPORT AS T1 LEFT JOIN TEMP_MENU AS T2 ON T1.MENUKEY = T2.MENUKEY
+ORDER BY T1.SUMMARYTYPE, T1.REPORTNAME OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
 		const string sql = @"DECLARE @WEBGROUPKEY uniqueidentifier
 SET @WEBGROUPKEY='13902C38-9CC5-4956-A48D-9B698D8170F5';
 
@@ -29,7 +40,7 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 		static void Main(string[] args)
 		{
 			TSqlParser parser = new TSql120Parser(false);
-			using (StringReader reader = new StringReader(sql))
+			using (StringReader reader = new StringReader(slq2))
 			{
 				StatementList statementList = parser.ParseStatementList(reader, out IList<ParseError> errors);
 				if (errors != null && errors.Count > 0)
@@ -72,31 +83,49 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 							if (withQuery.GroupByClause != null) { Console.WriteLine(GenerateScript(withQuery.GroupByClause)); }
 							if (withQuery.HavingClause != null) { Console.WriteLine(GenerateScript(withQuery.HavingClause)); }
 						}
+						else if (withClause.QueryExpression is BinaryQueryExpression query2)
+						{
+							StringBuilder stringBuilder = new StringBuilder(1000);
+							//Console.WriteLine(GenerateScript(withClause));
+							GenerateScript(query2, stringBuilder);
+							Console.WriteLine(stringBuilder.ToString());
+							Console.WriteLine("============================================================");
+							//Console.WriteLine(GenerateScript(query2));
+							//Console.WriteLine("===========================================================");
+
+							//Console.WriteLine(GenerateScript(query2.FirstQueryExpression));
+							//Console.WriteLine("===========================2================================");
+							//Console.WriteLine(GenerateScript(query2.SecondQueryExpression));
+
+							if (query2.OrderByClause != null) { Console.WriteLine(GenerateScript(query2.OrderByClause)); }
+							if (query2.OffsetClause != null) { Console.WriteLine(GenerateScript(query2.OffsetClause)); }
+						}
 					}
 					if (selectStatement.QueryExpression is QuerySpecification select)
 					{
 						//Console.WriteLine(GenerateScript(select));
-						//if (select.SelectElements != null)
-						//{
-						//	foreach (SelectElement item in select.SelectElements)
-						//	{
-						//		Console.Write(GenerateScript(item)); Console.Write(", ");
-						//	}
-						//	Console.WriteLine();
-						//}
-						//if (select.FromClause != null)
-						//{
-						//	foreach (TableReference item in select.FromClause.TableReferences)
-						//	{
-						//		Console.Write(GenerateScript(item)); Console.Write(", ");
-						//	}
-						//	Console.WriteLine();
-						//	//Console.WriteLine(GenerateScript(select.FromClause));
-						//}
-						//if (select.WhereClause != null) { Console.WriteLine(GenerateScript(select.WhereClause)); }
-						//if (select.OrderByClause != null) { Console.WriteLine(GenerateScript(select.OrderByClause)); }
-						//if (select.GroupByClause != null) { Console.WriteLine(GenerateScript(select.GroupByClause)); }
-						//if (select.HavingClause != null) { Console.WriteLine(GenerateScript(select.HavingClause)); }
+						if (select.SelectElements != null)
+						{
+							foreach (SelectElement item in select.SelectElements)
+							{
+								Console.Write(GenerateScript(item)); Console.Write(", ");
+							}
+							Console.WriteLine();
+						}
+						if (select.FromClause != null)
+						{
+							foreach (TableReference item in select.FromClause.TableReferences)
+							{
+								Console.Write(GenerateScript(item)); Console.Write(", ");
+							}
+							Console.WriteLine();
+							//Console.WriteLine(GenerateScript(select.FromClause));
+						}
+						if (select.WhereClause != null) { Console.WriteLine(GenerateScript(select.WhereClause)); }
+						if (select.GroupByClause != null) { Console.WriteLine(GenerateScript(select.GroupByClause)); }
+						if (select.HavingClause != null) { Console.WriteLine(GenerateScript(select.HavingClause)); }
+						if (select.OrderByClause != null) { Console.WriteLine(GenerateScript(select.OrderByClause)); }
+						if (select.OffsetClause != null) { Console.WriteLine(GenerateScript(select.OffsetClause)); }
 					}
 				}
 			}
@@ -106,6 +135,48 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 
 			Console.ReadKey();
 		}
+		static void GenerateScript(BinaryQueryExpression query2, StringBuilder builder)
+		{
+
+			SqlScriptGeneratorOptions options = new SqlScriptGeneratorOptions();
+			options.MultilineSelectElementsList = false;
+			options.MultilineWherePredicatesList = false;
+			options.NewLineBeforeFromClause = true;
+			options.NewLineBeforeWhereClause = true;
+			options.AlignClauseBodies = true;
+			options.AsKeywordOnOwnLine = true;
+			options.NewLineBeforeJoinClause = false;
+			options.NewLineBeforeOutputClause = false;
+			options.NewLineBeforeOpenParenthesisInMultilineList = true;
+			options.NewLineBeforeCloseParenthesisInMultilineList = true;
+			options.KeywordCasing = KeywordCasing.Uppercase;
+			options.SqlVersion = SqlVersion.Sql120;
+			SqlScriptGenerator script = new Sql120ScriptGenerator(options);
+			if (query2.FirstQueryExpression is BinaryQueryExpression expression)
+			{
+				GenerateScript(expression, builder);
+			}
+			else
+			{
+				script.GenerateScript(query2.FirstQueryExpression, out string scriptString1);
+				builder.AppendLine(scriptString1);
+			}
+			if (query2.BinaryQueryExpressionType == BinaryQueryExpressionType.Union)
+			{
+				builder.AppendLine(query2.All ? "UNION ALL" : "UNION");
+			}
+			if (query2.SecondQueryExpression is BinaryQueryExpression expression2)
+			{
+				GenerateScript(expression2, builder);
+			}
+			else
+			{
+				script.GenerateScript(query2.SecondQueryExpression, out string scriptString2);
+				builder.AppendLine(scriptString2);
+			}
+
+		}
+
 		static string GenerateScript(TSqlFragment query)
 		{
 			SqlScriptGeneratorOptions options = new SqlScriptGeneratorOptions();

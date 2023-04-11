@@ -9,6 +9,7 @@ using Basic.Database;
 using Basic.DataEntities;
 using Basic.Designer;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
+using Microsoft.VisualStudio.Debugger.Interop;
 using MSTS = Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace Basic.DataContexts
@@ -29,18 +30,19 @@ namespace Basic.DataContexts
 	internal static class TransactSqlResolver
 	{
 		private readonly static SqlScriptGeneratorOptions options = new SqlScriptGeneratorOptions();
+		private readonly static SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
 
 		static TransactSqlResolver()
 		{
 			options.MultilineSelectElementsList = false;
 			options.MultilineWherePredicatesList = false;
-			options.NewLineBeforeJoinClause = false;
-			options.NewLineBeforeFromClause = true;
-			options.NewLineBeforeWhereClause = true;
 			options.AlignClauseBodies = false;
 			options.IncludeSemicolons = false;
 			options.AsKeywordOnOwnLine = false;
+			options.NewLineBeforeFromClause = true;
+			options.NewLineBeforeWhereClause = true;
 			options.NewLineBeforeJoinClause = false;
+			options.NewLineBeforeOffsetClause = false;
 			options.NewLineBeforeOutputClause = false;
 			options.NewLineBeforeOpenParenthesisInMultilineList = false;
 			options.NewLineBeforeCloseParenthesisInMultilineList = false;
@@ -55,80 +57,10 @@ namespace Basic.DataContexts
 		/// <returns>如果测试成功则返回True，否则返回False。</returns>
 		public static bool CanPaste(string sql)
 		{
-			TSqlParser parser = new TSql120Parser(false); IList<ParseError> errors = null;
+			TSqlParser parser = new TSql120Parser(true); IList<ParseError> errors = null;
 			IList<TSqlParserToken> tokens = parser.GetTokenStream(new StringReader(sql), out errors);
 			if (errors == null || errors.Count == 0) { return tokens.Any(m => m.TokenType == TSqlTokenType.Select); }
 			return false;
-		}
-
-		/// <summary>
-		/// 测试当前传入的 Transact-SQL 是否可以分解(是否符合预期的格式)。
-		/// </summary>
-		/// <param name="sql">需要测试分解的 Transact-SQL。</param>
-		/// <returns>如果测试成功则返回True，否则返回False。</returns>
-		public static bool Test(string sql)
-		{
-			if (string.IsNullOrWhiteSpace(sql)) { return false; }
-			string[] sqlLines = sql.Split(new char[] { '\x0a' }, StringSplitOptions.RemoveEmptyEntries);    //换行分割
-			bool startSelect = false, startFrom = false;
-			foreach (string line in sqlLines)
-			{
-				string newLine = line.Trim();
-				if (string.IsNullOrWhiteSpace(newLine)) { continue; }
-				if (!startSelect) { startSelect = newLine.StartsWith("SELECT ", StringComparison.OrdinalIgnoreCase); }
-				if (!startFrom) { startFrom = newLine.StartsWith("FROM ", StringComparison.OrdinalIgnoreCase); }
-			}
-			return startSelect && startFrom;
-		}
-
-		/// <summary>
-		/// 解析 FROM 子句中的一行，将当前行的数据表和表别名解析出来。
-		/// </summary>
-		/// <param name="fromText">一个 String 类型的值，该值表示 FROM 子句中的一行。</param>
-		private static void PasteFromText(TransactTableCollection result, string fromText)
-		{
-			fromText = fromText.Replace('\x0a', ' ').ToUpperInvariant();
-			List<string> keywords = new List<string>(new string[] { "FULL JOIN", "FULL OUTER JOIN", "LEFT OUTER JOIN", "RIGHT OUTER JOIN", "INNER JOIN" });
-			keywords.AddRange(new string[] { "LEFT JOIN", "RIGHT JOIN", "JOIN" });
-			string[] fromLines = fromText.Split(keywords.ToArray(), StringSplitOptions.RemoveEmptyEntries);
-			#region 解析from子句
-			foreach (string fromLine in fromLines)
-			{
-				string newLine = fromLine.Trim();
-				if (string.IsNullOrWhiteSpace(newLine)) { continue; }
-				else if (newLine.Contains(" ON "))
-				{
-					int spaceIndex = newLine.IndexOf(" "); int onIndex = newLine.IndexOf(" ON ");
-					int asIndex = newLine.IndexOf(" AS ");
-					string tableName = newLine.Substring(0, spaceIndex);
-					if (tableName.Contains("."))
-					{
-						int docIndex = tableName.IndexOf(".");
-						tableName = tableName.Substring(docIndex + 1, tableName.Length - docIndex - 1);
-					}
-					string aliasName = tableName;
-					if (asIndex > 0 && asIndex < onIndex) { aliasName = newLine.Substring(spaceIndex + 4, onIndex - spaceIndex - 4); }
-					else if (spaceIndex > 0 && spaceIndex < onIndex) { aliasName = newLine.Substring(spaceIndex + 1, onIndex - spaceIndex - 1); }
-					result.AddTable(tableName, aliasName);
-				}
-				else
-				{
-					int spaceIndex = newLine.IndexOf(" "); int asIndex = newLine.IndexOf(" AS ");
-					string tableName = newLine;
-					if (spaceIndex > 0) { tableName = newLine.Substring(0, spaceIndex); }
-					if (tableName.Contains("."))
-					{
-						int docIndex = tableName.IndexOf(".");
-						tableName = tableName.Substring(docIndex + 1, tableName.Length - docIndex - 1);
-					}
-					string aliasName = tableName;
-					if (asIndex > 0 && asIndex < newLine.Length) { aliasName = newLine.Substring(spaceIndex + 4, newLine.Length - spaceIndex - 4); }
-					else if (spaceIndex > 0 && spaceIndex < newLine.Length) { aliasName = newLine.Substring(spaceIndex + 1, newLine.Length - spaceIndex - 1); }
-					result.AddTable(tableName, aliasName);
-				}
-			}
-			#endregion
-			result.TableName = result.First().Name;
 		}
 
 		/// <summary>
@@ -204,7 +136,6 @@ namespace Basic.DataContexts
 						{
 							if (withClause.QueryExpression is QuerySpecification withQuery)
 							{
-								Console.WriteLine(GenerateScript(withQuery));
 								if (withQuery.FromClause != null)
 								{
 									foreach (TableReference tableReference in withQuery.FromClause.TableReferences)
@@ -212,17 +143,12 @@ namespace Basic.DataContexts
 										PasteFromClause(result, tableReference);
 									}
 								}
-								if (withQuery.WhereClause != null) { Console.WriteLine(GenerateScript(withQuery.WhereClause)); }
-								if (withQuery.OrderByClause != null) { Console.WriteLine(GenerateScript(withQuery.OrderByClause)); }
-								if (withQuery.GroupByClause != null) { Console.WriteLine(GenerateScript(withQuery.GroupByClause)); }
-								if (withQuery.HavingClause != null) { Console.WriteLine(GenerateScript(withQuery.HavingClause)); }
 							}
 						}
 					}
 
 					if (selectStatement.QueryExpression is QuerySpecification select)
 					{
-						Console.WriteLine(GenerateScript(select));
 						if (select.FromClause != null)
 						{
 							foreach (TableReference tableReference in select.FromClause.TableReferences)
@@ -230,102 +156,10 @@ namespace Basic.DataContexts
 								PasteFromClause(result, tableReference);
 							}
 						}
-						if (select.WhereClause != null) { Console.WriteLine(GenerateScript(select.WhereClause)); }
-						if (select.OrderByClause != null) { Console.WriteLine(GenerateScript(select.OrderByClause)); }
-						if (select.GroupByClause != null) { Console.WriteLine(GenerateScript(select.GroupByClause)); }
-						if (select.HavingClause != null) { Console.WriteLine(GenerateScript(select.HavingClause)); }
 					}
 				}
 			}
 			if (result.Count > 0) { result.TableName = result.First().Name; }
-			//if (string.IsNullOrWhiteSpace(sql)) { return result; }
-			//string[] sqlLines = sql.Split(new char[] { '\x0a', '\x0d' }, StringSplitOptions.RemoveEmptyEntries);    //换行分割
-			//LineType lineType = LineType.None;
-			//foreach (string line in sqlLines)
-			//{
-			//	string newLine = line.Trim();
-			//	if (string.IsNullOrWhiteSpace(newLine)) { continue; }
-			//	else if (newLine.StartsWith("DECLARE ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.None)
-			//	{
-			//		newLine = newLine.Remove(0, 7);
-			//	}
-			//	else if (newLine.StartsWith("WITH ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.None)
-			//	{
-			//		lineType = LineType.With; newLine = newLine.Remove(0, 5);
-			//	}
-			//	else if (newLine.StartsWith("SELECT ", StringComparison.OrdinalIgnoreCase) && (lineType == LineType.None || lineType == LineType.With))
-			//	{
-			//		lineType = LineType.Select; newLine = newLine.Remove(0, 7);
-			//	}
-			//	else if (newLine.StartsWith("FROM ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.Select)
-			//	{
-			//		lineType = LineType.From; newLine = newLine.Remove(0, 5);
-			//	}
-			//	else if (newLine.StartsWith("WHERE ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.From)
-			//	{
-			//		lineType = LineType.Where; newLine = newLine.Remove(0, 6);
-			//	}
-			//	else if (newLine.StartsWith("GROUP BY ", StringComparison.OrdinalIgnoreCase) && (lineType == LineType.Where || lineType == LineType.From))
-			//	{
-			//		lineType = LineType.GroupBy; newLine = newLine.Remove(0, 9);
-			//	}
-			//	else if (newLine.StartsWith("HAVING ", StringComparison.OrdinalIgnoreCase) && lineType == LineType.GroupBy)
-			//	{
-			//		lineType = LineType.Having; newLine = newLine.Remove(0, 7);
-			//	}
-			//	else if (newLine.StartsWith("ORDER BY ", StringComparison.OrdinalIgnoreCase) &&
-			//		(lineType == LineType.Where || lineType == LineType.From || lineType == LineType.GroupBy || lineType == LineType.Having))
-			//	{
-			//		lineType = LineType.OrderBy; newLine = newLine.Remove(0, 9);
-			//	}
-
-			//	switch (lineType)
-			//	{
-			//		case LineType.With:
-			//			if (result.WithBuilder.Length == 0)
-			//				result.WithBuilder.Append(newLine);
-			//			else
-			//				result.WithBuilder.Append(char.ToString('\x0a')).Append(newLine);
-			//			break;
-			//		case LineType.Select:
-			//			if (result.SelectBuilder.Length == 0)
-			//				result.SelectBuilder.Append(newLine);
-			//			else
-			//				result.SelectBuilder.Append(char.ToString('\x0a')).Append(newLine);
-			//			break;
-			//		case LineType.From:
-			//			if (result.FromBuilder.Length == 0)
-			//				result.FromBuilder.Append(newLine);
-			//			else
-			//				result.FromBuilder.Append(char.ToString('\x0a')).Append(newLine);
-			//			break;
-			//		case LineType.Where:
-			//			if (result.WhereBuilder.Length == 0)
-			//				result.WhereBuilder.Append(newLine);
-			//			else
-			//				result.WhereBuilder.Append(char.ToString('\x0a')).Append(newLine);
-			//			break;
-			//		case LineType.GroupBy:
-			//			if (result.GroupBuilder.Length == 0)
-			//				result.GroupBuilder.Append(newLine);
-			//			else
-			//				result.GroupBuilder.Append(char.ToString('\x0a')).Append(newLine);
-			//			break;
-			//		case LineType.Having:
-			//			if (result.HavingBuilder.Length == 0)
-			//				result.HavingBuilder.Append(newLine);
-			//			else
-			//				result.HavingBuilder.Append(char.ToString('\x0a')).Append(newLine);
-			//			break;
-			//		case LineType.OrderBy:
-			//			if (result.OrderBuilder.Length == 0)
-			//				result.OrderBuilder.Append(newLine);
-			//			else
-			//				result.OrderBuilder.Append(char.ToString('\x0a')).Append(newLine);
-			//			break;
-			//	}
-			//}
-			//PasteFromText(result, result.FromText);
 			return result;
 		}
 
@@ -407,33 +241,121 @@ namespace Basic.DataContexts
 			return UpdateDataCondition(entity, result, text);
 		}
 
+		private static void GenerateScript(BinaryQueryExpression query, StringBuilder builder)
+		{
+			if (query.FirstQueryExpression is BinaryQueryExpression expression)
+			{
+				GenerateScript(expression, builder);
+			}
+			else
+			{
+				GenerateScript(query.FirstQueryExpression, builder);
+			}
+			if (query.BinaryQueryExpressionType == BinaryQueryExpressionType.Union)
+			{
+				builder.AppendLine(query.All ? " UNION ALL" : " UNION");
+			}
+			else if (query.BinaryQueryExpressionType == BinaryQueryExpressionType.Except)
+			{
+				builder.AppendLine(" EXCEPT");
+			}
+			else if (query.BinaryQueryExpressionType == BinaryQueryExpressionType.Intersect)
+			{
+				builder.AppendLine(" INTERSECT");
+			}
+			if (query.SecondQueryExpression is BinaryQueryExpression expression2)
+			{
+				GenerateScript(expression2, builder);
+			}
+			else
+			{
+				GenerateScript(query.SecondQueryExpression, builder);
+			}
+		}
+
+		private static void GenerateScript(QueryExpression query, StringBuilder builder)
+		{
+			if (query is QuerySpecification query1)
+			{
+				generator.GenerateScript(query1, out string script); builder.Append(script.Trim());
+				if (query1.WhereClause != null)
+				{
+					options.NewLineBeforeWhereClause = true;
+					GenerateScript(query1.WhereClause, builder, true);
+				}
+				if (query1.GroupByClause != null)
+				{
+					options.NewLineBeforeGroupByClause = true;
+					GenerateScript(query1.GroupByClause, builder, true);
+				}
+				if (query1.HavingClause != null)
+				{
+					options.NewLineBeforeHavingClause = true;
+					GenerateScript(query1.HavingClause, builder, true);
+				}
+				if (query1.OrderByClause != null)
+				{
+					options.NewLineBeforeOrderByClause = true;
+					GenerateScript(query1.OrderByClause, builder, true);
+					if (query1.OffsetClause != null)
+					{
+						options.NewLineBeforeOffsetClause = false; builder.Append(" ");
+						GenerateScript(query1.OffsetClause, builder);
+					}
+				}
+			}
+			else if (query is BinaryQueryExpression query2)
+			{
+				GenerateScript(query2, builder);
+			}
+		}
+
+		private static void GenerateScript(TSqlFragment query, StringBuilder builder, bool beforeNewLine = false)
+		{
+			if (beforeNewLine) { builder.AppendLine(); }
+			generator.GenerateScript(query, out string script); builder.Append(script);
+		}
+
 		private static void GenerateScript(TSqlFragment query, out string script)
 		{
-			options.MultilineWherePredicatesList = false;
-			options.NewLineBeforeJoinClause = false;
-			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
 			generator.GenerateScript(query, out script);
 		}
 
-		private static string GenerateScript(TSqlFragment query)
+		private static void GenerateScript(FromClause fromClause, out string script)
 		{
-			//options
-			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
-			generator.GenerateScript(query, out string scriptString);
-			return scriptString;
+			StringBuilder builder = new StringBuilder();
+			foreach (TableReference tableReference in fromClause.TableReferences)
+			{
+				GenerateScript(tableReference, builder);
+			}
+			script = builder.ToString().Trim();
 		}
+
+		private static void GenerateScript(TableReference tableReference, StringBuilder builder)
+		{
+			if (tableReference is NamedTableReference named)
+			{
+				GenerateScript(named, out string scropt); builder.Append(" ").Append(scropt);
+			}
+			else if (tableReference is QualifiedJoin join)
+			{
+				options.AlignClauseBodies = false;
+				GenerateScript(join, out string scropt); builder.Append(" ").Append(scropt);
+			}
+		}
+		/// <summary>生成 SELECT 子句代码</summary>
+		/// <param name="identifiers"></param>
 		private static string GenerateScript(IList<Identifier> identifiers)
 		{
-			//options
-			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
 			List<string> columns = new List<string>(identifiers.Count + 3);
 			foreach (Identifier column in identifiers) { generator.GenerateScript(column, out string script); columns.Add(script); }
 			return string.Join(", ", columns);
 		}
+		/// <summary>生成 SELECT 子句代码</summary>
+		/// <param name="selectElements"></param>
+		/// <returns></returns>
 		private static string GenerateScript(IList<SelectElement> selectElements)
 		{
-			//options
-			SqlScriptGenerator generator = new Sql120ScriptGenerator(options);
 			List<string> columns = new List<string>(selectElements.Count + 3);
 			foreach (SelectElement column in selectElements) { generator.GenerateScript(column, out string script); columns.Add(script); }
 			return string.Join(", ", columns);
@@ -447,6 +369,7 @@ namespace Basic.DataContexts
 			}
 			else if (tableReference is QualifiedJoin join)
 			{
+				//join.QualifiedJoinType== QualifiedJoinType.Inner
 				PasteFromClause(result, join.FirstTableReference);
 				PasteFromClause(result, join.SecondTableReference);
 			}
@@ -478,24 +401,9 @@ namespace Basic.DataContexts
 						Basic.Designer.WithClause clause = new Designer.WithClause(dynamicCommand);
 						clause.TableName = withClause.ExpressionName.Value;
 						clause.TableDefinition = GenerateScript(withClause.Columns);
-						if (withClause.QueryExpression is QuerySpecification withQuery)
-						{
-							stringBuilder.Clear();
-							stringBuilder.AppendLine(GenerateScript(withQuery));
-							if (withQuery.FromClause != null)
-							{
-								foreach (TableReference tableReference in withQuery.FromClause.TableReferences)
-								{
-									PasteFromClause(result, tableReference);
-								}
-								if (result.Count > 0) { result.TableName = result.First().Name; }
-							}
-							if (withQuery.WhereClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.WhereClause)); }
-							if (withQuery.GroupByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.GroupByClause)); }
-							if (withQuery.HavingClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.HavingClause)); }
-							if (withQuery.OrderByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.OrderByClause)); }
-							clause.TableQuery = stringBuilder.ToString();
-						}
+						stringBuilder.Clear();
+						GenerateScript(withClause.QueryExpression, stringBuilder);
+						clause.TableQuery = stringBuilder.ToString();
 						dynamicCommand.WithClauses.Add(clause);
 					}
 				}
@@ -504,8 +412,13 @@ namespace Basic.DataContexts
 					dynamicCommand.SelectText = GenerateScript(select.SelectElements);
 					if (select.FromClause != null)
 					{
+						options.NewLineBeforeWhereClause = false;
+						options.NewLineBeforeFromClause = false;
 						GenerateScript(select.FromClause, out string fromClause);
-						dynamicCommand.FromText = fromClause.Replace("FROM ", "");
+						options.NewLineBeforeWhereClause = true;
+						options.NewLineBeforeFromClause = true;
+
+						dynamicCommand.FromText = fromClause.Replace("FROM ", "").Trim();
 						result.FromBuilder.Append(dynamicCommand.FromText);
 						foreach (TableReference tableReference in select.FromClause.TableReferences)
 						{
@@ -513,29 +426,33 @@ namespace Basic.DataContexts
 						}
 						if (result.Count > 0) { result.TableName = result.First().Name; }
 					}
+					dynamicCommand.WhereText = null;
+					dynamicCommand.GroupText = null;
+					dynamicCommand.HavingText = null;
+					dynamicCommand.OrderText = null;
 					if (select.WhereClause != null)
 					{
 						GenerateScript(select.WhereClause, out string whereClause);
-						dynamicCommand.WhereText = whereClause.Replace("WHERE ", "");
+						dynamicCommand.WhereText = whereClause.Replace("WHERE ", "").Trim();
 						result.WhereBuilder.Append(dynamicCommand.WhereText);
-					}
-					if (select.OrderByClause != null)
-					{
-						GenerateScript(select.OrderByClause, out string fromClause);
-						dynamicCommand.OrderText = fromClause.Replace("ORDER BY ", "");
-						result.OrderBuilder.Append(dynamicCommand.OrderText);
 					}
 					if (select.GroupByClause != null)
 					{
 						GenerateScript(select.GroupByClause, out string fromClause);
-						dynamicCommand.GroupText = fromClause.Replace("GROUP BY ", "");
+						dynamicCommand.GroupText = fromClause.Replace("GROUP BY ", "").Trim();
 						result.GroupBuilder.Append(dynamicCommand.GroupText);
 					}
 					if (select.HavingClause != null)
 					{
 						GenerateScript(select.HavingClause, out string fromClause);
-						dynamicCommand.HavingText = fromClause.Replace("HAVING ", "");
+						dynamicCommand.HavingText = fromClause.Replace("HAVING ", "").Trim();
 						result.HavingBuilder.Append(dynamicCommand.HavingText);
+					}
+					if (select.OrderByClause != null)
+					{
+						GenerateScript(select.OrderByClause, out string fromClause);
+						dynamicCommand.OrderText = fromClause.Replace("ORDER BY ", "").Trim();
+						result.OrderBuilder.Append(dynamicCommand.OrderText);
 					}
 				}
 				break;
@@ -563,22 +480,16 @@ namespace Basic.DataContexts
 
 				if (selectStatement.WithCtesAndXmlNamespaces != null)
 				{
+					dynamicCommand.WithClauses.Clear();
 					IList<CommonTableExpression> tableExpressions = selectStatement.WithCtesAndXmlNamespaces.CommonTableExpressions;
 					foreach (CommonTableExpression withClause in tableExpressions)
 					{
 						Basic.Designer.WithClause clause = new Designer.WithClause(dynamicCommand);
 						clause.TableName = withClause.ExpressionName.Value;
 						clause.TableDefinition = GenerateScript(withClause.Columns);
-						if (withClause.QueryExpression is QuerySpecification withQuery)
-						{
-							stringBuilder.Clear();
-							stringBuilder.AppendLine(GenerateScript(withQuery));
-							if (withQuery.WhereClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.WhereClause)); }
-							if (withQuery.GroupByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.GroupByClause)); }
-							if (withQuery.HavingClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.HavingClause)); }
-							if (withQuery.OrderByClause != null) { stringBuilder.AppendLine(GenerateScript(withQuery.OrderByClause)); }
-							clause.TableQuery = stringBuilder.ToString();
-						}
+						stringBuilder.Clear();
+						GenerateScript(withClause.QueryExpression, stringBuilder);
+						clause.TableQuery = stringBuilder.ToString();
 						dynamicCommand.WithClauses.Add(clause);
 					}
 				}
@@ -588,28 +499,38 @@ namespace Basic.DataContexts
 					dynamicCommand.SelectText = GenerateScript(select.SelectElements);
 					if (select.FromClause != null)
 					{
+						options.NewLineBeforeWhereClause = false;
+						options.NewLineBeforeFromClause = false;
+						options.NewLineBeforeJoinClause = false;
+						options.NewLineBeforeOutputClause = false;
 						GenerateScript(select.FromClause, out string fromClause);
-						dynamicCommand.FromText = fromClause.Replace("FROM ", "");
+						options.NewLineBeforeWhereClause = true;
+						options.NewLineBeforeFromClause = true;
+						dynamicCommand.FromText = fromClause.Replace("FROM ", "").Trim();
 					}
+					dynamicCommand.WhereText = null;
+					dynamicCommand.GroupText = null;
+					dynamicCommand.HavingText = null;
+					dynamicCommand.OrderText = null;
 					if (select.WhereClause != null)
 					{
 						GenerateScript(select.WhereClause, out string whereClause);
-						dynamicCommand.WhereText = whereClause.Replace("WHERE ", "");
-					}
-					if (select.OrderByClause != null)
-					{
-						GenerateScript(select.OrderByClause, out string fromClause);
-						dynamicCommand.OrderText = fromClause.Replace("ORDER BY ", "");
+						dynamicCommand.WhereText = whereClause.Replace("WHERE ", "").Trim();
 					}
 					if (select.GroupByClause != null)
 					{
 						GenerateScript(select.GroupByClause, out string fromClause);
-						dynamicCommand.GroupText = fromClause.Replace("GROUP BY ", "");
+						dynamicCommand.GroupText = fromClause.Replace("GROUP BY ", "").Trim();
 					}
 					if (select.HavingClause != null)
 					{
 						GenerateScript(select.HavingClause, out string fromClause);
-						dynamicCommand.HavingText = fromClause.Replace("HAVING ", "");
+						dynamicCommand.HavingText = fromClause.Replace("HAVING ", "").Trim();
+					}
+					if (select.OrderByClause != null)
+					{
+						GenerateScript(select.OrderByClause, out string fromClause);
+						dynamicCommand.OrderText = fromClause.Replace("ORDER BY ", "").Trim();
 					}
 				}
 				break;
@@ -647,9 +568,7 @@ namespace Basic.DataContexts
 		{
 			if (persistent == null) { return false; }
 			TransactTableCollection result = new TransactTableCollection(true);
-			//StringBuilder textBuilder = new StringBuilder("SELECT ", 500);
-			//textBuilder.AppendLine(result.SelectText);
-			//textBuilder.Append("FROM ").Append(result.FromText);
+
 
 			persistent.UpdatePropertyMapping(result.PropertyMapping);
 			DataEntityElement dataEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };

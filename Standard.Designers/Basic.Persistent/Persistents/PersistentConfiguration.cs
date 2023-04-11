@@ -95,9 +95,7 @@ namespace Basic.Configuration
 			}
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary></summary>
 		[System.ComponentModel.Bindable(true), System.ComponentModel.Browsable(false)]
 		internal DataCommandCollection DataCommands { get { return _DataCommands; } }
 
@@ -241,6 +239,7 @@ namespace Basic.Configuration
 				}
 			}
 		}
+
 		#region 代码生成
 		/// <summary>获取或设置实体模型命名规则</summary>
 		/// <value>The string value assigned to the entity project folder name</value>
