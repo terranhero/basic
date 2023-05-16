@@ -21,3 +21,4 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1005:可简化委托调用。", Justification = "<挂起>")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:删除未使用的参数", Justification = "<挂起>")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:使用模式匹配", Justification = "<挂起>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]

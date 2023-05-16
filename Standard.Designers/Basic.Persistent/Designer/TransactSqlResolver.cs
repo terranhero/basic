@@ -568,8 +568,6 @@ namespace Basic.DataContexts
 		{
 			if (persistent == null) { return false; }
 			TransactTableCollection result = new TransactTableCollection(true);
-
-
 			persistent.UpdatePropertyMapping(result.PropertyMapping);
 			DataEntityElement dataEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
 			DynamicCommandElement dynamicCommand = new DynamicCommandElement(dataEntityElement);

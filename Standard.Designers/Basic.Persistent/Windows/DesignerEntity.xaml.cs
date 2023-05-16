@@ -19,7 +19,7 @@ namespace Basic.Windows
 	/// <summary>
 	/// DesignerEntity.xaml 的交互逻辑
 	/// </summary>
-	public partial class DesignerEntity : System.Windows.Controls.Primitives.Thumb, IDesignerItem
+	public partial class DesignerEntity : Thumb, IDesignerItem
 	{
 		private DesignerCanvas designerCanvas;
 		private DesignerEntitiesCanvas designerEntities;

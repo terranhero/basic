@@ -17,14 +17,12 @@ namespace Basic.LogInfo
 	{
 		private static readonly ConcurrentQueue<EventLogEntity> _EventEntities = new ConcurrentQueue<EventLogEntity>();
 		/// <summary>系统每一秒钟确认一次日志队列，如果有数据则进行数据持久化操作</summary>
-		private static System.Timers.Timer _EventTimer = new System.Timers.Timer(100);
+		private static System.Timers.Timer _EventTimer = new System.Timers.Timer(1000);
 
 		private readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
 		private readonly static EventLogContext _DbStorage = new EventLogContext(_EventLogs);
 		private readonly static LocalFileStorage _FileStorage;
 		private readonly static ActionCollection _Actions = new ActionCollection();
-		//private readonly static NormalHostWriterHandler _NormalHostHandler;
-		//private readonly static ExceptionHostWriterHanlder _ExceptionHostHandler;
 		private readonly static string _HostName;
 
 		/// <summary>
@@ -32,10 +30,9 @@ namespace Basic.LogInfo
 		/// </summary>
 		static EventLogWriter()
 		{
+			_EventTimer.AutoReset = true;
 			_EventTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnEventTimerElapsed);
 			_FileStorage = new LocalFileStorage(_EventLogs);
-
-			//_worker.DoWork += new DoWorkEventHandler(BackgroundWorker_DoWork);
 			_HostName = GetComputerAddress();
 		}
 		private static async void OnEventTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -78,24 +75,6 @@ namespace Basic.LogInfo
 					}
 				}
 			}
-
-			//try
-			//{
-			//	if (_salaryGuids.IsEmpty) { _PaySlipTimer.Stop(); return; }
-			//	OnlinePaySlipContext context = new OnlinePaySlipContext(ConnectionContext.DefaultName);
-			//	foreach (var item in _salaryGuids)
-			//	{
-			//		Result result = await context.AutoConfirmStatusAsync(item.Key);
-			//		if (result.AffectedRows == 0 && item.Value <= e.SignalTime)
-			//		{
-			//			_salaryGuids.TryRemove(item.Key, out DateTime date);
-			//		}
-			//	}
-			//}
-			//catch (Exception ex)
-			//{
-			//	Basic.LogInfo.EventLogWriter.Error(Guid.NewGuid(), "PaySlip", "Confirm", "Service", ex);
-			//}
 		}
 
 		/// <summary>
