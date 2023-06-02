@@ -74,20 +74,15 @@ namespace Basic.LogInfo
 #if NET6_0_OR_GREATER
 			using (StreamWriter writer = new StreamWriter(logFileName, Encoding.Unicode, options) { AutoFlush = true })
 #else
-			using (FileStream fileStream = new FileStream(logFileName, FileMode.Append, FileAccess.Write, FileShare.Write, 4096, false))
-			{
-				using (StreamWriter writer = new StreamWriter(fileStream, Encoding.Unicode) { AutoFlush = true })
+			using (StreamWriter writer = new StreamWriter(logFileName, true, Encoding.Unicode) { AutoFlush = true })
 #endif
 			{
-				string info = string.Format("[Time: {0:yyyy-MM-dd HH:mm:ss.fff K}], [{1}], [Controller:{2}], [Action:{3}], [Computer:{4}], [User:{5}]",
+				string info = string.Format("[Time: {0:yyyy-MM-dd HH:mm:ss.fff K}], [Level: {1}], [Controller: {2}], [Action: {3}], [Computer: {4}], [User: {5}]",
 					DateTimeOffset.Now, logLevel.ToString("G"), controllerName, actionName, computerName, userName);
 				await writer.WriteLineAsync(info);
 				await writer.WriteLineAsync(string.Format("Message:{0}", message));
 				await writer.WriteLineAsync(_SplitChar.PadRight(info.Length - 1, '='));
 			}
-#if NETSTANDARD2_0
-			}
-#endif
 		}
 
 		/// <summary>
@@ -105,12 +100,10 @@ namespace Basic.LogInfo
 #if NET6_0_OR_GREATER
 			using (StreamWriter writer = new StreamWriter(logFileName, Encoding.Unicode, options) { AutoFlush = true })
 #else
-			using (FileStream fileStream = new FileStream(logFileName, FileMode.Append, FileAccess.Write, FileShare.Write, 4096, false))
-			{
-				using (StreamWriter writer = new StreamWriter(fileStream, Encoding.Unicode) { AutoFlush = true })
+			using (StreamWriter writer = new StreamWriter(logFileName, true, Encoding.Unicode) { AutoFlush = true })
 #endif
 			{
-				string info = string.Format("[Time: {0:yyyy-MM-dd HH:mm:ss.fff K}], [{1}], [Controller:{2}], [Action:{3}], [Computer:{4}], [User:{5}]",
+				string info = string.Format("[Time: {0:yyyy-MM-dd HH:mm:ss.fff K}], [Level: {1}], [Controller: {2}], [Action: {3}], [Computer: {4}], [User: {5}]",
 					DateTimeOffset.Now, LogLevel.Error.ToString("G"), controllerName, actionName, computerName, userName);
 				await writer.WriteLineAsync(info);
 				await writer.WriteLineAsync(string.Format("Exception.Message:{0}", ex.Message));
@@ -124,9 +117,6 @@ namespace Basic.LogInfo
 				}
 				await writer.WriteLineAsync(_SplitChar.PadRight(info.Length - 1, '='));
 			}
-#if NETSTANDARD2_0
-			}
-#endif
 		}
 
 		/// <summary>
