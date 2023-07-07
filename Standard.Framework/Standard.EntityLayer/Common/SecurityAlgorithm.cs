@@ -10,9 +10,9 @@ namespace Basic.EntityLayer
 	{
 		private static readonly byte[] assemblyKey;
 		static SecurityAlgorithm() { assemblyKey = typeof(SecurityAlgorithm).Assembly.GetName().GetPublicKey(); }
-		private static readonly SHA256 _sha256 = SHA256.Create();
+		private static readonly SHA256 _sha256 = System.Security.Cryptography.SHA256.Create();
 		private static readonly MD5 _md5 = MD5.Create();
-		private static readonly SHA512 _sha512 = SHA512.Create();
+		private static readonly SHA512 _sha512 = System.Security.Cryptography.SHA512.Create();
 
 		#region Hash MD5算法
 		/// <summary>使用不对称加密算法加密字符串</summary>
@@ -124,6 +124,38 @@ namespace Basic.EntityLayer
 		}
 		#endregion
 
+		#region SHA256ToBase64 算法
+		/// <summary>使用不对称加密算法加密字符串</summary>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密字符串</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA256ToBase64(string original, Guid key)
+		{
+			byte[] bytes = SHA256ToBytes(original, key);
+			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+		}
+		/// <summary>使用不对称加密算法加密字符串</summary>
+		/// <param name="original">原字符串</param>
+		/// <returns>加密字符串</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA256ToBase64(string original)
+		{
+			byte[] bytes = SHA256ToBytes(original);
+			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+		}
+		/// <summary>使用不对称加密算法加密字符串</summary>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">源加密关键字</param>
+		/// <returns>加密字符串</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA256ToBase64(string original, int key)
+		{
+			byte[] bytes = SHA256ToBytes(original, key);
+			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+		}
+		#endregion
+
 		#region SHA256 算法
 		/// <summary>使用不对称加密算法加密字符串</summary>
 		/// <param name="original">原字符串</param>
@@ -231,6 +263,38 @@ namespace Basic.EntityLayer
 		public static byte[] SHA256ToBytes(string original)
 		{
 			return _sha256.ComputeHash(Encoding.Unicode.GetBytes(original));
+		}
+		#endregion
+
+		#region SHA512 算法
+		/// <summary>使用不对称加密算法加密字符串</summary>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密字符串</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToBase64(string original, Guid key)
+		{
+			byte[] bytes = SHA512ToBytes(original, key);
+			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+		}
+		/// <summary>使用不对称加密算法加密字符串</summary>
+		/// <param name="original">原字符串</param>
+		/// <returns>加密字符串</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToBase64(string original)
+		{
+			byte[] bytes = SHA512ToBytes(original);
+			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+		}
+		/// <summary>使用不对称加密算法加密字符串</summary>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">源加密关键字</param>
+		/// <returns>加密字符串</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToBase64(string original, int key)
+		{
+			byte[] bytes = SHA512ToBytes(original, key);
+			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 		}
 		#endregion
 
