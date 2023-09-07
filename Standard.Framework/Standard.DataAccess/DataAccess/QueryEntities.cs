@@ -71,6 +71,41 @@ namespace Basic.DataAccess
 			if (InitializeProperty != null) { InitializeProperty(entity, reader, positions); }
 		}
 
+		/// <summary>返回当前查询结果的第一条记录并填充实例属性。</summary>
+		/// <returns><![CDATA[如果查询成功则返回true，否则返回false]]></returns>
+		public async STT.Task<bool> ToEntityAsync(T entity)
+		{
+			try
+			{
+				dynamicCommand.CreateWhere(lambdaCollection);
+				dynamicCommand.InitializeCommandText(1, 1);
+				using (DbDataReader reader = await dynamicCommand.ExecuteReaderAsync(CommandBehavior.SingleRow))
+				{
+					if (reader.IsClosed == false && reader.Read())
+					{
+						Dictionary<string, int> fieldPositions = new Dictionary<string, int>(reader.FieldCount);
+						for (int index = 0; index <= reader.FieldCount - 1; index++)
+						{
+							string name = reader.GetName(index); fieldPositions[name] = index;
+							if (entity.TryGetDbProperty(name, out EntityPropertyMeta propertyInfo))
+							{
+								object propertyValue = reader.GetValue(index);
+								propertyInfo.SetValue(entity, propertyValue);
+							}
+						}
+
+						OnInitializeProperty(entity, reader, fieldPositions);
+						return true;
+					}
+				}
+				return false;
+			}
+			finally
+			{
+				dynamicCommand.ReleaseConnection();
+			}
+		}
+
 		/// <summary>
 		/// 返回当前查询结果的第一条记录。
 		/// </summary>
@@ -104,9 +139,7 @@ namespace Basic.DataAccess
 			return null;
 		}
 
-		/// <summary>
-		/// 返回当前查询结果的第一条记录。
-		/// </summary>
+		/// <summary>返回当前查询结果的第一条记录并填充实例属性。</summary>
 		/// <returns><![CDATA[如果查询结果存在记录则返回 <T> 类型实体模型，否则返回null。]]></returns>
 		public async STT.Task<T> ToEntityAsync()
 		{

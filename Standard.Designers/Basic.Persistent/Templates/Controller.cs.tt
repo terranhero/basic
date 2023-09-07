@@ -4,14 +4,15 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="Basic.Builders" #>
 using System;
-using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Basic.Collections;
-using Basic.EntityLayer;
 using Basic.Enums;
+using Basic.EntityLayer;
 using Basic.Interfaces;
 using Basic.MvcLibrary;
+using Microsoft.AspNetCore.Mvc;
+
 <# if(!string.IsNullOrEmpty(builder.Namespace)) {#>
 using <#=builder.Namespace#>;
 <#}if (!string.IsNullOrEmpty(builder.EntityNamespace) && builder.Namespace != builder.EntityNamespace) {#>
@@ -34,26 +35,26 @@ namespace <#= defaultNamespance#>
 
 		/// <summary>初始化加载页面</summary>
 		[AcceptVerbs("GET")]
-		public async Task<ActionResult> Index() { return await Task.FromResult(this.PartialView()); }
+		public async Task<IActionResult> Index() { return await Task.FromResult(this.PartialView()); }
 <# }#>
 <# if(builder.GridEnabled) {#>
 
 		/// <summary>初始化加载表格</summary>
 		[AcceptVerbs("GET"), ChildActionOnly()]
-		public ActionResult Grid() { return this.PartialView("Grid"); }
+		public IActionResult Grid() { return this.PartialView("Grid"); }
 <# }#>
 <# if(builder.CreateEnabled && builder.NewEntityName != null) {#>
 
 		/// <summary>新增数据Get请求</summary>
 		[AcceptVerbs("GET"), ActionName("Create")]
-		public async Task<ActionResult> CreateGet(<#= builder.NewEntityName #> entity)
+		public async Task<IActionResult> CreateGet(<#= builder.NewEntityName #> entity)
 		{
 			return await Task.FromResult(this.PartialView(entity));
 		}
 
 		/// <summary>Create Post Action</summary>
-        [AcceptVerbs("POST"), ValidateAntiForgeryToken()]
-        public async Task<ActionResult> Create(<#= builder.NewEntityName #> entity)
+        [AcceptVerbs("POST"), ValidateAntiForgery()]
+        public async Task<IActionResult> Create(<#= builder.NewEntityName #> entity)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +73,7 @@ namespace <#= defaultNamespance#>
 
 		/// <summary>Edit Get Action</summary>
 		[AcceptVerbs("GET"), ActionName("Edit")]
-		public async Task<ActionResult> EditGet(<#= builder.SearchEntityName #> entity)
+		public async Task<IActionResult> EditGet(<#= builder.SearchEntityName #> entity)
 		{
 			ModelState.Clear();
 			<# if(builder.Connection == true) {#>
@@ -85,8 +86,8 @@ namespace <#= defaultNamespance#>
 		}
 
 		/// <summary>Edit Post Action</summary>
-        [AcceptVerbs("POST"), ValidateAntiForgeryToken()]
-        public async Task<ActionResult> Edit(<#= builder.EditEntityName #> entity)
+        [AcceptVerbs("POST"), ValidateAntiForgery()]
+        public async Task<IActionResult> Edit(<#= builder.EditEntityName #> entity)
         {
             if (ModelState.IsValid)
             {
@@ -106,8 +107,8 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		///	Delete Post Action
 		/// </summary>
-		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
-		public async Task<ActionResult> Delete(<#= builder.DeleteEntityName #>[] entities)
+		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		public async Task<IActionResult> Delete(<#= builder.DeleteEntityName #>[] entities)
 		{
 			if (ModelState.IsValid)
 			{
@@ -130,8 +131,8 @@ namespace <#= defaultNamespance#>
 <# if(builder.SearchAsyncEnabled && builder.SearchEntityName != null) {#>
 
 		/// <summary>简单查询数据</summary>
-		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
-		public async Task<ActionResult> Search(<#= builder.SearchConditionName #> condition)
+		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		public async Task<IActionResult> Search(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
 			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
@@ -143,8 +144,8 @@ namespace <#= defaultNamespance#>
 		}
 <# }else if(builder.SearchEnabled && builder.SearchEntityName != null) {#>
 		/// <summary>简单查询数据</summary>
-		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
-		public ActionResult Search(<#= builder.SearchConditionName #> condition)
+		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		public IActionResult Search(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
 			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
@@ -159,14 +160,14 @@ namespace <#= defaultNamespance#>
 
 		/// <summary>高级查询页面打开</summary>
 		[AcceptVerbs("GET"), ActionName("ComplexSearch")]
-		public ActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
+		public IActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
 		{ 
 			return this.PartialView(condition); 
 		}
 
 		/// <summary>高级查询</summary>
-		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
-		public async Task<ActionResult> ComplexSearch(<#= builder.SearchConditionName #> condition)
+		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		public async Task<IActionResult> ComplexSearch(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
 			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);
@@ -182,7 +183,7 @@ namespace <#= defaultNamespance#>
 		/// Complex Search Get Action
 		/// </summary>
 		[AcceptVerbs("GET"), ActionName("ComplexSearch")]
-		public ActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
+		public IActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
 		{ 
 			return this.PartialView(condition); 
 		}
@@ -190,8 +191,8 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		/// Complex Search Post Action
 		/// </summary>
-		[AcceptVerbs("POST"), ValidateAntiForgeryToken()]
-		public ActionResult ComplexSearch(<#= builder.SearchConditionName #> condition)
+		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		public IActionResult ComplexSearch(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
 			<#=builder.ContextName#> context = new  <#=builder.ContextName#>(Connection);

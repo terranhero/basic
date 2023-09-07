@@ -55,6 +55,10 @@ namespace Basic.Interfaces
 		/// <returns>接口 IPagination 的实例</returns>
 		IPagination<T> ToPagination();
 
+		/// <summary>返回当前查询结果的第一条记录并填充实例属性。</summary>
+		/// <returns><![CDATA[如果查询成功则返回true，否则返回false]]></returns>
+		System.Threading.Tasks.Task<bool> ToEntityAsync(T entity);
+
 		/// <summary>返回当前查询结果的第一条记录。</summary>
 		/// <returns><![CDATA[如果查询结果存在记录则返回 <T> 类型实体模型，否则返回null。]]></returns>
 		T ToEntity();

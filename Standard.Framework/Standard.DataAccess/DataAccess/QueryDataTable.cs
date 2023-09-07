@@ -301,6 +301,33 @@ namespace Basic.DataAccess
 			return this;
 		}
 
+
+		/// <summary>返回当前查询结果的第一条记录并填充实例属性。</summary>
+		/// <returns><![CDATA[如果查询成功则返回true，否则返回false]]></returns>
+		async Task<bool> IQueryEntities<TR>.ToEntityAsync(TR row)
+		{
+			dynamicCommand.CreateWhere(lambdaCollection);
+			dynamicCommand.InitializeCommandText(1, 1);
+			using (DbDataReader reader = await dynamicCommand.ExecuteReaderAsync(CommandBehavior.SingleRow))
+			{
+				if (reader.IsClosed && !reader.HasRows) { return false; }
+				if (reader.Read())
+				{
+					int fieldCount = reader.FieldCount - 1;
+					for (int index = 0; index <= fieldCount; index++)
+					{
+						string name = reader.GetName(index);
+						if (row.Table.Columns.Contains(name))
+						{
+							row[name] = reader.GetValue(index);
+						}
+					}
+					return true;
+				}
+			}
+			return false;
+		}
+
 		Task<IPagination<TR>> IQueryEntities<TR>.ToResultAsync(IPagination<TR> pagination, bool sorting)
 		{
 			dynamicCommand.CreateWhere(lambdaCollection);
@@ -335,12 +362,12 @@ namespace Basic.DataAccess
 			return tcs.Task;
 		}
 
-		Task<TR> IQueryEntities<TR>.ToEntityAsync()
+		async Task<TR> IQueryEntities<TR>.ToEntityAsync()
 		{
 			TaskCompletionSource<TR> tcs = new TaskCompletionSource<TR>();
 			dynamicCommand.CreateWhere(lambdaCollection);
 			dynamicCommand.InitializeCommandText(1, 1);
-			using (DbDataReader reader = dynamicCommand.ExecuteReader(CommandBehavior.SingleRow))
+			using (DbDataReader reader = await dynamicCommand.ExecuteReaderAsync(CommandBehavior.SingleRow))
 			{
 				if (reader.IsClosed && !reader.HasRows) { return null; }
 				if (reader.Read())
@@ -355,10 +382,10 @@ namespace Basic.DataAccess
 							row[name] = reader.GetValue(index);
 						}
 					}
-					tcs.SetResult(row);
+					return row;
 				}
 			}
-			return tcs.Task;
+			return null;
 		}
 
 		/// <summary>将可查询的实体列表转换成实体列表</summary>
