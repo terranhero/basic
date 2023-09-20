@@ -5,6 +5,7 @@ using System.Web;
 using Basic.Interfaces;
 using System.Linq;
 using Basic.MvcLibrary;
+using Basic.EntityLayer;
 
 namespace Basic.EasyLibrary
 {
@@ -88,11 +89,41 @@ namespace Basic.EasyLibrary
 							if (resultValue == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
 							else { list.Add(string.Concat("\"", column.Field, "\":\"", HttpUtility.JavaScriptStringEncode(resultValue), "\"")); }
 						}
-						else
+						else if (column is DataGridBoolColumn<T>)
 						{
 							string resultValue = column.GetString(model);
 							if (resultValue == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
 							else { list.Add(string.Concat("\"", column.Field, "\":\"", HttpUtility.JavaScriptStringEncode(resultValue), "\"")); }
+						}
+						else
+						{
+							object obj = column.GetValue(model);
+							if (obj == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
+							else if (obj.GetType().IsClass)
+							{
+								string resultValue = JsonSerializer.SerializeObject(obj, true);
+								list.Add(string.Concat("\"", column.Field, "\":", resultValue));
+							}
+							else if (obj is bool val2)
+							{
+								list.Add(string.Concat("\"", column.Field, "\":", val2 ? "true" : "false"));
+							}
+							else if (obj is bool?)
+							{
+								bool? val3 = obj is bool?;
+								if (val3 == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
+								else { list.Add(string.Concat("\"", column.Field, "\":", val3.Value ? "true" : "false")); }
+							}
+							else
+							{
+								string resultValue = column.GetString(model);
+								if (resultValue == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
+								else { list.Add(string.Concat("\"", column.Field, "\":\"", HttpUtility.JavaScriptStringEncode(resultValue), "\"")); }
+							}
+
+							//string resultValue = column.GetString(model);
+							//if (resultValue == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
+							//else { list.Add(string.Concat("\"", column.Field, "\":\"", HttpUtility.JavaScriptStringEncode(resultValue), "\"")); }
 							//else if (resultValue is string)
 							//list.Add(string.Concat("\"", column.Field, "\":\"", HttpUtility.JavaScriptStringEncode((string)resultValue), "\""));
 							//else if (resultValue is byte || resultValue is int || resultValue is short || resultValue is long || resultValue is decimal)
