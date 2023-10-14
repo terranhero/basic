@@ -391,6 +391,17 @@ namespace Basic.DB2Access
 						}
 					}
 				}
+				if (_dynamicJoinCommand != null && _dynamicJoinCommand.Parameters.Length > 0)
+				{
+					foreach (DB2Parameter parameter in _dynamicJoinCommand.Parameters)
+					{
+						if (!Parameters.Contains(parameter.ParameterName))
+						{
+							Parameters.Add((parameter as ICloneable).Clone() as DB2Parameter);
+						}
+					}
+				}
+
 			}
 		}
 

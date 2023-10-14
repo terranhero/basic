@@ -871,5 +871,51 @@ namespace Basic.DataAccess
 			return base.GetEntities<T>(SelectAllCommand, joinCommand, dynamicObject);
 		}
 		#endregion
+
+		#region 查询所有数据库记录并通过Join连接通用表
+		/// <summary>
+		/// 获取可查询的实体列表类实例。
+		/// </summary>
+		/// <typeparam name="T">继承自 Basic.Entity.AbstractEntity 的实例。</typeparam>
+		/// <param name="condition">查询数据库记录的条件，包含分页信息。</param>
+		/// <returns>返回可查询的实体列表。</returns>
+		public QueryEntities<T> GetJoinEntities<T>(AbstractCondition condition) where T : AbstractEntity, new()
+		{
+			return base.GetJoinEntities<T>(SelectAllCommand, condition);
+		}
+
+		/// <summary>
+		/// 获取可查询的实体列表类实例。
+		/// </summary>
+		/// <typeparam name="T">继承自 Basic.Entity.AbstractEntity 的实例。</typeparam>
+		/// <param name="pageSize">需要查询的当前页大小</param>
+		/// <param name="pageIndex">需要查询的当前页索引,索引从1开始</param>
+		/// <returns>返回可查询的实体列表。</returns>
+		public QueryEntities<T> GetJoinEntities<T>(int pageSize, int pageIndex) where T : AbstractEntity, new()
+		{
+			return base.GetJoinEntities<T>(SelectAllCommand, pageSize, pageIndex);
+		}
+
+		/// <summary>
+		/// 获取可查询的实体列表类实例。
+		/// </summary>
+		/// <typeparam name="T">继承自 Basic.Entity.AbstractEntity 的实例。</typeparam>
+		/// <param name="dynamicObject">查询数据库记录的条件，包含分页信息。</param>
+		/// <returns>返回可查询的实体列表。</returns>
+		public QueryEntities<T> GetJoinEntities<T>(object dynamicObject) where T : AbstractEntity, new()
+		{
+			return GetJoinEntities<T>(SelectAllCommand, dynamicObject);
+		}
+
+		/// <summary>
+		/// 获取可查询的实体列表类实例。
+		/// </summary>
+		/// <typeparam name="T">继承自 Basic.Entity.AbstractEntity 的实例。</typeparam>
+		/// <returns>返回可查询的实体列表。</returns>
+		public QueryEntities<T> GetJoinEntities<T>() where T : AbstractEntity, new()
+		{
+			return base.GetJoinEntities<T>(SelectAllCommand, new { });
+		}
+		#endregion
 	}
 }

@@ -383,7 +383,17 @@ namespace Basic.SqlServer
 				{
 					Parameters.AddRange(DbParameters.ToArray());
 				}
-				if (joinCommand != null && joinCommand.Parameters.Length > 0)
+				if (_dynamicJoinCommand != null && _dynamicJoinCommand.Parameters.Length > 0)
+				{
+					foreach (SqlParameter parameter in _dynamicJoinCommand.Parameters)
+					{
+						if (!Parameters.Contains(parameter.ParameterName))
+						{
+							Parameters.Add((parameter as ICloneable).Clone() as SqlParameter);
+						}
+					}
+				}
+				else if (joinCommand != null && joinCommand.Parameters.Length > 0)
 				{
 					foreach (SqlParameter parameter in joinCommand.Parameters)
 					{

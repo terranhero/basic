@@ -46,16 +46,16 @@ namespace Basic.LogInfo
 		/// <returns></returns>
 		private string GetFileName()
 		{
-			if (cycleMode == CycleMode.Daily) { return string.Format("{0}\\log_{1:yyyyMMdd}.log", _LogDirectory, DateTime.Today); }
+			if (cycleMode == CycleMode.Daily) { return string.Format("{0}\\logger{1:yyyyMMdd}.log", _LogDirectory, DateTime.Today); }
 			else if (cycleMode == CycleMode.Weekly)
 			{
 				int weeks = ciInfo.Calendar.GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
-				if (weeks <= 9) { return string.Format("{0}\\log_{1}0{2}.log", _LogDirectory, DateTime.Today.Year, weeks); }
-				return string.Format("{0}\\log_{1}{2}.log", _LogDirectory, DateTime.Today.Year, weeks);
+				if (weeks <= 9) { return string.Format("{0}\\logger{1}0{2}.log", _LogDirectory, DateTime.Today.Year, weeks); }
+				return string.Format("{0}\\logger{1}{2}.log", _LogDirectory, DateTime.Today.Year, weeks);
 			}
 			else if (cycleMode == CycleMode.Monthly)
-				return string.Format("{0}\\log_{1:yyyyMM}.log", _LogDirectory, DateTime.Today);
-			return string.Format("{0}\\log_{1:yyyyMMdd}.log", _LogDirectory, DateTime.Today);
+				return string.Format("{0}\\logger{1:yyyyMM}.log", _LogDirectory, DateTime.Today);
+			return string.Format("{0}\\logger{1:yyyyMMdd}.log", _LogDirectory, DateTime.Today);
 		}
 
 		/// <summary>记录日志信息</summary>

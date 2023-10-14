@@ -18,7 +18,7 @@ using Basic.Expressions;
 using Basic.Properties;
 using Basic.Tables;
 using BD = Basic.DataAccess;
-
+using System.Collections.Concurrent;
 namespace Basic.DataAccess
 {
 	/// <summary>
@@ -69,8 +69,14 @@ namespace Basic.DataAccess
 		protected internal const string OrderTextElement = "OrderText";
 		#endregion
 
+		/// <summary>缓存内连接命令</summary>
+		private static readonly ConcurrentDictionary<string, DynamicJoinCommand> _innerJoins = new ConcurrentDictionary<string, DynamicJoinCommand>();
 		/// <summary>表示需要连接的查询命令</summary>
 		protected JoinCommand joinCommand;
+
+		/// <summary>表示需要连接的查询命令</summary>
+		protected internal DynamicJoinCommand _dynamicJoinCommand;
+
 		/// <summary>
 		/// 释放数据库连接
 		/// </summary>
@@ -101,6 +107,51 @@ namespace Basic.DataAccess
 		/// <param name="field">排序字段名</param>
 		/// <param name="isAscending">是否从小到大排序（true表示Ascending，false表示Descending）</param>
 		private void AddToOrderList(string field, bool isAscending) { mOrderList.Add(field, isAscending); }
+
+		/// <summary>设置需要串联的命令</summary>
+		internal bool InitializeJoinCommand<T>()
+		{
+			Type type = typeof(T);
+			if (_innerJoins.TryGetValue(type.FullName, out DynamicJoinCommand cmd))
+			{
+				_dynamicJoinCommand = cmd; return true;
+			}
+			List<InnerJoinAttribute> joins = new List<InnerJoinAttribute>(10);
+			List<JoinParameterAttribute> parameters = new List<JoinParameterAttribute>(10);
+			List<JoinOrderAttribute> orders = new List<JoinOrderAttribute>(10);
+			for (Type et = type; et != null; et = et.BaseType)
+			{
+				foreach (var attribute in et.GetCustomAttributes(false))
+				{
+					if (attribute is InnerJoinAttribute) { joins.Add((InnerJoinAttribute)attribute); }
+					else if (attribute is JoinParameterAttribute) { parameters.Add((JoinParameterAttribute)attribute); }
+					else if (attribute is JoinOrderAttribute) { orders.Add((JoinOrderAttribute)attribute); }
+				}
+			}
+			EntityPropertyProvidor.TryGetProperties(type, out EntityPropertyCollection properties);
+			List<string> fields = new List<string>(50);
+			foreach (EntityPropertyMeta meta in properties)
+			{
+				if (meta.JoinField == null) { continue; }
+				fields.Add(meta.JoinField.Script);
+			}
+			List<string> whereClauses = new List<string>(10);
+			List<DbParameter> dbParameters = new List<DbParameter>(10);
+			foreach (JoinParameterAttribute param in parameters)
+			{
+				DbParameter parameter = CreateParameter(param);
+				dbParameters.Add(parameter);
+				whereClauses.Add(param.WhereClause.Replace("{%" + param.FieldName + "%}", parameter.ParameterName));
+			}
+			if (fields.Count == 0 || joins.Count == 0) { return false; }
+			_dynamicJoinCommand = new DynamicJoinCommand(string.Join(", ", fields),
+				string.Join("\r\n", joins.Select(m => m.JoinScript)),
+				string.Join(" AND ", whereClauses),
+				 string.Join(", ", orders.SelectMany(m => m.OrderClauses)),
+				dbParameters.ToArray()
+				);
+			return _innerJoins.TryAdd(type.FullName, _dynamicJoinCommand);
+		}
 
 		/// <summary>设置需要串联的命令</summary>
 		/// <param name="joinCmd"></param>
@@ -186,6 +237,21 @@ namespace Basic.DataAccess
 			return parameter;
 		}
 
+		/// <summary>
+		/// 根据 JoinParameterAttribute 特性创建数据库参数。
+		/// </summary>
+		/// <param name="jp">包含数据库字段信息的特性信息。</param>
+		private DbParameter CreateParameter(JoinParameterAttribute jp)
+		{
+			DbParameter parameter = CreateParameter();
+			parameter.ParameterName = CreateParameterName(jp.FieldName);
+			parameter.SourceColumn = jp.FieldName;
+			parameter.Size = jp.Size;
+			parameter.Direction = ParameterDirection.Input;
+			ConvertParameterType(parameter, jp.DataType, 0, 0);
+			return parameter;
+		}
+
 		#region 根据Lambda 表达式集合创建Where条件和参数
 		/// <summary>
 		/// 创建数据库比较语句
@@ -254,17 +320,20 @@ namespace Basic.DataAccess
 		protected virtual void CreateConditionExpression(StringBuilder builder, ConditionExpression expression)
 		{
 			if (!string.IsNullOrEmpty(expression.TableAlias))
-				builder.Append(expression.TableAlias).Append(".");
+			{
+				builder.Append(expression.TableAlias).Append('.');
+			}
+
 			builder.Append(expression.ColumnName);
 			if (expression.ExpressionType == ExpressionTypeEnum.In)
 			{
 				builder.Append(" IN (");
-				builder.Append(expression.Value).Append(")");
+				builder.Append(expression.Value).Append(')');
 			}
 			else if (expression.ExpressionType == ExpressionTypeEnum.NotIn)
 			{
 				builder.Append(" NOT IN (");
-				builder.Append(expression.Value).Append(")");
+				builder.Append(expression.Value).Append(')');
 			}
 			else if (expression.ExpressionType == ExpressionTypeEnum.IsNull)
 			{
@@ -289,7 +358,7 @@ namespace Basic.DataAccess
 		{
 			builder.Append("((");
 			if (!string.IsNullOrEmpty(expression.TableAlias))
-				builder.Append(expression.TableAlias).Append(".");
+				builder.Append(expression.TableAlias).Append('.');
 			builder.Append(expression.ColumnName);
 			AppendCalculateType(builder, expression.CalculateType);
 			builder.Append(expression.Constant).Append(")");
@@ -834,7 +903,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		public DynamicCommand InitializeCommand()
 		{
-			joinCommand = null;
+			joinCommand = null; _dynamicJoinCommand = null;
 			TempWhereText = string.Empty;
 			mOrderList.Clear();
 			return this;
@@ -858,14 +927,24 @@ namespace Basic.DataAccess
 
 			int builderLength = builder.Length;
 			if (!string.IsNullOrEmpty(SelectText)) { builder.Append(",").Append(SelectText); }
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.SelectText))
 			{
-				if (builderLength < builder.Length) { builder.Append(",").Append(joinCommand.SelectText); }
-				else { builder.Append(",").Append(joinCommand.SelectText); }
+				if (builderLength < builder.Length) { builder.Append(',').Append(_dynamicJoinCommand.SelectText); }
+				else { builder.Append(',').Append(_dynamicJoinCommand.SelectText); }
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
+			{
+				if (builderLength < builder.Length) { builder.Append(',').Append(joinCommand.SelectText); }
+				else { builder.Append(',').Append(joinCommand.SelectText); }
 			}
 			builderLength = builder.Length;
 			if (!string.IsNullOrEmpty(FromText)) { builder.AppendLine().Append(" FROM ").Append(FromText); }
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.FromText))
+			{
+				if (builderLength < builder.Length) { builder.AppendLine().Append(_dynamicJoinCommand.FromText); }
+				else { builder.AppendLine().Append(" FROM ").Append(_dynamicJoinCommand.FromText); }
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
 			{
 				if (builderLength < builder.Length) { builder.AppendLine().Append(joinCommand.FromText); }
 				else { builder.AppendLine().Append(" FROM ").Append(joinCommand.FromText); }
@@ -877,17 +956,26 @@ namespace Basic.DataAccess
 				if (builderLength != builder.Length) { builder.Append(" AND ").Append(TempWhereText); }
 				else { builder.AppendLine().Append(" WHERE ").Append(TempWhereText); }
 			}
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
+			{
+				if (builderLength != builder.Length) { builder.Append(" AND ").Append(_dynamicJoinCommand.WhereText); }
+				else { builder.AppendLine().Append(" WHERE ").Append(_dynamicJoinCommand.WhereText); }
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
 			{
 				if (builderLength != builder.Length) { builder.Append(" AND ").Append(joinCommand.WhereText); }
 				else { builder.AppendLine().Append(" WHERE ").Append(joinCommand.WhereText); }
 			}
 			builderLength = builder.Length;
-			if (!string.IsNullOrEmpty(GroupText))
-				builder.Append(" GROUP BY ").Append(GroupText);
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
+			if (!string.IsNullOrEmpty(GroupText)) { builder.Append(" GROUP BY ").Append(GroupText); }
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.GroupText))
 			{
-				if (builderLength != builder.Length) { builder.Append(",").Append(joinCommand.GroupText); }
+				if (builderLength < builder.Length) { builder.Append(',').Append(_dynamicJoinCommand.GroupText); }
+				else { builder.Append(',').Append(_dynamicJoinCommand.GroupText); }
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
+			{
+				if (builderLength != builder.Length) { builder.Append(',').Append(joinCommand.GroupText); }
 				else { builder.AppendLine().Append(" GROUP BY ").Append(joinCommand.GroupText); }
 			}
 			if (string.IsNullOrWhiteSpace(HavingText) == false) { builder.AppendLine().Append(" HAVING ").Append(HavingText); }
@@ -895,12 +983,18 @@ namespace Basic.DataAccess
 			if (mOrderList.Count > 0) { orderList.AddRange(mOrderList.ToArray()); }
 			else
 			{
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.OrderText))
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.OrderText))
+				{
+					orderList.Add(_dynamicJoinCommand.OrderText);
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.OrderText))
+				{
 					orderList.Add(joinCommand.OrderText);
+				}
 				if (!string.IsNullOrEmpty(OrderText)) { orderList.Add(OrderText); }
 			}
 
-			if (orderList.Count > 0) { builder.Append(" ORDER BY ").Append(string.Join(",", orderList.ToArray())); }
+			if (orderList.Count > 0) { builder.Append(" ORDER BY ").Append(string.Join(",", orderList)); }
 		}
 
 		/// <summary>动态拼接 Transact-SQL 语句</summary>
@@ -913,19 +1007,27 @@ namespace Basic.DataAccess
 			{
 				builder.Append("WITH "); List<string> withList = new List<string>();
 				foreach (WithClause with in _WithClauses) { withList.Add(with.ToSql()); }
-				builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
+				builder.Append(string.Join(',' + Environment.NewLine, withList.ToArray())).AppendLine();
 			}
 			builder.Append("SELECT ");
 			if (DistinctStatus == true) { builder.Append("DISTINCT "); }
 			if (!string.IsNullOrEmpty(SelectText)) { builder.Append(SelectText); }
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
-				builder.Append(",").Append(joinCommand.SelectText);
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.SelectText))
+			{
+				builder.Append(',').Append(_dynamicJoinCommand.SelectText);
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
+			{ builder.Append(',').Append(joinCommand.SelectText); }
 
 			int builderLength = builder.Length;
 
-			if (!string.IsNullOrEmpty(FromText))
-				builder.Append(" FROM ").Append(FromText);
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
+			if (!string.IsNullOrEmpty(FromText)) { builder.Append(" FROM ").Append(FromText); }
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.FromText))
+			{
+				if (builderLength != builder.Length) { builder.Append(" ").Append(_dynamicJoinCommand.FromText); }
+				else { builder.Append(" FROM ").Append(_dynamicJoinCommand.FromText); }
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
 			{
 				if (builderLength != builder.Length) { builder.Append(" ").Append(joinCommand.FromText); }
 				else { builder.Append(" FROM ").Append(joinCommand.FromText); }
@@ -933,17 +1035,28 @@ namespace Basic.DataAccess
 
 			List<string> whereList = new List<string>(3);
 			if (string.IsNullOrEmpty(WhereText) == false) { whereList.Add(WhereText); }
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
+			{
+				whereList.Add(_dynamicJoinCommand.WhereText);
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
+			{
 				whereList.Add(joinCommand.WhereText);
+			}
 			if (!string.IsNullOrEmpty(TempWhereText)) { whereList.Add(TempWhereText); }
 
 			if (whereList.Count > 0) { builder.Append(" WHERE ").Append(string.Join(" AND ", whereList.ToArray())); }
+
 			builderLength = builder.Length;
-			if (!string.IsNullOrEmpty(GroupText))
-				builder.Append(" GROUP BY ").Append(GroupText);
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
+			if (!string.IsNullOrEmpty(GroupText)) { builder.Append(" GROUP BY ").Append(GroupText); }
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
 			{
-				if (builderLength != builder.Length) { builder.Append(",").Append(joinCommand.GroupText); }
+				if (builderLength != builder.Length) { builder.Append(',').Append(_dynamicJoinCommand.GroupText); }
+				else { builder.AppendLine().Append(" GROUP BY ").Append(_dynamicJoinCommand.GroupText); }
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
+			{
+				if (builderLength != builder.Length) { builder.Append(',').Append(joinCommand.GroupText); }
 				else { builder.AppendLine().Append(" GROUP BY ").Append(joinCommand.GroupText); }
 			}
 			if (string.IsNullOrWhiteSpace(HavingText) == false) { builder.AppendLine().Append(" HAVING ").Append(HavingText); }
@@ -954,7 +1067,11 @@ namespace Basic.DataAccess
 			if (mOrderList.Count > 0) { orderList.AddRange(mOrderList.ToArray()); }
 			else
 			{
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.OrderText))
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
+				{
+					orderList.Add(_dynamicJoinCommand.OrderText);
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.OrderText))
 					orderList.Add(joinCommand.OrderText);
 				if (!string.IsNullOrEmpty(OrderText)) { orderList.Add(OrderText); }
 			}
@@ -981,8 +1098,12 @@ namespace Basic.DataAccess
 				if (mOrderList.Count > 0) { orderList.AddRange(mOrderList.ToArray()); }
 				else
 				{
-					if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.OrderText))
-						orderList.Add(joinCommand.OrderText);
+					if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.OrderText))
+					{
+						orderList.Add(_dynamicJoinCommand.OrderText);
+					}
+					else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.OrderText))
+					{ orderList.Add(joinCommand.OrderText); }
 					if (!string.IsNullOrEmpty(OrderText)) { orderList.Add(OrderText); }
 				}
 				if (orderList.Count > 0) { orderBy = string.Concat(" ORDER BY ", string.Join(",", orderList.ToArray())); }
@@ -998,7 +1119,7 @@ namespace Basic.DataAccess
 				{
 					builder.Append("WITH "); List<string> withList = new List<string>();
 					foreach (WithClause with in _WithClauses) { withList.Add(with.ToSql()); }
-					builder.Append(string.Join("," + Environment.NewLine, withList.ToArray())).AppendLine();
+					builder.Append(string.Join(',' + Environment.NewLine, withList.ToArray())).AppendLine();
 				}
 				builder.AppendFormat("SELECT TOP {0} * ", pageSize);
 				builder.AppendLine();
@@ -1007,16 +1128,23 @@ namespace Basic.DataAccess
 				builder.AppendFormat("ROW_NUMBER() OVER({0}) AS PAGEROWNUMBER", orderBy);
 				builder.AppendFormat(",COUNT(1) OVER() AS {0}", AbstractDataCommand.ReturnCountName);
 
-				if (!string.IsNullOrEmpty(SelectText))
-					builder.Append(",").Append(SelectText);
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
-					builder.Append(",").Append(joinCommand.SelectText);
+				if (!string.IsNullOrEmpty(SelectText)) { builder.Append(',').Append(SelectText); }
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.SelectText))
+				{
+					builder.Append(',').Append(_dynamicJoinCommand.SelectText);
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
+					builder.Append(',').Append(joinCommand.SelectText);
 
 				int builderLength = builder.Length;
 
-				if (!string.IsNullOrEmpty(FromText))
-					builder.Append(" FROM ").Append(FromText);
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
+				if (!string.IsNullOrEmpty(FromText)) { builder.Append(" FROM ").Append(FromText); }
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.FromText))
+				{
+					if (builderLength != builder.Length) { builder.Append(" ").Append(_dynamicJoinCommand.FromText); }
+					else { builder.Append(" FROM ").Append(_dynamicJoinCommand.FromText); }
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
 				{
 					if (builderLength != builder.Length) { builder.Append(" ").Append(joinCommand.FromText); }
 					else { builder.Append(" FROM ").Append(joinCommand.FromText); }
@@ -1024,17 +1152,26 @@ namespace Basic.DataAccess
 
 				List<string> whereList = new List<string>(3);
 				if (string.IsNullOrEmpty(WhereText) == false) { whereList.Add(WhereText); }
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
+				{
+					whereList.Add(_dynamicJoinCommand.WhereText);
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
 					whereList.Add(joinCommand.WhereText);
 				if (!string.IsNullOrEmpty(TempWhereText)) { whereList.Add(TempWhereText); }
 
-				if (whereList.Count > 0) { builder.Append(" WHERE ").Append(string.Join(" AND ", whereList.ToArray())); }
+				if (whereList.Count > 0) { builder.Append(" WHERE ").Append(string.Join(" AND ", whereList)); }
+
 				builderLength = builder.Length;
-				if (!string.IsNullOrEmpty(GroupText))
-					builder.AppendLine().Append(" GROUP BY ").Append(GroupText);
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
+				if (!string.IsNullOrEmpty(GroupText)) { builder.AppendLine().Append(" GROUP BY ").Append(GroupText); }
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.GroupText))
 				{
-					if (builderLength != builder.Length) { builder.Append(",").Append(joinCommand.GroupText); }
+					if (builderLength != builder.Length) { builder.Append(',').Append(_dynamicJoinCommand.GroupText); }
+					else { builder.AppendLine().Append(" GROUP BY ").Append(_dynamicJoinCommand.GroupText); }
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
+				{
+					if (builderLength != builder.Length) { builder.Append(',').Append(joinCommand.GroupText); }
 					else { builder.AppendLine().Append(" GROUP BY ").Append(joinCommand.GroupText); }
 				}
 				if (string.IsNullOrWhiteSpace(HavingText) == false) { builder.AppendLine().Append(" HAVING ").Append(HavingText); }
@@ -1057,21 +1194,30 @@ namespace Basic.DataAccess
 			builder.Append("SELECT COUNT(1)");
 			List<string> fromList = new List<string>(3);
 			int builderLength = builder.Length;
-			if (!string.IsNullOrEmpty(FromText))
-				builder.Append(" FROM ").Append(FromText);
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
+			if (!string.IsNullOrEmpty(FromText)) { builder.Append(" FROM ").Append(FromText); }
+
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.FromText))
+			{
+				if (builderLength != builder.Length) { builder.Append(" ").Append(_dynamicJoinCommand.FromText); }
+				else { builder.Append(" FROM ").Append(_dynamicJoinCommand.FromText); }
+			}
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
 			{
 				if (builderLength != builder.Length) { builder.Append(" ").Append(joinCommand.FromText); }
 				else { builder.Append(" FROM ").Append(joinCommand.FromText); }
 			}
 
 			List<string> whereList = new List<string>(3);
-			if (!string.IsNullOrEmpty(WhereText))
-				whereList.Add(WhereText);
-			if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
+			if (!string.IsNullOrEmpty(WhereText)) { whereList.Add(WhereText); }
+
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
+				whereList.Add(_dynamicJoinCommand.WhereText);
+			else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
 				whereList.Add(joinCommand.WhereText);
 			if (!string.IsNullOrEmpty(TempWhereText))
+			{
 				whereList.Add(TempWhereText);
+			}
 
 			if (whereList.Count > 0) { builder.Append(" WHERE ").Append(string.Join(" AND ", whereList.ToArray())); }
 

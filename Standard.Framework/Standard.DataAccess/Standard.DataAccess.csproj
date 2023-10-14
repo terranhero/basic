@@ -37,5 +37,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="DataCommand\DynamicJoinCommand.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	</ItemGroup>
 	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
 </Project>

@@ -21,7 +21,7 @@ namespace Basic.Configuration
 
 		private static EventLogsSection _DefaultSection;
 		/// <summary>
-		/// 默认数据库连接配置信息
+		/// 日志配置信息
 		/// </summary>
 		internal static EventLogsSection DefaultSection
 		{

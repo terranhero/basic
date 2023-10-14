@@ -1,15 +1,10 @@
-﻿using Basic.EntityLayer;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Data;
 using System.Data.Common;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Basic.EntityLayer;
 
 namespace Basic.DataAccess
 {
@@ -66,6 +61,28 @@ namespace Basic.DataAccess
 		/// </summary>
 		private readonly DbParameter[] m_Parameters;
 		private string _JoinOnField;
+		/// <summary>
+		/// 初始化 JoinCommand 类的新实例。 
+		/// </summary>
+		/// <param name="select"></param>
+		/// <param name="from"></param>
+		/// <param name="where"></param>
+		/// <param name="group"></param>
+		/// <param name="having"></param>
+		/// <param name="order"></param>
+		/// <param name="parameters"></param>
+		internal JoinCommand(string select, string from, string where, string group, string having, string order, DbParameter[] parameters)
+			: base()
+		{
+			_SelectText = select;
+			_FromText = from;
+			_WhereText = where;
+			_GroupText = group;
+			_HavingText = having;
+			_OrderText = order;
+			m_Parameters = parameters;
+		}
+
 		/// <summary>
 		/// 初始化 DynamicCommand 类的新实例。 
 		/// </summary>

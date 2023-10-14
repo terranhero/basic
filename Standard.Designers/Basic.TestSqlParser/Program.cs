@@ -1,12 +1,19 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Collections.Concurrent;
 using System.Data.Common;
+using System.Reflection;
 using System.Text;
+using Basic.Collections;
+using Basic.DataAccess;
+using Basic.EntityLayer;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace MyApp // Note: actual namespace depends on the project name.
 {
 	internal class Program
 	{
+
+
 		const string sql1 = @"(EMPKEY,EMPLOYEECODE,CHINESENAME,CORPKEY,CORPNAME,ORGKEY,DEPARTCODE,DEPARTNAME,NODECODE,NODENAME) ";
 
 		const string sql3 = @"WITH TEMP_EMPLOYEE(EMPKEY,  CORPKEY, CORPNAME, ORGKEY, DEPARTCODE, DEPARTNAME, NODECODE, NODENAME,NODECODE1,NODENAME1) AS (
@@ -51,9 +58,52 @@ FROM PSM_SALARYCALCRESULT T1 JOIN PSM_SALARYGROUP SG ON T1.GROUPKEY=SG.GROUPKEY
 JOIN TEMP_EMPLOYEE TE ON T1.EMPKEY=TE.EMPKEY
 ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 ";
+		/// <summary>缓存内连接命令</summary>
+		private static readonly ConcurrentDictionary<string, DynamicJoinCommand> _innerJoins = new ConcurrentDictionary<string, DynamicJoinCommand>();
+
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]
 		static void Main(string[] args)
 		{
+			Type type = typeof(ConsecutiveWorkEntity);
+			if (_innerJoins.TryGetValue(type.FullName, out DynamicJoinCommand cmd))
+			{
+			 return ;
+			}
+			List<InnerJoinAttribute> joins = new List<InnerJoinAttribute>(10);
+			List<JoinParameterAttribute> parameters = new List<JoinParameterAttribute>(10);
+			List<JoinOrderAttribute> orders = new List<JoinOrderAttribute>(10);
+			for (Type et = type; et != null; et = et.BaseType)
+			{
+				foreach (var attribute in et.GetCustomAttributes(true))
+				{
+					if (attribute is InnerJoinAttribute) { joins.Add((InnerJoinAttribute)attribute); }
+					else if (attribute is JoinParameterAttribute) { parameters.Add((JoinParameterAttribute)attribute); }
+					else if (attribute is JoinOrderAttribute) { orders.Add((JoinOrderAttribute)attribute); }
+				}
+			}
+			EntityPropertyProvidor.TryGetProperties(type, out EntityPropertyCollection properties);
+			List<string> fields = new List<string>(50);
+			foreach (EntityPropertyMeta meta in properties)
+			{
+				if (meta.JoinField == null) { continue; }
+				fields.Add(meta.JoinField.Script);
+			}
+			List<string> whereClauses = new List<string>(10);
+			List<DbParameter> dbParameters = new List<DbParameter>(10);
+			foreach (JoinParameterAttribute param in parameters)
+			{
+				DbParameter parameter = CreateParameter(param);
+				dbParameters.Add(parameter);
+				whereClauses.Add(param.WhereClause.Replace("{%" + param.FieldName + "%}", parameter.ParameterName));
+			}
+			if (fields.Count == 0 || joins.Count == 0) { return false; }
+			_dynamicJoinCommand = new DynamicJoinCommand(string.Join(", ", fields),
+				string.Join("\r\n", joins.Select(m => m.JoinScript)),
+				string.Join(", ", whereClauses),
+				 string.Join(", ", orders.SelectMany(m => m.OrderClauses)),
+				dbParameters.ToArray()
+				);
+			//attributes.
 			TSqlParser parser = new TSql120Parser(false);
 			using (StringReader reader = new StringReader(sql3))
 			{

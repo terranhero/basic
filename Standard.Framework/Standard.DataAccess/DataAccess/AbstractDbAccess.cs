@@ -1863,6 +1863,7 @@ namespace Basic.DataAccess
 			where T : AbstractEntity, new()
 		{
 			BeginDynamicExecute(dataCommand);
+			dataCommand.InitializeJoinCommand<T>();
 			return dataCommand.GetEntities<T>(null, pageSize, pageIndex);
 		}
 
@@ -1876,6 +1877,7 @@ namespace Basic.DataAccess
 		internal protected QueryEntities<T> GetJoinEntities<T>(DynamicCommand dataCommand, object dynamicObject) where T : AbstractEntity, new()
 		{
 			BeginDynamicExecute(dataCommand);
+			dataCommand.InitializeJoinCommand<T>();
 			return dataCommand.GetEntities<T>(dynamicObject);
 		}
 
@@ -1890,6 +1892,7 @@ namespace Basic.DataAccess
 			where T : AbstractEntity, new()
 		{
 			BeginDynamicExecute(dataCommand);
+			dataCommand.InitializeJoinCommand<T>();
 			return dataCommand.GetEntities<T>(condition);
 		}
 
@@ -1906,6 +1909,7 @@ namespace Basic.DataAccess
 			where T : AbstractEntity, new()
 		{
 			BeginDynamicExecute(dataCommand);
+			dataCommand.InitializeJoinCommand<T>();
 			return dataCommand.GetEntities<T>(entity, pageSize, pageIndex);
 		}
 		#endregion

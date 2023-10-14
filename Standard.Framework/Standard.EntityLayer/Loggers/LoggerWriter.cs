@@ -53,7 +53,10 @@ namespace Basic.LogInfo
 			else { _actions.Add(new ActionInfo(url, controller, action)); }
 		}
 
-		/// <summary>系统是否已经所有可用请求</summary>
+		/// <summary>系统请求配置数量</summary>
+		public int ActionCount { get { return _actions.Count; } }
+
+		/// <summary>系统是否已经存在请求配置</summary>
 		public bool HasActions { get { return _actions.Count > 0; } }
 
 		private static ILoggerWriter _logger;
@@ -91,39 +94,6 @@ namespace Basic.LogInfo
 				mailToList = new EventLogItemCollection();
 			}
 		}
-
-		///// <summary>记录日志信息</summary>
-		///// <param name="batchNo">日志批次</param>
-		///// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
-		///// <param name="action">当前操作名称</param>
-		///// <param name="host">操作计算机名称或操作计算机地址</param>
-		///// <param name="user">当前操作用户</param>
-		///// <param name="message">操作描述</param>
-		///// <param name="logLevel">日志级别</param>
-		///// <param name="resultType">操作结果</param>
-		//private void Logger(Guid batchNo, string controller, string action, string host, string user, string message, LogLevel logLevel, LogResult resultType)
-		//{
-		//	Task.Run(async () =>
-		//	{
-		//		try
-		//		{
-		//			if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-		//			GetSectionInfo(logLevel, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
-		//			if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
-		//			{
-		//				await _FileStorage.WriteLogAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
-		//			}
-		//			else if (savetype == LogSaveType.DataBase && _storage != null)
-		//			{
-		//				await _storage.WriteLogAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
-		//			}
-		//		}
-		//		catch (Exception ex1)
-		//		{
-		//			await _FileStorage.WriteLogAsync(batchNo, controller, action, host, user, ex1);
-		//		}
-		//	});
-		//}
 
 		void ILoggerWriter.Information(string url, string user, string message)
 		{
@@ -292,7 +262,7 @@ namespace Basic.LogInfo
 				LoggerAsync(batchNo, url, url, host, user, ex);
 			}
 		}
-		
+
 		/// <summary>记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>
 		/// <param name="url">当前请求全路径</param>
