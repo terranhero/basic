@@ -1,8 +1,10 @@
-﻿using Basic.Configuration;
+﻿using System;
+using System.Threading.Tasks;
+using Basic.Collections;
+using Basic.Configuration;
+using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
-using System;
-using System.Threading.Tasks;
 
 namespace Basic.LogInfo
 {
@@ -16,7 +18,8 @@ namespace Basic.LogInfo
 	/// <summary>表示抽象的日志写入类</summary>
 	public abstract class LoggerWriter : ILoggerWriter
 	{
-		private readonly ILoggerStorage _storage = null;
+		/// <summary></summary>
+		internal protected readonly ILoggerStorage _storage = null;
 		internal readonly static ActionCollection _actions = new ActionCollection();
 		internal readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
 		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(_EventLogs);
@@ -25,6 +28,48 @@ namespace Basic.LogInfo
 		/// <summary>初始化 LoggerWriter 类实例</summary>
 		/// <param name="storage">日志存储器</param>
 		protected LoggerWriter(ILoggerStorage storage) { _storage = storage; }
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="time1">日志记录时间开始</param>
+		/// <param name="time2">日志记录时间结束</param>
+		/// <param name="controller">控制器名称</param>
+		/// <param name="action">操作名称</param>
+		/// <param name="computer">操作电脑</param>
+		/// <param name="user">操作用户名</param>
+		/// <param name="msg">操作消息</param>
+		/// <param name="levels">日志级别</param>
+		/// <param name="results">操作结果</param>
+		/// <returns></returns>
+		public virtual Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid? batchNo, string controller, string action, string computer,
+			string user, string msg, DateTime time1, DateTime time2, LogLevel[] levels = null, LogResult[] results = null)
+		{
+			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
+		}
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="condition">日志查询条件</param>
+		/// <returns>返回日志查询结果</returns>
+		public virtual Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition condition)
+		{
+			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
+		}
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="batchNo">日志批次号</param>
+		/// <returns>返回日志查询结果</returns>
+		public virtual Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid batchNo)
+		{
+			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
+		}
+
+		/// <summary>根据条件删除日志记录</summary>
+		/// <param name="keys">需要删除的日志主键</param>
+		/// <returns>返回日志查询结果</returns>
+		public virtual Task<Result> DeleteLoggingAsync(Guid[] keys)
+		{
+			return Task.FromResult(Result.Success);
+		}
 
 		/// <summary>获取Web程序客户端IP地址或Windows程序本机IP地址</summary>
 		/// <returns></returns>
@@ -94,6 +139,8 @@ namespace Basic.LogInfo
 				mailToList = new EventLogItemCollection();
 			}
 		}
+
+
 
 		void ILoggerWriter.Information(string url, string user, string message)
 		{

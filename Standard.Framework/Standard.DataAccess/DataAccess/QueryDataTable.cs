@@ -131,6 +131,14 @@ namespace Basic.DataAccess
 			return GetDataTable();
 		}
 
+		/// <summary>
+		/// 将可查询的实体列表转换成分页实体列表
+		/// </summary>
+		/// <returns>接口 IPagination 的实例</returns>
+		Task<IPagination<TR>> IQueryEntities<TR>.ToPaginationAsync()
+		{
+			return Task.FromResult<IPagination<TR>>(GetDataTable());
+		}
 
 		/// <summary>
 		/// 返回当前查询结果的第一条记录。

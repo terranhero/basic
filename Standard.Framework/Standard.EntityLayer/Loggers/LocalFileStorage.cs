@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Basic.Collections;
 using Basic.Configuration;
 using Basic.EntityLayer;
 using Basic.Enums;
@@ -56,6 +57,23 @@ namespace Basic.LogInfo
 			else if (cycleMode == CycleMode.Monthly)
 				return string.Format("{0}\\logger{1:yyyyMM}.log", _LogDirectory, DateTime.Today);
 			return string.Format("{0}\\logger{1:yyyyMMdd}.log", _LogDirectory, DateTime.Today);
+		}
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="condition">查询条件</param>
+		/// <returns>返回日志查询结果</returns>
+		public Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition condition)
+		{
+			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
+		}
+
+
+		/// <summary>根据条件删除日志记录</summary>
+		/// <param name="keys">需要删除的日志主键</param>
+		/// <returns>返回日志查询结果</returns>
+		public Task<Result> DeleteLoggingAsync(Guid[] keys)
+		{
+			return Task.FromResult(Result.Success);
 		}
 
 		/// <summary>记录日志信息</summary>

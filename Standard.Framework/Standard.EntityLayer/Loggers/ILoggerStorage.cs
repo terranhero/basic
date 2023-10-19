@@ -1,5 +1,7 @@
 ﻿
+using Basic.EntityLayer;
 using Basic.Enums;
+using Basic.LogInfo;
 using System;
 using System.Threading.Tasks;
 
@@ -55,5 +57,15 @@ namespace Basic.Interfaces
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作失败后的异常信息</param>
 		Task WriteLogAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex);
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="condition">查询条件</param>
+		/// <returns>返回日志查询结果</returns>
+		Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition condition);
+
+		/// <summary>根据条件删除日志记录</summary>
+		/// <param name="keys">需要删除的日志主键</param>
+		/// <returns>返回日志查询结果</returns>
+		Task<Result> DeleteLoggingAsync(Guid[] keys);
 	}
 }

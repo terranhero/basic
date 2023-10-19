@@ -1,10 +1,29 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Basic.EntityLayer;
+using Basic.Enums;
+using Basic.LogInfo;
 
 namespace Basic.Interfaces
 {
 	/// <summary>日志写入接口</summary>
 	public interface ILoggerWriter
 	{
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="condition">日志查询条件</param>
+		/// <returns>返回日志查询结果</returns>
+		Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition condition);
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="batchNo">日志批次号</param>
+		/// <returns>返回日志查询结果</returns>
+		Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid batchNo);
+
+		/// <summary>根据条件删除日志记录</summary>
+		/// <param name="keys">需要删除的日志主键</param>
+		/// <returns>返回日志查询结果</returns>
+		Task<Result> DeleteLoggingAsync(Guid[] keys);
+
 		/// <summary>添加 Action映射。</summary>
 		/// <param name="url">表示请求的路径。</param>
 		/// <param name="controller">表示当前请求所属控制器、窗体名称</param>

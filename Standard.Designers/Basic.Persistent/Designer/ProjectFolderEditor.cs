@@ -51,13 +51,19 @@ namespace Basic.Designer
 				}
 				PersistentDescriptor objectDescriptor = context.Instance as PersistentDescriptor;
 				PersistentConfiguration persistet = objectDescriptor.DefinitionInfo;
-				if (!persistet.Project.IsEmpty) { this.listBox.BeginEdit(editorService, provider, persistet.ProjectGuid, (string)value); }
+				if (persistet.Project.IsEmpty == false)
+				{
+					EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
+					Assumes.Present(dteClass);
+					EnvDTE.ProjectItem item = dteClass.ActiveDocument.ProjectItem;
+					this.listBox.BeginEdit(editorService, provider, item.ContainingProject, persistet.ProjectGuid, (string)value);
+				}
 				else
 				{
 					EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
 					Assumes.Present(dteClass);
 					EnvDTE.ProjectItem item = dteClass.ActiveDocument.ProjectItem;
-					this.listBox.BeginEdit(editorService, provider, item.ContainingProject, (string)value);
+					this.listBox.BeginEdit(editorService, item.ContainingProject, (string)value);
 				}
 				editorService.DropDownControl(this.listBox);
 				return listBox.SelectedItem;
@@ -74,7 +80,7 @@ namespace Basic.Designer
 				this.Dock = DockStyle.Fill;
 				this.IntegralHeight = true;
 			}
-			internal bool BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, Guid projectGuid, string value)
+			internal bool BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, EnvDTE.Project project, Guid projectGuid, string value)
 			{
 				Items.Clear();
 				_editorService = editorService;
@@ -86,10 +92,10 @@ namespace Basic.Designer
 				object outProject;
 				if (hierarchy != null && hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_ExtObject, out outProject) >= 0)
 				{
-					EnvDTE.Project project = (EnvDTE.Project)outProject;
-					FileInfo fileInfo = new FileInfo(project.FullName);
+					EnvDTE.Project entityProject = (EnvDTE.Project)outProject;
+					FileInfo fileInfo = new FileInfo(entityProject.FullName);
 					string directoryName = fileInfo.DirectoryName + "\\";
-					SearchProjectSubDirectory(directoryName, project.ProjectItems);
+					SearchProjectSubDirectory(directoryName, entityProject.ProjectItems);
 					if (this.Items.Count >= 10)
 						this.Height = this.ItemHeight * 10;
 					if (value != null) { SelectedItem = value; }
@@ -97,7 +103,7 @@ namespace Basic.Designer
 				return true;
 			}
 
-			internal bool BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, EnvDTE.Project project, string value)
+			internal bool BeginEdit(IWindowsFormsEditorService editorService, EnvDTE.Project project, string value)
 			{
 				Items.Clear();
 				_editorService = editorService;

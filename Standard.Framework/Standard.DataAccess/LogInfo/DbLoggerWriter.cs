@@ -1,4 +1,9 @@
-﻿using Basic.Interfaces;
+﻿using System;
+using System.Drawing;
+using System.Threading.Tasks;
+using Basic.EntityLayer;
+using Basic.Enums;
+using Basic.Interfaces;
 
 namespace Basic.LogInfo
 {
@@ -13,5 +18,29 @@ namespace Basic.LogInfo
 
 		/// <summary>初始化 DbLoggerWriter 类实例</summary>
 		public DbLoggerWriter(IUserContext ctx) : base(new EventLogContext(ctx, _EventLogs)) { }
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="con">日志查询条件</param>
+		/// <returns>返回日志查询结果</returns>
+		public override async Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition con)
+		{
+			return await _storage.GetLoggingsAsync(con);
+		}
+
+		/// <summary>根据条件查询日志记录</summary>
+		/// <param name="batchNo">日志批次号</param>
+		/// <returns>返回日志查询结果</returns>
+		public override async Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid batchNo)
+		{
+			return await _storage.GetLoggingsAsync(new LoggerCondition() { BatchNo = batchNo });
+		}
+
+		/// <summary>根据条件删除日志记录</summary>
+		/// <param name="keys">需要删除的日志主键</param>
+		/// <returns>返回日志查询结果</returns>
+		public override async Task<Result> DeleteLoggingAsync(Guid[] keys)
+		{
+			return await _storage.DeleteLoggingAsync(keys);
+		}
 	}
 }

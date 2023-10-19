@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
+using System.Drawing.Printing;
 using System.Linq.Expressions;
+using Basic.DataAccess;
+using System.Threading.Tasks;
+using Basic.Collections;
 
 namespace Basic.Interfaces
 {
@@ -54,6 +58,26 @@ namespace Basic.Interfaces
 		/// </summary>
 		/// <returns>接口 IPagination 的实例</returns>
 		IPagination<T> ToPagination();
+
+		///// <summary>
+		///// 将可查询的实体列表转换成分页实体列表
+		///// </summary>
+		///// <param name="pagination"></param>
+		///// <returns>接口 IPagination 的实例</returns>
+		//IPagination<T> ToPagination(Pagination<T> pagination);
+
+		/// <summary>
+		/// 将可查询的实体列表转换成分页实体列表
+		/// </summary>
+		/// <returns>接口 IPagination 的实例</returns>
+		Task<IPagination<T>> ToPaginationAsync();
+
+		///// <summary>
+		///// 将可查询的实体列表转换成分页实体列表
+		///// </summary>
+		///// <param name="pagination"></param>
+		///// <returns>接口 IPagination 的实例</returns>
+		//Task<IPagination<T>> ToPaginationAsync(Pagination<T> pagination);
 
 		/// <summary>返回当前查询结果的第一条记录并填充实例属性。</summary>
 		/// <returns><![CDATA[如果查询成功则返回true，否则返回false]]></returns>
