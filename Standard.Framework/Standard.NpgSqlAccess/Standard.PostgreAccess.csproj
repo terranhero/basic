@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
+	<PropertyGroup Label="Globals">
+		<SccProjectName>Svn</SccProjectName>
+		<SccProvider></SccProvider>
+		<SccAuxPath>Svn</SccAuxPath>
+		<SccLocalPath>Svn</SccLocalPath>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AssemblyName>Basic.PostgreAccess</AssemblyName>
+		<RootNamespace>Basic</RootNamespace>
+		<DelaySign>false</DelaySign>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Standard.PostgreAccess</PackageId>
+		<Product>Standard.PostgreAccess</Product>
+		<Authors>JACKY</Authors>
+		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Npgsql" Version="7.0.6" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
+		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="SqlServer2012\SqlBatchCommand.cs" />
+		<Compile Update="SqlServer2012\SqlCheckCommand.cs" />
+		<Compile Update="SqlServer2012\SqlDynamicCommand.cs" />
+		<Compile Update="SqlServer2012\SqlNewValueCommand.cs" />
+		<Compile Update="SqlServer2012\SqlStaticAdapter.cs" />
+		<Compile Update="SqlServer2012\SqlStaticCommand.cs" />
+		<Compile Update="SqlServer\SqlBatchCommand.cs" />
+		<Compile Update="SqlServer\SqlCheckCommand.cs" />
+		<Compile Update="SqlServer\SqlDynamicCommand.cs" />
+		<Compile Update="SqlServer\SqlNewValueCommand.cs" />
+		<Compile Update="SqlServer\SqlStaticAdapter.cs" />
+		<Compile Update="SqlServer\SqlStaticCommand.cs" />
+	</ItemGroup>
+	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
+</Project>

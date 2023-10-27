@@ -1230,6 +1230,24 @@ namespace Basic.DataAccess
 		}
 
 		/// <summary>将本对象属性复制到目标对象中</summary>
+		protected internal TC CopyTo<TC>(TC command) where TC : DynamicCommand
+		{
+			if (_WithClauses != null && _WithClauses.Count > 0)
+			{
+				_WithClauses.CloneCopy(command.WithClauses);
+			}
+			command.SourceColumn = SourceColumn;
+			command.CommandName = CommandName;
+			command.SelectText = SelectText;
+			command.FromText = FromText;
+			command.WhereText = WhereText;
+			command.GroupText = GroupText;
+			command.HavingText = HavingText;
+			command.OrderText = OrderText;
+			return command;
+		}
+
+		/// <summary>将本对象属性复制到目标对象中</summary>
 		protected internal void CopyTo(DynamicCommand command)
 		{
 			if (_WithClauses != null && _WithClauses.Count > 0)

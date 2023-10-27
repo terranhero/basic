@@ -9,6 +9,7 @@
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_SqlClientAccess)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_OracleAccess)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_DB2Access)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_PostgreAccess)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_MySqlAccess)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_EntityBuilder)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_Persistent)]

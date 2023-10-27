@@ -14,6 +14,7 @@
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_MySqlAccess)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_OracleAccess)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_DB2Access)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(AssemblysInfo.Basic_PostgreAccess)]
 
 //[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic.OraAccess)]
 //[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic.EntityBuilder)]

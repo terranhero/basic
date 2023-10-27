@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Basic.Configuration;
 using Basic.Enums;
 using Basic.Exceptions;
@@ -75,6 +76,12 @@ namespace Basic.DataAccess
 		{
 			_ConnectionFactorys = new SortedList<ConnectionType, ConnectionFactory>(8);
 			_ConnectionFactorys.Add(ConnectionType.SqlConnection, new DefaultConnectionFactory());
+		}
+
+		/// <summary>获取系统中已经注册的数据库类型</summary>
+		public static ConnectionType[] GetRegisterConnections()
+		{
+			return _ConnectionFactorys.Keys.ToArray();
 		}
 
 		/// <summary>
