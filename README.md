@@ -4,7 +4,7 @@ basic ORM 于2012 年发布、2023 年正式开源，该组件已在数百个成
 
 经过数十个版本的更新迭代发布全新v6.0版本，支持动态条件查询（Lambda）
 
-数据库持久化 ORM 开发框架，支持多种数据库(MSSQL,MYSQL,ORACLE,DB2等)。
+数据库持久化 ORM 开发框架，支持多种数据库(MSSQL,MYSQL,ORACLE,DB2,PostgreSQL等)。
 
 支持Linq表达式动态查询数据。支持快速分页
 
@@ -27,6 +27,8 @@ basic ORM 于2012 年发布、2023 年正式开源，该组件已在数百个成
 | Standard.DataAccess | 基础数据库持久包 | [![NuGet version](https://badge.fury.io/nu/Standard.DataAccess.svg)](https://badge.fury.io/nu/Standard.DataAccess) |
 | Standard.SqlAccess | SQL Server 数据库持久类支持包 | [![NuGet version](https://badge.fury.io/nu/Standard.SqlAccess.svg)](https://badge.fury.io/nu/Standard.SqlAccess) |
 | Standard.MySqlAccess  | MySql 数据库持久类支持包 | [![NuGet version](https://badge.fury.io/nu/Standard.MySqlAccess.svg)](https://badge.fury.io/nu/Standard.MySqlAccess) |
+| Standard.OracleAccess  | Oracle 数据库持久类支持包 | [![NuGet version](https://badge.fury.io/nu/Standard.OracleAccess.svg)](https://badge.fury.io/nu/Standard.OracleAccess) |
+| Standard.PostgreAccess  | PostgreSQL 数据库持久类支持包 | [![NuGet version](https://badge.fury.io/nu/Standard.PostgreAccess.svg)](https://badge.fury.io/nu/Standard.PostgreAccess) |
 
 ### 不使用分布式事务
 ```c#
