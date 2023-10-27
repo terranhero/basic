@@ -12,6 +12,8 @@
 		<RootNamespace>Basic</RootNamespace>
 		<TargetFrameworks>netstandard2.1;net6.0;</TargetFrameworks>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+		<Product>Standard.OracleAccess</Product>
+		<PackageId>Standard.OracleAccess</PackageId>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
