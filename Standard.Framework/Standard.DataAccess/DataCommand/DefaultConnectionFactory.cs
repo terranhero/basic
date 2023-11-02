@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Xml.Linq;
 using Basic.Configuration;
+using Basic.Interfaces;
 
 namespace Basic.DataAccess
 {
@@ -13,6 +16,56 @@ namespace Basic.DataAccess
 		/// 初始化 DefaultConnectionFactory 类实例。
 		/// </summary>
 		public DefaultConnectionFactory() { }
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="info">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		public override ConnectionInfo CreateConnectionInfo(IConnectionInfo info)
+		{
+			DbConnectionStringBuilder display = new DbConnectionStringBuilder();
+			DbConnectionStringBuilder connection = new DbConnectionStringBuilder();
+			//builder.IntegratedSecurity = false;
+			foreach (var item in info)
+			{
+				if (string.IsNullOrEmpty(item.Key)) { continue; }
+				else if (string.IsNullOrEmpty(item.Value)) { continue; }
+
+				if (dataSourceKeys.Contains(item.Key)) { display["Data Source"] = connection["Data Source"] = item.Value; }
+				else if (userKeys.Contains(item.Key)) { connection["User ID"] = item.Value; }
+				else if (pwdKeys.Contains(item.Key))
+				{
+					connection["Password"] = ConfigurationAlgorithm.Decryption(item.Value);
+				}
+				else { connection[item.Key] = display[item.Key] = item.Value; }
+			}
+			return new ConnectionInfo(info.Name, info.ConnectionType,
+				connection.ConnectionString, display.ConnectionString);
+		}
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="element">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		internal override ConnectionInfo CreateConnectionInfo(ConnectionElement element)
+		{
+			DbConnectionStringBuilder display = new DbConnectionStringBuilder();
+			DbConnectionStringBuilder connection = new DbConnectionStringBuilder();
+			//builder.IntegratedSecurity = false;
+			foreach (ConnectionItem item in element.Values)
+			{
+				if (string.IsNullOrEmpty(item.Name)) { continue; }
+				else if (string.IsNullOrEmpty(item.Value)) { continue; }
+
+				if (dataSourceKeys.Contains(item.Name)) { display["Data Source"] = connection["Data Source"] = item.Value; }
+				else if (userKeys.Contains(item.Name)) { connection["User ID"] = item.Value; }
+				else if (pwdKeys.Contains(item.Name))
+				{
+					connection["Password"] = ConfigurationAlgorithm.Decryption(item.Value);
+				}
+				else { connection[item.Name] = display[item.Name] = item.Value; }
+			}
+			return new ConnectionInfo(element.Name, element.ConnectionType,
+				connection.ConnectionString, display.ConnectionString);
+		}
 
 		/// <summary>
 		/// 返回实现 DbConnection 类的提供程序的类的一个新实例。

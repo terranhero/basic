@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using Basic.Configuration;
 using Basic.DataAccess;
@@ -16,30 +17,55 @@ namespace Basic.OracleAccess
 		/// </summary>
 		public OracleConnectionFactory() { }
 
-		/// <summary>
-		/// 获取与此 ConnectionConfig 关联的连接字符串。
-		/// </summary>
-		/// <param name="element">数据库连接配置信息</param>
-		/// <returns>返回与此 ConnectionConfig 关联的连接字符串。</returns>
-		public string CreateConnectionString(ConnectionElement element)
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="info">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:简化对象初始化", Justification = "<挂起>")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]
+		public override ConnectionInfo CreateConnectionInfo(Interfaces.IConnectionInfo info)
 		{
-			OracleConnectionStringBuilder connectionBuilder = new OracleConnectionStringBuilder();
+			OracleConnectionStringBuilder display = new OracleConnectionStringBuilder();
+			OracleConnectionStringBuilder connection = new OracleConnectionStringBuilder();
+			foreach (KeyValuePair<string, string> item in info)
+			{
+				if (string.IsNullOrEmpty(item.Key)) { continue; }
+				else if (string.IsNullOrEmpty(item.Value)) { continue; }
+				string upperName = item.Key.ToUpper();
+
+				if (dataSourceKeys.Contains(upperName)) { connection.DataSource = display.DataSource = item.Value; }
+				else if (userKeys.Contains(upperName)) { display.UserID = connection.UserID = item.Value; }
+				else if (pwdKeys.Contains(upperName))
+				{
+					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
+				}
+				else { connection[item.Key] = display[item.Key] = item.Value; }
+			}
+			return new ConnectionInfo(info.Name, info.ConnectionType,
+				connection.ConnectionString, display.ConnectionString);
+		}
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="element">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		internal override ConnectionInfo CreateConnectionInfo(ConnectionElement element)
+		{
+			OracleConnectionStringBuilder display = new OracleConnectionStringBuilder();
+			OracleConnectionStringBuilder connection = new OracleConnectionStringBuilder();
 			foreach (ConnectionItem item in element.Values)
 			{
-				if (!string.IsNullOrEmpty(item.Name) && !string.IsNullOrEmpty(item.Value))
-				{
-					if (item.Name == "DataSource" || item.Name == "Data Source")
-						connectionBuilder.DataSource = item.Value;
-					else if (item.Name == "UserID" || item.Name == "User ID")
-						connectionBuilder.UserID = item.Value;
-					else if (item.Name == "Password")
-						connectionBuilder.Password = ConfigurationAlgorithm.Decryption(item.Value);
-					else
-						connectionBuilder[item.Name] = item.Value;
-				}
+				if (string.IsNullOrEmpty(item.Name)) { continue; }
+				else if (string.IsNullOrEmpty(item.Value)) { continue; }
 
+				if (dataSourceKeys.Contains(item.Name)) { connection.DataSource = display.DataSource = item.Value; }
+				else if (userKeys.Contains(item.Name)) { display.UserID = connection.UserID = item.Value; }
+				else if (pwdKeys.Contains(item.Name))
+				{
+					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
+				}
+				else { connection[item.Name] = display[item.Name] = item.Value; }
 			}
-			return connectionBuilder.ConnectionString;
+			return new ConnectionInfo(element.Name, element.ConnectionType,
+				connection.ConnectionString, display.ConnectionString);
 		}
 
 		/// <summary>

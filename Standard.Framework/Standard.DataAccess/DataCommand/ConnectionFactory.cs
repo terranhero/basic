@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.Common;
 using Basic.Configuration;
-using Basic.Enums;
+using Basic.Interfaces;
 
 namespace Basic.DataAccess
 {
@@ -10,6 +12,26 @@ namespace Basic.DataAccess
 	/// </summary>
 	public abstract class ConnectionFactory
 	{
+		/// <summary>数据库服务器地址字段常用名称</summary>
+		internal protected static readonly ICollection<string> dataSourceKeys = new SortedSet<string>(new string[] {
+			"DATASOURCE", "DATA SOURCE", "SERVER", "ADDRESS", "ADDR", "NETWORK ADDRESS" }, StringComparer.OrdinalIgnoreCase);
+		/// <summary>数据库登录账号字段常用名称</summary>
+		internal protected static readonly ICollection<string> userKeys = new SortedSet<string>(new string[] {
+			"USERID", "USER ID", "USER", "UID" }, StringComparer.OrdinalIgnoreCase);
+		/// <summary>数据库账号密码字段常用名称</summary>
+		internal protected static readonly ICollection<string> pwdKeys = new SortedSet<string>(new string[] {
+			"PASSWORD", "PWD" }, StringComparer.OrdinalIgnoreCase);
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="info">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		public abstract ConnectionInfo CreateConnectionInfo(IConnectionInfo info);
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="element">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		internal abstract ConnectionInfo CreateConnectionInfo(ConnectionElement element);
+
 		/// <summary>
 		/// 返回实现 DbConnection 类的提供程序的类的一个新实例。
 		/// </summary>

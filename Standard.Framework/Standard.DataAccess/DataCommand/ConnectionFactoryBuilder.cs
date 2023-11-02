@@ -4,6 +4,7 @@ using System.Linq;
 using Basic.Configuration;
 using Basic.Enums;
 using Basic.Exceptions;
+using Basic.Interfaces;
 
 namespace Basic.DataAccess
 {
@@ -13,61 +14,7 @@ namespace Basic.DataAccess
 	/// </summary>
 	public static class ConnectionFactoryBuilder
 	{
-		#region 
-		private class ConnectionFactoryCollection : SortedList<DataConnection, ConnectionFactory>
-		{
-			/// <summary><![CDATA[Initializes a new instance of the ConnectionFactoryCollection class
-			/// that is empty, has the specified initial capacity, and uses the default System.Collections.Generic.IComparer<DataConnection>.]]>
-			/// </summary>
-			/// <param name="capacity">The initial number of elements that the ConnectionFactoryCollection can contain</param>
-			/// <exception cref="System.ArgumentOutOfRangeException">capacity is less than zero.</exception>
-			public ConnectionFactoryCollection(int capacity) : base(capacity) { }
-
-			/// <summary></summary>
-			/// <param name="capacity"></param>
-			/// <param name="comparer"></param>
-			public ConnectionFactoryCollection(int capacity, IComparer<DataConnection> comparer) : base(capacity, comparer) { }
-
-			internal bool ContainsKey(ConnectionType connectionType, int version)
-			{
-				throw new NotImplementedException();
-			}
-
-
-			//
-			// 摘要:
-			//     Gets or sets the value associated with the specified key.
-			//
-			// 参数:
-			//   key:
-			//     The key whose value to get or set.
-			//
-			// 返回结果:
-			//     The value associated with the specified key. If the specified key is not found,
-			//     a get operation throws a System.Collections.Generic.KeyNotFoundException and
-			//     a set operation creates a new element using the specified key.
-			//
-			// 异常:
-			//   T:System.ArgumentNullException:
-			//     key is null.
-			//
-			//   T:System.Collections.Generic.KeyNotFoundException:
-			//     The property is retrieved and key does not exist in the collection.
-			internal ConnectionFactory this[ConnectionType type, int ver] { get { return null; } set { } }
-
-			internal void Add(ConnectionType connectionType, int version, ConnectionFactory factory)
-			{
-				throw new NotImplementedException();
-			}
-
-			internal bool TryGetValue(ConnectionType connectionType, int version, out ConnectionFactory factory)
-			{
-				throw new NotImplementedException();
-			}
-		}
-		#endregion
-
-		//private static ConnectionFactory ConnectionFactory;
+		private static DefaultConnectionFactory _defaultFactory = new DefaultConnectionFactory();
 		///// <summary>当前系统框架支持的所有 ConnectionFactory 类实例集合。</summary>
 		//private static readonly ConnectionFactoryCollection _ConnectionFactorys;
 		/// <summary>当前系统框架支持的所有 ConnectionFactory 类实例集合。</summary>
@@ -76,6 +23,30 @@ namespace Basic.DataAccess
 		{
 			_ConnectionFactorys = new SortedList<ConnectionType, ConnectionFactory>(8);
 			_ConnectionFactorys.Add(ConnectionType.SqlConnection, new DefaultConnectionFactory());
+		}
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="info">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		public static ConnectionInfo CreateConnectionInfo(IConnectionInfo info)
+		{
+			if (_ConnectionFactorys.TryGetValue(info.ConnectionType, out ConnectionFactory factory))
+			{
+				return factory.CreateConnectionInfo(info);
+			}
+			return _defaultFactory.CreateConnectionInfo(info);
+		}
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="info">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		public static ConnectionInfo CreateConnectionInfo(ConnectionElement info)
+		{
+			if (_ConnectionFactorys.TryGetValue(info.ConnectionType, out ConnectionFactory factory))
+			{
+				return factory.CreateConnectionInfo(info);
+			}
+			return _defaultFactory.CreateConnectionInfo(info);
 		}
 
 		/// <summary>获取系统中已经注册的数据库类型</summary>

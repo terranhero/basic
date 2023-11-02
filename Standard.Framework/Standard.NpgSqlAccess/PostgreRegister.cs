@@ -1,7 +1,7 @@
-﻿using Basic.DataAccess;
-using Basic.Enums;
+﻿using Basic.Enums;
+using Basic.PostgreSql;
 
-namespace Basic.PostgreSql
+namespace Basic.DataAccess
 {
 	/// <summary>
 	/// 提供 PostgreSQL 数据库访问程序注册

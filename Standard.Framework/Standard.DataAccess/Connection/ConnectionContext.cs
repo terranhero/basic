@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Exceptions;
 using SC = System.Configuration;
@@ -95,9 +96,10 @@ namespace Basic.Configuration
 			_Connections.Clear();
 			foreach (ConnectionElement element in section.Connections)
 			{
-				string connectionString = ConnectionStringBuilder.CreateConnectionString(element);
-				string display = ConnectionStringBuilder.CreateDisplayString(element);
-				ConnectionInfo info = Create(element.Name, element.ConnectionType, element.Version, connectionString, display);
+				ConnectionInfo info = ConnectionFactoryBuilder.CreateConnectionInfo(element);
+				//string connectionString = ConnectionStringBuilder.CreateConnectionString(element);
+				//string display = ConnectionStringBuilder.CreateDisplayString(element);
+				Create(info);
 				if (_DefaultName == element.Name) { _DefaultConnection = info; }
 			}
 		}

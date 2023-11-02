@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using Basic.Configuration;
 using Basic.DataAccess;
@@ -16,31 +17,63 @@ namespace Basic.PostgreSql
 		/// </summary>
 		public NpgConnectionFactory() { }
 
-		/// <summary>
-		/// 获取与此 ConnectionConfig 关联的连接字符串。
-		/// </summary>
-		/// <param name="element">数据库连接配置信息</param>
-		/// <returns>返回与此 ConnectionConfig 关联的连接字符串。</returns>
-		public string CreateConnectionString(ConnectionElement element)
+		/// <summary>数据库服务器地址字段常用名称</summary>
+		private static readonly ICollection<string> dbKeys = new SortedSet<string>(new string[] {
+			"INITIAL CATALOG", "DATABASE" }, StringComparer.OrdinalIgnoreCase);
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="info">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:简化对象初始化", Justification = "<挂起>")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]
+		public override ConnectionInfo CreateConnectionInfo(Interfaces.IConnectionInfo info)
 		{
-			NpgsqlConnectionStringBuilder conStringBuilder = new NpgsqlConnectionStringBuilder();
-			conStringBuilder.IntegratedSecurity = false;
+			NpgsqlConnectionStringBuilder display = new NpgsqlConnectionStringBuilder();
+			NpgsqlConnectionStringBuilder connection = new NpgsqlConnectionStringBuilder();
+			connection.IntegratedSecurity = display.IntegratedSecurity = false;
+			foreach (var item in info)
+			{
+				if (string.IsNullOrEmpty(item.Key)) { continue; }
+				else if (string.IsNullOrEmpty(item.Value)) { continue; }
+
+				if (dataSourceKeys.Contains(item.Key)) { connection.Host = display.Host = item.Value; }
+				else if (dbKeys.Contains(item.Key)) { display.Database = connection.Database = item.Value; }
+				else if (userKeys.Contains(item.Key)) { display.Username = connection.Username = item.Value; }
+				else if (pwdKeys.Contains(item.Key))
+				{
+					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
+				}
+				else { connection[item.Key] = display[item.Key] = item.Value; }
+			}
+			return new ConnectionInfo(info.Name, info.ConnectionType,
+				connection.ConnectionString, display.ConnectionString);
+		}
+
+		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		/// <param name="element">数据库连接配置信息</param>
+		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		internal override ConnectionInfo CreateConnectionInfo(ConnectionElement element)
+		{
+			NpgsqlConnectionStringBuilder display = new NpgsqlConnectionStringBuilder();
+			NpgsqlConnectionStringBuilder connection = new NpgsqlConnectionStringBuilder();
+			connection.IntegratedSecurity = display.IntegratedSecurity = false;
 			foreach (ConnectionItem item in element.Values)
 			{
-				if (!string.IsNullOrEmpty(item.Name) && !string.IsNullOrEmpty(item.Value))
-				{
-					if (item.Name == "DataSource" || item.Name == "Data Source")
-						conStringBuilder.Database = item.Value;
-					else if (item.Name == "UserID" || item.Name == "User ID")
-						conStringBuilder.Username = item.Value;
-					else if (item.Name == "Password")
-						conStringBuilder.Password = ConfigurationAlgorithm.Decryption(item.Value);
-					else
-						conStringBuilder[item.Name] = item.Value;
-				}
+				if (string.IsNullOrEmpty(item.Name)) { continue; }
+				else if (string.IsNullOrEmpty(item.Value)) { continue; }
+				string upperName = item.Name.ToUpper();
 
+				if (dataSourceKeys.Contains(item.Name)) { connection.Host = display.Host = item.Value; }
+				else if (dbKeys.Contains(item.Name)) { display.Database = connection.Database = item.Value; }
+				else if (userKeys.Contains(item.Name)) { display.Username = connection.Username = item.Value; }
+				else if (pwdKeys.Contains(item.Name))
+				{
+					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
+				}
+				else { connection[item.Name] = display[item.Name] = item.Value; }
 			}
-			return conStringBuilder.ConnectionString;
+			return new ConnectionInfo(element.Name, element.ConnectionType,
+				connection.ConnectionString, display.ConnectionString);
 		}
 
 		/// <summary>
