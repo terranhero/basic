@@ -194,10 +194,10 @@ namespace Basic.EntityLayer
 					object propValue = MethodInfoInvoke(getMethod, value, null);
 					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
 					{
+						if (dicValue == null || dicValue.Count == 0) { flag = true; continue; }
 						SerializeDictionaryNoBreak(sb, dicValue, depth);
 						flag = false; continue;
 					}
-
 
 					DataMemberAttribute dma = info2.GetCustomAttribute<DataMemberAttribute>();
 					if (dma != null && dma.Name != null) { SerializeString(sb, dma.Name, null); }
