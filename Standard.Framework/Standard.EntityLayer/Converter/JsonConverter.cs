@@ -287,11 +287,11 @@ namespace Basic.EntityLayer
 		{
 			sb.Append('['); bool flag = false;
 			Type eleType = enumerable.GetType().GetElementType();
-			if (eleType != null && (eleType.IsClass || eleType.IsInterface)) { sb.AppendLine(); }
+			if (eleType != null && eleType != typeof(string) && (eleType.IsClass || eleType.IsInterface)) { sb.AppendLine(); }
 			foreach (object obj2 in enumerable)
 			{
 				if (flag) { sb.Append(','); }
-				if (eleType != null && (eleType.IsClass || eleType.IsInterface)) { sb.AppendLine(); }
+				if (eleType != null && eleType != typeof(string) && (eleType.IsClass || eleType.IsInterface)) { sb.AppendLine(); }
 				SerializeValuePrivate(sb, obj2, true, depth, null);
 				flag = true;
 			}

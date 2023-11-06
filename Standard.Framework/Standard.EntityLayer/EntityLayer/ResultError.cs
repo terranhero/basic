@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Basic.EntityLayer
 {
@@ -11,20 +7,14 @@ namespace Basic.EntityLayer
 	/// </summary>
 	public sealed class ResultError
 	{
-		private readonly int _Index = -1;
-		private readonly string _PropertyName = null;
-		private readonly string _Message = null;
-
-		/// <summary>
-		/// 根据属性，错误信息初始化 ResultError 类实例。
-		/// </summary>
+		/// <summary>根据属性，错误信息初始化 ResultError 类实例。</summary>
 		/// <param name="index">表示模型数组的位置索引。如果不是数组则为 -1。</param>
 		/// <param name="propertyName">表示当前属性名称。</param>
 		/// <param name="errorMessage">表示错误信息。</param>
 		internal ResultError(int index, string propertyName, string errorMessage)
 		{
-			_Index = index; _PropertyName = propertyName;
-			_Message = errorMessage;
+			Index = index; Name = propertyName;
+			Message = errorMessage;
 		}
 
 		/// <summary>
@@ -39,19 +29,27 @@ namespace Basic.EntityLayer
 		/// 获取表示模型数组的位置索引，如果不是数组则为 -1。
 		/// </summary>
 		/// <value>有关由 CheckCommand 生成的关于位置索引。</value>
-		public int Index { get { return _Index; } }
+		public int Index { get; private set; }
 
 		/// <summary>
 		/// 获取引发错误信息的属性名称。
 		/// </summary>
 		/// <value>有关由 CheckCommand 生成的关于属性名称。</value>
-		public string Name { get { return _PropertyName; } }
+		public string Name { get; private set; }
 
 		/// <summary>
 		/// 获取对错误进行描述的文本。
 		/// </summary>
 		/// <value>有关由 CheckCommand 生成的错误信息。</value>
-		public string Message { get { return _Message; } }
+		public string Message { get; private set; }
+
+		/// <summary>将错误集合属性重命名，重命名完成后保留集合</summary>
+		/// <returns>返回修改后的错误集合，表示 ResultError 类型的集合</returns>
+		internal ResultError Rename(string name)
+		{
+			this.Name = name; return this;
+		}
+
 	}
 
 	/// <summary>

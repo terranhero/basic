@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Runtime.Serialization;
 using Basic.EntityLayer;
 using Basic.Interfaces;
@@ -84,6 +85,21 @@ namespace Basic.EntityLayer
 		/// 获取表示错误信息的集合。
 		/// </summary>
 		public ResultErrorCollection Errors { get { return _Errors; } }
+
+		/// <summary>将错误集合属性重命名，重命名完成后保留集合</summary>
+		/// <param name="source">原属性名称</param>
+		/// <param name="target">修改后属性名称</param>
+		/// <returns>返回修改后的错误集合，表示 ResultError 类型的集合</returns>
+		public ResultErrorCollection Rename(string source, string target)
+		{
+			IEnumerable<ResultError> errors = _Errors.Where(m => m.Name == source);
+			if (errors == null) { return _Errors; }
+			foreach (ResultError error in errors)
+			{
+				error.Rename(target);
+			}
+			return _Errors;
+		}
 
 		/// <summary>执行成功的消息</summary>
 		public string Message { get { return _Message; } }
