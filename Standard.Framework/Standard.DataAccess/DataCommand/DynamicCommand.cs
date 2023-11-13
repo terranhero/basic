@@ -1049,7 +1049,7 @@ namespace Basic.DataAccess
 
 			builderLength = builder.Length;
 			if (!string.IsNullOrEmpty(GroupText)) { builder.Append(" GROUP BY ").Append(GroupText); }
-			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
+			if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.GroupText))
 			{
 				if (builderLength != builder.Length) { builder.Append(',').Append(_dynamicJoinCommand.GroupText); }
 				else { builder.AppendLine().Append(" GROUP BY ").Append(_dynamicJoinCommand.GroupText); }

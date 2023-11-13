@@ -96,16 +96,23 @@ namespace Basic.SqlServer2012
 				//builder.AppendFormat("ROW_NUMBER() OVER({0}) AS PAGEROWNUMBER", orderBy);
 				//builder.AppendFormat(",COUNT(1) OVER() AS {0}", AbstractDataCommand.ReturnCountName);
 
-				if (!string.IsNullOrEmpty(SelectText))
-					builder.Append(",").Append(SelectText);
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
+				if (!string.IsNullOrEmpty(SelectText)) { builder.Append(",").Append(SelectText); }
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.SelectText))
+				{
+					builder.Append(',').Append(_dynamicJoinCommand.SelectText);
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.SelectText))
 					builder.Append(",").Append(joinCommand.SelectText);
 
 				int builderLength = builder.Length;
 
-				if (!string.IsNullOrEmpty(FromText))
-					builder.Append(" FROM ").Append(FromText);
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
+				if (!string.IsNullOrEmpty(FromText)) { builder.Append(" FROM ").Append(FromText); }
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.FromText))
+				{
+					if (builderLength != builder.Length) { builder.Append(" ").Append(_dynamicJoinCommand.FromText); }
+					else { builder.Append(" FROM ").Append(_dynamicJoinCommand.FromText); }
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.FromText))
 				{
 					if (builderLength != builder.Length) { builder.Append(" ").Append(joinCommand.FromText); }
 					else { builder.Append(" FROM ").Append(joinCommand.FromText); }
@@ -113,15 +120,26 @@ namespace Basic.SqlServer2012
 
 				List<string> whereList = new List<string>(3);
 				if (string.IsNullOrEmpty(WhereText) == false) { whereList.Add(WhereText); }
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.WhereText))
+				{
+					whereList.Add(_dynamicJoinCommand.WhereText);
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.WhereText))
+				{
 					whereList.Add(joinCommand.WhereText);
+				}
+
 				if (!string.IsNullOrEmpty(TempWhereText)) { whereList.Add(TempWhereText); }
 
 				if (whereList.Count > 0) { builder.Append(" WHERE ").Append(string.Join(" AND ", whereList.ToArray())); }
 				builderLength = builder.Length;
-				if (!string.IsNullOrEmpty(GroupText))
-					builder.Append(" GROUP BY ").Append(GroupText);
-				if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
+				if (!string.IsNullOrEmpty(GroupText)) { builder.Append(" GROUP BY ").Append(GroupText); }
+				if (_dynamicJoinCommand != null && !string.IsNullOrEmpty(_dynamicJoinCommand.GroupText))
+				{
+					if (builderLength != builder.Length) { builder.Append(',').Append(_dynamicJoinCommand.GroupText); }
+					else { builder.AppendLine().Append(" GROUP BY ").Append(_dynamicJoinCommand.GroupText); }
+				}
+				else if (joinCommand != null && !string.IsNullOrEmpty(joinCommand.GroupText))
 				{
 					if (builderLength != builder.Length) { builder.Append(",").Append(joinCommand.GroupText); }
 					else { builder.AppendLine().Append(" GROUP BY ").Append(joinCommand.GroupText); }
