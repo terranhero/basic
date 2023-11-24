@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Data;
 using Basic.Configuration;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Basic.DataAccess
 {
@@ -69,7 +70,7 @@ namespace Basic.DataAccess
 			{
 				if (reader.HasRows && reader.Read())
 				{
-					EntityPropertyMeta[] propertyDescriptors = entity.GetProperties();
+					IReadOnlyCollection<EntityPropertyMeta> propertyDescriptors = entity.GetProperties();
 					foreach (EntityPropertyMeta propertyInfo in propertyDescriptors)
 					{
 						if (propertyInfo.PrimaryKey || propertyInfo.Ignore) { continue; }
@@ -96,7 +97,7 @@ namespace Basic.DataAccess
 		{
 			TableMappingAttribute tma = (TableMappingAttribute)Attribute.GetCustomAttribute(entity.GetType(), typeof(TableMappingAttribute));
 			if (tma == null) { return false; }
-			EntityPropertyMeta[] propertyDescriptors = entity.GetProperties();
+			IReadOnlyCollection<EntityPropertyMeta> propertyDescriptors = entity.GetProperties();
 			staticCommand.CommandName = AbstractDbAccess.SelectByKeyConfig;
 			StringBuilder selectBuilder = new StringBuilder("SELECT ", 1000);
 			int selectLength = selectBuilder.Length;

@@ -12,6 +12,7 @@ using Basic.EntityLayer;
 using Basic.Interfaces;
 using Basic.Tables;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Basic.DataAccess
 {
@@ -514,8 +515,8 @@ namespace Basic.DataAccess
 		{
 			using (DynamicCommand dynamicCommand = SelectAllCommand)
 			{
-				EntityPropertyMeta[] propertyKeys = entity.GetPrimaryKey();
-				if (propertyKeys == null || propertyKeys.Length == 0) { return false; }
+				IReadOnlyCollection<EntityPropertyMeta> propertyKeys = entity.GetPrimaryKey();
+				if (propertyKeys == null || propertyKeys.Count == 0) { return false; }
 				StringBuilder builder = new StringBuilder(500);
 				dynamicCommand.InitializeParameters();
 				if (condition != null) { dynamicCommand.ResetParameters(condition); }
@@ -570,8 +571,8 @@ namespace Basic.DataAccess
 			using (DynamicCommand dynamicCommand = SelectAllCommand)
 			{
 				dynamicCommand.SetJoinCommand(joinCmd);
-				EntityPropertyMeta[] propertyKeys = entity.GetPrimaryKey();
-				if (propertyKeys == null || propertyKeys.Length == 0) { return false; }
+				IReadOnlyCollection<EntityPropertyMeta> propertyKeys = entity.GetPrimaryKey();
+				if (propertyKeys == null || propertyKeys.Count == 0) { return false; }
 				StringBuilder builder = new StringBuilder(500);
 				dynamicCommand.InitializeParameters();
 				if (condition != null) { dynamicCommand.ResetParameters(condition); }

@@ -623,7 +623,7 @@ namespace Basic.DataAccess
 			{
 				if (!reader.IsClosed && reader.HasRows)
 				{
-					EntityPropertyMeta[] properties = AbstractEntity.GetProperties<T>();
+					IReadOnlyCollection<EntityPropertyMeta> properties = EntityPropertyProvidor.GetProperties<T>();
 					Dictionary<int, EntityPropertyMeta> fieldProperty = new Dictionary<int, EntityPropertyMeta>(reader.FieldCount);
 					Type type = typeof(T);
 					for (int index = 0; index < reader.FieldCount; index++)

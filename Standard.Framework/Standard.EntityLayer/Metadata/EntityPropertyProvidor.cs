@@ -1,10 +1,8 @@
 ﻿using Basic.EntityLayer;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Basic.Collections
 {
@@ -13,8 +11,8 @@ namespace Basic.Collections
 	/// </summary>
 	public static class EntityPropertyProvidor
 	{
-		private static SortedDictionary<string, EntityPropertyCollection> _PropertyCollection = new SortedDictionary<string, EntityPropertyCollection>();
-		private static SortedDictionary<string, EntityPropertyCollection> _PrimaryKeyCollection = new SortedDictionary<string, EntityPropertyCollection>();
+		private static readonly ConcurrentDictionary<string, EntityPropertyCollection> _properties = new ConcurrentDictionary<string, EntityPropertyCollection>();
+		private static readonly ConcurrentDictionary<string, EntityPropertyCollection> _primaryKeys = new ConcurrentDictionary<string, EntityPropertyCollection>();
 
 		/// <summary>
 		/// 尝试从集合中获取实体属性信息，如果获取成功额为true，否则为false。
@@ -25,30 +23,26 @@ namespace Basic.Collections
 		/// <returns>如果包含具有指定键的元素，则为 true；否则为 false。</returns>
 		public static bool TryGetProperties(Type type, out EntityPropertyCollection properties, out EntityPropertyCollection pkProperties)
 		{
-			lock (_PropertyCollection)
+			string fullName = type.FullName;
+			if (_properties.TryGetValue(fullName, out properties))
 			{
-				string fullName = type.FullName;
-				if (_PropertyCollection.TryGetValue(fullName, out properties))
+				return _primaryKeys.TryGetValue(fullName, out pkProperties);
+			}
+			else
+			{
+				PropertyInfo[] pis = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+				properties = new EntityPropertyCollection();
+				pkProperties = new EntityPropertyCollection();
+				if (pis == null || pis.Length == 0) { return false; }
+				foreach (PropertyInfo propertyInfo in pis)
 				{
-					return _PrimaryKeyCollection.TryGetValue(fullName, out pkProperties);
+					EntityPropertyMeta descriptor = new EntityPropertyMeta(propertyInfo);
+					properties.Add(descriptor);
+					if (descriptor.PrimaryKey) { pkProperties.Add(descriptor); }
 				}
-				else
-				{
-					PropertyInfo[] pis = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-					properties = new EntityPropertyCollection();
-					pkProperties = new EntityPropertyCollection();
-					if (pis == null || pis.Length == 0) { return false; }
-					foreach (PropertyInfo propertyInfo in pis)
-					{
-						EntityPropertyMeta descriptor = new EntityPropertyMeta(propertyInfo);
-						properties.Add(descriptor);
-						if (descriptor.PrimaryKey) { pkProperties.Add(descriptor); }
-					}
-					_PropertyCollection[fullName] = properties;
-					if (_PrimaryKeyCollection.ContainsKey(fullName)) { _PrimaryKeyCollection.Remove(fullName); }
-					_PrimaryKeyCollection[fullName] = pkProperties;
-					return true;
-				}
+				_primaryKeys.TryAdd(type.FullName, pkProperties);
+				_properties.TryAdd(type.FullName, properties);
+				return true;
 			}
 		}
 
@@ -60,26 +54,78 @@ namespace Basic.Collections
 		/// <returns>如果包含具有指定键的元素，则为 true；否则为 false。</returns>
 		public static bool TryGetProperties(Type type, out EntityPropertyCollection properties)
 		{
-			lock (_PropertyCollection)
+			if (_properties.TryGetValue(type.FullName, out properties))
 			{
-				if (!_PropertyCollection.TryGetValue(type.FullName, out properties))
-				{
-					PropertyInfo[] pis = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-					properties = new EntityPropertyCollection();
-					if (pis == null || pis.Length == 0) { return false; }
-					EntityPropertyCollection pkProperties = new EntityPropertyCollection();
-					foreach (PropertyInfo propertyInfo in pis)
-					{
-						EntityPropertyMeta descriptor = new EntityPropertyMeta(propertyInfo);
-						properties.Add(descriptor);
-						if (descriptor.PrimaryKey) { pkProperties.Add(descriptor); }
-					}
-					_PropertyCollection[type.FullName] = properties;
-					if (_PrimaryKeyCollection.ContainsKey(type.FullName)) { _PrimaryKeyCollection.Remove(type.FullName); }
-					_PrimaryKeyCollection[type.FullName] = pkProperties;
-				}
 				return true;
 			}
+			PropertyInfo[] pis = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+			properties = new EntityPropertyCollection();
+			if (pis == null || pis.Length == 0) { return false; }
+			EntityPropertyCollection pkProperties = new EntityPropertyCollection();
+			foreach (PropertyInfo propertyInfo in pis)
+			{
+				EntityPropertyMeta descriptor = new EntityPropertyMeta(propertyInfo);
+				properties.Add(descriptor);
+				if (descriptor.PrimaryKey) { pkProperties.Add(descriptor); }
+			}
+			_primaryKeys.TryAdd(type.FullName, pkProperties);
+			_properties.TryAdd(type.FullName, properties);
+			return true;
+			//lock (_properties)
+			//{
+			//	if (!_properties.TryGetValue(type.FullName, out properties))
+			//	{
+			//		PropertyInfo[] pis = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+			//		properties = new EntityPropertyCollection();
+			//		if (pis == null || pis.Length == 0) { return false; }
+			//		EntityPropertyCollection pkProperties = new EntityPropertyCollection();
+			//		foreach (PropertyInfo propertyInfo in pis)
+			//		{
+			//			EntityPropertyMeta descriptor = new EntityPropertyMeta(propertyInfo);
+			//			properties.Add(descriptor);
+			//			if (descriptor.PrimaryKey) { pkProperties.Add(descriptor); }
+			//		}
+			//		_properties[type.FullName] = properties;
+			//		if (_primaryKeys.ContainsKey(type.FullName)) { _primaryKeys.Remove(type.FullName); }
+			//		_primaryKeys[type.FullName] = pkProperties;
+			//	}
+			//	return true;
+			//}
+		}
+
+		/// <summary>返回当前实体模型属性集合。</summary>
+		/// <param name="type"> AbstractEntity 类型的实例</param>
+		/// <returns>返回当前实体模型属性集合。</returns>
+		public static EntityPropertyCollection GetProperties(Type type)
+		{
+			if (_properties.TryGetValue(type.FullName, out EntityPropertyCollection infos))
+			{
+				return infos;
+			}
+			PropertyInfo[] pis = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+			EntityPropertyCollection properties = new EntityPropertyCollection();
+			if (pis == null || pis.Length == 0) { return properties; }
+			EntityPropertyCollection pkProperties = new EntityPropertyCollection();
+			foreach (PropertyInfo propertyInfo in pis)
+			{
+				EntityPropertyMeta descriptor = new EntityPropertyMeta(propertyInfo);
+				properties.Add(descriptor);
+				if (descriptor.PrimaryKey) { pkProperties.Add(descriptor); }
+			}
+			_primaryKeys.TryAdd(type.FullName, pkProperties);
+			_properties.TryAdd(type.FullName, properties);
+			//_properties[type.FullName] = properties;
+			//if (_primaryKeys.ContainsKey(type.FullName)) {
+			//	_primaryKeys.TryUpdate(type.FullName, pkProperties);
+			//	_primaryKeys.TryRemove(type.FullName); }
+			//_primaryKeys[type.FullName] = pkProperties;
+			return properties;
+		}
+
+		/// <summary>返回当前实体模型属性集合。</summary>
+		public static IReadOnlyCollection<EntityPropertyMeta> GetProperties<T>() where T : AbstractEntity
+		{
+			return GetProperties(typeof(T));
 		}
 
 		/// <summary>
@@ -91,8 +137,12 @@ namespace Basic.Collections
 		/// <returns>如果包含具有指定键的元素，则为 true；否则为 false。</returns>
 		public static bool TryGetProperty(Type type, string propertyName, out EntityPropertyMeta propertyInfo)
 		{
-			TryGetProperties(type, out EntityPropertyCollection properties);
-			return properties.TryGetProperty(propertyName, out propertyInfo);
+			if (TryGetProperties(type, out EntityPropertyCollection properties))
+			{
+				return properties.TryGetProperty(propertyName, out propertyInfo);
+			}
+			propertyInfo = null;
+			return false;
 		}
 
 		/// <summary>
@@ -101,7 +151,7 @@ namespace Basic.Collections
 		/// <typeparam name="TE">表示实体模型类型</typeparam>
 		/// <param name="properties">返回当前实体模型属性集合</param>
 		/// <returns>如果包含具有指定键的元素，则为 true；否则为 false。</returns>
-		public static bool TryGetProperties<TE>(out EntityPropertyCollection properties) 
+		public static bool TryGetProperties<TE>(out EntityPropertyCollection properties)
 		{
 			return TryGetProperties(typeof(TE), out properties);
 		}
@@ -113,9 +163,9 @@ namespace Basic.Collections
 		/// <param name="propertyName">属性名称</param>
 		/// <param name="propertyInfo">需要返回的EntityPropertyDescriptor 类实例，属性定义信息。</param>
 		/// <returns>如果包含具有指定键的元素，则为 true；否则为 false。</returns>
-		public static bool TryGetProperty<TE>(string propertyName, out EntityPropertyMeta propertyInfo) 
+		public static bool TryGetProperty<TE>(string propertyName, out EntityPropertyMeta propertyInfo)
 		{
-			return TryGetProperty(typeof(TE), propertyName, out  propertyInfo);
+			return TryGetProperty(typeof(TE), propertyName, out propertyInfo);
 		}
 	}
 }

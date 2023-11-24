@@ -258,7 +258,7 @@ namespace Basic.DataAccess
 		{
 			if (reader.IsClosed == false && reader.HasRows == true)
 			{
-				EntityPropertyMeta[] properties = AbstractEntity.GetProperties<T>();
+				IReadOnlyCollection<EntityPropertyMeta> properties = EntityPropertyProvidor.GetProperties<T>();
 				Dictionary<int, EntityPropertyMeta> fieldProperty = new Dictionary<int, EntityPropertyMeta>(reader.FieldCount);
 				Dictionary<string, int> fieldPositions = new Dictionary<string, int>(reader.FieldCount);
 				int returnCountIndex = -1;

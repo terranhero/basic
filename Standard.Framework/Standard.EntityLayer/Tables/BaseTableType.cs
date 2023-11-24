@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using Basic.EntityLayer;
 using Basic.Interfaces;
 using System.Linq.Expressions;
+using Basic.Collections;
 
 namespace Basic.Tables
 {
@@ -417,7 +418,7 @@ namespace Basic.Tables
 		{
 			if (this.Count > 0)
 			{
-				EntityPropertyMeta[] propertyArray = AbstractEntity.GetProperties<TE>();
+				IReadOnlyCollection<EntityPropertyMeta> propertyArray = EntityPropertyProvidor.GetProperties<TE>();
 				List<TE> list = new List<TE>(this.Count);
 				foreach (TR row in this)
 				{

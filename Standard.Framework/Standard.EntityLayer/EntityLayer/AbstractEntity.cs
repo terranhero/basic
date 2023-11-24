@@ -54,10 +54,8 @@ namespace Basic.EntityLayer
 			: base()
 		{
 			m_EnabledValidation = enabledValidation;
-#if (!NET35)
 			fieldEntityValidation = new EntityValidationContext(this);
 			_ValidationResult = new ValidationEntityResult(this);
-#endif
 			m_EntityState = EntityState.Default;
 			Type type = GetType();
 			EntityPropertyProvidor.TryGetProperties(type, out _EntityProperties, out _PrimaryProperties);
@@ -80,13 +78,13 @@ namespace Basic.EntityLayer
 		/// 获取当前实体模型的主键属性集合
 		/// </summary>
 		/// <returns>返回一个 EntityPropertyDescriptor 数组，该数组表示当前实体类的主键定义信息。</returns>
-		public EntityPropertyMeta[] GetPrimaryKey() { return _PrimaryProperties.ToArray(); }
+		public IReadOnlyCollection<EntityPropertyMeta> GetPrimaryKey() { return _PrimaryProperties; }
 
 		/// <summary>
 		/// 获取当前实体模型的属性信息
 		/// </summary>
 		/// <returns>返回一个 EntityPropertyDescriptor 数组，该数组表示当前实体类的属性信息。</returns>
-		public EntityPropertyMeta[] GetProperties() { return _EntityProperties.ToArray(); }
+		public IReadOnlyCollection<EntityPropertyMeta> GetProperties() { return _EntityProperties; }
 
 		#region Data Command Events
 		//private Action<AbstractEntity> _CreateAction;
@@ -311,14 +309,13 @@ namespace Basic.EntityLayer
 			return _EntityProperties.TryGetProperty(propertyName, out propertyInfo);
 		}
 
-		/// <summary>
-		/// 获取所有属性的值
-		/// </summary>
-		internal static EntityPropertyMeta[] GetProperties<T>() where T : AbstractEntity
-		{
-			EntityPropertyProvidor.TryGetProperties(typeof(T), out EntityPropertyCollection propertyInfos);
-			return propertyInfos.ToArray();
-		}
+		///// <summary>
+		///// 获取所有属性的值
+		///// </summary>
+		//internal static IReadOnlyCollection<EntityPropertyMeta> GetProperties<T>() where T : AbstractEntity
+		//{
+		//	return EntityPropertyProvidor.GetProperties(typeof(T));
+		//}
 
 		/// <summary>
 		/// 表示当前对象的字符串表示形式。
@@ -343,9 +340,9 @@ namespace Basic.EntityLayer
 					if (obj != null && obj != DBNull.Value && obj is string && Convert.ToString(obj) == "") { continue; }
 					string propertyName = property.CultureDisplayName;
 					if (builder.Length == 0)
-						builder.Append(propertyName).Append("=").Append(obj);
+						builder.Append(propertyName).Append('=').Append(obj);
 					else
-						builder.Append(",").Append(propertyName).Append("=").Append(obj);
+						builder.Append(',').Append(propertyName).Append('=').Append(obj);
 				}
 			}
 			else
