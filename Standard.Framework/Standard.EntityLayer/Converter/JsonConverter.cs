@@ -222,19 +222,13 @@ namespace Basic.EntityLayer
 					}
 					else if (info2.PropertyType.IsEnum && wdAttr != null)
 					{
-						sb.Append(',');
-						SerializeString(sb, info2.Name + "Text", null);
-						sb.Append(':');
-						string eValue = Enum.Format(info2.PropertyType, propValue, "F");
-						SerializeEnumValue(sb, info2, wdAttr, eValue);
+						sb.Append(','); SerializeString(sb, info2.Name + "Text", null); sb.Append(':');
+						SerializeEnumValue(sb, info2, wdAttr, propValue);
 					}
 					else if (info2.PropertyType == typeof(Nullable<>) && info2.PropertyType.DeclaringType.IsEnum && propValue != null && wdAttr != null)
 					{
-						sb.Append(',');
-						SerializeString(sb, info2.Name + "Text", null);
-						sb.Append(':');
-						string eValue = Enum.Format(info2.PropertyType, propValue, "F");
-						SerializeEnumValue(sb, info2, wdAttr, eValue);
+						sb.Append(','); SerializeString(sb, info2.Name + "Text", null); sb.Append(':');
+						SerializeEnumValue(sb, info2, wdAttr, propValue);
 					}
 					flag = false;
 				}
@@ -335,8 +329,9 @@ namespace Basic.EntityLayer
 			else
 				sb.AppendFormat("\"{0:HH:mm}\"", value);
 		}
-		private void SerializeEnumValue(StringBuilder sb, PropertyInfo info2, WebDisplayAttribute wdAttr, string value)
+		private void SerializeEnumValue(StringBuilder sb, PropertyInfo info2, WebDisplayAttribute wdAttr, object propValue)
 		{
+			string value = Enum.Format(info2.PropertyType, propValue, "F");
 			Type eType = info2.PropertyType; string converterName = null;
 			WebDisplayConverterAttribute wdca = eType.GetCustomAttribute<WebDisplayConverterAttribute>();
 			if (wdca != null) { converterName = wdca.ConverterName; }
@@ -354,8 +349,12 @@ namespace Basic.EntityLayer
 			}
 			else
 			{
-				string itemName = string.Concat(enumName, "_", value);
-				SerializeString(sb, GetResourceString(converterName, itemName), null);
+				if (Enum.IsDefined(info2.PropertyType, propValue) == false) { SerializeString(sb, "", null); }
+				else
+				{
+					string itemName = string.Concat(enumName, "_", value);
+					SerializeString(sb, GetResourceString(converterName, itemName), null);
+				}
 			}
 		}
 		private void SerializeBoolean(StringBuilder sb, WebDisplayAttribute wdAttr, bool value)
