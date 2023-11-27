@@ -124,7 +124,7 @@ namespace Basic.MvcLibrary
 				else if (meta.PropertyType == typeof(bool) || meta.PropertyType == typeof(bool?))
 				{
 					string str = System.Web.HttpUtility.JavaScriptStringEncode(Convert.ToString(obj).ToLower());
-					if (string.IsNullOrWhiteSpace(format1) == false) { return string.Concat(name, ":", string.Format(format1, obj)); }
+					if (string.IsNullOrWhiteSpace(format1) == false) { return string.Concat(name, ":", string.Format(format1, str)); }
 					else { return string.Concat(name, ":\"", str, "\""); }
 				}
 				else if (meta.PropertyType == typeof(int) || meta.PropertyType == typeof(long) || meta.PropertyType == typeof(short))
