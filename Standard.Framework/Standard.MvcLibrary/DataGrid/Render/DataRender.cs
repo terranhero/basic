@@ -92,7 +92,7 @@ namespace Basic.EasyLibrary
 							if (resultValue == null) { list.Add(string.Concat("\"", column.Field, "Text\":null")); }
 							else { list.Add(string.Concat("\"", column.Field, "Text\":\"", HttpUtility.JavaScriptStringEncode(resultValue), "\"")); }
 						}
-						else if (column is DataGridBoolColumn<T>)
+						else if (column is DataGridBooleanColumn<T> || column is DataGridNullableBooleanColumn<T>)
 						{
 							object obj = column.GetValue(model);
 							if (obj == null) { list.Add(string.Concat("\"", column.Field, "Value\":0")); }
@@ -228,7 +228,7 @@ namespace Basic.EasyLibrary
 							if (resultValue == null) { list.Add(string.Concat("\"", column.Field, "Text\":null")); }
 							else { list.Add(string.Concat("\"", column.Field, "Text\":\"", HttpUtility.JavaScriptStringEncode(resultValue), "\"")); }
 						}
-						else if (column is DataGridBoolColumn<T>)
+						else if (column is DataGridBooleanColumn<T> || column is DataGridNullableBooleanColumn<T>)
 						{
 							object obj = column.GetValue(model);
 							if (obj == null) { list.Add(string.Concat("\"", column.Field, "Value\":0")); }

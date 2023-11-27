@@ -203,6 +203,17 @@ namespace Basic.EasyLibrary
 		/// <returns></returns>
 		DataGridColumn<T, bool> BooleanFor(DataGridRow<T> row, Expression<Func<T, bool>> expression);
 
+		/// <summary>使用 Lambda 表达式创建布尔类型列字段。</summary>
+		/// <param name="expression">一个表达式，标识包含要呈现的属性的对象。</param>
+		/// <returns></returns>
+		DataGridColumn<T, bool?> BooleanFor(Expression<Func<T, bool?>> expression);
+
+		/// <summary>使用 Lambda 表达式创建布尔类型列字段。</summary>
+		/// <param name="row">表示创建的列追加的行</param>
+		/// <param name="expression">一个表达式，标识包含要呈现的属性的对象。</param>
+		/// <returns></returns>
+		DataGridColumn<T, bool?> BooleanFor(DataGridRow<T> row, Expression<Func<T, bool?>> expression);
+
 		/// <summary>生成数组列</summary>
 		/// <param name="expression">一个表达式，标识包含要呈现的属性的对象。</param>
 		/// <param name="fields"></param>

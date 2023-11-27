@@ -121,7 +121,7 @@ namespace Basic.MvcLibrary
 					else if (string.IsNullOrWhiteSpace(format1) == false) { return string.Concat(name, ":", string.Format(format1, value)); }
 					else { return string.Concat(name, ":\"", value, "\""); }
 				}
-				else if (meta.PropertyType == typeof(bool))
+				else if (meta.PropertyType == typeof(bool) || meta.PropertyType == typeof(bool?))
 				{
 					string str = System.Web.HttpUtility.JavaScriptStringEncode(Convert.ToString(obj).ToLower());
 					if (string.IsNullOrWhiteSpace(format1) == false) { return string.Concat(name, ":", string.Format(format1, obj)); }

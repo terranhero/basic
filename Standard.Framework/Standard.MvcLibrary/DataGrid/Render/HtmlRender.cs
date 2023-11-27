@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -145,7 +146,7 @@ namespace Basic.EasyLibrary
 								else { th.Write(col.Field).RenderContent(writer); }
 								th.RenderEndTag(writer);
 							}
-							else if (col is DataGridBoolColumn<T>)
+							else if (col is DataGridBooleanColumn<T> || col is DataGridNullableBooleanColumn<T>)
 							{
 								TagHtmlWriter th = new TagHtmlWriter("th");
 								if (!string.IsNullOrWhiteSpace(col.Field)) { th.AddAttribute("field", col.Field + "Text"); }

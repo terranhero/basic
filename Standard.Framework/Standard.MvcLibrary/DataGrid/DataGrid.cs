@@ -698,7 +698,7 @@ namespace Basic.EasyLibrary
 					falseText = mBasic.GetString(converterName, string.Concat(wda.DisplayName, "_FalseText"));
 			}
 
-			DataGridBoolColumn<T> column = new DataGridBoolColumn<T>(mBasic, name, expression.Compile(), propertyInfo, trueText, falseText);
+			DataGridBooleanColumn<T> column = new DataGridBooleanColumn<T>(mBasic, name, expression.Compile(), propertyInfo, trueText, falseText);
 
 			if (propertyInfo.Display != null)
 			{
@@ -740,7 +740,7 @@ namespace Basic.EasyLibrary
 					falseText = mBasic.GetString(converterName, string.Concat(wda.DisplayName, "_FalseText"));
 			}
 
-			DataGridBoolColumn<T> column = new DataGridBoolColumn<T>(mBasic, name, expression.Compile(), propertyInfo, trueText, falseText);
+			DataGridBooleanColumn<T> column = new DataGridBooleanColumn<T>(mBasic, name, expression.Compile(), propertyInfo, trueText, falseText);
 
 			if (propertyInfo.Display != null)
 			{
@@ -754,6 +754,91 @@ namespace Basic.EasyLibrary
 			mColumns.Append(row, column);
 			return column;
 		}
+		/// <summary>
+		/// Specifies the columns to use. 
+		/// </summary>
+		/// <param name="expression">一个表达式，标识包含要呈现的属性的对象。</param>
+		/// <returns></returns>
+		public DataGridColumn<T, bool?> BooleanFor(Expression<Func<T, bool?>> expression)
+		{
+			MemberExpression memberExpression = LambdaHelper.GetMember(expression.Body) as MemberExpression;
+			string name = memberExpression == null ? null : memberExpression.Member.Name;
+
+			mProperties.TryGetProperty(name, out EntityPropertyMeta propertyInfo);
+
+			string trueText = "True", falseText = "False";
+			if (propertyInfo != null && propertyInfo.Display != null)
+			{
+				WebDisplayAttribute wda = propertyInfo.Display;
+				string converterName = wda.ConverterName;
+				if (string.IsNullOrWhiteSpace(converterName))
+					trueText = mBasic.GetString(string.Concat(wda.DisplayName, "_TrueText"));
+				else
+					trueText = mBasic.GetString(converterName, string.Concat(wda.DisplayName, "_TrueText"));
+
+				if (string.IsNullOrWhiteSpace(converterName))
+					falseText = mBasic.GetString(string.Concat(wda.DisplayName, "_FalseText"));
+				else
+					falseText = mBasic.GetString(converterName, string.Concat(wda.DisplayName, "_FalseText"));
+			}
+
+			DataGridNullableBooleanColumn<T> column = new DataGridNullableBooleanColumn<T>(mBasic, name, expression.Compile(), propertyInfo, trueText, falseText);
+
+			if (propertyInfo.Display != null)
+			{
+				WebDisplayAttribute wda = propertyInfo.Display;
+				string converterName = wda.ConverterName;
+				if (string.IsNullOrWhiteSpace(converterName))
+					column.SetTitle(wda.DisplayName, true);
+				else
+					column.SetTitle(converterName, wda.DisplayName);
+			}
+			mColumns.Append(column);
+			return column;
+		}
+
+		/// <summary>使用 Lambda 表达式创建布尔类型列字段。</summary>
+		/// <param name="row">表示创建的列追加的行</param>
+		/// <param name="expression">一个表达式，标识包含要呈现的属性的对象。</param>
+		/// <returns></returns>
+		public DataGridColumn<T, bool?> BooleanFor(DataGridRow<T> row, Expression<Func<T, bool?>> expression)
+		{
+			MemberExpression memberExpression = LambdaHelper.GetMember(expression.Body) as MemberExpression;
+			string name = memberExpression == null ? null : memberExpression.Member.Name;
+
+			mProperties.TryGetProperty(name, out EntityPropertyMeta propertyInfo);
+
+			string trueText = "True", falseText = "False";
+			if (propertyInfo != null && propertyInfo.Display != null)
+			{
+				WebDisplayAttribute wda = propertyInfo.Display;
+				string converterName = wda.ConverterName;
+				if (string.IsNullOrWhiteSpace(converterName))
+					trueText = mBasic.GetString(string.Concat(wda.DisplayName, "_TrueText"));
+				else
+					trueText = mBasic.GetString(converterName, string.Concat(wda.DisplayName, "_TrueText"));
+
+				if (string.IsNullOrWhiteSpace(converterName))
+					falseText = mBasic.GetString(string.Concat(wda.DisplayName, "_FalseText"));
+				else
+					falseText = mBasic.GetString(converterName, string.Concat(wda.DisplayName, "_FalseText"));
+			}
+
+			DataGridNullableBooleanColumn<T> column = new DataGridNullableBooleanColumn<T>(mBasic, name, expression.Compile(), propertyInfo, trueText, falseText);
+
+			if (propertyInfo.Display != null)
+			{
+				WebDisplayAttribute wda = propertyInfo.Display;
+				string converterName = wda.ConverterName;
+				if (string.IsNullOrWhiteSpace(converterName))
+					column.SetTitle(wda.DisplayName, true);
+				else
+					column.SetTitle(converterName, wda.DisplayName);
+			}
+			mColumns.Append(row, column);
+			return column;
+		}
+
 		#endregion
 
 		#region 输出表格
