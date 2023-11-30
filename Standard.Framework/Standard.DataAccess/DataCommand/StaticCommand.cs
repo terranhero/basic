@@ -209,7 +209,7 @@ namespace Basic.DataAccess
 		{
 			MemberInfo mi = mExp.Member;
 			ColumnMappingAttribute cma = mi.GetCustomAttribute<ColumnMappingAttribute>();
-			if (cma != null) { whereBuilder.Append(cma.ColumnName); return; }
+			if (cma != null) { whereBuilder.Append(cma.SourceColumn); return; }
 			whereBuilder.Append(mi.Name);
 		}
 
@@ -222,7 +222,7 @@ namespace Basic.DataAccess
 			{
 				string paramName = this.CreateParameterName(cma.ColumnName);
 				whereBuilder.Append(paramName);
-				DbParameter parameter = this.CreateParameter(paramName, cma.SourceColumn, cma.DataType, cma.Nullable);
+				DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
 				parameter.Size = cma.Size;
 				parameter.Precision = cma.Precision;
 				parameter.Scale = cma.Scale;
@@ -232,7 +232,7 @@ namespace Basic.DataAccess
 			{
 				string paramName = this.CreateParameterName(cma.ColumnName);
 				whereBuilder.Append(paramName);
-				DbParameter parameter = this.CreateParameter(paramName, cma.SourceColumn, cma.DataType, cma.Nullable);
+				DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
 				parameter.Size = cma.Size;
 				parameter.Precision = cma.Precision;
 				parameter.Scale = cma.Scale;
@@ -243,7 +243,7 @@ namespace Basic.DataAccess
 			{
 				string paramName = this.CreateParameterName(cma.ColumnName);
 				whereBuilder.Append(paramName);
-				DbParameter parameter = this.CreateParameter(paramName, cma.SourceColumn, cma.DataType, cma.Nullable);
+				DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
 				parameter.Size = cma.Size;
 				parameter.Precision = cma.Precision;
 				parameter.Scale = cma.Scale;
@@ -254,7 +254,7 @@ namespace Basic.DataAccess
 			{
 				string paramName = this.CreateParameterName(cma.ColumnName);
 				whereBuilder.Append(paramName);
-				DbParameter parameter = this.CreateParameter(paramName, cma.SourceColumn, cma.DataType, cma.Nullable);
+				DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
 				parameter.Size = cma.Size;
 				parameter.Precision = cma.Precision;
 				parameter.Scale = cma.Scale;
