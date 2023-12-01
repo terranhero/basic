@@ -7,6 +7,7 @@
 		<SccLocalPath>Svn</SccLocalPath>
 	</PropertyGroup>
 	<PropertyGroup>
+		<TargetFrameworks>net6.0;</TargetFrameworks>
 		<AssemblyName>Basic.MvcLibrary</AssemblyName>
 		<RootNamespace>Basic</RootNamespace>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -23,10 +24,11 @@
 		<None Remove="obj\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<!--<PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />-->
+		<!--<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />-->
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
