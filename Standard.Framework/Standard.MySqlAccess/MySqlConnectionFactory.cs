@@ -38,7 +38,7 @@ namespace Basic.MySqlAccess
 				{
 					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
 				}
-				else { connection[item.Key] = display[item.Key] = item.Value; }
+				else { connection[item.Key] = item.Value; }
 			}
 			return new ConnectionInfo(info.Name, info.ConnectionType,
 				connection.ConnectionString, display.ConnectionString);
@@ -66,7 +66,7 @@ namespace Basic.MySqlAccess
 				{
 					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
 				}
-				else { connection[item.Name] = display[item.Name] = item.Value; }
+				else { connection[item.Name] = item.Value; }
 			}
 			return new ConnectionInfo(element.Name, element.ConnectionType,
 				connection.ConnectionString, display.ConnectionString);

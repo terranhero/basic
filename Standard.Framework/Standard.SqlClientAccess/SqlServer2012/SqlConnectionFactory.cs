@@ -45,7 +45,7 @@ namespace Basic.SqlServer2012
 				{
 					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
 				}
-				else { connection[item.Key] = display[item.Key] = item.Value; }
+				else { connection[item.Key] = item.Value; }
 			}
 			return new ConnectionInfo(info.Name, info.ConnectionType, info.Version,
 				connection.ConnectionString, display.ConnectionString);
@@ -73,7 +73,7 @@ namespace Basic.SqlServer2012
 				{
 					connection.Password = ConfigurationAlgorithm.Decryption(item.Value);
 				}
-				else { connection[item.Name] = display[item.Name] = item.Value; }
+				else { connection[item.Name] = item.Value; }
 			}
 			return new ConnectionInfo(element.Name, element.ConnectionType, element.Version,
 				connection.ConnectionString, display.ConnectionString);
