@@ -11,8 +11,8 @@
 		<RootNamespace>Basic</RootNamespace>
 		<DelaySign>false</DelaySign>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageId>Standard.SqlAccess</PackageId>
-		<Product>Standard.SqlAccess</Product>
+		<PackageId>Standard.SqlClientAccess</PackageId>
+		<Product>Standard.SqlClientAccess</Product>
 		<Authors>JACKY</Authors>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<Title>SQL Server 数据库支持类</Title>

@@ -33,7 +33,7 @@ namespace Basic.SqlServer2012
 		{
 			SqlConnectionStringBuilder display = new SqlConnectionStringBuilder();
 			SqlConnectionStringBuilder connection = new SqlConnectionStringBuilder();
-			connection.IntegratedSecurity = display.IntegratedSecurity = false;
+			connection.IntegratedSecurity = false;
 			foreach (KeyValuePair<string, string> item in info)
 			{
 				if (string.IsNullOrEmpty(item.Key)) { continue; }
