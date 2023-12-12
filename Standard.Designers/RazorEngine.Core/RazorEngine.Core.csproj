@@ -18,5 +18,7 @@
 	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
 	<PropertyGroup>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<TargetFrameworks>netstandard2.0;</TargetFrameworks>
+		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 </Project>

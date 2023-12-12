@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="D4E32AFF-92E4-4E4D-9585-C4423FA06A5A" Publisher="JACKY" Version="4.8.5408" Language="zh-Hans" />
+        <Identity Id="D4E32AFF-92E4-4E4D-9585-C4423FA06A5A" Publisher="JACKY" Version="4.8.5409" Language="zh-Hans" />
         <DisplayName>ASP.NET MVC 资源和数据持久设计器 2022</DisplayName>
         <Description xml:space="preserve">ASP.NET MVC 资源和数据持久设计器 For Visual Studio 2022, 支持 Microsoft SQL Server, ORACLE , MySQL等数据库</Description>
         <License>license.txt</License>
@@ -32,9 +32,9 @@
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="%CurrentProject%" Path="ItemTemplates" d:TargetPath="|%CurrentProject%;TemplateProjectOutputGroup|" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.Registers" Path="|Standard.Registers|" AssemblyName="|Standard.Registers;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="RazorEngine.Core" Path="|RazorEngine.Core|" AssemblyName="|RazorEngine.Core;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.DataAccess" Path="|Standard.DataAccess|" AssemblyName="|Standard.DataAccess;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.EntityLayer" Path="|Standard.EntityLayer|" AssemblyName="|Standard.EntityLayer;AssemblyName|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.Registers" Path="|Standard.Registers|" AssemblyName="|Standard.Registers;AssemblyName|" />
     </Assets>
 </PackageManifest>

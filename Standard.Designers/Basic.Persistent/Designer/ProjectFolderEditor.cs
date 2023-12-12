@@ -82,20 +82,22 @@ namespace Basic.Designer
 			}
 			internal bool BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, EnvDTE.Project project, Guid projectGuid, string value)
 			{
-				Items.Clear();
-				_editorService = editorService;
+				Items.Clear(); _editorService = editorService;
 				Items.Add(string.Empty);
 				IVsSolution vsSolution = (IVsSolution)provider.GetService(typeof(SVsSolution));
 				Assumes.Present(vsSolution); Guid guid = projectGuid;
-				vsSolution.GetProjectOfGuid(ref guid, out IVsHierarchy hierarchy);
+				int res = vsSolution.GetProjectOfGuid(ref guid, out IVsHierarchy hierarchy);
 				uint itemId = (uint)VSConstants.VSITEMID.Root;
-				object outProject;
-				if (hierarchy != null && hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_ExtObject, out outProject) >= 0)
+				string projectName = project.Name;  //读取项目名称分隔符(.)最后一段。
+				foreach (string val in projectName.Split('.')) { projectName = val; }
+				projectName = string.Concat(projectName, "\\");
+
+				if (hierarchy != null && hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_ExtObject, out object outProject) >= 0)
 				{
 					EnvDTE.Project entityProject = (EnvDTE.Project)outProject;
 					FileInfo fileInfo = new FileInfo(entityProject.FullName);
 					string directoryName = fileInfo.DirectoryName + "\\";
-					SearchProjectSubDirectory(directoryName, entityProject.ProjectItems);
+					SearchProjectSubDirectory(directoryName, projectName, entityProject.ProjectItems);
 					if (this.Items.Count >= 10)
 						this.Height = this.ItemHeight * 10;
 					if (value != null) { SelectedItem = value; }
@@ -110,13 +112,13 @@ namespace Basic.Designer
 				Items.Add(string.Empty);
 				FileInfo fileInfo = new FileInfo(project.FullName);
 				string directoryName = fileInfo.DirectoryName + "\\";
-				SearchProjectSubDirectory(directoryName, project.ProjectItems);
+				SearchProjectSubDirectory(directoryName, null, project.ProjectItems);
 				if (this.Items.Count >= 10) { this.Height = this.ItemHeight * 10; }
 				if (value != null) { SelectedItem = value; }
 				return true;
 			}
 
-			private void SearchProjectSubDirectory(string directoryName, EnvDTE.ProjectItems itemArray)
+			private void SearchProjectSubDirectory(string directoryName, string projectsName, EnvDTE.ProjectItems itemArray)
 			{
 				foreach (EnvDTE.ProjectItem item in itemArray)
 				{
@@ -124,28 +126,45 @@ namespace Basic.Designer
 					{
 						if (item.Name == "Properties") { continue; }
 						EnvDTE.Property property = item.Properties.Item("FullPath");
-						if (property != null && property.Value is string)
+						if (property != null && property.Value is string path)
 						{
-							Items.Add(property.Value.ToString().Replace(directoryName, string.Empty));
-							EnvDTE.ProjectItems subItems = item.ProjectItems;
-							if (subItems != null && subItems.Count > 0)
-								SearchProjectSubDirectory(directoryName, subItems);
+							string subPath = path.Replace(directoryName, string.Empty);
+							if (subPath != projectsName && projectsName != null) { continue; }
+							Items.Add(subPath); EnvDTE.ProjectItems subItems = item.ProjectItems;
+							if (subItems != null && subItems.Count > 0) { SearchSubDirectory(directoryName, subItems); }
 						}
-
 					}
 				}
 			}
 
-			private void SearchSubDirectory(string directoryName, DirectoryInfo[] directoryInfos)
+			private void SearchSubDirectory(string directoryName, EnvDTE.ProjectItems itemArray)
 			{
-				foreach (DirectoryInfo directoryInfo in directoryInfos)
+				foreach (EnvDTE.ProjectItem item in itemArray)
 				{
-					Items.Add(directoryInfo.FullName.Replace(directoryName, string.Empty));
-					DirectoryInfo[] subFolders = directoryInfo.GetDirectories();
-					if (subFolders != null && subFolders.Length > 0)
-						SearchSubDirectory(directoryName, subFolders);
+					if (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFolder)
+					{
+						if (item.Name == "Properties") { continue; }
+						EnvDTE.Property property = item.Properties.Item("FullPath");
+						if (property != null && property.Value is string path)
+						{
+							Items.Add(path.Replace(directoryName, string.Empty));
+							EnvDTE.ProjectItems subItems = item.ProjectItems;
+							if (subItems != null && subItems.Count > 0) { SearchSubDirectory(directoryName, subItems); }
+						}
+					}
 				}
 			}
+
+			//private void SearchSubDirectory(string directoryName, DirectoryInfo[] directoryInfos)
+			//{
+			//	foreach (DirectoryInfo directoryInfo in directoryInfos)
+			//	{
+			//		Items.Add(directoryInfo.FullName.Replace(directoryName, string.Empty));
+			//		DirectoryInfo[] subFolders = directoryInfo.GetDirectories();
+			//		if (subFolders != null && subFolders.Length > 0)
+			//			SearchSubDirectory(directoryName, subFolders);
+			//	}
+			//}
 
 			/// <summary>
 			/// 

@@ -922,6 +922,8 @@
     <ProjectReference Include="..\Standard.Registers\Standard.Registers.csproj">
       <Project>{ef421ae5-a518-4ef2-b511-d1801c88bd27}</Project>
       <Name>Standard.Registers</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\packages\tool-version.targets" />
