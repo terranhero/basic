@@ -30,7 +30,7 @@ namespace Basic.PostgreSql
 		{
 			NpgsqlConnectionStringBuilder display = new NpgsqlConnectionStringBuilder();
 			NpgsqlConnectionStringBuilder connection = new NpgsqlConnectionStringBuilder();
-			connection.IntegratedSecurity = display.IntegratedSecurity = false;
+			connection.IntegratedSecurity = false;
 			foreach (var item in info)
 			{
 				if (string.IsNullOrEmpty(item.Key)) { continue; }

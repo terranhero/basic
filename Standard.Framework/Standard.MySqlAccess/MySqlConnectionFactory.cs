@@ -25,7 +25,7 @@ namespace Basic.MySqlAccess
 		{
 			MySqlConnectionStringBuilder display = new MySqlConnectionStringBuilder();
 			MySqlConnectionStringBuilder connection = new MySqlConnectionStringBuilder();
-			connection.SslMode = display.SslMode = MySqlSslMode.Disabled;
+			connection.SslMode = MySqlSslMode.Disabled;
 			foreach (var item in info)
 			{
 				if (string.IsNullOrEmpty(item.Key)) { continue; }
