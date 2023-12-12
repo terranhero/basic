@@ -56,7 +56,7 @@ namespace Basic.PostgreSql
 		{
 			NpgsqlConnectionStringBuilder display = new NpgsqlConnectionStringBuilder();
 			NpgsqlConnectionStringBuilder connection = new NpgsqlConnectionStringBuilder();
-			connection.IntegratedSecurity = display.IntegratedSecurity = false;
+			connection.IntegratedSecurity = false;
 			foreach (ConnectionItem item in element.Values)
 			{
 				if (string.IsNullOrEmpty(item.Name)) { continue; }

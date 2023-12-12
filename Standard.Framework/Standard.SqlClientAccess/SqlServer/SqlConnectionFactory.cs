@@ -59,7 +59,7 @@ namespace Basic.SqlServer
 		{
 			SqlConnectionStringBuilder display = new SqlConnectionStringBuilder();
 			SqlConnectionStringBuilder connection = new SqlConnectionStringBuilder();
-			connection.IntegratedSecurity = display.IntegratedSecurity = false;
+			connection.IntegratedSecurity = false;
 			foreach (ConnectionItem item in element.Values)
 			{
 				if (string.IsNullOrEmpty(item.Name)) { continue; }
