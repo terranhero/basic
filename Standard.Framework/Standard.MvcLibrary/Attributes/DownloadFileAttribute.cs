@@ -52,6 +52,17 @@ namespace Basic.MvcLibrary
 			return "Data";
 		}
 
+		/// <summary>获取下载文件名称</summary>
+		/// <param name="headers">当前Http请求</param>
+		/// <returns>返回下载文件名称</returns>
+		public static string GetFileName(IHeaderDictionary headers)
+		{
+			if (headers.ContainsKey(ViewDataKey))
+				return headers[ViewDataKey];
+			return "Data";
+		}
+
+
 		/// <summary>
 		/// Called after the action method executes.
 		/// </summary>
