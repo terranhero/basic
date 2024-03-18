@@ -945,14 +945,16 @@ namespace Basic.Configuration
 			codeComplieUnit.Namespaces.Add(codeNamespace);
 			if (!_ImportNamespaces.Contains("System.Transactions"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Transactions"));
-			foreach (string ns in _ImportNamespaces)
-			{
-				codeNamespace.Imports.Add(new CodeNamespaceImport(ns));
-			}
+			if (!_ImportNamespaces.Contains("System.Threading.Tasks"))
+				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks"));
 			if (!_ImportNamespaces.Contains("Basic.Expressions"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.Expressions"));
 			if (!_ImportNamespaces.Contains("Basic.DataAccess"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.DataAccess"));
+			foreach (string ns in _ImportNamespaces)
+			{
+				codeNamespace.Imports.Add(new CodeNamespaceImport(ns));
+			}
 			CodeTypeDeclaration persistentCode = new CodeTypeDeclaration(ContextName);//?????????????????????
 			persistentCode.Comments.Add(new CodeCommentStatement("<summary>", true));
 			persistentCode.Comments.Add(new CodeCommentStatement(string.Format("{0}", _TableInfo.Description), true));
@@ -988,14 +990,16 @@ namespace Basic.Configuration
 				codeNamespace.Imports.Add(new CodeNamespaceImport(EntityNamespace));
 			if (!_ImportNamespaces.Contains("System.Transactions"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Transactions"));
-			foreach (string ns in _ImportNamespaces)
-			{
-				codeNamespace.Imports.Add(new CodeNamespaceImport(ns));
-			}
+			if (!_ImportNamespaces.Contains("System.Threading.Tasks"))
+				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks"));
 			if (!_ImportNamespaces.Contains("Basic.Expressions"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.Expressions"));
 			if (!_ImportNamespaces.Contains("Basic.DataAccess"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.DataAccess"));
+			foreach (string ns in _ImportNamespaces)
+			{
+				codeNamespace.Imports.Add(new CodeNamespaceImport(ns));
+			}
 			CodeTypeDeclaration contextCode = new CodeTypeDeclaration(ContextName);
 			contextCode.Comments.Add(new CodeCommentStatement("<summary>", true));
 			contextCode.Comments.Add(new CodeCommentStatement(string.Format("{0}", _TableInfo.Description), true));
@@ -1189,6 +1193,10 @@ namespace Basic.Configuration
 			//codeNamespace.Comments.Add(new CodeCommentStatement(string.Format("{0}", entityNs), true));
 			//codeNamespace.Comments.Add(new CodeCommentStatement("</summary>", true));
 			codeComplieUnit.Namespaces.Add(codeNamespace);
+			if (!_ImportNamespaces.Contains("System.Transactions"))
+				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Transactions"));
+			if (!_ImportNamespaces.Contains("System.Threading.Tasks"))
+				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks"));
 			foreach (string ns in _ImportNamespaces)
 			{
 				codeNamespace.Imports.Add(new CodeNamespaceImport(ns));
@@ -1228,6 +1236,10 @@ namespace Basic.Configuration
 			// Option Explicit On (controls whether variable declarations are required)
 			codeComplieUnit.UserData.Add("RequireVariableDeclaration", true);
 			CodeNamespace codeNamespace = new CodeNamespace(Namespace);
+			if (!_ImportNamespaces.Contains("System.Transactions"))
+				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Transactions"));
+			if (!_ImportNamespaces.Contains("System.Threading.Tasks"))
+				codeNamespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks"));
 			codeComplieUnit.Namespaces.Add(codeNamespace);
 			if (EntityNamespace != Namespace)
 				codeNamespace.Imports.Add(new CodeNamespaceImport(EntityNamespace));
