@@ -365,7 +365,8 @@ namespace Basic.DataContexts
 		{
 			if (tableReference is NamedTableReference named)
 			{
-				result.AddTable(named.SchemaObject.BaseIdentifier.Value, named.Alias.Value);
+				if (named.Alias == null) { result.AddTable(named.SchemaObject.BaseIdentifier.Value, null); }
+				else { result.AddTable(named.SchemaObject.BaseIdentifier.Value, named.Alias.Value); }
 			}
 			else if (tableReference is QualifiedJoin join)
 			{
