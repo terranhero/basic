@@ -12,6 +12,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Basic.Collections;
 using Basic.EntityLayer;
+using Basic.Enums;
 using Basic.Interfaces;
 using Basic.Tables;
 
@@ -226,44 +227,78 @@ namespace Basic.DataAccess
 				parameter.Size = cma.Size;
 				parameter.Precision = cma.Precision;
 				parameter.Scale = cma.Scale;
-				this.Parameters.Add(parameter); return;
+				this.Parameters.Add(parameter);
 			}
 			else if (right is ConstantExpression constant)
 			{
-				string paramName = this.CreateParameterName(cma.ColumnName);
-				whereBuilder.Append(paramName);
-				DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
-				parameter.Size = cma.Size;
-				parameter.Precision = cma.Precision;
-				parameter.Scale = cma.Scale;
-				parameter.Value = constant.Value ?? DBNull.Value;
-				this.Parameters.Add(parameter); return;
+				if (AppendConstant(whereBuilder, cma, constant.Value) == false)
+				{
+					string paramName = this.CreateParameterName(cma.ColumnName);
+					whereBuilder.Append(paramName);
+					DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
+					parameter.Size = cma.Size;
+					parameter.Precision = cma.Precision;
+					parameter.Scale = cma.Scale;
+					parameter.Value = constant.Value ?? DBNull.Value;
+					this.Parameters.Add(parameter);
+				}
 			}
 			else if (right is UnaryExpression)
 			{
-				string paramName = this.CreateParameterName(cma.ColumnName);
-				whereBuilder.Append(paramName);
-				DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
-				parameter.Size = cma.Size;
-				parameter.Precision = cma.Precision;
-				parameter.Scale = cma.Scale;
-				parameter.Value = AnalyzeUnaryExpression(right as UnaryExpression);
-				this.Parameters.Add(parameter); return;
+				object obj = AnalyzeUnaryExpression(right as UnaryExpression);
+				if (AppendConstant(whereBuilder, cma, obj) == false)
+				{
+					string paramName = this.CreateParameterName(cma.ColumnName);
+					whereBuilder.Append(paramName);
+					DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
+					parameter.Size = cma.Size;
+					parameter.Precision = cma.Precision;
+					parameter.Scale = cma.Scale;
+					parameter.Value = obj;
+					this.Parameters.Add(parameter);
+				}
 			}
 			else
 			{
-				string paramName = this.CreateParameterName(cma.ColumnName);
-				whereBuilder.Append(paramName);
-				DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
-				parameter.Size = cma.Size;
-				parameter.Precision = cma.Precision;
-				parameter.Scale = cma.Scale;
-				parameter.Value = Expression.Lambda(right).Compile().DynamicInvoke() ?? DBNull.Value;
-				this.Parameters.Add(parameter); return;
+				object obj = Expression.Lambda(right).Compile().DynamicInvoke();
+				if (AppendConstant(whereBuilder, cma, obj) == false)
+				{
+					string paramName = this.CreateParameterName(cma.ColumnName);
+					whereBuilder.Append(paramName);
+					DbParameter parameter = this.CreateParameter(paramName, cma.ColumnName, cma.DataType, cma.Nullable);
+					parameter.Size = cma.Size;
+					parameter.Precision = cma.Precision;
+					parameter.Scale = cma.Scale;
+					parameter.Value = obj ?? DBNull.Value;
+					this.Parameters.Add(parameter);
+				}
 			}
 			//whereBuilder.Append(rightMember.Name);
 		}
 
+		/// <summary></summary>
+		/// <param name="whereBuilder"></param>
+		/// <param name="cma"></param>
+		/// <param name="value"></param>
+		private bool AppendConstant(StringBuilder whereBuilder, ColumnMappingAttribute cma, object value)
+		{
+			if (value != null && (value is string)) { whereBuilder.AppendFormat("'{0}'", value); return true; }
+			else if (value != null && (value is int || value is long)) { whereBuilder.Append(value); return true; }
+			else if (value != null && (value is short || value is byte)) { whereBuilder.Append(value); return true; }
+			else if (value != null && (value is DateTime) && cma.DataType == DbTypeEnum.Date)
+			{
+				whereBuilder.AppendFormat("'{0:yyyy-MM-dd}'", value); return true;
+			}
+			else if (value != null && (value is DateTime) && cma.DataType == DbTypeEnum.DateTime)
+			{
+				whereBuilder.AppendFormat("'{0:yyyy-MM-dd HH:mm:ss}'", value); return true;
+			}
+			else if (value != null && (value is DateTime) && cma.DataType == DbTypeEnum.Timestamp)
+			{
+				whereBuilder.AppendFormat("'{0:yyyy-MM-dd HH:mm:ss.fff}'", value); return true;
+			}
+			return false;
+		}
 		/// <summary>根据二元表达式创建WHERE条件</summary>
 		/// <param name="whereBuilder"></param>
 		/// <param name="exp"></param>
