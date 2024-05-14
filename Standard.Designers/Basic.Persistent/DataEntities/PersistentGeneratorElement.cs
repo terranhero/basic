@@ -28,6 +28,11 @@ namespace Basic.DataEntities
 		internal const string SupportAttribute = "Support";
 		internal const string BuildSqlfAttribute = "BuildSqlf";
 		internal const string BuildOrafAttribute = "BuildOraf";
+
+		internal const string GenerateNewEntityAttribute = "new";
+		internal const string GenerateEditEntityAttribute = "edit";
+		internal const string GenerateDelEntityAttribute = "del";
+
 		internal readonly string XmlNamespace;
 		internal readonly string XmlPrefix;
 		/// <summary>
@@ -102,7 +107,62 @@ namespace Basic.DataEntities
 				}
 			}
 		}
+		private bool _GenerateNewEntity = true;
+		/// <summary>获取或设置一个布尔类型值，该值表示是否生成新增实体模型.</summary>
+		/// <value>The string value assigned to the entity project folder name</value>
+		[System.ComponentModel.DefaultValue(true), System.ComponentModel.Browsable(true)]
+		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
+		[Basic.Designer.PersistentDescription("PersistentGenerator_GenerateNewEntity")]
+		public bool GenerateNewEntity
+		{
+			get { return _GenerateNewEntity; }
+			set
+			{
+				if (_GenerateNewEntity != value)
+				{
+					_GenerateNewEntity = value;
+					RaisePropertyChanged("GenerateNewEntity");
+				}
+			}
+		}
 
+		private bool _GenerateEditEntity = true;
+		/// <summary>获取或设置一个布尔类型值，该值表示是否生成修改实体模型.</summary>
+		/// <value>The string value assigned to the entity project folder name</value>
+		[System.ComponentModel.DefaultValue(true), System.ComponentModel.Browsable(true)]
+		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
+		[Basic.Designer.PersistentDescription("PersistentGenerator_GenerateEditEntity")]
+		public bool GenerateEditEntity
+		{
+			get { return _GenerateEditEntity; }
+			set
+			{
+				if (_GenerateEditEntity != value)
+				{
+					_GenerateEditEntity = value;
+					RaisePropertyChanged("GenerateEditEntity");
+				}
+			}
+		}
+
+		private bool _GenerateDelEntity = true;
+		/// <summary>获取或设置一个布尔类型值，该值表示是否生成删除实体模型.</summary>
+		/// <value>The string value assigned to the entity project folder name</value>
+		[System.ComponentModel.DefaultValue(true), System.ComponentModel.Browsable(true)]
+		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
+		[Basic.Designer.PersistentDescription("PersistentGenerator_GenerateDelEntity")]
+		public bool GenerateDelEntity
+		{
+			get { return _GenerateDelEntity; }
+			set
+			{
+				if (_GenerateDelEntity != value)
+				{
+					_GenerateDelEntity = value;
+					RaisePropertyChanged("GenerateDelEntity");
+				}
+			}
+		}
 		private GenerateActionEnum _GenerateMode = GenerateActionEnum.Multiple;
 		/// <summary>
 		/// Gets or sets the entity project folder name.
@@ -288,6 +348,10 @@ namespace Basic.DataEntities
 			else if (name == BuildOrafAttribute) { _BuildOraf = Convert.ToBoolean(value); return BuilderSupportDatabases(); }
 			else if (name == SupportAttribute) { _SupportDatabases = (ConnectionTypeEnum[])_Converter.ConvertFromString(value); }
 			else if (name == ResourceAttribute) { return Enum.TryParse(value, out _ResxMode); }
+			else if (name == GenerateNewEntityAttribute) { return bool.TryParse(value, out _GenerateNewEntity); }
+			else if (name == GenerateEditEntityAttribute) { return bool.TryParse(value, out _GenerateEditEntity); }
+			else if (name == GenerateDelEntityAttribute) { return bool.TryParse(value, out _GenerateDelEntity); }
+
 			return false;
 		}
 
@@ -331,6 +395,11 @@ namespace Basic.DataEntities
 			if (_BaseAccess != typeof(AbstractAccess).Name)
 				writer.WriteAttributeString(AccessAttribute, _BaseAccess.ToString());
 			if (_ApplyConnection == false) { writer.WriteAttributeString(ApplyConnectionAttribute, "false"); }
+
+			if (_GenerateNewEntity == false) { writer.WriteAttributeString(GenerateNewEntityAttribute, "false"); }
+			if (_GenerateEditEntity == false) { writer.WriteAttributeString(GenerateEditEntityAttribute, "false"); }
+			if (_GenerateDelEntity == false) { writer.WriteAttributeString(GenerateDelEntityAttribute, "false"); }
+
 			if (!_GenerateContext) { writer.WriteAttributeString(ContextAttribute, Convert.ToString(_GenerateContext).ToLower()); }
 			if (_SupportDatabases.Length > 0)
 			{

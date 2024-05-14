@@ -253,6 +253,38 @@ namespace Basic.Configuration
 			set { _Generator.NamingRule = value; }
 		}
 
+		/// <summary>获取或设置一个布尔类型值，该值表示是否生成新增实体模型.</summary>
+		[System.ComponentModel.DefaultValue(true), System.ComponentModel.Browsable(true)]
+		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
+		[Basic.Designer.PersistentDescription("PersistentGenerator_GenerateNewEntity")]
+		public bool GenerateNewEntity
+		{
+			get { return _Generator.GenerateNewEntity; }
+			set { _Generator.GenerateNewEntity = value; }
+		}
+
+		/// <summary>获取或设置一个布尔类型值，该值表示是否生成修改实体模型.</summary>
+		/// <value>The string value assigned to the entity project folder name</value>
+		[System.ComponentModel.DefaultValue(true), System.ComponentModel.Browsable(true)]
+		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
+		[Basic.Designer.PersistentDescription("PersistentGenerator_GenerateEditEntity")]
+		public bool GenerateEditEntity
+		{
+			get { return _Generator.GenerateEditEntity; }
+			set { _Generator.GenerateEditEntity = value; }
+		}
+
+		/// <summary>获取或设置一个布尔类型值，该值表示是否生成删除实体模型.</summary>
+		/// <value>The string value assigned to the entity project folder name</value>
+		[System.ComponentModel.DefaultValue(true), System.ComponentModel.Browsable(true)]
+		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
+		[Basic.Designer.PersistentDescription("PersistentGenerator_GenerateDelEntity")]
+		public bool GenerateDelEntity
+		{
+			get { return _Generator.GenerateDelEntity; }
+			set { _Generator.GenerateDelEntity = value; }
+		}
+
 		/// <summary>
 		/// Gets or sets the entity project folder name.
 		/// </summary>
@@ -1528,10 +1560,8 @@ namespace Basic.Configuration
 			codeNamespace.Types.Add(accessCode);
 		}
 
-		/// <summary>
-		/// 实现设计时代码
-		/// </summary>
-		/// <param name="code">表示需要写入代码的命名空间</param>
+		/// <summary>实现设计时代码</summary>
+		/// <param name="codeComplieUnit">表示需要写入代码的命名空间</param>
 		internal void WriteEntityDesignerCode(System.CodeDom.CodeCompileUnit codeComplieUnit)
 		{
 			// Just for VB.NET:

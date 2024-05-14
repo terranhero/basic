@@ -49,14 +49,8 @@ namespace Basic.Designer
 			if (provider != null)
 			{
 				IWindowsFormsEditorService editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-				if (editorService == null)
-				{
-					return value;
-				}
-				if (this.listBox == null)
-				{
-					this.listBox = new BaseClassListBox();
-				}
+				if (editorService == null) { return value; }
+				if (this.listBox == null) { this.listBox = new BaseClassListBox(); }
 				this.listBox.BeginEdit(editorService, provider, value);
 				editorService.DropDownControl(this.listBox);
 				return listBox.SelectedItem;
@@ -81,27 +75,31 @@ namespace Basic.Designer
 				base.Items.Add(typeof(AbstractCondition).FullName);
 				EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
 				Assumes.Present(dteClass);
-				EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
-				if (projectItem != null)
-				{
-					EnvDTE.Project project = projectItem.ContainingProject;
-					IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
-					Assumes.Present(vsSolution);
-					vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
-					vsSolution.GetGuidOfProject(hierarchy, out Guid projectGuid);
-					IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
-					DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
-					Assumes.Present(typeService); ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
-					ICollection types = discovery.GetTypes(typeof(Basic.EntityLayer.AbstractEntity), true);
-					foreach (Type type in types)
-					{
-						if (type.IsSubclassOf(typeof(AbstractCondition)))
-						{
-							if (type.IsPublic && !type.IsGenericType && type.IsAbstract)
-								base.Items.Add(type.FullName);
-						}
-					}
-				}
+				EnvDTE.Properties props = dteClass.get_Properties("My Category", "My Grid Page");
+
+				int n = (int)props.Item("OptionInteger").Value;
+
+				//EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
+				//if (projectItem != null)
+				//{
+				//	EnvDTE.Project project = projectItem.ContainingProject;
+				//	IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
+				//	Assumes.Present(vsSolution);
+				//	vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
+				//	vsSolution.GetGuidOfProject(hierarchy, out Guid projectGuid);
+				//	IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
+				//	DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
+				//	Assumes.Present(typeService); ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
+				//	ICollection types = discovery.GetTypes(typeof(Basic.EntityLayer.AbstractEntity), false);
+				//	foreach (Type type in types)
+				//	{
+				//		if (type.IsSubclassOf(typeof(AbstractCondition)))
+				//		{
+				//			if (type.IsPublic && !type.IsGenericType && type.IsAbstract)
+				//				base.Items.Add(type.FullName);
+				//		}
+				//	}
+				//}
 				if (value != null) { SelectedItem = value; }
 			}
 

@@ -2219,4 +2219,22 @@ GlobalEnabledValidation的默认值为 False。</value>
   <data name="PersistentDescription_PropertyIgnore-zh-CN" xml:space="preserve">
     <value>是否添加 IgnorePropertyAttribute 特性标记</value>
   </data>
+  <data name="PersistentGenerator_GenerateDelEntity-en-US" xml:space="preserve">
+    <value>Generate Deletes</value>
+  </data>
+  <data name="PersistentGenerator_GenerateDelEntity-zh-CN" xml:space="preserve">
+    <value>生成删除模型</value>
+  </data>
+  <data name="PersistentGenerator_GenerateEditEntity-en-US" xml:space="preserve">
+    <value>Generate Updates</value>
+  </data>
+  <data name="PersistentGenerator_GenerateEditEntity-zh-CN" xml:space="preserve">
+    <value>生成修改模型</value>
+  </data>
+  <data name="PersistentGenerator_GenerateNewEntity-en-US" xml:space="preserve">
+    <value>Generate Creates</value>
+  </data>
+  <data name="PersistentGenerator_GenerateNewEntity-zh-CN" xml:space="preserve">
+    <value>生成新增模型</value>
+  </data>
 </root>

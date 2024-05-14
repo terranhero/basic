@@ -135,6 +135,26 @@ namespace Basic.Expressions
 		}
 		internal const string IsNullFunction = "IsNull";
 
+
+		/// <summary>
+		/// lambda表达式中使用，用于解析SQL语句中判断是否为空
+		/// </summary>
+		/// <param name="source">条件字段信息</param>
+		public static bool IsNotNull<TE>(this TE? source) where TE : struct
+		{
+			throw ExceptionList.GetNotSupported(typeof(TE), "IsNotNull");
+		}
+
+		/// <summary>
+		/// lambda表达式中使用，用于解析SQL语句中判断是否为空
+		/// </summary>
+		/// <param name="source">条件字段信息</param>
+		public static bool IsNotNull<TE>(this TE source) where TE : struct
+		{
+			throw ExceptionList.GetNotSupported(typeof(TE), "IsNotNull");
+		}
+		internal const string IsNotNullFunction = "IsNotNull";
+
 		/// <summary>
 		/// lambda表达式中使用，用于解析SQL语句中 IN 匹配
 		/// </summary>
@@ -176,6 +196,16 @@ namespace Basic.Expressions
 		/// <returns></returns>
 		public static bool In<TE>(this TE preperty, params TE[] values) where TE : struct { return values.Contains(preperty); }
 
+		/// <summary>lambda表达式中使用，用于解析SQL语句中 IN 匹配</summary>
+		/// <typeparam name="TE">表示枚举类型</typeparam>
+		/// <param name="preperty">需要做In操作的属性</param>
+		/// <param name="values">In关键字包含的数组值</param>
+		/// <returns></returns>
+		public static bool In<TE>(this TE? preperty, params TE[] values) where TE : struct
+		{
+			return preperty.HasValue == false ? false : values.Contains(preperty.Value);
+		}
+
 		/// <summary>
 		/// lambda表达式中使用，用于解析SQL语句中 IN 匹配
 		/// </summary>
@@ -209,6 +239,18 @@ namespace Basic.Expressions
 		/// <returns></returns>
 		public static bool NotIn<TE>(this TE preperty, TE[] values) where TE : struct
 		{ return values.Contains(preperty) == false; }
+
+		/// <summary>
+		/// lambda表达式中使用，用于解析SQL语句中 Not IN 匹配
+		/// </summary>
+		/// <typeparam name="TE">表示枚举类型</typeparam>
+		/// <param name="preperty">需要做In操作的属性</param>
+		/// <param name="values">In关键字包含的数组值</param>
+		/// <returns></returns>
+		public static bool NotIn<TE>(this TE? preperty, TE[] values) where TE : struct
+		{
+			return preperty.HasValue == false ? false : values.Contains(preperty.Value) == false;
+		}
 
 		/// <summary>
 		/// lambda表达式中使用，用于解析SQL语句中模糊匹配

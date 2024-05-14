@@ -31,7 +31,7 @@ namespace Basic.Collections
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return "Namespace List";
+			return string.Concat("Namespaces of ", base.Count);
 		}
 	}
 }

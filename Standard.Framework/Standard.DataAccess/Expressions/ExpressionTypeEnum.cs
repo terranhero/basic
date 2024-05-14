@@ -58,5 +58,9 @@ namespace Basic.Expressions
 		/// 表示“IS NULL”匹配，如 a Is Null。
 		/// </summary>
 		IsNull,
+		/// <summary>
+		/// 表示“IS NOT NULL”匹配，如 a Is Not Null。
+		/// </summary>
+		IsNotNull,
 	}
 }

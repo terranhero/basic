@@ -118,7 +118,11 @@ namespace Basic.Expressions
 				ConditionExpression condition = lambdaCollection.AddConditionExpression();
 				AnalyzeIsNullExpression(condition, methodCall, ExpressionTypeEnum.IsNull);
 			}
-
+			else if (methodName == LambdaExtension.IsNotNullFunction)
+			{
+				ConditionExpression condition = lambdaCollection.AddConditionExpression();
+				AnalyzeIsNullExpression(condition, methodCall, ExpressionTypeEnum.IsNotNull);
+			}
 		}
 
 		/// <summary>

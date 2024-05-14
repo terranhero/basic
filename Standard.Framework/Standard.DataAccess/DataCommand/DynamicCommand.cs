@@ -339,6 +339,10 @@ namespace Basic.DataAccess
 			{
 				builder.Append(" IS NULL");
 			}
+			else if (expression.ExpressionType == ExpressionTypeEnum.IsNotNull)
+			{
+				builder.Append(" IS NOT NULL");
+			}
 			else
 			{
 				AppendExpressionType(builder, expression.ExpressionType);
@@ -442,6 +446,7 @@ namespace Basic.DataAccess
 			else if (expressionType == ExpressionTypeEnum.NotLike) { builder.Append(" NOT LIKE "); }
 			else if (expressionType == ExpressionTypeEnum.Between) { builder.Append(" BETWEEN "); }
 			else if (expressionType == ExpressionTypeEnum.IsNull) { builder.Append(" IS NULL "); }
+			else if (expressionType == ExpressionTypeEnum.IsNotNull) { builder.Append(" IS NOT NULL "); }
 		}
 
 		/// <summary>
@@ -627,7 +632,7 @@ namespace Basic.DataAccess
 			foreach (string field in sortFields)
 			{
 				string sortProperty = field.ToUpper();
-				if (sortProperty.IndexOf(" DESC") >= 0)
+				if (sortProperty.IndexOf(" DESC") >= 0 || sortProperty.IndexOf(" descending") >= 0)
 				{
 					string[] props = field.Split(new char[] { ' ' });
 					EntityPropertyProvidor.TryGetProperty<T>(props[0], out EntityPropertyMeta propInfo);
@@ -639,7 +644,7 @@ namespace Basic.DataAccess
 						else { AddToOrderList(propInfo.Mapping.ColumnName, false); }
 					}
 				}
-				else if (sortProperty.IndexOf(" ASC") >= 0)
+				else if (sortProperty.IndexOf(" ASC") >= 0 || sortProperty.IndexOf(" ascending") >= 0)
 				{
 					string[] props = field.Split(new char[] { ' ' });
 					EntityPropertyProvidor.TryGetProperty<T>(props[0], out EntityPropertyMeta propInfo);
@@ -979,6 +984,7 @@ namespace Basic.DataAccess
 				else { builder.AppendLine().Append(" GROUP BY ").Append(joinCommand.GroupText); }
 			}
 			if (string.IsNullOrWhiteSpace(HavingText) == false) { builder.AppendLine().Append(" HAVING ").Append(HavingText); }
+
 			List<string> orderList = new List<string>(mOrderList.Count + 5);
 			if (mOrderList.Count > 0) { orderList.AddRange(mOrderList.ToArray()); }
 			else

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Xml;
+using Basic.Collections;
 using Basic.DataAccess;
 using Basic.Database;
 using Basic.DataContexts;
@@ -632,7 +633,7 @@ namespace Basic.Configuration
 					return;
 				}
 
-				var entities = persistent.DataEntities;
+				DataEntityElementCollection entities = persistent.DataEntities;
 				DataEntityElement newEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.AddNew));
 				DataEntityElement selectEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.SearchTable));
 				DataEntityElement updateEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.Modify));

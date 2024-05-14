@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Basic.Options;
 using Microsoft;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -32,6 +33,7 @@ namespace Basic.Configuration
 	[ProvideMenuResource("PersistentMenus.ctmenu", 1)]
 	[ProvideAutoLoad(UIContextGuids.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
 	[System.Runtime.InteropServices.Guid(ConfirugationConsts.guidPackageString)]
+	[ProvideOptionPage(typeof(AbstractClassesOptions), "Persistent Designer", "General", 307, 0, true)]
 	public sealed class PersistentPackage : AsyncPackage, IVsSolutionEvents2//, IVsInstalledProduct
 	{
 		private readonly PersistentFactory factory;

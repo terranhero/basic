@@ -285,6 +285,10 @@
     <Compile Include="Localizations\CreateLocalizationDialog.xaml.cs">
       <DependentUpon>CreateLocalizationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Options\AbstractClassesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Options\AbstractClassesOptions.cs" />
     <Compile Include="ResourcePackage\Consts.cs" />
     <Compile Include="ResourcePackage\LocalizationFactory.cs" />
     <Compile Include="ResourcePackage\LocalizationPackage.cs" />
@@ -643,6 +647,9 @@
     <EmbeddedResource Include="Localizations\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Options\AbstractClassesControl.resx">
+      <DependentUpon>AbstractClassesControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Designer.resx" />
     <EmbeddedResource Include="Properties\DesignerStrings.resx">
