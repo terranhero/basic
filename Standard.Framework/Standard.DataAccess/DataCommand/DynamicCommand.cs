@@ -632,28 +632,41 @@ namespace Basic.DataAccess
 			foreach (string field in sortFields)
 			{
 				string sortProperty = field.ToUpper();
-				if (sortProperty.IndexOf(" DESC") >= 0 || sortProperty.IndexOf(" descending") >= 0)
+				if (sortProperty.IndexOf(" DESC") >= 0 || sortProperty.IndexOf(" DESCENDING") >= 0)
 				{
 					string[] props = field.Split(new char[] { ' ' });
 					EntityPropertyProvidor.TryGetProperty<T>(props[0], out EntityPropertyMeta propInfo);
-					if (propInfo.Mapping == null) { AddToOrderList(field, false); }
+					if (propInfo.Mapping == null) { AddToOrderList(props[0], false); }
 					else
 					{
 						if (string.IsNullOrWhiteSpace(propInfo.Mapping.TableAlias) == false)
-						{ AddToOrderList(string.Concat(propInfo.Mapping.TableAlias, ".", propInfo.Mapping.ColumnName), false); }
-						else { AddToOrderList(propInfo.Mapping.ColumnName, false); }
+						{ AddToOrderList(string.Concat(propInfo.Mapping.TableAlias, ".", propInfo.Mapping.SourceColumn), false); }
+						else { AddToOrderList(propInfo.Mapping.SourceColumn, false); }
 					}
 				}
-				else if (sortProperty.IndexOf(" ASC") >= 0 || sortProperty.IndexOf(" ascending") >= 0)
+				else if (sortProperty.IndexOf(" ASC") >= 0 || sortProperty.IndexOf(" ASCENDING") >= 0)
 				{
 					string[] props = field.Split(new char[] { ' ' });
 					EntityPropertyProvidor.TryGetProperty<T>(props[0], out EntityPropertyMeta propInfo);
-					if (propInfo.Mapping == null) { AddToOrderList(field, true); }
+					if (propInfo.Mapping == null) { AddToOrderList(props[0], true); }
 					else
 					{
 						if (string.IsNullOrWhiteSpace(propInfo.Mapping.TableAlias) == false)
-						{ AddToOrderList(string.Concat(propInfo.Mapping.TableAlias, ".", propInfo.Mapping.ColumnName), true); }
-						else { AddToOrderList(propInfo.Mapping.ColumnName, true); }
+						{ AddToOrderList(string.Concat(propInfo.Mapping.TableAlias, ".", propInfo.Mapping.SourceColumn), true); }
+						else { AddToOrderList(propInfo.Mapping.SourceColumn, true); }
+					}
+				}
+				else if (sortProperty.IndexOf(" NULL") >= 0)
+				{
+					string[] props = field.Split(new char[] { ' ' });
+					EntityPropertyProvidor.TryGetProperty<T>(props[0], out EntityPropertyMeta propInfo);
+
+					if (propInfo.Mapping == null) { AddToOrderList(props[0], true); }
+					else
+					{
+						if (string.IsNullOrWhiteSpace(propInfo.Mapping.TableAlias) == false)
+						{ AddToOrderList(string.Concat(propInfo.Mapping.TableAlias, ".", propInfo.Mapping.SourceColumn), true); }
+						else { AddToOrderList(propInfo.Mapping.SourceColumn, true); }
 					}
 				}
 				else
@@ -663,8 +676,8 @@ namespace Basic.DataAccess
 					else
 					{
 						if (string.IsNullOrWhiteSpace(propInfo.Mapping.TableAlias) == false)
-						{ AddToOrderList(string.Concat(propInfo.Mapping.TableAlias, ".", propInfo.Mapping.ColumnName), true); }
-						else { AddToOrderList(propInfo.Mapping.ColumnName, true); }
+						{ AddToOrderList(string.Concat(propInfo.Mapping.TableAlias, ".", propInfo.Mapping.SourceColumn), true); }
+						else { AddToOrderList(propInfo.Mapping.SourceColumn, true); }
 					}
 				}
 			}
