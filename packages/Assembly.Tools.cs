@@ -5,5 +5,5 @@
 [assembly: System.Reflection.AssemblyTrademark("Framework for .Net Standard 2.0 ")]
 [assembly: System.Reflection.AssemblyVersion("6.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersion("6.0.0.0")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("6.0.5392")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("6.0.5491")]
 [assembly: System.Security.SecurityRules(System.Security.SecurityRuleSet.Level2, SkipVerificationInFullTrust = true)]

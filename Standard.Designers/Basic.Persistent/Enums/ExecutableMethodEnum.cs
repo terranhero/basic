@@ -57,6 +57,12 @@ namespace Basic.Enums
 		/// 根据条件查询可分页的实体列表。
 		/// </summary>
 		GetEntities,
+
+		/// <summary>
+		/// 根据条件查询可分页的实体列表。
+		/// </summary>
+		GetJoinEntities,
+
 		/// <summary>
 		/// 根据条件查询可分页的实体列表。
 		/// </summary>

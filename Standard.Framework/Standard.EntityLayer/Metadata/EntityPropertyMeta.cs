@@ -3,6 +3,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 using Basic.Collections;
 using Basic.Messages;
 
@@ -14,6 +17,7 @@ namespace Basic.EntityLayer
 	public sealed class EntityPropertyMeta : PropertyDescriptor
 	{
 		private readonly PropertyInfo _PropertyInfo;
+		private readonly Guid _PropertyGuid = Guid.Empty;
 		private readonly ColumnMappingAttribute fieldColumnMapping;
 		private readonly JoinFieldAttribute fieldJoinField;
 		private readonly ColumnAttribute fieldColumn;
@@ -24,21 +28,20 @@ namespace Basic.EntityLayer
 		private readonly GroupNameAttribute _GroupName;
 		private readonly static long _Int32Max = Convert.ToInt64(int.MaxValue);
 		private readonly bool _PrimaryKey = false;
+		private static readonly MD5 _md5 = MD5.Create();
 
 		internal EntityPropertyMeta(PropertyInfo info)
 			: base(info.Name, Attribute.GetCustomAttributes(info))
 		{
-			_PropertyInfo = info;
-			object[] attributes = info.GetCustomAttributes(true);
+			string fullName = string.Concat(info.Module.Name, ", ", info.DeclaringType.FullName, ".", info.Name);
+			_PropertyGuid = new Guid(_md5.ComputeHash(Encoding.UTF8.GetBytes(fullName)));
+			_PropertyInfo = info; object[] attributes = info.GetCustomAttributes(true);
 			if (attributes == null || attributes.Length == 0) { return; }
 			foreach (System.Attribute attribute in attributes)
 			{
-				if (attribute is ColumnMappingAttribute) { fieldColumnMapping = attribute as ColumnMappingAttribute; }
-				else if (attribute is ColumnAttribute)
-				{
-					fieldColumn = attribute as ColumnAttribute;
-					_PrimaryKey = fieldColumn.PrimaryKey;
-				}
+				if (attribute is GuidAttribute ga) { _PropertyGuid = new Guid(ga.Value); }
+				else if (attribute is ColumnMappingAttribute) { fieldColumnMapping = attribute as ColumnMappingAttribute; }
+				else if (attribute is ColumnAttribute) { fieldColumn = attribute as ColumnAttribute; _PrimaryKey = fieldColumn.PrimaryKey; }
 				else if (attribute is DisplayFormatAttribute) { fieldDisplayFormat = attribute as DisplayFormatAttribute; }
 				else if (attribute is ImportAttribute) { fieldImport = attribute as ImportAttribute; }
 				else if (attribute is PrimaryKeyAttribute) { _PrimaryKey = true; }
@@ -66,6 +69,10 @@ namespace Basic.EntityLayer
 		/// <summary>获取一个值，该值指示此属性是否可写。</summary>
 		/// <value>如果此属性可写，则为 true；否则，为 false。</value>
 		public bool CanWrite { get { return _PropertyInfo.CanWrite; } }
+
+		/// <summary>获取与系统关联属性的 GUID，每个类属性都唯一。</summary>
+		/// <value>与系统关联属性的 GUID 类型。</value>
+		public Guid Guid { get { return _PropertyGuid; } }
 
 		/// <summary>获取一个值该值标志属性是否使用 PropertyCollectionAttribute 特性标记。</summary>
 		/// <value>如果存在 PropertyCollectionAttribute 特性标记则返回true，否则返回 false。</value>
