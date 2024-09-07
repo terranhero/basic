@@ -789,7 +789,11 @@ namespace Basic.DataEntities
 			{
 				string varName = string.Concat(Char.ToLower(Name[0]), Name.Remove(0, 1));
 				declareMethod.Comments.Add(new CodeCommentStatement(string.Format("<param name=\"{0}\">{1}</param>", varName, Comment), true));
-				declareMethod.Parameters.Add(new CodeParameterDeclarationExpression(Type, varName));
+				if (_Type != null)
+					declareMethod.Parameters.Add(new CodeParameterDeclarationExpression(_Type, varName));
+				else
+					declareMethod.Parameters.Add(new CodeParameterDeclarationExpression(_TypeName, varName));
+
 				findKey.Parameters.Add(new CodeVariableReferenceExpression(varName));
 			}
 		}

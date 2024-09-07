@@ -410,6 +410,15 @@
 					<ButtonText>Edit Code</ButtonText>
 				</Strings>
 			</Button>
+			
+			<Button guid="GUID_STANDARDCMDS" id="ID_TABLE_COLUMNS" priority="803" type="Button">
+				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
+				<Icon guid="guidVsShellIcons" id="80"/>
+				<Strings>
+					<ButtonText>列集合</ButtonText>
+				</Strings>
+			</Button>
+			
 			<Button guid="GUID_STANDARDCMDS" id="ID_PROPERTIES" priority="804" type="Button">
 				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
 				<Icon guid="guidVsShellIcons" id="80"/>
@@ -713,6 +722,9 @@
 			<IDSymbol name="ID_BRINGFORWARD" value="10" />
 			<IDSymbol name="ID_BRINGTOFRONT" value="11" />
 			<IDSymbol name="ID_SIZETOFIT" value="0x26"/>
+
+			<IDSymbol name="ID_TABLE_COLUMNS" value="0x2067" />
+
 		</GuidSymbol>
 		<GuidSymbol name="GUID_TABLEICON" value="{2A3A0C45-9CA3-4D79-94BB-976C42E00ED1}" >
 			<IDSymbol name="TABLEICON" value="5000" />

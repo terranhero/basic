@@ -295,6 +295,8 @@ namespace Basic.Configuration
 				_oleMenuService.AddCommand(Copy, OnCopy, OnSelectedEnabled);
 				_oleMenuService.AddCommand(Paste, OnPaste, OnCanPaste);
 				_oleMenuService.AddCommand(Delete, OnDelete, OnSelectedEnabled);
+
+				_oleMenuService.AddCommand(tableColumnsID, OnShowColumns, OnCanShowColumns);
 				_oleMenuService.AddCommand(StandardCommands.Properties, OnProperties);
 			}
 			progress.Report(new ServiceProgressData("菜单加载完成......"));

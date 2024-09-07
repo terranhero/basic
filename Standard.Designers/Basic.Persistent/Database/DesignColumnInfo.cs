@@ -7,6 +7,7 @@ using Basic.Designer;
 using Basic.Configuration;
 using System.Xml;
 using Basic.Enums;
+using System.Drawing.Design;
 
 namespace Basic.Database
 {
@@ -198,6 +199,24 @@ namespace Basic.Database
 					_Comment = value;
 					RaisePropertyChanged("Comment");
 				}
+			}
+		}
+
+		private string _TypeName = null;
+		/// <summary>属性类型名称</summary>
+		[Basic.Designer.PersistentDescription("PersistentDescription_PropertyType")]
+		[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryColumn)]
+		[System.ComponentModel.Editor(typeof(ReflectedTypeEditor), typeof(UITypeEditor))]
+		public string TypeName
+		{
+			get
+			{
+				return _TypeName;
+			}
+			set
+			{
+				_TypeName = value;
+				RaisePropertyChanged("TypeName");
 			}
 		}
 

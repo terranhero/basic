@@ -18,6 +18,7 @@ using Basic.Designer;
 using Basic.Enums;
 using Basic.Windows;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 //VSLangProj.prjKindVBProject for VB.NET projects.
 //VSLangProj.prjKindCSharpProject for C# projects.
@@ -90,6 +91,9 @@ namespace Basic.Configuration
 
 		/// <summary>数据持久类快捷菜单更新静态/动态命令ID</summary>
 		public static readonly CommandID CopySqlID = new CommandID(VsMenus.guidStandardCommandSet97, 0x2064);
+
+		/// <summary>数据持久类快捷菜单更新静态/动态命令ID</summary>
+		public static readonly CommandID tableColumnsID = new CommandID(VsMenus.guidStandardCommandSet97, 0x2067);
 
 		/// <summary>数据持久类快捷菜单更新静态/动态命令ID</summary>
 		public static readonly CommandID DataCommandID = new CommandID(ContextMenuGuid, 0x2200);
@@ -547,6 +551,36 @@ namespace Basic.Configuration
 						TransactSqlResolver.UpdateDataCondition(entity.Condition, textBuilder.ToString());
 					}
 				}
+			}
+			catch (Exception ex)
+			{
+				ShowMessage(ex);
+			}
+		}
+		#endregion
+
+		#region 显示数据库字段
+		private void OnCanShowColumns(object sender, EventArgs e)
+		{
+			OleMenuCommand menu = sender as OleMenuCommand;
+			DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
+			menu.Enabled = menu.Visible = canvas != null && canvas.SelectedItem != null;
+		}
+		/// <summary>显示数据库字典编辑</summary>
+		private void OnShowColumns(object sender, EventArgs e)
+		{
+			try
+			{
+				PersistentPane pane = this.GetPersistentPane();
+				DesignerEntitiesCanvas canvas = pane.Content as DesignerEntitiesCanvas;
+				PersistentConfiguration persistent = pane.GetPersistent();
+				DesignTableInfo _TableInfo = persistent.TableInfo;
+				// Guid tempGuid = Guid.Empty;
+				//IVsUIShell uiShell = GetVsUIShell();
+				//if (uiShell != null)
+				//{
+				//	uiShell.
+				//}
 			}
 			catch (Exception ex)
 			{
