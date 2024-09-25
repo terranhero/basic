@@ -4,8 +4,10 @@ using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using Basic.Configuration;
 using Basic.DataAccess;
 using Microsoft;
+using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Design;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -15,6 +17,7 @@ namespace Basic.Designer
 	/// <summary>
 	/// 属性类型编辑器
 	/// </summary>
+	[ProvideObject(typeof(PersistentFactory))]
 	public sealed class BaseAccessSelector : UITypeEditor
 	{
 		private BaseAccessListBox listBox;
@@ -50,18 +53,31 @@ namespace Basic.Designer
 				{
 					return value;
 				}
-				if (this.listBox == null)
-				{
-					this.listBox = new BaseAccessListBox();
-				}
-				this.listBox.BeginEdit(editorService, provider, value);
+				if (this.listBox == null) { this.listBox = new BaseAccessListBox(); }
+
+				PersistentPane pane = GetPersistentPane(provider);
+				this.listBox.BeginEdit(editorService, provider, value, pane.GetBaseAccesses());
+
 				editorService.DropDownControl(this.listBox);
 				if (listBox.SelectedItem == null) { return value; }
 				return listBox.SelectedItem;
 			}
 			return base.EditValue(context, provider, value);
 		}
-
+		private PersistentPane GetPersistentPane(System.IServiceProvider provider)
+		{
+			IVsMonitorSelection monitorSelection = provider.GetService(typeof(IVsMonitorSelection)) as IVsMonitorSelection;
+			Assumes.Present(monitorSelection);
+			//monitorSelection.GetCurrentElementValue(0, out object value0);
+			//monitorSelection.GetCurrentElementValue(1, out object objectFrame); //属性窗口
+			monitorSelection.GetCurrentElementValue(2, out object value2);  //设计器窗口
+			if (value2 is IVsWindowFrame frame)
+			{
+				frame.GetProperty(-3001, out object pane);//获取 WindowPane
+				if (pane != null) { return pane as PersistentPane; }
+			}
+			return null;
+		}
 		private class BaseAccessListBox : ListBox
 		{
 			private IWindowsFormsEditorService _editorService;
@@ -71,35 +87,35 @@ namespace Basic.Designer
 				base.IntegralHeight = true;
 			}
 
-			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value)
+			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value, string[] baseClasses)
 			{
 				_editorService = editorService;
 				base.Items.Clear();
-				base.Items.Add(typeof(AbstractDbAccess).Name);
-				base.Items.Add(typeof(AbstractAccess).Name);
-				EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
-				Assumes.Present(dteClass);
-				EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
-				if (projectItem != null)
-				{
-					EnvDTE.Project project = projectItem.ContainingProject;
-					IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
-					Assumes.Present(vsSolution);
-					vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
-					vsSolution.GetGuidOfProject(hierarchy, out Guid projectGuid);
-					IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
-					DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
-					Assumes.Present(typeService);
-					ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
-					ICollection types = discovery.GetTypes(typeof(AbstractDbAccess), true);
-					foreach (Type type in types)
-					{
-						if (type.IsSubclassOf(typeof(AbstractDbAccess)))
-						{
-							if (type.IsPublic && !type.IsGenericType && type.IsAbstract) { base.Items.Add(type.Name); }
-						}
-					}
-				}
+				base.Items.AddRange(baseClasses);
+				//base.Items.Add(typeof(AbstractAccess).Name);
+				//EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
+				//Assumes.Present(dteClass);
+				//EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
+				//if (projectItem != null)
+				//{
+				//	EnvDTE.Project project = projectItem.ContainingProject;
+				//	IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
+				//	Assumes.Present(vsSolution);
+				//	vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
+				//	vsSolution.GetGuidOfProject(hierarchy, out Guid projectGuid);
+				//	IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
+				//	DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
+				//	Assumes.Present(typeService);
+				//	ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
+				//	ICollection types = discovery.GetTypes(typeof(AbstractDbAccess), true);
+				//	foreach (Type type in types)
+				//	{
+				//		if (type.IsSubclassOf(typeof(AbstractDbAccess)))
+				//		{
+				//			if (type.IsPublic && !type.IsGenericType && type.IsAbstract) { base.Items.Add(type.Name); }
+				//		}
+				//	}
+				//}
 				if (value != null) { SelectedItem = value; }
 			}
 

@@ -34,6 +34,7 @@ namespace Basic.Configuration
 	[ProvideAutoLoad(UIContextGuids.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
 	[System.Runtime.InteropServices.Guid(ConfirugationConsts.guidPackageString)]
 	[ProvideOptionPage(typeof(AbstractClassesOptions), "Persistent Designer", "General", 307, 308, true)]
+	[ProvideProfileAttribute(typeof(AbstractClassesOptions), "Persistent Designer", "General", 307, 308, true)]
 	public sealed class PersistentPackage : AsyncPackage, IVsSolutionEvents2//, IVsInstalledProduct
 	{
 		private readonly PersistentFactory factory;
@@ -70,11 +71,13 @@ namespace Basic.Configuration
 				return ass;
 			});
 			await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+			IVsSolution vsSolution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
+			await _Commands.InitializeAsync(progress);
 			await _Commands.InitializeOptionsAsync(progress);
 			//await _Commands.InitializeTemplateAsync(progress);
-			await _Commands.InitializeAsync(progress);
+			await _Commands.InitializeMenuAsync(progress);
+			
 			RegisterEditorFactory(factory);
-			IVsSolution vsSolution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
 			Assumes.Present(vsSolution);
 			vsSolution.AdviseSolutionEvents(this, out solutionEventsCookie);
 		}

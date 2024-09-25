@@ -21,6 +21,7 @@ using CD = System.CodeDom;
 using Microsoft.VisualStudio.OLE.Interop;
 using System.Globalization;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Basic.Configuration
 {
@@ -86,6 +87,18 @@ namespace Basic.Configuration
 			selectionContainer.SelectedObjectsChanged += new EventHandler(OnSelectionChanged);
 			this.Content = editorControl;
 		}
+
+		/// <summary></summary>
+		/// <returns></returns>
+		public string[] GetBaseAccesses() { return _CommandService.GetBaseAccesses(); }
+
+		/// <summary></summary>
+		/// <returns></returns>
+		public string[] GetBaseEntities() { return _CommandService.GetBaseEntities(); }
+
+		/// <summary></summary>
+		/// <returns></returns>
+		public string[] GetBaseConditions() { return _CommandService.GetBaseConditions(); }
 
 		/// <summary>
 		/// returns an instance of the ITrackSelection service object

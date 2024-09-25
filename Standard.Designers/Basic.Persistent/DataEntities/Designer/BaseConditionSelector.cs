@@ -12,6 +12,7 @@ using System.Collections;
 using Basic.EntityLayer;
 using System.Collections.Generic;
 using Microsoft;
+using Basic.Configuration;
 
 namespace Basic.Designer
 {
@@ -51,13 +52,27 @@ namespace Basic.Designer
 				IWindowsFormsEditorService editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
 				if (editorService == null) { return value; }
 				if (this.listBox == null) { this.listBox = new BaseClassListBox(); }
-				this.listBox.BeginEdit(editorService, provider, value);
+				PersistentPane pane = GetPersistentPane(provider);
+				this.listBox.BeginEdit(editorService, provider, value, pane.GetBaseConditions());
 				editorService.DropDownControl(this.listBox);
 				return listBox.SelectedItem;
 			}
 			return base.EditValue(context, provider, value);
 		}
-
+		private PersistentPane GetPersistentPane(System.IServiceProvider provider)
+		{
+			IVsMonitorSelection monitorSelection = provider.GetService(typeof(IVsMonitorSelection)) as IVsMonitorSelection;
+			Assumes.Present(monitorSelection);
+			//monitorSelection.GetCurrentElementValue(0, out object value0);
+			//monitorSelection.GetCurrentElementValue(1, out object objectFrame); //属性窗口
+			monitorSelection.GetCurrentElementValue(2, out object value2);  //设计器窗口
+			if (value2 is IVsWindowFrame frame)
+			{
+				frame.GetProperty(-3001, out object pane);//获取 WindowPane
+				if (pane != null) { return pane as PersistentPane; }
+			}
+			return null;
+		}
 		private class BaseClassListBox : ListBox
 		{
 			private IWindowsFormsEditorService _editorService;
@@ -68,38 +83,12 @@ namespace Basic.Designer
 				base.IntegralHeight = true;
 			}
 
-			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value)
+			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value, string[] baseClasses)
 			{
 				_editorService = editorService;
 				base.Items.Clear();
-				base.Items.Add(typeof(AbstractCondition).FullName);
-				EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
-				Assumes.Present(dteClass);
-				EnvDTE.Properties props = dteClass.get_Properties("My Category", "My Grid Page");
+				base.Items.AddRange(baseClasses);
 
-				int n = (int)props.Item("OptionInteger").Value;
-
-				//EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
-				//if (projectItem != null)
-				//{
-				//	EnvDTE.Project project = projectItem.ContainingProject;
-				//	IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
-				//	Assumes.Present(vsSolution);
-				//	vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
-				//	vsSolution.GetGuidOfProject(hierarchy, out Guid projectGuid);
-				//	IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
-				//	DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
-				//	Assumes.Present(typeService); ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
-				//	ICollection types = discovery.GetTypes(typeof(Basic.EntityLayer.AbstractEntity), false);
-				//	foreach (Type type in types)
-				//	{
-				//		if (type.IsSubclassOf(typeof(AbstractCondition)))
-				//		{
-				//			if (type.IsPublic && !type.IsGenericType && type.IsAbstract)
-				//				base.Items.Add(type.FullName);
-				//		}
-				//	}
-				//}
 				if (value != null) { SelectedItem = value; }
 			}
 
@@ -153,15 +142,29 @@ namespace Basic.Designer
 				{
 					return value;
 				}
-				if (this.listBox == null)
-				{
-					this.listBox = new ClassListBox();
-				}
-				this.listBox.BeginEdit(editorService, provider, value);
+				if (this.listBox == null) { this.listBox = new ClassListBox(); }
+				PersistentPane pane = GetPersistentPane(provider);
+				this.listBox.BeginEdit(editorService, provider, value, pane.GetBaseConditions());
+
 				editorService.DropDownControl(this.listBox);
 				return listBox.SelectedItem;
 			}
 			return base.EditValue(context, provider, value);
+		}
+
+		private PersistentPane GetPersistentPane(System.IServiceProvider provider)
+		{
+			IVsMonitorSelection monitorSelection = provider.GetService(typeof(IVsMonitorSelection)) as IVsMonitorSelection;
+			Assumes.Present(monitorSelection);
+			//monitorSelection.GetCurrentElementValue(0, out object value0);
+			//monitorSelection.GetCurrentElementValue(1, out object objectFrame); //属性窗口
+			monitorSelection.GetCurrentElementValue(2, out object value2);  //设计器窗口
+			if (value2 is IVsWindowFrame frame)
+			{
+				frame.GetProperty(-3001, out object pane);//获取 WindowPane
+				if (pane != null) { return pane as PersistentPane; }
+			}
+			return null;
 		}
 
 		private class ClassListBox : ListBox
@@ -174,37 +177,13 @@ namespace Basic.Designer
 				base.IntegralHeight = true;
 			}
 
-			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value)
+			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value, string[] baseClasses)
 			{
 				_editorService = editorService;
 				base.Items.Clear();
-				base.Items.Add(typeof(AbstractCondition).Name);
-				EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
-				Assumes.Present(dteClass);
-				EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
-				if (projectItem != null)
-				{
-					SortedSet<string> list = new SortedSet<string>();
-					EnvDTE.Project project = projectItem.ContainingProject;
-					IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
-					Assumes.Present(vsSolution);
-					vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
-					vsSolution.GetGuidOfProject(hierarchy, out Guid projectGuid);
-					IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
-					DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
-					Assumes.Present(typeService);
-					ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
-					ICollection types = discovery.GetTypes(typeof(Basic.EntityLayer.AbstractEntity), true);
-					foreach (Type type in types)
-					{
-						if (type.IsSubclassOf(typeof(AbstractCondition)))
-						{
-							if (type.IsPublic && !type.IsGenericType)
-								list.Add(type.Name);
-						}
-					}
-					base.Items.AddRange(list.ToArray());
-				}
+				//base.Items.Add(typeof(AbstractCondition).Name);
+				base.Items.AddRange(baseClasses);
+
 				if (value != null) { SelectedItem = value; }
 			}
 

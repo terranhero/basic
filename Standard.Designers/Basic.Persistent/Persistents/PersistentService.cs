@@ -73,6 +73,7 @@ namespace Basic.Configuration
 		private const string fileExtension = ".sqlf;.oraf;.olef;.odbcf;.db2f;.litf";
 
 		private OleMenuCommandService _oleMenuService;
+		private AbstractClassesOptions baseClassesOptions;
 		private IVsUIShell _IVsUIShell;
 		private IVsSolution _VsSolution;
 		private EnvDTE80.DTE2 _DteClass;
@@ -173,19 +174,56 @@ namespace Basic.Configuration
 		private IVsSolution GetVsSolution() { return _VsSolution; }
 
 		#endregion
+		public string[] GetBaseAccesses()
+		{
+			try
+			{
+				return baseClassesOptions.BaseAccess.ToArray();
+			}
+			catch (Exception ex)
+			{
+				WriteToOutput(ex.Message);
+				return Array.Empty<string>();
+			}
+		}
+
+		public string[] GetBaseEntities()
+		{
+			try
+			{
+				return baseClassesOptions.BaseEntities.ToArray();
+			}
+			catch (Exception ex)
+			{
+				WriteToOutput(ex.Message);
+				return Array.Empty<string>();
+			}
+		}
+
+		public string[] GetBaseConditions()
+		{
+			try
+			{
+				return (baseClassesOptions.BaseConditions.ToArray());
+			}
+			catch (Exception ex)
+			{
+				WriteToOutput(ex.Message);
+				return Array.Empty<string>();
+			}
+		}
 
 		/// <summary>读取系统配置信息</summary>
 		public Task InitializeOptionsAsync(IProgress<ServiceProgressData> progress)
 		{
-			progress.Report(new ServiceProgressData(nameof(InitializeOptionsAsync), "提取配置信息"));
 			try
 			{
-				AbstractClassesOptions opts = asyncPackage.GetDialogPage(typeof(AbstractClassesOptions)) as AbstractClassesOptions;
+				baseClassesOptions = asyncPackage.GetDialogPage(typeof(AbstractClassesOptions)) as AbstractClassesOptions;
 				return Task.CompletedTask;
 			}
 			catch (Exception ex)
 			{
-				progress.Report(new ServiceProgressData(nameof(InitializeOptionsAsync), ex.Message));
+				WriteToOutput(ex.Message);
 				return Task.CompletedTask;
 			}
 		}
@@ -260,6 +298,19 @@ namespace Basic.Configuration
 			_DteClass = await asyncPackage.GetServiceAsync(typeof(SDTE)) as EnvDTE80.DTE2;
 			Assumes.Present(_DteClass);
 			//await serviceProvider.GetServiceAsync() as OleMenuCommandService
+			progress.Report(new ServiceProgressData("菜单加载完成......"));
+		}
+
+		/// <summary>
+		/// Initialization of the package; this method is called right after the package is sited, so this is the place
+		/// where you can put all the initialization code that rely on services provided by VisualStudio.
+		/// </summary>
+		/// <param name="cancellationToken">A cancellation token to monitor for initialization cancellation, which can occur when VS is shutting down.</param>
+		/// <param name="progress">A provider for progress updates.</param>
+		/// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
+		public STT.Task InitializeMenuAsync(IProgress<ServiceProgressData> progress)
+		{
+			progress.Report(new ServiceProgressData("正在加载菜单......"));
 			if (null != _oleMenuService)
 			{
 				_oleMenuService.AddCommand(ConverterID, OnConvert, OnCanConvert);
@@ -320,6 +371,7 @@ namespace Basic.Configuration
 				_oleMenuService.AddCommand(StandardCommands.Properties, OnProperties);
 			}
 			progress.Report(new ServiceProgressData("菜单加载完成......"));
+			return STT.Task.CompletedTask;
 		}
 
 		#region 创建或设置资源命令

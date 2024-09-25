@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Drawing.Design;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Shell;
-using Basic.DataEntities;
-using Microsoft.VisualStudio.Shell.Design;
-using System.ComponentModel.Design;
-using System.Collections;
+using Basic.Configuration;
 using Basic.EntityLayer;
 using Microsoft;
-
+using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using MVOI = Microsoft.VisualStudio.OLE.Interop;
 namespace Basic.Designer
 {
 	/// <summary>
 	/// 属性类型编辑器
 	/// </summary>
+	[ProvideObject(typeof(PersistentFactory))]
 	public sealed class BaseClassSelector : UITypeEditor
 	{
 		private BaseClassListBox listBox;
@@ -51,15 +51,41 @@ namespace Basic.Designer
 				{
 					return value;
 				}
-				if (this.listBox == null)
-				{
-					this.listBox = new BaseClassListBox();
-				}
-				this.listBox.BeginEdit(editorService, provider, value);
+				//MVOI.IServiceProvider serviceProvider = (MVOI.IServiceProvider)provider.GetService(typeof(MVOI.IServiceProvider));
+
+				//// 获取 IVsEditorFactory 实例
+				//PersistentFactory editorFactory;
+				//Guid editorFactoryGuid = typeof(PersistentFactory).GUID;
+				//object obj = serviceProvider.QueryService<PersistentFactory>();
+				//int hr = serviceProvider.QueryService(ref editorFactoryGuid, ref editorFactoryGuid, out IntPtr editorFactoryObj);
+				//if (hr == 0 && editorFactoryObj != null)
+				//{
+				//	editorFactory = Marshal.GetObjectForIUnknown(editorFactoryObj) as PersistentFactory;
+				//	// 使用 editorFactory 进行相关操作
+				//}
+				if (this.listBox == null) { this.listBox = new BaseClassListBox(); }
+
+				PersistentPane pane = GetPersistentPane(provider);
+				this.listBox.BeginEdit(editorService, provider, value, pane.GetBaseEntities());
 				editorService.DropDownControl(this.listBox);
 				return listBox.SelectedItem;
 			}
 			return base.EditValue(context, provider, value);
+		}
+
+		private PersistentPane GetPersistentPane(System.IServiceProvider provider)
+		{
+			IVsMonitorSelection monitorSelection = provider.GetService(typeof(IVsMonitorSelection)) as IVsMonitorSelection;
+			Assumes.Present(monitorSelection);
+			//monitorSelection.GetCurrentElementValue(0, out object value0);
+			//monitorSelection.GetCurrentElementValue(1, out object objectFrame); //属性窗口
+			monitorSelection.GetCurrentElementValue(2, out object value2);  //设计器窗口
+			if (value2 is IVsWindowFrame frame)
+			{
+				frame.GetProperty(-3001, out object pane);//获取 WindowPane
+				if (pane != null) { return pane as PersistentPane; }
+			}
+			return null;
 		}
 
 		private class BaseClassListBox : ListBox
@@ -68,44 +94,46 @@ namespace Basic.Designer
 			internal BaseClassListBox()
 			{
 				base.Dock = DockStyle.Fill;
-				base.DisplayMember = "FullName";
 				base.IntegralHeight = true;
 			}
 
-			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value)
+			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, object value, string[] baseClasses)
 			{
 				_editorService = editorService;
 				base.Items.Clear();
-				base.Items.Add(typeof(AbstractEntity).FullName);
-				EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
-				Assumes.Present(dteClass);
-				EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
-				if (projectItem != null)
-				{
-					EnvDTE.Project project = projectItem.ContainingProject;
-					IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
-					Assumes.Present(vsSolution);
-					vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
-					Guid projectGuid;
-					vsSolution.GetGuidOfProject(hierarchy, out projectGuid);
-					IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
-					DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
-					Assumes.Present(typeService);
-					ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
-					ICollection types = discovery.GetTypes(typeof(Basic.EntityLayer.AbstractEntity), true);
-					foreach (Type type in types)
-					{
-						if (type.IsSubclassOf(typeof(AbstractCondition)))
-							continue;
-						else if (type.IsSubclassOf(typeof(AbstractEntity)))
-						{
-							if (type.IsPublic && !type.IsGenericType && type.IsAbstract)
-								base.Items.Add(type.FullName);
-						}
-					}
-				}
+				base.Items.AddRange(baseClasses);
+
+				//	pane.Confirm
+				//EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));
+				//Assumes.Present(dteClass);
+				//EnvDTE.ProjectItem projectItem = dteClass.Solution.FindProjectItem(dteClass.ActiveDocument.FullName);
+				//if (projectItem != null)
+				//{
+				//	EnvDTE.Project project = projectItem.ContainingProject;
+				//	IVsSolution2 vsSolution = (IVsSolution2)provider.GetService(typeof(SVsSolution));
+				//	Assumes.Present(vsSolution);
+				//	vsSolution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy hierarchy);
+				//	Guid projectGuid;
+				//	vsSolution.GetGuidOfProject(hierarchy, out projectGuid);
+				//	IVsHierarchy ivsh = VsShellUtilities.GetHierarchy(provider, projectGuid);
+				//	DynamicTypeService typeService = (DynamicTypeService)provider.GetService(typeof(DynamicTypeService));
+				//	Assumes.Present(typeService);
+				//	ITypeDiscoveryService discovery = typeService.GetTypeDiscoveryService(ivsh);
+				//	ICollection types = discovery.GetTypes(typeof(Basic.EntityLayer.AbstractEntity), true);
+				//	foreach (Type type in types)
+				//	{
+				//		if (type.IsSubclassOf(typeof(AbstractCondition)))
+				//			continue;
+				//		else if (type.IsSubclassOf(typeof(AbstractEntity)))
+				//		{
+				//			if (type.IsPublic && !type.IsGenericType && type.IsAbstract)
+				//				base.Items.Add(type.FullName);
+				//		}
+				//	}
+				//}
 				if (value != null) { SelectedItem = value; }
 			}
+
 
 			/// <summary>
 			/// 

@@ -205,12 +205,12 @@ namespace Basic.DataEntities
 			}
 		}
 
-		private string _BaseAccess = "AbstractAccess";
+		private string _BaseAccess = typeof(AbstractAccess).FullName;
 		/// <summary>
 		/// 获取或设置当前数据持久类基类。
 		/// </summary>
 		/// <value>The string value assigned to the Name property</value>
-		[System.ComponentModel.DefaultValue("AbstractAccess"), System.ComponentModel.Bindable(true)]
+		[System.ComponentModel.DefaultValue("Basic.DataAccess.AbstractAccess"), System.ComponentModel.Bindable(true)]
 		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
 		[Basic.Designer.PersistentDescription("PersistentGenerator_BaseAccess")]
 		[System.ComponentModel.Editor(typeof(BaseAccessSelector), typeof(UITypeEditor))]
