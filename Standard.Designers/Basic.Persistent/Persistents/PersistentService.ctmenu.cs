@@ -2,8 +2,10 @@
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,7 @@ using Basic.DataEntities;
 using Basic.Designer;
 using Basic.Enums;
 using Basic.Windows;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -564,7 +567,7 @@ namespace Basic.Configuration
 		{
 			OleMenuCommand menu = sender as OleMenuCommand;
 			DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
-			menu.Enabled = menu.Visible = canvas != null && canvas.SelectedItem != null;
+			menu.Enabled = menu.Visible = canvas != null;
 		}
 		/// <summary>显示数据库字典编辑</summary>
 		private void OnShowColumns(object sender, EventArgs e)
@@ -575,12 +578,16 @@ namespace Basic.Configuration
 				DesignerEntitiesCanvas canvas = pane.Content as DesignerEntitiesCanvas;
 				PersistentConfiguration persistent = pane.GetPersistent();
 				DesignTableInfo _TableInfo = persistent.TableInfo;
-				// Guid tempGuid = Guid.Empty;
-				//IVsUIShell uiShell = GetVsUIShell();
-				//if (uiShell != null)
-				//{
-				//	uiShell.
-				//}
+
+				//asyncPackage.GetDialogPage()
+
+				//UITypeEditor editor = (UITypeEditor)TypeDescriptor.GetEditor(typeof(CollectionEditor), typeof(UITypeEditor));
+				//var context = new TypeDescriptorContext(asyncPackage, typeof(CollectionEditor));
+				//var editValue = editor.EditValue(context, asyncPackage, null);
+
+				CollectionEditor editor = new CollectionEditor(typeof(DesignColumnCollection));
+				//UITypeEditor editor = (UITypeEditor)TypeDescriptor.GetEditor(typeof(CollectionEditor), typeof(UITypeEditor));
+				object editValue = editor.EditValue(asyncPackage, _TableInfo.Columns);
 			}
 			catch (Exception ex)
 			{

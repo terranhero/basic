@@ -33,7 +33,7 @@ namespace Basic.Configuration
 	[ProvideMenuResource("PersistentMenus.ctmenu", 1)]
 	[ProvideAutoLoad(UIContextGuids.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
 	[System.Runtime.InteropServices.Guid(ConfirugationConsts.guidPackageString)]
-	[ProvideOptionPage(typeof(AbstractClassesOptions), "Persistent Designer", "General", 307, 0, true)]
+	[ProvideOptionPage(typeof(AbstractClassesOptions), "Persistent Designer", "General", 307, 308, true)]
 	public sealed class PersistentPackage : AsyncPackage, IVsSolutionEvents2//, IVsInstalledProduct
 	{
 		private readonly PersistentFactory factory;
@@ -70,14 +70,14 @@ namespace Basic.Configuration
 				return ass;
 			});
 			await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-			_Commands.InitializeTemplates(progress);
+			await _Commands.InitializeOptionsAsync(progress);
+			//await _Commands.InitializeTemplateAsync(progress);
 			await _Commands.InitializeAsync(progress);
 			RegisterEditorFactory(factory);
 			IVsSolution vsSolution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
 			Assumes.Present(vsSolution);
 			vsSolution.AdviseSolutionEvents(this, out solutionEventsCookie);
 		}
-
 
 		/// <summary>
 		/// Called to ask the package if the shell can be closed.

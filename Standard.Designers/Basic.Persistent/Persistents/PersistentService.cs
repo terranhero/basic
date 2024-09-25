@@ -6,11 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Documents;
 using Basic.Database;
 using Basic.DataEntities;
 using Basic.Enums;
 using Basic.Localizations;
+using Basic.Options;
 using Basic.Properties;
 using Basic.Windows;
 using Microsoft;
@@ -171,11 +173,28 @@ namespace Basic.Configuration
 		private IVsSolution GetVsSolution() { return _VsSolution; }
 
 		#endregion
+
+		/// <summary>读取系统配置信息</summary>
+		public Task InitializeOptionsAsync(IProgress<ServiceProgressData> progress)
+		{
+			progress.Report(new ServiceProgressData(nameof(InitializeOptionsAsync), "提取配置信息"));
+			try
+			{
+				AbstractClassesOptions opts = asyncPackage.GetDialogPage(typeof(AbstractClassesOptions)) as AbstractClassesOptions;
+				return Task.CompletedTask;
+			}
+			catch (Exception ex)
+			{
+				progress.Report(new ServiceProgressData(nameof(InitializeOptionsAsync), ex.Message));
+				return Task.CompletedTask;
+			}
+		}
+
 		/// <summary>模版文件夹</summary>
 		internal const string TemplateFolder = "Templates";
-		public void InitializeTemplates(IProgress<ServiceProgressData> progress)
+		public Task InitializeTemplateAsync(IProgress<ServiceProgressData> progress)
 		{
-			progress.Report(new ServiceProgressData(nameof(InitializeTemplates), "加载模板文件"));
+			progress.Report(new ServiceProgressData(nameof(InitializeTemplateAsync), "加载模板文件"));
 			try
 			{
 				//string assFilePath = typeof(PersistentService).Assembly.Location;
@@ -213,12 +232,13 @@ namespace Basic.Configuration
 				//		Engine.Razor.Compile(content, key, typeof(Type));
 				//	}
 				//}
+				return Task.CompletedTask;
 			}
 			catch (Exception ex)
 			{
-				progress.Report(new ServiceProgressData(nameof(InitializeTemplates), ex.Message));
+				progress.Report(new ServiceProgressData(nameof(InitializeTemplateAsync), ex.Message));
+				return Task.CompletedTask;
 			}
-
 		}
 
 		/// <summary>

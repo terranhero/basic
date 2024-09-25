@@ -8,6 +8,9 @@
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -49,6 +52,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Builders\AbstractMvcViewBuilder.cs" />
@@ -288,7 +294,9 @@
     <Compile Include="Options\AbstractClassesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Options\AbstractClassesOptions.cs" />
+    <Compile Include="Options\AbstractClassesOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ResourcePackage\Consts.cs" />
     <Compile Include="ResourcePackage\LocalizationFactory.cs" />
     <Compile Include="ResourcePackage\LocalizationPackage.cs" />
@@ -487,8 +495,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Data.ConnectionUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Data.ConnectionUI.Dialog, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Data.ConnectionUI" />
+    <Reference Include="Microsoft.Data.ConnectionUI.Dialog" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />

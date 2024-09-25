@@ -8,6 +8,7 @@ using Basic.Configuration;
 using System.Xml;
 using Basic.Enums;
 using System.Drawing.Design;
+using Newtonsoft.Json.Linq;
 
 namespace Basic.Database
 {
@@ -22,6 +23,7 @@ namespace Basic.Database
 
 		internal const string XmlElementName = "TableColumn";
 		internal const string NameAttribute = "Name";
+		internal const string TypeNameAttribute = "Type";
 		internal const string DbTypeAttribute = "DbType";
 		internal const string NullableAttribute = "Nullable";
 		internal const string SizeAttribute = "Size";
@@ -112,8 +114,7 @@ namespace Basic.Database
 		protected internal override void OnFileContentChanged(EventArgs e)
 		{
 			base.OnFileContentChanged(e);
-			if (tableInfo != null)
-				tableInfo.OnFileContentChanged(e);
+			if (tableInfo != null) { tableInfo.OnFileContentChanged(e); }
 		}
 
 		private bool _PrimaryKey = false;
@@ -354,6 +355,7 @@ namespace Basic.Database
 		{
 			if (name == NameAttribute) { _Name = value; return true; }
 			else if (name == DbTypeAttribute) { return Enum.TryParse<DbTypeEnum>(value, out _DbType); }
+			else if (name == TypeNameAttribute) { _TypeName = value; return true; }
 			else if (name == NullableAttribute) { _Nullable = Convert.ToBoolean(value); return true; }
 			else if (name == SizeAttribute) { _Size = Convert.ToInt32(value); return true; }
 			else if (name == PrecisionAttribute) { _Precision = Convert.ToByte(value); return true; }
@@ -401,10 +403,13 @@ namespace Basic.Database
 				writer.WriteAttributeString(ScaleAttribute, Convert.ToString(_Scale));
 			if (_PrimaryKey)
 				writer.WriteAttributeString(PrimaryKeyAttribute, "true");
+			if (!string.IsNullOrWhiteSpace(_TypeName))
+				writer.WriteAttributeString(TypeNameAttribute, _TypeName);
 			if (!string.IsNullOrWhiteSpace(_PropertyName))
 				writer.WriteAttributeString(PropertyAttribute, _PropertyName);
 			if (!string.IsNullOrWhiteSpace(_DefaultValue))
 				writer.WriteAttributeString(DefaultValueAttribute, _DefaultValue);
+
 			if (_Computed)
 				writer.WriteAttributeString(ComputedAttribute, "true");
 		}
@@ -435,6 +440,8 @@ namespace Basic.Database
 			if (_Scale > 0 && _DbType == DbTypeEnum.Decimal)
 				writer.WriteAttributeString(ScaleAttribute, Convert.ToString(_Scale));
 			if (_PrimaryKey) { writer.WriteAttributeString(PrimaryKeyAttribute, "true"); }
+			if (!string.IsNullOrWhiteSpace(_TypeName))
+				writer.WriteAttributeString(TypeNameAttribute, _TypeName);
 			if (!string.IsNullOrWhiteSpace(_DefaultValue))
 				writer.WriteAttributeString(DefaultValueAttribute, _DefaultValue);
 			if (_Computed) { writer.WriteAttributeString(ComputedAttribute, "true"); }
