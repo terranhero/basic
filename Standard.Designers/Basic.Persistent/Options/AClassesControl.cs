@@ -11,14 +11,12 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Basic.Options
 {
-	public partial class AbstractClassesControl : UserControl
+	public partial class AClassesControl : UserControl
 	{
-		public AbstractClassesControl(AbstractClassesOptions opts)
+		public AClassesControl(AClassesOptions opts)
 		{
-			InitializeComponent(); options = opts;
-			lstConditions.DataSource = options.BaseConditions;
-			lstEntities.DataSource = options.BaseEntities;
-			lstAccesses.DataSource = options.BaseAccess;
+			options = opts;
+			InitializeComponent();
 		}
 		private TableLayoutPanel tableLayoutPanel1;
 		private TextBox txtCondition;
@@ -36,10 +34,16 @@ namespace Basic.Options
 		private Label lblConditions;
 		private Label lblEntities;
 		private Label lblAccesses;
-		private readonly AbstractClassesOptions options;
+		private readonly AClassesOptions options;
 
 		public void Initialize()
 		{
+			lstConditions.DataSource = options.BaseConditions;
+			lstEntities.DataSource = options.BaseEntities;
+			lstAccesses.DataSource = options.BaseAccess;
+
+			lstConditions.SelectedIndex = lstEntities.SelectedIndex = -1;
+			lstAccesses.SelectedIndex = -1;
 		}
 
 		private void InitializeComponent()
@@ -298,6 +302,7 @@ namespace Basic.Options
 
 		private void lstConditions_MouseClick(object sender, MouseEventArgs e)
 		{
+			lstAccesses.SelectedIndex = lstEntities.SelectedIndex = -1;
 			if (lstConditions.IndexFromPoint(e.X, e.Y) < 0)
 			{
 				lstConditions.SelectedIndex = -1; removeCondiiton.Enabled = false;
@@ -344,6 +349,7 @@ namespace Basic.Options
 
 		private void lstEntities_MouseClick(object sender, MouseEventArgs e)
 		{
+			lstConditions.SelectedIndex = lstAccesses.SelectedIndex = -1;
 			if (lstEntities.IndexFromPoint(e.X, e.Y) < 0)
 			{
 				lstEntities.SelectedIndex = -1; removeEntities.Enabled = false;
@@ -402,13 +408,14 @@ namespace Basic.Options
 			if (lstAccesses.SelectedIndex >= 0)
 			{
 				options.BaseAccess.RemoveAt(lstAccesses.SelectedIndex);
-				txtAccess.Text = ""; lstAccesses.SelectedIndex = -1; 
+				txtAccess.Text = ""; lstAccesses.SelectedIndex = -1;
 				options.SaveSettingsToStorage();
 			}
 		}
 
 		private void lstAccesses_MouseClick(object sender, MouseEventArgs e)
 		{
+			lstConditions.SelectedIndex = lstEntities.SelectedIndex = -1;
 			if (lstAccesses.IndexFromPoint(e.X, e.Y) < 0)
 			{
 				lstAccesses.SelectedIndex = -1; btnRemoveAccesses.Enabled = false;

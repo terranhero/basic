@@ -19,9 +19,11 @@ using Basic.DataEntities;
 using Basic.Designer;
 using Basic.Enums;
 using Basic.Windows;
+using EnvDTE;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Window = System.Windows.Window;
 
 //VSLangProj.prjKindVBProject for VB.NET projects.
 //VSLangProj.prjKindCSharpProject for C# projects.
@@ -575,7 +577,7 @@ namespace Basic.Configuration
 			try
 			{
 				PersistentPane pane = this.GetPersistentPane();
-				DesignerEntitiesCanvas canvas = pane.Content as DesignerEntitiesCanvas;
+				//DesignerEntitiesCanvas canvas = pane.Content as DesignerEntitiesCanvas;
 				PersistentConfiguration persistent = pane.GetPersistent();
 				DesignTableInfo _TableInfo = persistent.TableInfo;
 
@@ -584,10 +586,18 @@ namespace Basic.Configuration
 				//UITypeEditor editor = (UITypeEditor)TypeDescriptor.GetEditor(typeof(CollectionEditor), typeof(UITypeEditor));
 				//var context = new TypeDescriptorContext(asyncPackage, typeof(CollectionEditor));
 				//var editValue = editor.EditValue(context, asyncPackage, null);
+				//DTE dte = (DTE)asyncPackage.GetGlobalService(typeof(SDTE));
+				//hwnd = dte?.MainWindow?.HWnd ?? IntPtr.Zero;
+				//_DteClass.Windows;
+				ColumnsWindow window = new ColumnsWindow(this, _TableInfo.Columns);
+				//window.Owner = new Window();
+				if (window.ShowModal() == true)
+				{
 
-				CollectionEditor editor = new CollectionEditor(typeof(DesignColumnCollection));
+				}
+				//CollectionEditor editor = new CollectionEditor(typeof(DesignColumnCollection));
 				//UITypeEditor editor = (UITypeEditor)TypeDescriptor.GetEditor(typeof(CollectionEditor), typeof(UITypeEditor));
-				object editValue = editor.EditValue(asyncPackage, _TableInfo.Columns);
+				//object editValue = editor.EditValue(asyncPackage, _TableInfo.Columns);
 			}
 			catch (Exception ex)
 			{

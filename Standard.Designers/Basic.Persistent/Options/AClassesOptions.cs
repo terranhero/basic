@@ -16,10 +16,10 @@ namespace Basic.Options
 {
 	/// <summary>表示允许集成的抽象条件类</summary>
 	[ClassInterface(ClassInterfaceType.AutoDual)]
-	public class AbstractClassesOptions : DialogPage
+	public class AClassesOptions : DialogPage, IClassesOptions
 	{
 		private static readonly XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
-		public AbstractClassesOptions() { }
+		public AClassesOptions() { }
 
 		/// <summary>条件模型基类</summary>
 		public BindingList<string> BaseConditions { get; set; } = new BindingList<string>();
@@ -84,7 +84,7 @@ namespace Basic.Options
 		{
 			get
 			{
-				AbstractClassesControl page = new AbstractClassesControl(this);
+				AClassesControl page = new AClassesControl(this);
 				page.Dock = DockStyle.Fill;
 				page.Initialize();
 				return page;

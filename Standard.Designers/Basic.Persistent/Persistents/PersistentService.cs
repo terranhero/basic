@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using Basic.Database;
@@ -49,6 +50,8 @@ namespace Basic.Configuration
 		{
 			asyncPackage = package;
 			errorListProvider = new ErrorListProvider(package);
+			callback = new ServiceCreatorCallback(CreateService);
+			asyncCallback = new AsyncServiceCreatorCallback(CreateServiceAsync);
 		}
 
 		public MVS.AsyncPackage AsyncPackage { get { return asyncPackage; } }
@@ -56,6 +59,16 @@ namespace Basic.Configuration
 		public STT.Task<object> GetServiceAsync(Type serviceType)
 		{
 			return asyncPackage.GetServiceAsync(serviceType);
+		}
+
+		public STT.Task<TI> GetServiceAsync<TS, TI>() where TI : class
+		{
+			return asyncPackage.GetServiceAsync<TS, TI>();
+		}
+
+		public STT.Task<TI> GetServiceAsync<TI>() where TI : class
+		{
+			return asyncPackage.GetServiceAsync<TI, TI>();
 		}
 
 		public TI GetService<TI>() where TI : class
@@ -73,7 +86,6 @@ namespace Basic.Configuration
 		private const string fileExtension = ".sqlf;.oraf;.olef;.odbcf;.db2f;.litf";
 
 		private OleMenuCommandService _oleMenuService;
-		private AbstractClassesOptions baseClassesOptions;
 		private IVsUIShell _IVsUIShell;
 		private IVsSolution _VsSolution;
 		private EnvDTE80.DTE2 _DteClass;
@@ -212,13 +224,15 @@ namespace Basic.Configuration
 				return Array.Empty<string>();
 			}
 		}
-
+		private AClassesOptions baseClassesOptions;
 		/// <summary>读取系统配置信息</summary>
-		public Task InitializeOptionsAsync(IProgress<ServiceProgressData> progress)
+		public Task InitializeOptionsAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
 		{
 			try
 			{
-				baseClassesOptions = asyncPackage.GetDialogPage(typeof(AbstractClassesOptions)) as AbstractClassesOptions;
+				baseClassesOptions = asyncPackage.GetDialogPage(typeof(AClassesOptions)) as AClassesOptions;
+				//asyncPackage.AddService(typeof(IClassesOptions), asyncCallback, true);
+				//((IServiceContainer)asyncPackage).AddService(typeof(IClassesOptions), callback, true);
 				return Task.CompletedTask;
 			}
 			catch (Exception ex)
@@ -227,10 +241,23 @@ namespace Basic.Configuration
 				return Task.CompletedTask;
 			}
 		}
+		private readonly AsyncServiceCreatorCallback asyncCallback;
+		public Task<object> CreateServiceAsync(IAsyncServiceContainer container, CancellationToken cancellationToken, Type serviceType)
+		{
+			if (typeof(IClassesOptions) == serviceType) { return Task.FromResult<object>(baseClassesOptions); }
+			return Task.FromResult<object>(null);
+		}
+
+		private readonly ServiceCreatorCallback callback;
+		private object CreateService(IServiceContainer container, Type serviceType)
+		{
+			if (typeof(IClassesOptions) == serviceType) { return baseClassesOptions; }
+			return null;
+		}
 
 		/// <summary>模版文件夹</summary>
 		internal const string TemplateFolder = "Templates";
-		public Task InitializeTemplateAsync(IProgress<ServiceProgressData> progress)
+		public Task InitializeTemplateAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
 		{
 			progress.Report(new ServiceProgressData(nameof(InitializeTemplateAsync), "加载模板文件"));
 			try
@@ -286,7 +313,7 @@ namespace Basic.Configuration
 		/// <param name="cancellationToken">A cancellation token to monitor for initialization cancellation, which can occur when VS is shutting down.</param>
 		/// <param name="progress">A provider for progress updates.</param>
 		/// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
-		public async STT.Task InitializeAsync(IProgress<ServiceProgressData> progress)
+		public async STT.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
 		{
 			progress.Report(new ServiceProgressData("正在加载菜单......"));
 			_oleMenuService = await asyncPackage.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
@@ -308,7 +335,7 @@ namespace Basic.Configuration
 		/// <param name="cancellationToken">A cancellation token to monitor for initialization cancellation, which can occur when VS is shutting down.</param>
 		/// <param name="progress">A provider for progress updates.</param>
 		/// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
-		public STT.Task InitializeMenuAsync(IProgress<ServiceProgressData> progress)
+		public STT.Task InitializeMenuAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
 		{
 			progress.Report(new ServiceProgressData("正在加载菜单......"));
 			if (null != _oleMenuService)

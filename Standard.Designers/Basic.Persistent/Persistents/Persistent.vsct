@@ -6,7 +6,7 @@
 	<Extern href="virtkeys.h"/>
 
 	<Extern href="sccmnid.h"/>
-	
+
 	<Commands package="guidPackage">
 		<Menus>
 			<Menu guid="GUID_CONTEXTMENU" type="Context" id="IDM_CONTEXTMENU" priority="1">
@@ -410,15 +410,18 @@
 					<ButtonText>Edit Code</ButtonText>
 				</Strings>
 			</Button>
-			
-			<!--<Button guid="GUID_STANDARDCMDS" id="ID_TABLE_COLUMNS" priority="803" type="Button">
+
+			<Button guid="GUID_STANDARDCMDS" id="ID_TABLE_COLUMNS" priority="803" type="Button">
 				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
 				<Icon guid="guidVsShellIcons" id="80"/>
 				<Strings>
-					<ButtonText>列集合</ButtonText>
+					<ButtonText>列集合 ...</ButtonText>
 				</Strings>
-			</Button>-->
-			
+				<Strings language="en-us">
+					<ButtonText>Column List ...</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="GUID_STANDARDCMDS" id="ID_PROPERTIES" priority="804" type="Button">
 				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
 				<Icon guid="guidVsShellIcons" id="80"/>

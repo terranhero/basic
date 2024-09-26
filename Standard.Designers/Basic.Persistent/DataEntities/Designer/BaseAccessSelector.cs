@@ -6,7 +6,9 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Basic.Configuration;
 using Basic.DataAccess;
+using Basic.Options;
 using Microsoft;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Design;
@@ -54,7 +56,12 @@ namespace Basic.Designer
 					return value;
 				}
 				if (this.listBox == null) { this.listBox = new BaseAccessListBox(); }
-
+				//IServiceContainer serviceContainer = (IServiceContainer)provider.GetService(typeof(IServiceContainer));
+				//AClassesOptions myService = serviceContainer.GetService<AClassesOptions, AClassesOptions>();
+				//AClassesOptions myService = serviceContainer.GetService(typeof(IClassesOptions)) as AClassesOptions;
+				//PersistentPackage package = serviceContainer.GetService(typeof(PersistentPackage)) as PersistentPackage;
+				//var customPackage = AsyncServiceProvider.GetGlobalService.GetLoadedPackageAsync(customPackageGuid) as MyCustomPackage;
+				//PersistentPackage package = AsyncPackage.GetGlobalService(typeof(AClassesOptions)) as PersistentPackage;
 				PersistentPane pane = GetPersistentPane(provider);
 				this.listBox.BeginEdit(editorService, provider, value, pane.GetBaseAccesses());
 

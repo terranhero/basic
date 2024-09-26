@@ -4,16 +4,13 @@ using Basic.Database;
 
 namespace Basic.Collections
 {
-	/// <summary>
-	/// 
-	/// </summary>
+	/// <summary>数据持久类中数据库表列集合信息</summary>
 	public sealed class DesignColumnCollection : BaseCollection<DesignColumnInfo>,
 		ICollection<DesignColumnInfo>, IEnumerable<DesignColumnInfo>, INotifyCollectionChanged
 	{
-		/// <summary>
-		/// 数据库表中所有列配置节名称
-		/// </summary>
+		/// <summary>数据库表中所有列配置节名称</summary>
 		internal const string XmlElementName = "TableColumns";
+
 		private readonly DesignTableInfo tableInfo;
 
 		/// <summary>

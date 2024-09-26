@@ -97,7 +97,7 @@
     <Compile Include="Database\Collections\FunctionParameterCollection.cs" />
     <Compile Include="Database\Collections\RelationColumnCollection.cs" />
     <Compile Include="Database\Collections\RelationDesignerCollection.cs" />
-    <Compile Include="Database\Collections\TableColumnCollection.cs" />
+    <Compile Include="Database\Collections\DesignColumnCollection.cs" />
     <Compile Include="Database\Collections\TableDesignerCollection.cs" />
     <Compile Include="Database\Collections\TableUniqueConstraintCollection.cs" />
     <Compile Include="Database\Collections\TransactColumnCollection.cs" />
@@ -132,6 +132,9 @@
     <Compile Include="Database\Transact\TransactColumnInfo.cs" />
     <Compile Include="Database\Transact\TransactParameterInfo.cs" />
     <Compile Include="Database\Transact\TransactTableInfo.cs" />
+    <Compile Include="Database\Windows\ColumnsWindow.xaml.cs">
+      <DependentUpon>ColumnsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataCommand\AbstractCommandElement.cs" />
     <Compile Include="DataCommand\CheckedCommandElement.cs" />
     <Compile Include="DataCommand\Collections\CheckedCommandCollection.cs" />
@@ -291,12 +294,13 @@
     <Compile Include="Localizations\CreateLocalizationDialog.xaml.cs">
       <DependentUpon>CreateLocalizationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Options\AbstractClassesControl.cs">
+    <Compile Include="Options\AClassesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Options\AbstractClassesOptions.cs">
+    <Compile Include="Options\AClassesOptions.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Options\IClassesOptions.cs" />
     <Compile Include="ResourcePackage\Consts.cs" />
     <Compile Include="ResourcePackage\LocalizationFactory.cs" />
     <Compile Include="ResourcePackage\LocalizationPackage.cs" />
@@ -537,6 +541,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Database\Windows\ColumnsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DataCommand\Designer\CommandTextWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -656,8 +664,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Options\AbstractClassesControl.resx">
-      <DependentUpon>AbstractClassesControl.cs</DependentUpon>
+    <EmbeddedResource Include="Options\AClassesControl.resx">
+      <DependentUpon>AClassesControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Designer.resx" />
     <EmbeddedResource Include="Properties\DesignerStrings.resx">

@@ -23,6 +23,7 @@ namespace Basic.Configuration
 	/// IVsPackage interface and uses the registration attributes defined in the framework to 
 	/// register itself and its components with the shell.
 	/// </summary>
+	[ProvideService(typeof(IClassesOptions), IsCacheable = true)]
 	[PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
 	[ProvideLoadKey("Standard", "4.0.0.0", "PersistentPackage", "SIP GoldSoft Technology Limited", 1)]
 	[InstalledProductRegistration("#210", "#221", "4.0.0.0", IconResourceID = 510)]
@@ -33,8 +34,8 @@ namespace Basic.Configuration
 	[ProvideMenuResource("PersistentMenus.ctmenu", 1)]
 	[ProvideAutoLoad(UIContextGuids.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
 	[System.Runtime.InteropServices.Guid(ConfirugationConsts.guidPackageString)]
-	[ProvideOptionPage(typeof(AbstractClassesOptions), "Persistent Designer", "General", 307, 308, true)]
-	[ProvideProfileAttribute(typeof(AbstractClassesOptions), "Persistent Designer", "General", 307, 308, true)]
+	[ProvideOptionPage(typeof(AClassesOptions), "Persistent Designer", "General", 307, 308, true)]
+	[ProvideProfileAttribute(typeof(AClassesOptions), "Persistent Designer", "General", 307, 308, true)]
 	public sealed class PersistentPackage : AsyncPackage, IVsSolutionEvents2//, IVsInstalledProduct
 	{
 		private readonly PersistentFactory factory;
@@ -71,12 +72,13 @@ namespace Basic.Configuration
 				return ass;
 			});
 			await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-			IVsSolution vsSolution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
-			await _Commands.InitializeAsync(progress);
-			await _Commands.InitializeOptionsAsync(progress);
+			IVsSolution vsSolution = await _Commands.GetServiceAsync<SVsSolution, IVsSolution>();
+			await _Commands.InitializeAsync(cancellationToken, progress);
+			await _Commands.InitializeOptionsAsync(cancellationToken, progress);
 			//await _Commands.InitializeTemplateAsync(progress);
-			await _Commands.InitializeMenuAsync(progress);
-			
+			await _Commands.InitializeMenuAsync(cancellationToken, progress);
+
+			//IClassesOptions opts = await _Commands.GetServiceAsync<AClassesOptions, IClassesOptions>();
 			RegisterEditorFactory(factory);
 			Assumes.Present(vsSolution);
 			vsSolution.AdviseSolutionEvents(this, out solutionEventsCookie);
