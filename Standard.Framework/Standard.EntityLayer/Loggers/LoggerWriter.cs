@@ -66,7 +66,7 @@ namespace Basic.LogInfo
 		/// <summary>根据条件删除日志记录</summary>
 		/// <param name="keys">需要删除的日志主键</param>
 		/// <returns>返回日志查询结果</returns>
-		public virtual Task<Result> DeleteLoggingAsync(Guid[] keys)
+		public virtual Task<Result> DeleteAsync(Guid[] keys)
 		{
 			return Task.FromResult(Result.Success);
 		}

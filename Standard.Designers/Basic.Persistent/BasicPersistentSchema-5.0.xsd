@@ -6,6 +6,14 @@
 		<xs:restriction base="xs:string">
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="typeBoolean">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="True" />
+			<xs:enumeration value="true" />
+			<xs:enumeration value="False" />
+			<xs:enumeration value="false" />
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="typeCommandType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Text" />
@@ -193,9 +201,8 @@
 			<xs:enumeration value="ProtectedInternal" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="typePropertyType">
+	<xs:simpleType name="typeDocNetType">
 		<xs:restriction base="xs:string">
-			<xs:annotation ></xs:annotation>
 			<xs:enumeration value="System.Boolean" />
 			<xs:enumeration value="System.Byte" />
 			<xs:enumeration value="System.Byte[]" />
@@ -217,6 +224,10 @@
 			<xs:enumeration value="System.UInt32" />
 			<xs:enumeration value="System.UInt64" />
 		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="typePropertyType">
+		<xs:union memberTypes="tns:typeDocNetType"/>
 	</xs:simpleType>
 	<xs:simpleType name="typeSize">
 		<xs:restriction base="xs:int">
@@ -361,6 +372,15 @@
 			<xs:enumeration value="Internal"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="typeNamingRules">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DefaultCase"/>
+			<xs:enumeration value="PascalCase"/>
+			<xs:enumeration value="CamelCase"/>
+			<xs:enumeration value="UpperCase"/>
+			<xs:enumeration value="LowerCase"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="typeGenerateMode">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Entity"/>
@@ -457,7 +477,7 @@
 	</xs:complexType>
 	<xs:complexType name="typeDynamicCommand">
 		<xs:all>
-			<xs:element name="Condition" minOccurs="1" maxOccurs="1" type="xs:string" />
+			<xs:element name="Condition" minOccurs="0" maxOccurs="1" type="xs:string" />
 			<xs:element name="WithClauses" minOccurs="0" maxOccurs="1" type="tns:typeWithClauses"></xs:element>
 			<xs:element name="SelectText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
 			<xs:element name="FromText" minOccurs="1" maxOccurs="1" type="tns:typeCommandText" />
@@ -482,6 +502,7 @@
 		<xs:attribute name="CommandTimeout" use="optional" type="tns:typeCommandTimeout" />
 		<xs:attribute name="Modifier" use="optional" type="tns:typeMethodModifier" />
 		<xs:attribute name="Kind" use="optional" type="tns:typeConfigurationKind" />
+		<xs:attribute name="Async" use="optional" type="tns:typeBoolean" />
 		<xs:attribute name="Executable" use="optional" type="xs:string" />
 		<xs:attribute name="Comment" use="optional" type="xs:string" />
 	</xs:complexType>
@@ -525,10 +546,18 @@
 			<xs:extension base="xs:string">
 				<xs:attribute name="Name" use="required" type="xs:string"/>
 				<xs:attribute name="Group" use="optional" type="xs:string"/>
+				<xs:attribute name="Public" use="optional" type="xs:string"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
+	<xs:simpleType name="anyString">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"></xs:minLength>
+			<xs:maxLength value="9854212347"></xs:maxLength>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="typePersistentGenerator">
+		<xs:attribute name="Naming" use="optional" type="tns:typeNamingRules" />
 		<xs:attribute name="Modifier" use="optional" type="tns:typeClassModifier" />
 		<xs:attribute name="Generate" use="optional" type="tns:typeGenerateAction" />
 		<xs:attribute name="ResxMode" use="optional" type="tns:typeGenerateAction" />

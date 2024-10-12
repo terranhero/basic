@@ -67,11 +67,10 @@ namespace Basic.LogInfo
 			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
 		}
 
-
 		/// <summary>根据条件删除日志记录</summary>
 		/// <param name="keys">需要删除的日志主键</param>
 		/// <returns>返回日志查询结果</returns>
-		public Task<Result> DeleteLoggingAsync(Guid[] keys)
+		public Task<Result> DeleteAsync(Guid[] keys)
 		{
 			return Task.FromResult(Result.Success);
 		}
