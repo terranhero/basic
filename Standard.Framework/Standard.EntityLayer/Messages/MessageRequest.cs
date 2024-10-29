@@ -1,10 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Web;
-using Basic.Messages;
 
-namespace Basic.MvcLibrary
+namespace Basic.Messages
 {
 	/// <summary>表示资源请求</summary>
 	public sealed class MessageRequest : IMessageRequest

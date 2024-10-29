@@ -1,4 +1,7 @@
 版本：6.0.5494
+修改 MessageRequest 程序集，由 Basic.MvcLibrary 改为 Standard.EntityLayer 
+
+版本：6.0.5494
 添加 MessageRequest 类创建方法，添加 MessageRequest 缓存设置
 
 版本：6.0.5493
