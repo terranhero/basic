@@ -1,4 +1,7 @@
-版本：6.0.5494
+版本：6.0.5496
+修改 AbstractDataContext 类中 GetString 访问修饰符，有protected 改为 public
+
+版本：6.0.5495
 修改 MessageRequest 程序集，由 Basic.MvcLibrary 改为 Standard.EntityLayer 
 
 版本：6.0.5494

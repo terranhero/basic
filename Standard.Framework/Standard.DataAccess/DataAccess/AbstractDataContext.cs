@@ -56,7 +56,7 @@ namespace Basic.DataAccess
 		/// <exception cref="System.ArgumentNullException">name 参数为 null。</exception>
 		/// <exception cref="System.InvalidOperationException">指定资源的值不是字符串。</exception>
 		/// <exception cref="System.Resources.MissingManifestResourceException">未找到可用的资源集，并且没有非特定区域性的资源。</exception>
-		protected string GetString<TM>(TM item, Expression<Func<TM, bool>> expression)
+		public string GetString<TM>(TM item, Expression<Func<TM, bool>> expression)
 		{
 			MemberExpression memberExpression = LambdaHelper.GetMember(expression.Body);
 			string name = memberExpression == null ? null : memberExpression.Member.Name;
@@ -85,7 +85,7 @@ namespace Basic.DataAccess
 		/// <exception cref="System.ArgumentNullException">name 参数为 null。</exception>
 		/// <exception cref="System.InvalidOperationException">指定资源的值不是字符串。</exception>
 		/// <exception cref="System.Resources.MissingManifestResourceException">未找到可用的资源集，并且没有非特定区域性的资源。</exception>
-		protected string GetString<TM>(TM item, Expression<Func<TM, Enum>> expression)
+		public string GetString<TM>(TM item, Expression<Func<TM, Enum>> expression)
 		{
 			Enum value = expression.Compile().Invoke(item); Type enumType = value.GetType();
 			string converter = null;
@@ -110,7 +110,7 @@ namespace Basic.DataAccess
 		/// <exception cref="System.ArgumentNullException">name 参数为 null。</exception>
 		/// <exception cref="System.InvalidOperationException">指定资源的值不是字符串。</exception>
 		/// <exception cref="System.Resources.MissingManifestResourceException">未找到可用的资源集，并且没有非特定区域性的资源。</exception>
-		protected string GetString(string name)
+		public string GetString(string name)
 		{
 			if (_User.Culture != null) { return MessageContext.GetString(name, _User.Culture); }
 			return MessageContext.GetString(name);
@@ -122,7 +122,7 @@ namespace Basic.DataAccess
 		/// <param name="name">资源名称</param>
 		/// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象。</param>
 		/// <returns>为指定区域性本地化的资源的值。如果不可能有最佳匹配，则返回 null。</returns>
-		protected string GetString(string name, params object[] args)
+		public string GetString(string name, params object[] args)
 		{
 			if (_User.Culture != null) { return MessageContext.GetString(name, _User.Culture, args); }
 			return MessageContext.GetString(name, args);
@@ -134,7 +134,7 @@ namespace Basic.DataAccess
 		/// <param name="converterName">需要指定的转换器名称。</param>
 		/// <param name="name">资源名称</param>
 		/// <returns> 针对调用方的当前区域性设置而本地化的资源的值。如果不可能有匹配项，则返回 null。</returns>
-		protected string GetString(string converterName, string name)
+		public string GetString(string converterName, string name)
 		{
 			if (_User.Culture != null) { return MessageContext.GetString(converterName, name, _User.Culture); }
 			return MessageContext.GetString(converterName, name);
@@ -147,7 +147,7 @@ namespace Basic.DataAccess
 		/// <param name="name">资源名称</param>
 		/// <param name="args">一个对象数组，其中包含零个或多个要设置格式的对象。</param>
 		/// <returns> 针对调用方的当前区域性设置而本地化的资源的值。如果不可能有匹配项，则返回 null。</returns>
-		protected string GetString(string converterName, string name, params object[] args)
+		public string GetString(string converterName, string name, params object[] args)
 		{
 			if (_User.Culture != null) { return MessageContext.GetString(converterName, name, _User.Culture, args); }
 			return MessageContext.GetString(converterName, name, args);
