@@ -8,7 +8,7 @@ using Basic.Interfaces;
 namespace Basic.LogInfo
 {
 	/// <summary>日志记录数据库写入类</summary>
-	public class DbLoggerWriter : LoggerWriter
+	public class DbLoggerWriter : LoggerWriter, IDbLoggerWriter
 	{
 		/// <summary>初始化 DbLoggerWriter 类实例</summary>
 		internal DbLoggerWriter() : base(new EventLogContext(_EventLogs)) { }
@@ -18,6 +18,20 @@ namespace Basic.LogInfo
 
 		/// <summary>初始化 DbLoggerWriter 类实例</summary>
 		public DbLoggerWriter(IUserContext ctx) : base(new EventLogContext(ctx, _EventLogs)) { }
+
+		private static IDbLoggerWriter _logger;
+		/// <summary>获取本地文件写入实例</summary>
+		public static IDbLoggerWriter Instance(IUserContext ctx)
+		{
+			if (_logger == null) { _logger = new DbLoggerWriter(ctx); }
+			return _logger;
+		}
+		/// <summary>获取本地文件写入实例</summary>
+		public static IDbLoggerWriter Instance(string connection)
+		{
+			if (_logger == null) { _logger = new DbLoggerWriter(connection); }
+			return _logger;
+		}
 
 		/// <summary>根据条件查询日志记录</summary>
 		/// <param name="con">日志查询条件</param>

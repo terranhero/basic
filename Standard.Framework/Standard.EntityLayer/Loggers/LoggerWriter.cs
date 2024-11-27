@@ -11,6 +11,9 @@ namespace Basic.LogInfo
 	/// <summary>将日志写入本地文件中</summary>
 	public interface IFileLoggerWriter : ILoggerWriter { }
 
+	/// <summary>将日志写入数据库中</summary>
+	public interface IDbLoggerWriter : ILoggerWriter { }
+
 	/// <summary>允许写入文件日志</summary>
 	internal sealed class FileLoggerWriter : LoggerWriter
 	{
@@ -107,20 +110,9 @@ namespace Basic.LogInfo
 		/// <summary>系统是否已经存在请求配置</summary>
 		public bool HasActions { get { return _actions.Count > 0; } }
 
-		/// <summary></summary>
-		public static ILoggerWriter Writer
-		{
-			get
-			{
-				if (_logger == null) { _logger = new FileLoggerWriter(); }
-				return _logger;
-			}
-		}
-
-
 		private static IFileLoggerWriter _logger;
 		/// <summary>获取本地文件写入实例</summary>
-		public static IFileLoggerWriter File
+		public static IFileLoggerWriter Writer
 		{
 			get
 			{
