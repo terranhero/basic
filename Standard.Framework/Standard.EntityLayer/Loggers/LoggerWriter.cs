@@ -8,6 +8,9 @@ using Basic.Interfaces;
 
 namespace Basic.LogInfo
 {
+	/// <summary>将日志写入本地文件中</summary>
+	public interface IFileLoggerWriter : ILoggerWriter { }
+
 	/// <summary>允许写入文件日志</summary>
 	internal sealed class FileLoggerWriter : LoggerWriter
 	{
@@ -16,7 +19,7 @@ namespace Basic.LogInfo
 	}
 
 	/// <summary>表示抽象的日志写入类</summary>
-	public abstract class LoggerWriter : ILoggerWriter
+	public abstract class LoggerWriter : ILoggerWriter, IFileLoggerWriter
 	{
 		/// <summary></summary>
 		internal protected readonly ILoggerStorage _storage = null;
@@ -104,9 +107,20 @@ namespace Basic.LogInfo
 		/// <summary>系统是否已经存在请求配置</summary>
 		public bool HasActions { get { return _actions.Count > 0; } }
 
-		private static ILoggerWriter _logger;
 		/// <summary></summary>
 		public static ILoggerWriter Writer
+		{
+			get
+			{
+				if (_logger == null) { _logger = new FileLoggerWriter(); }
+				return _logger;
+			}
+		}
+
+
+		private static IFileLoggerWriter _logger;
+		/// <summary>获取本地文件写入实例</summary>
+		public static IFileLoggerWriter File
 		{
 			get
 			{

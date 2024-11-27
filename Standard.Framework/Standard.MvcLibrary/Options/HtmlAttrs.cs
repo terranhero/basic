@@ -59,14 +59,14 @@ namespace Basic.MvcLibrary
 		/// <param name="value">要添加的元素的值。对于引用类型，该值可以为 null。</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">capacity 小于 0。</exception>
 		public HtmlAttrs(string key, object value) : base(5) { base[key] = value; }
-
+#if NET6_0
 		/// <summary>
 		/// 用序列化数据初始化 HtmlAttributes 类的新实例。
 		/// </summary>
 		/// <param name="info">一个 System.Runtime.Serialization.SerializationInfo 对象，它包含序列化 HtmlAttributes所需的信息。</param>
 		/// <param name="context">System.Runtime.Serialization.StreamingContext 结构，该结构包含与 HtmlAttributes相关联的序列化流的源和目标。</param>
 		private HtmlAttrs(SerializationInfo info, StreamingContext context) : base(info, context) { }
-
+#endif
 		/// <summary>
 		/// 设置class属性值
 		/// </summary>

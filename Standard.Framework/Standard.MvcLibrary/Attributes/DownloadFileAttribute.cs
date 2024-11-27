@@ -82,9 +82,9 @@ namespace Basic.MvcLibrary
 			{
 				//Messages.MessageContext.GetString(_ConverterName, resourceName);
 				string fileName = request.GetString(_ConverterName, resourceName);
-				filterContext.HttpContext.Request.Headers.Add(ViewDataKey, fileName);
+				filterContext.HttpContext.Request.Headers.Append(ViewDataKey, fileName);
 			}
-			else { filterContext.HttpContext.Request.Headers.Add(ViewDataKey, _DownloadFileName); }
+			else { filterContext.HttpContext.Request.Headers.Append(ViewDataKey, _DownloadFileName); }
 		}
 
 	}
