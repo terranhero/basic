@@ -1,11 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
-	<PropertyGroup Label="Globals">
-		<SccProjectName>Svn</SccProjectName>
-		<SccProvider></SccProvider>
-		<SccAuxPath>Svn</SccAuxPath>
-		<SccLocalPath>Svn</SccLocalPath>
-	</PropertyGroup>
 	<PropertyGroup>
 		<AssemblyName>Basic.SqlClientAccess</AssemblyName>
 		<RootNamespace>Basic</RootNamespace>
@@ -17,11 +11,16 @@
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<Title>SQL Server 数据库支持类</Title>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />

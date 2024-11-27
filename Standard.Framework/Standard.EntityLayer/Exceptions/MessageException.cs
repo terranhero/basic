@@ -61,6 +61,7 @@ namespace Basic.Exceptions
 		/// <param name="paramArray">自定义显示错误消息数组</param>
 		public MessageException(string code, CultureInfo culture, Exception innerException, params object[] paramArray)
 			: base(MessageContext.GetString(code, culture, paramArray), innerException) { _CultureInfo = culture; Code = code; }
+#if NET6_0 || NETSTANDARD2_0
 
 		/// <summary>用序列化数据初始化 MessageException 类的新实例。 </summary>
 		/// <param name="info">它存有有关所引发异常的序列化的对象数据。</param>
@@ -81,7 +82,7 @@ namespace Basic.Exceptions
 			info.AddValue("ErrorCode", Code);
 			info.AddValue("CultureInfo", _CultureInfo.LCID);
 		}
-
+#endif
 		/// <summary>获取异常信息的错误编码</summary>
 		public string Code { get; private set; }
 	}

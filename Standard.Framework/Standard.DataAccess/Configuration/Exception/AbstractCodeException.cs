@@ -64,7 +64,8 @@ namespace Basic.Exceptions
 			_Message = GetString(errorCode, paramArray);
 		}
 
-		/// <summary>
+#if NET6_0 || NETSTANDARD2_0
+	/// <summary>
 		/// 用序列化数据初始化 GoldSoftException 类的新实例。 
 		/// </summary>
 		/// <param name="info">它存有有关所引发异常的序列化的对象数据。</param>
@@ -87,5 +88,6 @@ namespace Basic.Exceptions
 			info.AddValue("ErrorCode", ErrorCode);
 			info.AddValue("CustomMessage", _Message);
 		}
+#endif
 	}
 }

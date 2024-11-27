@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.Common;
-using System.Drawing.Printing;
 using System.Linq.Expressions;
-using Basic.DataAccess;
 using System.Threading.Tasks;
-using Basic.Collections;
 
 namespace Basic.Interfaces
 {

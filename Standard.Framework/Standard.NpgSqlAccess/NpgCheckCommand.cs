@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Basic.Collections;
-
-using System.Data.SqlClient;
-using Basic.Exceptions;
 using System.ComponentModel;
 using System.Data.Common;
-using Basic.EntityLayer;
-using Basic.Enums;
 using Basic.DataAccess;
+using Basic.Enums;
 using Npgsql;
 
 namespace Basic.PostgreSql

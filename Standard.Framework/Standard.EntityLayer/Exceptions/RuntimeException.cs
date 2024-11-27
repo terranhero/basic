@@ -53,6 +53,7 @@ namespace Basic.Exceptions
 			ErrorCode = errorCode;
 		}
 
+#if NET6_0 || NETSTANDARD2_0
 		/// <summary>
 		/// 用序列化数据初始化 GoldSoftException 类的新实例。 
 		/// </summary>
@@ -76,5 +77,6 @@ namespace Basic.Exceptions
 			info.AddValue("ErrorCode", ErrorCode);
 			info.AddValue("CustomMessage", _Message);
 		}
+#endif
 	}
 }

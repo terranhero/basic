@@ -314,7 +314,7 @@ namespace Basic.MySqlAccess
 			if (value == null) { parameter.Value = DBNull.Value; return; }
 			if (parameter.MySqlDbType == MySqlDbType.String && value is int[])
 			{
-				parameter.Value = string.Join(",", (value as int[]).Cast<string>().ToArray());
+				parameter.Value = string.Join(",", (value as int[]));
 				return;
 			}
 			parameter.Value = value;

@@ -1,6 +1,4 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using Basic.Enums;
+﻿using Basic.Enums;
 using Basic.Exceptions;
 using Npgsql;
 using NpgsqlTypes;

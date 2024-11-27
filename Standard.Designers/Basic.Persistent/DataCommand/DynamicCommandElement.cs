@@ -737,6 +737,7 @@ namespace Basic.Configuration
 			{
 				CodeTypeReference iPaginationReference = new CodeTypeReference("IPagination");
 				iPaginationReference.TypeArguments.Add(EntityElement.EntityName);
+				//method.Attributes |= MemberAttributes.Async;
 				method.ReturnType = new CodeTypeReference("Task");
 				method.ReturnType.TypeArguments.Add(iPaginationReference);
 			}

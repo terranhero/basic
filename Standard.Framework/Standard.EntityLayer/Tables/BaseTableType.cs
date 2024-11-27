@@ -22,6 +22,7 @@ namespace Basic.Tables
 	public abstract partial class BaseTableType<TR> : DataTable, ISerializable, IXmlSerializable, IPagination<TR> where TR : BaseTableRowType
 	{
 		#region 构造函数和类初始化方法
+#if NET6_0 || NETSTANDARD2_0
 		/// <summary>
 		/// 使用将AbstractEntity对象序列化所需的数据填充 SerializationInfo。
 		/// </summary>
@@ -32,7 +33,17 @@ namespace Basic.Tables
 		{
 			InitColumns();
 		}
-
+		
+		/// <summary>
+		/// 使用将TableEntity对象序列化所需的数据填充 SerializationInfo。
+		/// </summary>
+		/// <param name="info">要填充数据的 SerializationInfo。</param>
+		/// <param name="context">此序列化的目标（请参见 StreamingContext）。</param>
+		void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			base.GetObjectData(info, context);
+		}
+#endif
 		/// <summary>
 		/// 使用带参数的构造方法，创建AbstractEntity类实例
 		/// </summary>
@@ -464,17 +475,6 @@ namespace Basic.Tables
 		}
 		#endregion
 
-		#region 接口 ISerializable
-		/// <summary>
-		/// 使用将TableEntity对象序列化所需的数据填充 SerializationInfo。
-		/// </summary>
-		/// <param name="info">要填充数据的 SerializationInfo。</param>
-		/// <param name="context">此序列化的目标（请参见 StreamingContext）。</param>
-		void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-		}
-		#endregion
 
 		#region IPagination 成员
 		/// <summary>

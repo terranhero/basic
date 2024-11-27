@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using STT = System.Threading.Tasks;
 
 namespace Basic.MySqlAccess
 {
@@ -44,7 +45,7 @@ namespace Basic.MySqlAccess
 		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
 		/// </summary>
 		/// <returns>受影响的行数。</returns>
-		internal protected override System.Threading.Tasks.Task<int> ExecuteNonQueryAsync()
+		internal protected override STT.Task<int> ExecuteNonQueryAsync()
 		{
 			return _MySqlCommand.ExecuteNonQueryAsync();
 		}
@@ -53,9 +54,9 @@ namespace Basic.MySqlAccess
 		/// 针对 Connection 执行 CommandText，并生成 DbDataReader。 
 		/// </summary>
 		/// <returns>一个 DbDataReader 对象。 </returns>
-		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync()
+		internal protected override STT.Task<DbDataReader> ExecuteReaderAsync()
 		{
-			return _MySqlCommand.ExecuteReaderAsync();
+			return _MySqlCommand.ExecuteReaderAsync().ContinueWith<DbDataReader>((reader) => { return reader.Result; });
 		}
 
 		/// <summary>
@@ -63,9 +64,9 @@ namespace Basic.MySqlAccess
 		/// </summary>
 		/// <param name="behavior">类型： System.Data.CommandBehavior，CommandBehavior 值之一。 </param>
 		/// <returns>一个 DbDataReader 对象。 </returns>
-		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior)
+		internal protected override STT.Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior)
 		{
-			return _MySqlCommand.ExecuteReaderAsync(behavior);
+			return _MySqlCommand.ExecuteReaderAsync(behavior).ContinueWith<DbDataReader>((reader) => { return reader.Result; });
 		}
 
 		/// <summary>
@@ -141,7 +142,7 @@ namespace Basic.MySqlAccess
 			}
 			if (parameter.MySqlDbType == MySqlDbType.String && value is int[])
 			{
-				parameter.Value = string.Join(",", (value as int[]).Cast<string>().ToArray());
+				parameter.Value = string.Join(",", (value as int[]));
 				return;
 			}
 			parameter.Value = value;

@@ -17,17 +17,17 @@ namespace Basic.OracleAccess
 	[System.Xml.Serialization.XmlRoot(DataCommand.StaticCommandConfig)]
 	internal sealed class OracleStaticCommand : StaticCommand, IDisposable, ICloneable
 	{
-		private readonly OracleCommand sqlCommand;
+		private readonly OracleCommand oracleCommand;
 		/// <summary>
 		/// 初始化 SqlDynamicCommand 类的新实例。 
 		/// </summary>
-		public OracleStaticCommand() : base(new OracleCommand()) { sqlCommand = dataDbCommand as OracleCommand; }
+		public OracleStaticCommand() : base(new OracleCommand()) { oracleCommand = dataDbCommand as OracleCommand; }
 
 		/// <summary>
 		/// 根据数据库命令，初始化 SqlDynamicCommand 类的新实例，主要克隆实例时使用。
 		/// </summary>
 		/// <param name="dbCommand">表示 OracleCommand 类实例。</param>
-		private OracleStaticCommand(OracleCommand dbCommand) : base(dbCommand) { sqlCommand = dbCommand; }
+		private OracleStaticCommand(OracleCommand dbCommand) : base(dbCommand) { oracleCommand = dbCommand; }
 
 		/// <summary>当前命令的数据库类型</summary>
 		public override ConnectionType ConnectionType { get { return ConnectionType.OracleConnection; } }
@@ -63,7 +63,7 @@ namespace Basic.OracleAccess
 		/// <summary>
 		/// 重置数据库连接
 		/// </summary>
-		internal OracleConnection Connection { get { return sqlCommand.Connection; } }
+		internal OracleConnection Connection { get { return oracleCommand.Connection; } }
 
 		/// <summary>
 		/// 重置数据库连接
@@ -71,7 +71,7 @@ namespace Basic.OracleAccess
 		/// <param name="connection">一个 DbConnection，它表示到关系数据库实例的连接。 </param>
 		internal void ResetConnection(OracleConnection connection)
 		{
-			sqlCommand.Connection = connection;
+			oracleCommand.Connection = connection;
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Basic.OracleAccess
 		/// <returns>受影响的行数。</returns>
 		internal protected override STT.Task<int> ExecuteNonQueryAsync()
 		{
-			return sqlCommand.ExecuteNonQueryAsync();
+			return oracleCommand.ExecuteNonQueryAsync();
 		}
 
 		/// <summary>
@@ -89,7 +89,7 @@ namespace Basic.OracleAccess
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override STT.Task<DbDataReader> ExecuteReaderAsync()
 		{
-			return sqlCommand.ExecuteReaderAsync();
+			return oracleCommand.ExecuteReaderAsync().ContinueWith<DbDataReader>((reader) => { return reader.Result; });
 		}
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace Basic.OracleAccess
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override STT.Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior)
 		{
-			return sqlCommand.ExecuteReaderAsync();
+			return oracleCommand.ExecuteReaderAsync().ContinueWith<DbDataReader>((reader) => { return reader.Result; });
 		}
 
 		/// <summary>
@@ -112,7 +112,7 @@ namespace Basic.OracleAccess
 		/// <returns>一个 SqlDataReader 对象。</returns>
 		internal protected override DbDataReader ExecuteReader()
 		{
-			return sqlCommand.ExecuteReader();
+			return oracleCommand.ExecuteReader();
 		}
 
 		/// <summary>
@@ -126,7 +126,7 @@ namespace Basic.OracleAccess
 		/// <returns>一个 SqlDataReader 对象。</returns>
 		internal protected override DbDataReader ExecuteReader(CommandBehavior behavior)
 		{
-			return sqlCommand.ExecuteReader(behavior);
+			return oracleCommand.ExecuteReader(behavior);
 		}
 
 		/// <summary>
@@ -141,7 +141,7 @@ namespace Basic.OracleAccess
 				if (value == null) { parameter.Value = DBNull.Value; return; }
 				if (parameter.OracleDbType == OracleDbType.NVarchar2 && value is int[])
 				{
-					parameter.Value = string.Join(",", (value as int[]).Cast<string>().ToArray());
+					parameter.Value = string.Join(",", (value as int[]));
 					return;
 				}
 				parameter.Value = value; return;
@@ -156,7 +156,7 @@ namespace Basic.OracleAccess
 		/// <returns>执行Transact-SQL命令结果，已在 System.Data.DataTable 中成功添加或刷新的行数。</returns>
 		internal protected override int Fill(DataTable table)
 		{
-			using (OracleDataAdapter dataAdapter = new OracleDataAdapter(sqlCommand))
+			using (OracleDataAdapter dataAdapter = new OracleDataAdapter(oracleCommand))
 			{
 				return dataAdapter.Fill(table);
 			}
@@ -169,7 +169,7 @@ namespace Basic.OracleAccess
 		/// <returns>执行Transact-SQL命令结果，已在 System.Data.DataSet 中成功添加或刷新的行数。</returns>
 		internal protected override int Fill(System.Data.DataSet dataSet)
 		{
-			using (OracleDataAdapter dataAdapter = new OracleDataAdapter(sqlCommand))
+			using (OracleDataAdapter dataAdapter = new OracleDataAdapter(oracleCommand))
 			{
 				return dataAdapter.Fill(dataSet);
 			}
@@ -231,7 +231,7 @@ namespace Basic.OracleAccess
 		/// <returns>一个 DbParameter 对象。</returns>
 		public override DbParameter CreateParameter()
 		{
-			return sqlCommand.CreateParameter();
+			return oracleCommand.CreateParameter();
 		}
 
 		/// <summary>
@@ -246,7 +246,7 @@ namespace Basic.OracleAccess
 		internal protected override DbParameter CreateParameter(string parameterName, string sourceColumn, DataTypeEnum dbType,
 			int size, ParameterDirection direction, bool isNullable)
 		{
-			OracleParameter parameter = sqlCommand.CreateParameter();
+			OracleParameter parameter = oracleCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
@@ -269,7 +269,7 @@ namespace Basic.OracleAccess
 		internal protected override DbParameter CreateParameter(string parameterName, string sourceColumn, DataTypeEnum dbType,
 			byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			OracleParameter parameter = sqlCommand.CreateParameter();
+			OracleParameter parameter = oracleCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -332,7 +332,7 @@ namespace Basic.OracleAccess
 		public override DbParameter CreateParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			int size, ParameterDirection direction, bool isNullable)
 		{
-			OracleParameter parameter = sqlCommand.CreateParameter();
+			OracleParameter parameter = oracleCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
@@ -355,7 +355,7 @@ namespace Basic.OracleAccess
 		public override DbParameter CreateParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			OracleParameter parameter = sqlCommand.CreateParameter();
+			OracleParameter parameter = oracleCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -412,14 +412,14 @@ namespace Basic.OracleAccess
 		public override DbParameter CreateAddParameter(string parameterName, string sourceColumn, DbTypeEnum dbType, int size,
 			ParameterDirection direction, bool isNullable)
 		{
-			OracleParameter parameter = sqlCommand.CreateParameter();
+			OracleParameter parameter = oracleCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			ParameterConverter.ConvertParameterType(parameter, dbType, 0, 0);
-			sqlCommand.Parameters.Add(parameter);
+			oracleCommand.Parameters.Add(parameter);
 			return parameter;
 		}
 
@@ -434,7 +434,7 @@ namespace Basic.OracleAccess
 		public override DbParameter CreateAddParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			OracleParameter parameter = sqlCommand.CreateParameter();
+			OracleParameter parameter = oracleCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -442,7 +442,7 @@ namespace Basic.OracleAccess
 			parameter.Direction = direction;
 			parameter.IsNullable = isNullable;
 			ParameterConverter.ConvertParameterType(parameter, dbType, precision, scale);
-			sqlCommand.Parameters.Add(parameter);
+			oracleCommand.Parameters.Add(parameter);
 			return parameter;
 		}
 
@@ -480,7 +480,7 @@ namespace Basic.OracleAccess
 		{
 			lock (this)
 			{
-				OracleCommand command = sqlCommand.Clone() as OracleCommand;
+				OracleCommand command = oracleCommand.Clone() as OracleCommand;
 				OracleStaticCommand staticCommand = new OracleStaticCommand(command);
 				CopyTo(staticCommand);
 				if (_CheckCommands != null && _CheckCommands.Count > 0)

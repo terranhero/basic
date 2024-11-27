@@ -168,17 +168,12 @@ namespace Basic.SqlServer2012
 			SqlParameter parameter = dbParam as SqlParameter;
 			if (parameter == null)
 				throw new ArgumentException(string.Format(Strings.Access_InvalidArgument, "dbParam"), "dbParam");
-			if (value == null)
-			{
-				parameter.SqlValue = DBNull.Value;
-				return;
-			}
+			if (value == null) { parameter.SqlValue = DBNull.Value; }
 			if (parameter.SqlDbType == SqlDbType.NVarChar && value is int[])
 			{
-				parameter.SqlValue = string.Join(",", (value as int[]).Cast<string>().ToArray());
-				return;
+				parameter.SqlValue = string.Join(",", (value as int[]));
 			}
-			parameter.SqlValue = value;
+			else { parameter.SqlValue = value; }
 		}
 
 		/// <summary>

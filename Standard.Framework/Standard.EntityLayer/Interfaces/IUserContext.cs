@@ -18,8 +18,13 @@ namespace Basic.Interfaces
 		System.Globalization.CultureInfo Culture { get; }
 	}
 
+	/// <summary>表示当前操作用户的上下文</summary>
+	public interface IIdentityContext : IUserContext
+	{
+	}
+
 	/// <summary>默认实现 IUserContext 接口类</summary>
-	internal sealed class UserContext : IUserContext
+	internal sealed class UserContext : IUserContext, IIdentityContext
 	{
 		/// <summary>初始化 UserContext 类实例</summary>
 		/// <param name="con">数据库连接名称</param>

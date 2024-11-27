@@ -50,7 +50,7 @@ namespace Basic.OracleAccess
 			}
 			if (parameter.OracleDbType == OracleDbType.NVarchar2 && value is int[])
 			{
-				parameter.Value = string.Join(",", (value as int[]).Cast<string>().ToArray());
+				parameter.Value = string.Join(",", (value as int[]));
 				return;
 			}
 			parameter.Value = value;

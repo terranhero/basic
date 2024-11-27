@@ -1,3 +1,6 @@
+版本：6.0.5800
+添加对 .Net8.0的支持。
+
 版本：6.0.5496
 修改 AbstractDataContext 类中 GetString 访问修饰符，有protected 改为 public
 

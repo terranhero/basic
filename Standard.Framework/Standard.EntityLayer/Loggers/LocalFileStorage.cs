@@ -13,8 +13,11 @@ using Basic.Interfaces;
 namespace Basic.LogInfo
 {
 	/// <summary>将日志写入本地文件中</summary>
+	public interface IFileLoggerStorage : ILoggerStorage { }
+
+	/// <summary>将日志写入本地文件中</summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:使用简单的 \"using\" 语句", Justification = "<挂起>")]
-	internal sealed class LocalFileStorage : ILoggerStorage
+	internal sealed class LocalFileStorage : ILoggerStorage, IFileLoggerStorage
 	{
 		private const string _SplitLine = @"==================================================================================================================";
 		private const string _SplitChar = "=";

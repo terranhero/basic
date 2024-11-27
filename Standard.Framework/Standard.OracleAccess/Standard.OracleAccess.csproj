@@ -10,20 +10,24 @@
 	<PropertyGroup>
 		<AssemblyName>Basic.OracleAccess</AssemblyName>
 		<RootNamespace>Basic</RootNamespace>
-		<TargetFrameworks>netstandard2.1;net6.0;</TargetFrameworks>
+		<TargetFrameworks>netstandard2.1;net6.0;net8.0;</TargetFrameworks>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<Product>Standard.OracleAccess</Product>
 		<PackageId>Standard.OracleAccess</PackageId>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
-		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'net6.0'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.6.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />		
 		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.90" />
 	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />

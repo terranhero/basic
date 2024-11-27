@@ -52,7 +52,7 @@ namespace Basic.PostgreSql
 			}
 			if (parameter.NpgsqlDbType == NpgsqlDbType.Varchar && value is int[])
 			{
-				parameter.NpgsqlValue = string.Join(",", (value as int[]).Cast<string>().ToArray());
+				parameter.NpgsqlValue = string.Join(",", (value as int[]));
 				return;
 			}
 			parameter.NpgsqlValue = value;
