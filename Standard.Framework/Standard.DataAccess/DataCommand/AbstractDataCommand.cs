@@ -156,10 +156,8 @@ namespace Basic.DataAccess
 		/// <param name="value">需要设置的数据库参数值</param>
 		internal protected virtual void ResetParameterValue(DbParameter dbParam, object value)
 		{
-			if (value == null)
-				dbParam.Value = DBNull.Value;
-			else
-				dbParam.Value = value;
+			if (value == null) { dbParam.Value = DBNull.Value; }
+			else { dbParam.Value = value; }
 		}
 
 		/// <summary>

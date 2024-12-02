@@ -152,7 +152,7 @@ namespace Basic.SqlServer
 			if (parameter == null)
 				throw new ArgumentException(string.Format(Strings.Access_InvalidArgument, "dbParam"), "dbParam");
 			if (value == null) { parameter.SqlValue = DBNull.Value; }
-			if (parameter.SqlDbType == SqlDbType.NVarChar && value is int[])
+			else if (parameter.SqlDbType == SqlDbType.NVarChar && value is int[])
 			{
 				parameter.SqlValue = string.Join(",", (value as int[]));
 			}
