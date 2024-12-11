@@ -414,6 +414,8 @@
 			<Button guid="GUID_STANDARDCMDS" id="ID_TABLE_COLUMNS" priority="803" type="Button">
 				<Parent guid="GUID_STANDARDCMDS" id="IDG_PROPERTIES" />
 				<Icon guid="guidVsShellIcons" id="80"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultDisabled</CommandFlag>
 				<Strings>
 					<ButtonText>列集合 ...</ButtonText>
 				</Strings>
@@ -616,6 +618,7 @@
 		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_INSERTPROPERTY" editor="guidDpdlEditor" key1="VK_INSERT"/>
 		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_CREATEPROPERTY" editor="guidDpdlEditor" key1="N" mod1="Control"/>
 		<KeyBinding guid="GUID_STANDARDCMDS" id="ID_PROPERTIES" editor="guidDpdlEditor" key1="VK_F4"/>
+		<KeyBinding guid="GUID_STANDARDCMDS" id="ID_TABLE_COLUMNS" editor="guidDpdlEditor"  key1="VK_F8"/>
 		<KeyBinding guid="GUID_STANDARDCMDS" id="ID_EDITCODE" editor="guidDpdlEditor"  key1="VK_F7"/>
 		<KeyBinding guid="GUID_STANDARDCMDS" id="ID_COPYCODE" editor="guidDpdlEditor"  key1="VK_F6"/>
 		<KeyBinding guid="GUID_CONTEXTMENU" id="ID_CUT" editor="guidDpdlEditor"  key1="X" mod1="Control"/>

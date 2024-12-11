@@ -88,7 +88,7 @@ namespace Basic.Database
         {
             get
             {
-                if (_TableInfo.Alias == TransactTableCollection.EmptyTableName)
+                if (_TableInfo.Alias == TransactSqlResult.EmptyTableName)
                     return null;
                 return _TableInfo.Alias;
             }

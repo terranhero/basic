@@ -649,11 +649,12 @@ namespace Basic.Configuration
 		}
 
 		/// <summary>
-		/// 在指定的数据上下文类中添加当前命令的调用的方法，如果存在则返回已存在的CodeFunction实例，否则创建当前方法关联的实例。
+		/// 在指定的数据上下文类中添加当前命令的调用的方法，
+		/// 如果存在则返回已存在的CodeFunction实例，否则创建当前方法关联的实例。
 		/// </summary>
-		/// <param name="codeClass"></param>
-		/// <param name="provider"></param>
-		/// <returns></returns>
+		/// <param name="codeClass">包含此方法的类信息</param>
+		/// <param name="provider">代码自动生成提供器（含代码生成规则）</param>
+		/// <returns>返回</returns>
 		protected internal virtual EditPoint WriteContextCode(EnvDTE80.CodeClass2 codeClass, CodeDomProvider provider,
 			DataEntityElement entity, PersistentConfiguration persistent)
 		{

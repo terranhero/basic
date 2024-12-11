@@ -12,12 +12,12 @@ namespace Basic.Collections
     /// </summary>
     public sealed class TransactColumnCollection : BaseCollection<TransactColumnInfo>, INotifyCollectionChanged
     {
-        private readonly TransactTableCollection m_TransactTables;
+        private readonly TransactSqlResult m_TransactTables;
         /// <summary>
         /// 使用是否成功解析作为参数，初始化 TransactTableCollection 类实例。
         /// </summary>
         /// <param name="collection">拥有此集合的 TransactTableCollection 类实例。</param>
-        internal TransactColumnCollection(TransactTableCollection collection)
+        internal TransactColumnCollection(TransactSqlResult collection)
         {
             m_TransactTables = collection;
         }

@@ -838,6 +838,8 @@ namespace Basic.Configuration
 		#endregion
 
 		#region EditCode 命令执行和状态查询
+		/// <summary>获取 CodeProvider 来生成特定语言的源代码</summary>
+		/// <returns></returns>
 		internal CodeDomProvider GetCodeDomProvider()
 		{
 			if (GetService(typeof(SVSMDCodeDomProvider)) is IVSMDCodeDomProvider provider)
@@ -854,6 +856,9 @@ namespace Basic.Configuration
 			return new CSharpCodeProvider();
 		}
 
+		/// <summary>启动数据库命令代码编辑，如果designer文件中已经存在则导航至此代码，否则自动生成代码并导航到此处</summary>
+		/// <param name="dataCommand">数据库命令，动态命令和静态命令</param>
+		/// <param name="entity">包含此命令的实例模型</param>
 		internal void EditCommandCode(DataCommandElement dataCommand, DataEntityElement entity)
 		{
 			ThreadHelper.ThrowIfNotOnUIThread();
@@ -864,6 +869,7 @@ namespace Basic.Configuration
 			string contextFullName = string.Concat(dpdlFileInfo.DirectoryName, @"\", contextName, ".", codeDomProvider.FileExtension);
 			ProjectItem projectItem = dteClass.Solution.FindProjectItem(contextFullName);
 			if (projectItem == null) { return; }
+			//查找设计器文件中类名
 			EnvDTE80.CodeClass2 codeClass = projectItem.FileCodeModel.CodeElements.FindCodeClass(_Persistent.ContextName);
 			if (codeClass != null)
 			{

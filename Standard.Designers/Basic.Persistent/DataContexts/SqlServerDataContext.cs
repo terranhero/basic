@@ -8,6 +8,7 @@ using Basic.Enums;
 using Basic.Collections;
 using Basic.Designer;
 using UniqueConstraint = Basic.Database.UniqueConstraint;
+using System.Data.Common;
 
 namespace Basic.DataContexts
 {
@@ -24,6 +25,12 @@ namespace Basic.DataContexts
 			sqlConnection.Open();
 			sqlCommand = new SqlCommand(string.Empty, sqlConnection);
 		}
+
+		/// <summary>获取特定数据库参数带符号的名称</summary>
+		/// <param name="parameterName">不带参数符号的参数名称</param>
+		/// <returns>返回特定数据库参数带符号的名称。</returns>
+		public string GetParameterName(string parameterName) { return string.Concat("@", parameterName); }
+
 		/// <summary>
 		/// 获取数据库系统中所有表类型的对象（含Table、View、 Table Function）
 		/// </summary>
@@ -921,69 +928,119 @@ where t1.object_id=object_id('{0}')", tableInfo.Name);
 		/// <summary>
 		/// 根据自定义 Trancate-SQL 查询表结构信息。
 		/// </summary>
-		/// <param name="tableCollection">查询表结构定义</param>
+		/// <param name="result">查询表结构定义</param>
 		/// <param name="trancateSql">需要查询的 Trancate-Sql 实例。</param>
 		/// <returns>如果获取数据成功则返回True，否则返回False。</returns>
-		public bool GetTransactSql(TransactTableCollection tableCollection, string trancateSql)
+		public bool GetTransactSql(TransactSqlResult result, string trancateSql)
 		{
 			sqlCommand.CommandText = trancateSql;
-			foreach (TransactTableInfo tableInfo in tableCollection)
+			foreach (TransactParameterInfo info in result.Parameters)
 			{
-				foreach (TransactParameterInfo info in tableInfo.Parameters)
+				string name = string.Concat("@", info.Name);
+				if (!sqlCommand.Parameters.Contains(name))
 				{
-					string name = string.Concat("@", info.Name);
-					if (!sqlCommand.Parameters.Contains(name))
-					{
-						SqlParameter parameter = sqlCommand.CreateParameter();
-						info.CreateSqlParameter(parameter, name);
-						parameter.SqlValue = DBNull.Value;
-						sqlCommand.Parameters.Add(parameter);
-					}
+					SqlParameter parameter = sqlCommand.CreateParameter();
+					info.CreateSqlParameter(parameter, name);
+					parameter.SqlValue = DBNull.Value;
+					sqlCommand.Parameters.Add(parameter);
 				}
 			}
 			#region 获取列定义
 			using (SqlDataReader reader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
 			{
 				DataTable table = reader.GetSchemaTable();
-				tableCollection.Columns.Clear();
+				//result.Columns.Clear();
 				foreach (DataRow row in table.Rows)
 				{
 					if (!row.IsNull("IsHidden") && Convert.ToBoolean(row["IsHidden"])) { continue; }
-					string tableName = Convert.ToString(row["BaseTableName"]);
 					string columnName = Convert.ToString(row["ColumnName"]);
-					TransactColumnInfo column = tableCollection.AddColumn(tableName, columnName);
-					if (string.IsNullOrWhiteSpace(column.PropertyName))
-						column.PropertyName = StringHelper.GetPascalCase(columnName);
-					column.Source = Convert.ToString(row["BaseColumnName"]);
-					string typeName = row["DataTypeName"].ToString().ToUpper();
-					column.DbType = GetUserDbType(typeName);
-					column.PrimaryKey = Convert.ToBoolean(row["IsKey"]);
-					switch (column.DbType)
+					if (result.Columns.TryGetValue(columnName, out TransactColumnInfo eColumn))
 					{
-						case DbTypeEnum.Char:
-						case DbTypeEnum.VarChar:
-						case DbTypeEnum.NChar:
-						case DbTypeEnum.NVarChar:
-						case DbTypeEnum.Binary:
-						case DbTypeEnum.VarBinary:
-							column.Size = Convert.ToInt32(row["ColumnSize"]);
-							break;
-						case DbTypeEnum.Decimal:
-							column.Precision = Convert.ToByte(row["NumericPrecision"]);
-							if (!row.IsNull("NumericScale"))
-								column.Scale = Convert.ToByte(row["NumericScale"]);
-							break;
-						case DbTypeEnum.Timestamp:
-							if (!row.IsNull("NumericScale"))
-								column.Scale = Convert.ToByte(row["NumericScale"]);
-							break;
+						if (string.IsNullOrWhiteSpace(eColumn.PropertyName))
+						{
+							if (result.PropertyMapping.TryGetValue(columnName, out string propName))
+							{
+								eColumn.PropertyName = propName;
+							}
+							else
+							{
+								eColumn.PropertyName = StringHelper.GetPascalCase(columnName);
+							}
+						}
+
+						eColumn.Source = Convert.ToString(row["BaseColumnName"]);
+						string typeName = row["DataTypeName"].ToString().ToUpper();
+						eColumn.DbType = GetUserDbType(typeName);
+						eColumn.PrimaryKey = Convert.ToBoolean(row["IsKey"]);
+						switch (eColumn.DbType)
+						{
+							case DbTypeEnum.Char:
+							case DbTypeEnum.VarChar:
+							case DbTypeEnum.NChar:
+							case DbTypeEnum.NVarChar:
+							case DbTypeEnum.Binary:
+							case DbTypeEnum.VarBinary:
+								eColumn.Size = Convert.ToInt32(row["ColumnSize"]);
+								break;
+							case DbTypeEnum.Decimal:
+								eColumn.Precision = Convert.ToByte(row["NumericPrecision"]);
+								if (!row.IsNull("NumericScale"))
+									eColumn.Scale = Convert.ToByte(row["NumericScale"]);
+								break;
+							case DbTypeEnum.Timestamp:
+								if (!row.IsNull("NumericScale"))
+									eColumn.Scale = Convert.ToByte(row["NumericScale"]);
+								break;
+						}
+						eColumn.Nullable = Convert.ToBoolean(row["AllowDBNull"]);
 					}
-					column.Nullable = Convert.ToBoolean(row["AllowDBNull"]);
+					else
+					{
+						string tableName = Convert.ToString(row["BaseTableName"]);
+						TransactColumnInfo nColumn = result.AddColumn(tableName, columnName);
+						if (string.IsNullOrWhiteSpace(nColumn.PropertyName))
+						{
+							if (result.PropertyMapping.TryGetValue(columnName, out string propName))
+							{
+								nColumn.PropertyName = propName;
+							}
+							else
+							{
+								nColumn.PropertyName = StringHelper.GetPascalCase(columnName);
+							}
+						}
+						nColumn.Source = Convert.ToString(row["BaseColumnName"]);
+						string typeName = row["DataTypeName"].ToString().ToUpper();
+						nColumn.DbType = GetUserDbType(typeName);
+						nColumn.PrimaryKey = Convert.ToBoolean(row["IsKey"]);
+						switch (nColumn.DbType)
+						{
+							case DbTypeEnum.Char:
+							case DbTypeEnum.VarChar:
+							case DbTypeEnum.NChar:
+							case DbTypeEnum.NVarChar:
+							case DbTypeEnum.Binary:
+							case DbTypeEnum.VarBinary:
+								nColumn.Size = Convert.ToInt32(row["ColumnSize"]);
+								break;
+							case DbTypeEnum.Decimal:
+								nColumn.Precision = Convert.ToByte(row["NumericPrecision"]);
+								if (!row.IsNull("NumericScale"))
+									nColumn.Scale = Convert.ToByte(row["NumericScale"]);
+								break;
+							case DbTypeEnum.Timestamp:
+								if (!row.IsNull("NumericScale"))
+									nColumn.Scale = Convert.ToByte(row["NumericScale"]);
+								break;
+						}
+						nColumn.Nullable = Convert.ToBoolean(row["AllowDBNull"]);
+					}
+
 				}
 			}
 			#endregion
-			List<string> tableList = new List<string>(tableCollection.Count);
-			foreach (TransactTableInfo tableInfo in tableCollection)
+			List<string> tableList = new List<string>(result.Count);
+			foreach (TransactTableInfo tableInfo in result)
 			{
 				string objName = string.Concat("object_id(N'", tableInfo.ObjectName, "')");
 				if (tableList.Contains(objName) == false) { tableList.Add(objName); }
@@ -1002,11 +1059,10 @@ where t1.object_id IN({0}) order by t1.object_id,t1.column_id", string.Join(",",
 				int columnIndex = reader.GetOrdinal("COLUMN_NAME");
 				int sizeIndex = reader.GetOrdinal("ORDINAL_POSITION");
 				int desIndex = reader.GetOrdinal("COLUMN_DES");
-				TransactColumnInfo column = null;
 				while (reader.Read())
 				{
 					string columnName = reader.GetString(columnIndex);
-					if (tableCollection.Columns.TryGetValue(columnName, out column) && !reader.IsDBNull(desIndex))
+					if (result.Columns.TryGetValue(columnName, out TransactColumnInfo column) && !reader.IsDBNull(desIndex))
 					{
 						column.Comment = reader.GetString(desIndex);
 					}
@@ -1018,15 +1074,15 @@ where t1.object_id IN({0}) order by t1.object_id,t1.column_id", string.Join(",",
 		/// <summary>
 		/// 获取函数的参数信息
 		/// </summary>
-		/// <param name="tableCollection">表或视图名称。</param>
+		/// <param name="result">表或视图名称。</param>
 		/// <returns>如果获取数据成功则返回True，否则返回False。</returns>
-		public void GetParameters(TransactTableCollection tableCollection)
+		public void GetParameters(TransactSqlResult result)
 		{
-			if (tableCollection.Count == 0) { return; }
-			List<string> tableList = new List<string>(tableCollection.Count);
-			foreach (TransactTableInfo tableInfo in tableCollection)
+			if (result.Count == 0) { return; }
+			List<string> tableList = new List<string>(result.Count);
+			result.Parameters.Clear();
+			foreach (TransactTableInfo tableInfo in result)
 			{
-				tableInfo.Parameters.Clear();
 				string objName = string.Concat("object_id(N'", tableInfo.ObjectName, "')");
 				if (tableList.Contains(objName) == false) { tableList.Add(objName); }
 			}
@@ -1048,9 +1104,9 @@ join sys.types t3 on t1.user_type_id=t3.user_type_id where t1.object_id IN({0})"
 				while (reader.Read())
 				{
 					string objName = reader.GetString(objIndex);
-					if (tableCollection.TryGetValue(objName, out tableInfo))
+					if (result.TryGetValue(objName, out tableInfo))
 					{
-						TransactParameterInfo parameter = new TransactParameterInfo(tableInfo)
+						TransactParameterInfo parameter = new TransactParameterInfo(result)
 						{
 							Name = reader.GetString(nameIndex).Remove(0, 1)
 						};
@@ -1079,7 +1135,7 @@ join sys.types t3 on t1.user_type_id=t3.user_type_id where t1.object_id IN({0})"
 								break;
 						}
 						parameter.Nullable = true;
-						tableInfo.Parameters.Add(parameter);
+						result.Parameters.Add(parameter);
 					}
 				}
 			}

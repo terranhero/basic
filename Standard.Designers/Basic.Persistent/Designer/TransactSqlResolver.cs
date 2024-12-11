@@ -10,6 +10,7 @@ using Basic.DataEntities;
 using Basic.Designer;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
 using Microsoft.VisualStudio.Debugger.Interop;
+using static System.Net.Mime.MediaTypeNames;
 using MSTS = Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace Basic.DataContexts
@@ -73,7 +74,7 @@ namespace Basic.DataContexts
 		{
 			if (staticCommand == null) { return false; }
 			staticCommand.CommandText = sql;
-			TransactTableCollection result = ResolverTransactSql(sql);
+			TransactSqlResult result = ResolverTransactSql(sql);
 			using (IDataContext context = DataContextFactory.CreateDbAccess())
 			{
 				context.GetParameters(result);
@@ -91,7 +92,7 @@ namespace Basic.DataContexts
 		public static bool PasteStaticCommand(PersistentConfiguration persistent, string sql)
 		{
 			if (persistent == null) { return false; }
-			TransactTableCollection result = ResolverTransactSql(sql);
+			TransactSqlResult result = ResolverTransactSql(sql);
 			persistent.UpdatePropertyMapping(result.PropertyMapping);
 			DataEntityElement dataEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
 			StaticCommandElement staticCommand = new StaticCommandElement(dataEntityElement)
@@ -112,14 +113,38 @@ namespace Basic.DataContexts
 			return true;
 		}
 
+		/// <summary>解析 SELECT 列信息</summary>
+		/// <param name="result"></param>
+		/// <param name="source">表示列信息中 AS 前半部分 即( T1.ITEMTEXT AS GENDERTEXT 中的 T1.ITEMTEXT)</param>
+		/// <param name="column"></param>
+		private static void ParseColumnInfo(TransactSqlResult result, IdentifierOrValueExpression source, ColumnReferenceExpression column)
+		{
+			string sourceName = null, tableAlias = null, columnName = null;
+			IList<Identifier> identifiers = column.MultiPartIdentifier.Identifiers;
+			if (identifiers.Count == 2) { tableAlias = identifiers[0].Value; columnName = identifiers[1].Value; }
+			if (source != null) { sourceName = columnName; columnName = source.Value; }
+
+			TransactTableInfo info = result.LastOrDefault(m => m.Alias == tableAlias);
+			result.AddColumn(info, columnName, sourceName);
+		}
+
+		private static void PasteSelectClause(TransactSqlResult result, IList<SelectElement> selects)
+		{
+			foreach (SelectScalarExpression source in selects)
+			{
+				ParseColumnInfo(result, source.ColumnName as IdentifierOrValueExpression,
+					source.Expression as ColumnReferenceExpression);
+			}
+		}
+
 		/// <summary>
 		/// 将当前传入的 Transact-SQL 语句，解析为一个 DynamicCommandElement 类型的实例。
 		/// </summary>
 		/// <param name="sql"></param>
 		/// <returns></returns>
-		public static TransactTableCollection ResolverTransactSql(string sql)
+		public static TransactSqlResult ResolverTransactSql(string sql)
 		{
-			TransactTableCollection result = new TransactTableCollection(false);
+			TransactSqlResult result = new TransactSqlResult(false);
 			TSqlParser parser = new TSql120Parser(true);
 			using (StringReader reader = new StringReader(sql))
 			{
@@ -144,6 +169,23 @@ namespace Basic.DataContexts
 									}
 								}
 							}
+							else if (withClause.QueryExpression is BinaryQueryExpression binaryQuery)
+							{
+								if (binaryQuery.FirstQueryExpression != null && binaryQuery.FirstQueryExpression is QuerySpecification selQuery1)
+								{
+									foreach (TableReference tableReference in selQuery1.FromClause.TableReferences)
+									{
+										PasteFromClause(result, tableReference);
+									}
+								}
+								if (binaryQuery.SecondQueryExpression != null && binaryQuery.SecondQueryExpression is QuerySpecification selQuery2)
+								{
+									foreach (TableReference tableReference in selQuery2.FromClause.TableReferences)
+									{
+										PasteFromClause(result, tableReference);
+									}
+								}
+							}
 						}
 					}
 
@@ -156,6 +198,7 @@ namespace Basic.DataContexts
 								PasteFromClause(result, tableReference);
 							}
 						}
+						if (select.SelectElements != null) { PasteSelectClause(result, select.SelectElements); }
 					}
 				}
 			}
@@ -163,30 +206,30 @@ namespace Basic.DataContexts
 			return result;
 		}
 
-		/// <summary>
-		/// 根据SQL语句更新实体模型
-		/// </summary>
-		/// <param name="entity">需要更新的实体模型</param>
-		/// <param name="result">SQL语句解析结果。</param>
-		/// <param name="text">SQL解析源。</param>
-		/// <returns>执行成功返回 true，否则返回 false。</returns>
-		private static bool UpdateDataEntity(DataEntityElement entity, TransactTableCollection result, string text)
-		{
-			using (IDataContext context = DataContextFactory.CreateDbAccess())
-			{
-				entity.Persistent.UpdatePropertyMapping(result.PropertyMapping);
-				context.GetParameters(result);
-				context.GetTransactSql(result, text);
-			}
-			result.CreateDataEntityElement(entity);
-			return true;
-		}
+		///// <summary>
+		///// 根据SQL语句更新实体模型
+		///// </summary>
+		///// <param name="entity">需要更新的实体模型</param>
+		///// <param name="result">SQL语句解析结果。</param>
+		///// <param name="text">SQL解析源。</param>
+		///// <returns>执行成功返回 true，否则返回 false。</returns>
+		//private static bool UpdateDataEntity(DataEntityElement entity, TransactSqlResult result, string text)
+		//{
+		//	using (IDataContext context = DataContextFactory.CreateDbAccess())
+		//	{
+		//		entity.Persistent.UpdatePropertyMapping(result.PropertyMapping);
+		//		//context.GetParameters(result);
+		//		context.GetTransactSql(result, text);
+		//	}
+		//	result.CreateDataEntityElement(entity);
+		//	return true;
+		//}
 
 		/// <summary>
 		/// 根据SQL语句更新实体模型
 		/// </summary>
 		/// <param name="entity">需要更新的实体模型</param>
-		/// <param name="text">数据源。</param>
+		/// <param name="dynamicCommand">动态命令。</param>
 		/// <returns>执行成功返回 true，否则返回 false。</returns>
 		public static bool UpdateDataEntity(DataEntityElement entity, DynamicCommandElement dynamicCommand)
 		{
@@ -204,10 +247,18 @@ namespace Basic.DataContexts
 			textBuilder.Append(" SELECT ").AppendLine(dynamicCommand.SelectText);
 			textBuilder.Append(" FROM ").AppendLine(dynamicCommand.FromText);
 			if (dynamicCommand.HasGroup) { textBuilder.Append(" GROUP BY ").Append(dynamicCommand.GroupText); }
+			string transactSql = textBuilder.ToString();
+			TransactSqlResult result = ResolverTransactSql(transactSql);
+			using (IDataContext context = DataContextFactory.CreateDbAccess())
+			{
+				result.GetParameters(context, dynamicCommand, transactSql);
 
-			TransactTableCollection result = ResolverTransactSql(textBuilder.ToString());
-			result.GetParameters(dynamicCommand);
-			return UpdateDataEntity(entity, result, textBuilder.ToString());
+				entity.Persistent.UpdatePropertyMapping(result.PropertyMapping);
+				//context.GetParameters(result);
+				context.GetTransactSql(result, transactSql);
+			}
+			result.CreateDataEntityElement(entity);
+			return true;
 		}
 
 		/// <summary>
@@ -217,7 +268,7 @@ namespace Basic.DataContexts
 		/// <param name="result">SQL语句解析结果。</param>
 		/// <param name="text">SQL解析源。</param>
 		/// <returns>执行成功返回 true，否则返回 false。</returns>
-		private static bool UpdateDataCondition(DataConditionElement entity, TransactTableCollection result, string text)
+		private static bool UpdateDataCondition(DataConditionElement entity, TransactSqlResult result, string text)
 		{
 			using (IDataContext context = DataContextFactory.CreateDbAccess())
 			{
@@ -237,7 +288,7 @@ namespace Basic.DataContexts
 		/// <returns>执行成功返回 true，否则返回 false。</returns>
 		public static bool UpdateDataCondition(DataConditionElement entity, string text)
 		{
-			TransactTableCollection result = ResolverTransactSql(text);
+			TransactSqlResult result = ResolverTransactSql(text);
 			return UpdateDataCondition(entity, result, text);
 		}
 
@@ -361,7 +412,7 @@ namespace Basic.DataContexts
 			return string.Join(", ", columns);
 		}
 
-		private static void PasteFromClause(TransactTableCollection result, TableReference tableReference)
+		private static void PasteFromClause(TransactSqlResult result, TableReference tableReference)
 		{
 			if (tableReference is NamedTableReference named)
 			{
@@ -382,7 +433,7 @@ namespace Basic.DataContexts
 		/// <param name="dynamicCommand">需要修改的 DynamicCommand 类型的命令。</param>
 		/// <param name="reader">需要替换的 Transact-SQL 查询语句。</param>
 		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
-		public static bool PasteCommand(TransactTableCollection result, DynamicCommandElement dynamicCommand, StringReader reader)
+		public static bool PasteCommand(TransactSqlResult result, DynamicCommandElement dynamicCommand, StringReader reader)
 		{
 			if (dynamicCommand == null) { return false; }
 
@@ -550,7 +601,7 @@ namespace Basic.DataContexts
 		public static bool PasteDynamicCommand(DynamicCommandElement dynamicCommand, string sql)
 		{
 			if (dynamicCommand == null) { return false; }
-			TransactTableCollection result = ResolverTransactSql(sql);
+			TransactSqlResult result = ResolverTransactSql(sql);
 			using (IDataContext context = DataContextFactory.CreateDbAccess())
 			{
 				context.GetParameters(result);
@@ -568,7 +619,7 @@ namespace Basic.DataContexts
 		public static bool PasteDynamicCommand(PersistentConfiguration persistent, string sql)
 		{
 			if (persistent == null) { return false; }
-			TransactTableCollection result = new TransactTableCollection(true);
+			TransactSqlResult result = new TransactSqlResult(true);
 			persistent.UpdatePropertyMapping(result.PropertyMapping);
 			DataEntityElement dataEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
 			DynamicCommandElement dynamicCommand = new DynamicCommandElement(dataEntityElement);
@@ -590,7 +641,7 @@ namespace Basic.DataContexts
 			return true;
 		}
 
-		private static void CreateDynamicCommand(DynamicCommandElement dynamicCommand, TransactTableCollection result)
+		private static void CreateDynamicCommand(DynamicCommandElement dynamicCommand, TransactSqlResult result)
 		{
 			if (result.WithBuilder.Length > 0)
 			{

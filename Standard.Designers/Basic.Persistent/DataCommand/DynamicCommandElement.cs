@@ -682,8 +682,8 @@ namespace Basic.Configuration
 			string methodName = Kind == ConfigurationTypeEnum.SearchTable ? "GetEntities" : MethodName;
 			CodeMethodReferenceExpression methodReference = new CodeMethodReferenceExpression(accessReference, methodName);
 
-			if (Kind == ConfigurationTypeEnum.SearchTable && Persistent.BaseAccess == typeof(AbstractAccess).Name)
-				methodReference.TypeArguments.Add(EntityElement.EntityName);
+			if (Kind == ConfigurationTypeEnum.SearchTable) { methodReference.TypeArguments.Add(EntityElement.EntityName); }
+
 			CodeMethodInvokeExpression methodInvoke = new CodeMethodInvokeExpression(methodReference);
 			if (!string.IsNullOrWhiteSpace(_Condition))
 				methodInvoke.Parameters.Add(conditionReference);

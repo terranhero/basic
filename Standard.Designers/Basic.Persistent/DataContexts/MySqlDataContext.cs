@@ -22,6 +22,11 @@ namespace Basic.DataContexts
 			myCommand = new MySqlCommand(string.Empty, myConnection);
 		}
 
+		/// <summary>获取特定数据库参数带符号的名称</summary>
+		/// <param name="parameterName">不带参数符号的参数名称</param>
+		/// <returns>返回特定数据库参数带符号的名称。</returns>
+		public string GetParameterName(string parameterName) { return string.Concat("@", parameterName); }
+
 		/// <summary>获取数据库系统中所有表类型的对象（含Table、View、 Table Function）</summary>
 		/// <param name="tables">需要填充的数据表集合，</param>
 		/// <param name="objectType">需要填充的表对象类型</param>
@@ -312,7 +317,7 @@ FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = '{0}'", tableInfo.Ta
 		/// <param name="tableCollection">查询表结构定义</param>
 		/// <param name="trancateSql">需要查询的 Trancate-Sql 实例。</param>
 		/// <returns>如果获取数据成功则返回True，否则返回False。</returns>
-		public bool GetTransactSql(TransactTableCollection tableCollection, string trancateSql)
+		public bool GetTransactSql(TransactSqlResult tableCollection, string trancateSql)
 		{
 			return true;
 		}
@@ -320,7 +325,7 @@ FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = '{0}'", tableInfo.Ta
 		/// <summary>获取函数的参数信息</summary>
 		/// <param name="tableCollection">查询表结构定义。</param>
 		/// <returns>如果获取数据成功则返回True，否则返回False。</returns>
-		public void GetParameters(TransactTableCollection tableCollection)
+		public void GetParameters(TransactSqlResult tableCollection)
 		{
 
 		}

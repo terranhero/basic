@@ -569,7 +569,7 @@ namespace Basic.Configuration
 		{
 			OleMenuCommand menu = sender as OleMenuCommand;
 			DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
-			menu.Enabled = menu.Visible = canvas != null;
+			menu.Enabled = menu.Visible = canvas != null && canvas.SelectedItem == null;
 		}
 		/// <summary>显示数据库字典编辑</summary>
 		private void OnShowColumns(object sender, EventArgs e)

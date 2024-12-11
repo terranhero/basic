@@ -1,5 +1,6 @@
 ﻿using Basic.Collections;
 using Basic.Configuration;
+using Basic.DataContexts;
 using Basic.DataEntities;
 using Basic.Designer;
 using Basic.Enums;
@@ -22,7 +23,7 @@ namespace Basic.Database
 		/// <param name="tableCollection">数据库表结构信息</param>
 		/// <param name="dataEntity">需要刷新的实体类信息</param>
 		/// <param name="kind">当前实体类用途</param>
-		internal static void CreateDataEntityElement(this TransactTableCollection tableCollection, DataEntityElement dataEntity)
+		internal static void CreateDataEntityElement(this TransactSqlResult tableCollection, DataEntityElement dataEntity)
 		{
 			if (string.IsNullOrWhiteSpace(dataEntity.Name))
 				dataEntity.Name = tableCollection.EntityName;
@@ -99,7 +100,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="tableInfo">数据库表结构信息</param>
 		/// <param name="dataCondition">需要刷新的条件类信息</param>
-		internal static void CreateDataConditionElement(this TransactTableCollection tableCollection, DataConditionElement dataCondition)
+		internal static void CreateDataConditionElement(this TransactSqlResult tableCollection, DataConditionElement dataCondition)
 		{
 			dataCondition.TableName = tableCollection.TableName;
 			dataCondition.Comment = tableCollection.Description;
@@ -250,18 +251,15 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="tableCollection">数据库表结构信息</param>
 		/// <param name="dataCommand">需要刷新的条件类信息</param>
-		internal static void CreateParameters(this TransactTableCollection tableCollection, DataCommandElement dataCommand)
+		internal static void CreateParameters(this TransactSqlResult tableCollection, DataCommandElement dataCommand)
 		{
-			foreach (TransactTableInfo tableInfo in tableCollection)
+			foreach (TransactParameterInfo info in tableCollection.Parameters)
 			{
-				foreach (TransactParameterInfo info in tableInfo.Parameters)
+				if (!dataCommand.Parameters.ContainsKey(info.Name))
 				{
-					if (!dataCommand.Parameters.ContainsKey(info.Name))
-					{
-						CommandParameter parameter = new CommandParameter(dataCommand);
-						info.CreateParameter(parameter);
-						dataCommand.Parameters.Add(parameter);
-					}
+					CommandParameter parameter = new CommandParameter(dataCommand);
+					info.CreateParameter(parameter);
+					dataCommand.Parameters.Add(parameter);
 				}
 			}
 		}
@@ -307,20 +305,18 @@ namespace Basic.Database
 		/// <summary>
 		/// 根据数据库列信息，创建查询表中所有数据的命令及其参数
 		/// </summary>
-		/// <param name="tableCollection">数据库表结构信息</param>
+		/// <param name="result">数据库表结构信息</param>
 		/// <param name="dataCommand">需要刷新的条件类信息</param>
-		internal static void GetParameters(this TransactTableCollection tableCollection, DataCommandElement dataCommand)
+		internal static void GetParameters(this TransactSqlResult result, IDataContext context, DataCommandElement dataCommand, string transactSql)
 		{
 			foreach (CommandParameter parameter in dataCommand.Parameters)
 			{
-				if (tableCollection.Columns.ContainsKey(parameter.SourceColumn))
+				string parameterName = context.GetParameterName(parameter.Name);
+				if (transactSql.Contains(parameterName))
 				{
-					TransactColumnInfo columnInfo = tableCollection.Columns[parameter.SourceColumn];
-					if (!columnInfo.TableInfo.Parameters.ContainsKey(parameter.Name))
-					{
-						TransactParameterInfo tpinfo = new TransactParameterInfo(columnInfo.TableInfo);
-						tpinfo.GetParameter(parameter);
-					}
+					TransactParameterInfo tpinfo = new TransactParameterInfo(result);
+					tpinfo.GetParameter(parameter);
+					result.Parameters.Add(tpinfo);
 				}
 			}
 		}

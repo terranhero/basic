@@ -8,12 +8,12 @@ namespace Basic.Collections
 	/// </summary>
 	public sealed class TransactParameterCollection : BaseCollection<TransactParameterInfo>, INotifyCollectionChanged
 	{
-        private readonly TransactTableInfo tableDesignerInfo;
+        private readonly TransactSqlResult _sqlResult;
 		/// <summary>
 		/// 初始化 FunctionParameterCollection 类的新实例。
 		/// </summary>
 		/// <param name="table">需要通知 FunctionParameterInfo 类实例当前类的属性已更改。</param>
-        internal TransactParameterCollection(TransactTableInfo table) : base() { tableDesignerInfo = table; }
+        internal TransactParameterCollection(TransactSqlResult table) : base() { _sqlResult = table; }
 
 		/// <summary>
 		/// 获取集合的键属性

@@ -16,7 +16,7 @@ namespace Basic.Designer
 		private readonly static SortedSet<string> keyWords;
 		static StringHelper()
 		{
-			keyWords = new SortedSet<string>(new string[] { "Valid",  "Text", "Name", "Key", "Time",
+			keyWords = new SortedSet<string>(new string[] { "Valid",  "Text", "Code", "Name", "Key", "Time",
 				"Date", "User", "Type", "Enum","Enabled","Number","Order" });
 		}
 		/// <summary>

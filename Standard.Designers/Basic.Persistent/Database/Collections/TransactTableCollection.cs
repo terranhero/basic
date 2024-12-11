@@ -10,10 +10,10 @@ namespace Basic.Collections
 	/// <summary>
 	/// 表示 Transact-SQL 解析成功后的结果
 	/// </summary>
-	public sealed class TransactTableCollection : BaseCollection<TransactTableInfo>, INotifyCollectionChanged
+	public sealed class TransactSqlResult : BaseCollection<TransactTableInfo>, INotifyCollectionChanged
 	{
-		private readonly SortedDictionary<string, string> _PropertyMapping;
 		internal const string EmptyTableName = "E932C150946343158DD71D30BEF75E41";
+		private readonly SortedDictionary<string, string> _PropertyMapping;
 		private readonly TransactTableInfo emptyNameTable;
 		private bool m_Successful = false;
 		private readonly TransactColumnCollection m_Columns;
@@ -21,13 +21,18 @@ namespace Basic.Collections
 		/// 使用是否成功解析作为参数，初始化 TransactTableCollection 类实例。
 		/// </summary>
 		/// <param name="successful">当前 Transact-SQL 是否解析成功，如果成功则为 True，否则为 False。</param>
-		public TransactTableCollection(bool successful)
+		public TransactSqlResult(bool successful)
 		{
+			_Parameters = new TransactParameterCollection(this);
 			_PropertyMapping = new SortedDictionary<string, string>();
 			m_Successful = successful;
 			m_Columns = new TransactColumnCollection(this);
 			emptyNameTable = new TransactTableInfo(this, EmptyTableName);
 		}
+
+		/// <summary>表示当前SQL执行所需参数信息</summary>
+		public TransactParameterCollection Parameters { get { return _Parameters; } }
+		private readonly TransactParameterCollection _Parameters;
 
 		/// <summary>
 		/// 当前设计文件已经存在的属性名称映射信息。
@@ -139,6 +144,51 @@ namespace Basic.Collections
 				column1.PropertyName = _PropertyMapping[columnName];
 			m_Columns.Add(column1);
 			return column1;
+		}
+
+		/// <summary>
+		/// 添加表和表别名对应项
+		/// </summary>
+		/// <param name="tableName">一个string类型的值，该值表示数据库表的名称。</param>
+		/// <param name="columnName">一个string类型的值，该值表示数据库表的列名称。</param>
+		/// <param name="sourceName">一个string类型的值，该值表示数据库表的列名称。</param>
+		/// <exception cref="System.ArgumentNullException">tableName 为 null</exception>
+		/// <exception cref="System.ArgumentException">已经存在数据库表名称。</exception>
+		public TransactColumnInfo AddColumn(TransactTableInfo info, string columnName, string sourceName)
+		{
+			if (info != null)
+			{
+				TransactColumnInfo column = info.AddColumn(columnName, sourceName);
+				if (_PropertyMapping.TryGetValue(columnName, out string propName))
+				{
+					column.PropertyName = propName;
+				}
+				m_Columns.Add(column); return column;
+			}
+			else
+			{
+				TransactColumnInfo column = emptyNameTable.AddColumn(columnName, sourceName);
+				if (_PropertyMapping.TryGetValue(columnName, out string propName))
+				{
+					column.PropertyName = propName;
+				}
+				m_Columns.Add(column); return column;
+			}
+		}
+
+		/// <summary>
+		/// 添加表和表别名对应项
+		/// </summary>
+		/// <param name="tableName">一个string类型的值，该值表示数据库表的名称。</param>
+		/// <param name="columnName">一个string类型的值，该值表示数据库表的列名称。</param>
+		/// <param name="sourceName">一个string类型的值，该值表示数据库表的列名称。</param>
+		/// <exception cref="System.ArgumentNullException">tableName 为 null</exception>
+		/// <exception cref="System.ArgumentException">已经存在数据库表名称。</exception>
+		public TransactColumnInfo AddColumn(string tableName, string columnName, string sourceName)
+		{
+			TransactColumnInfo column = AddColumn(tableName, columnName);
+			column.Source = sourceName;
+			return column;
 		}
 
 		/// <summary>
