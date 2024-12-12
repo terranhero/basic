@@ -120,23 +120,69 @@ namespace Basic.DataContexts
 		private static void ParseColumnInfo(TransactSqlResult result, IdentifierOrValueExpression source, ColumnReferenceExpression column)
 		{
 			string sourceName = null, tableAlias = null, columnName = null;
-			IList<Identifier> identifiers = column.MultiPartIdentifier.Identifiers;
-			if (identifiers.Count == 2) { tableAlias = identifiers[0].Value; columnName = identifiers[1].Value; }
+			ParseColumnReference(column, out tableAlias, out columnName);
 			if (source != null) { sourceName = columnName; columnName = source.Value; }
 
 			TransactTableInfo info = result.LastOrDefault(m => m.Alias == tableAlias);
 			result.AddColumn(info, columnName, sourceName);
 		}
 
-		private static void PasteSelectClause(TransactSqlResult result, IList<SelectElement> selects)
+		private static void ParseColumnReference(ColumnReferenceExpression column, out string alias, out string name)
 		{
-			foreach (SelectScalarExpression source in selects)
-			{
-				ParseColumnInfo(result, source.ColumnName as IdentifierOrValueExpression,
-					source.Expression as ColumnReferenceExpression);
-			}
+			alias = null; name = null;
+			IList<Identifier> identifiers = column.MultiPartIdentifier.Identifiers;
+			if (identifiers.Count == 2) { alias = identifiers[0].Value; name = identifiers[1].Value; }
+			else if (identifiers.Count == 1) { name = identifiers[0].Value; }
 		}
 
+		/// <summary>解析 SELECT 列信息</summary>
+		/// <param name="result"></param>
+		/// <param name="source">表示列信息中 AS 前半部分 即( T1.ITEMTEXT AS GENDERTEXT 中的 T1.ITEMTEXT)</param>
+		/// <param name="column"></param>
+		private static void ParseColumnInfo(TransactSqlResult result, IdentifierOrValueExpression source, FunctionCall fcExpression)
+		{
+			string sourceName = null, tableAlias = null, columnName = null;
+			OverClause oc = fcExpression.OverClause;
+			foreach (ScalarExpression se in fcExpression.Parameters)
+			{
+				if (se is ColumnReferenceExpression column)
+				{
+					ParseColumnReference(column, out tableAlias, out columnName);
+					break;
+				}
+				//else if (se is StringLiteral literal){ columnName = literal.Value; }
+			}
+			if (source != null) { sourceName = columnName; columnName = source.Value; }
+
+			TransactTableInfo info = result.LastOrDefault(m => m.Alias == tableAlias);
+			result.AddColumn(info, columnName, sourceName);
+		}
+
+		/// <summary>解析 SELECT 列信息</summary>
+		/// <param name="result"></param>
+		/// <param name="source">表示列信息中 AS 前半部分 即( T1.ITEMTEXT AS GENDERTEXT 中的 T1.ITEMTEXT)</param>
+		/// <param name="column"></param>
+		private static void ParseColumnInfo(TransactSqlResult result, IdentifierOrValueExpression source, ScalarSubquery subQuery)
+		{
+			string sourceName = null, tableAlias = null, columnName = null;
+			QueryExpression query = subQuery.QueryExpression;
+			//ParseColumnReference(column, out tableAlias, out columnName);
+			if (source != null) { sourceName = columnName; columnName = source.Value; }
+
+			TransactTableInfo info = result.LastOrDefault(m => m.Alias == tableAlias);
+			result.AddColumn(info, columnName, sourceName);
+		}
+
+		/// <summary>解析 SELECT 列信息</summary>
+		/// <param name="result"></param>
+		/// <param name="source">表示列信息中 AS 前半部分 即( T1.ITEMTEXT AS GENDERTEXT 中的 T1.ITEMTEXT)</param>
+		/// <param name="column"></param>
+		private static void ParseColumnInfo(TransactSqlResult result, IdentifierOrValueExpression source)
+		{
+			if (source == null) { return; }
+			string columnName = source.Value;
+			result.AddColumn((TransactTableInfo)null, columnName);
+		}
 		/// <summary>
 		/// 将当前传入的 Transact-SQL 语句，解析为一个 DynamicCommandElement 类型的实例。
 		/// </summary>
@@ -149,6 +195,8 @@ namespace Basic.DataContexts
 			using (StringReader reader = new StringReader(sql))
 			{
 				StatementList statementList = parser.ParseStatementList(reader, out IList<ParseError> errors);
+				if (errors.Count > 0) { throw new Exception(string.Join(", ", errors.Select(m => m.Message))); }
+
 				foreach (TSqlStatement statement in statementList.Statements)
 				{
 					if (!(statement is SelectStatement)) { continue; }
@@ -198,7 +246,24 @@ namespace Basic.DataContexts
 								PasteFromClause(result, tableReference);
 							}
 						}
-						if (select.SelectElements != null) { PasteSelectClause(result, select.SelectElements); }
+						if (select.SelectElements != null)
+						{
+							foreach (SelectScalarExpression source in select.SelectElements)
+							{
+								if (source.Expression is FunctionCall fcExpression)
+								{
+									ParseColumnInfo(result, source.ColumnName as IdentifierOrValueExpression, fcExpression);
+								}
+								else if (source.Expression is ColumnReferenceExpression crExpression)
+								{
+									ParseColumnInfo(result, source.ColumnName as IdentifierOrValueExpression, crExpression);
+								}
+								else
+								{
+									ParseColumnInfo(result, source.ColumnName as IdentifierOrValueExpression);
+								}
+							}
+						}
 					}
 				}
 			}
