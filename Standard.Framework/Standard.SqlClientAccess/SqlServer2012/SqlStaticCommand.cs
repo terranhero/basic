@@ -84,32 +84,33 @@ namespace Basic.SqlServer2012
 		/// <returns>受影响的行数。</returns>
 		internal protected override System.Threading.Tasks.Task<int> ExecuteNonQueryAsync()
 		{
-			System.Threading.Tasks.TaskCompletionSource<int> tsc = new System.Threading.Tasks.TaskCompletionSource<int>();
-			System.Threading.Tasks.Task<int>.Factory.FromAsync<SqlCommand>((cmd, callback, stateObject) =>
-			{
-				return cmd.BeginExecuteNonQuery();
-			},
-			iar =>
-			{
-				SqlCommand cmd = iar.AsyncState as SqlCommand;
-				return cmd.EndExecuteNonQuery(iar);
-			}, sqlCommand, null).ContinueWith(delegate (System.Threading.Tasks.Task<int> tt)
-			{
-				if (tt.IsFaulted)
-				{
-					Exception innerException = tt.Exception.InnerException;
-					tsc.SetException(innerException);
-				}
-				else if (tt.IsCanceled)
-				{
-					tsc.SetCanceled();
-				}
-				else
-				{
-					tsc.SetResult(tt.Result);
-				}
-			}, System.Threading.Tasks.TaskScheduler.Default);
-			return tsc.Task;
+			return sqlCommand.ExecuteNonQueryAsync();
+			//System.Threading.Tasks.TaskCompletionSource<int> tsc = new System.Threading.Tasks.TaskCompletionSource<int>();
+			//System.Threading.Tasks.Task<int>.Factory.FromAsync<SqlCommand>((cmd, callback, stateObject) =>
+			//{
+			//	return cmd.BeginExecuteNonQuery();
+			//},
+			//iar =>
+			//{
+			//	SqlCommand cmd = iar.AsyncState as SqlCommand;
+			//	return cmd.EndExecuteNonQuery(iar);
+			//}, sqlCommand, null).ContinueWith(delegate (System.Threading.Tasks.Task<int> tt)
+			//{
+			//	if (tt.IsFaulted)
+			//	{
+			//		Exception innerException = tt.Exception.InnerException;
+			//		tsc.SetException(innerException);
+			//	}
+			//	else if (tt.IsCanceled)
+			//	{
+			//		tsc.SetCanceled();
+			//	}
+			//	else
+			//	{
+			//		tsc.SetResult(tt.Result);
+			//	}
+			//}, System.Threading.Tasks.TaskScheduler.Default);
+			//return tsc.Task;
 		}
 
 		/// <summary>

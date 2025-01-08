@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.Common;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 using Basic.Collections;
@@ -502,7 +501,12 @@ namespace Basic.DataAccess
 			StaticCommand dataCommand = CreateStaticCommand(cmdName);
 			using (dataCommand = BeginStaticExecute(dataCommand))
 			{
-				return this.ExecuteNonQueryAsync(dataCommand);
+				return dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
 			}
 		}
 
@@ -512,17 +516,21 @@ namespace Basic.DataAccess
 		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程结构名称。</param>
 		/// <param name="anonObject">键/值对数组，包含了需要执行参数的值。</param>
 		/// <returns>执行ransact-SQL语句的返回值</returns>
-		protected Task<Result> ExecuteNonQueryAsync(string cmdName, object anonObject)
+		protected async Task<Result> ExecuteNonQueryAsync(string cmdName, object anonObject)
 		{
-			TaskCompletionSource<Result> source = new TaskCompletionSource<Result>();
 			StaticCommand dataCommand = CreateStaticCommand(cmdName);
 			using (dataCommand = BeginStaticExecute(dataCommand))
 			{
-				dataCommand.CheckData(_Result, anonObject);
-				if (_Result.Failure) { source.SetResult(_Result); return source.Task; }
+				await dataCommand.CheckDataAsync(_Result, anonObject);
+				if (_Result.Failure) { return _Result; }
 
 				dataCommand.ResetParameters(anonObject);
-				return this.ExecuteNonQueryAsync(dataCommand);
+				return await dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
 			}
 		}
 
@@ -532,17 +540,21 @@ namespace Basic.DataAccess
 		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程结构名称。</param>
 		/// <param name="entity">实体类数组，包含了需要执行参数的值。</param>
 		/// <returns>执行ransact-SQL语句的返回值</returns>
-		protected System.Threading.Tasks.Task<Result> ExecuteNonQueryAsync(string cmdName, AbstractEntity entity)
+		protected async System.Threading.Tasks.Task<Result> ExecuteNonQueryAsync(string cmdName, AbstractEntity entity)
 		{
-			TaskCompletionSource<Result> source = new TaskCompletionSource<Result>();
 			StaticCommand dataCommand = CreateStaticCommand(cmdName);
 			using (dataCommand = BeginStaticExecute(dataCommand))
 			{
-				dataCommand.CheckData(_Result, entity);
-				if (_Result.Failure) { source.SetResult(_Result); return source.Task; }
+				await dataCommand.CheckDataAsync(_Result, entity);
+				if (_Result.Failure) { return _Result; }
 
 				dataCommand.ResetParameters(entity);
-				return this.ExecuteNonQueryAsync(dataCommand);
+				return await dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
 			}
 		}
 
@@ -565,16 +577,21 @@ namespace Basic.DataAccess
 		/// <param name="anonObject">包含可执行参数的匿名类。</param>
 		/// <exception cref="System.ArgumentNullException">参数 entities 为null或数组长度为0。</exception>
 		/// <returns>执行ransact-SQL语句的返回值</returns>
-		internal protected System.Threading.Tasks.Task<Result> ExecuteNonQueryAsync(StaticCommand dataCommand, object anonObject)
+		internal protected async System.Threading.Tasks.Task<Result> ExecuteNonQueryAsync(StaticCommand dataCommand, object anonObject)
 		{
 			TaskCompletionSource<Result> source = new TaskCompletionSource<Result>();
 			using (dataCommand = BeginStaticExecute(dataCommand))
 			{
-				dataCommand.CheckData(_Result, anonObject);
-				if (_Result.Failure) { source.SetResult(_Result); return source.Task; }
+				await dataCommand.CheckDataAsync(_Result, anonObject);
+				if (_Result.Failure) { return _Result; }
 
 				dataCommand.ResetParameters(anonObject);
-				return this.ExecuteNonQueryAsync(dataCommand);
+				return await dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
 			}
 		}
 
@@ -596,7 +613,12 @@ namespace Basic.DataAccess
 				if (_Result.Failure) { return _Result; }
 
 				dataCommand.ResetParameters(entity);
-				return await this.ExecuteNonQueryAsync(dataCommand);
+				return await dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
 			}
 		}
 
@@ -618,7 +640,12 @@ namespace Basic.DataAccess
 
 				if (dataCommand.ResetParameters(entities))
 				{
-					return await this.ExecuteNonQueryAsync(dataCommand);
+					return await dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
+					{
+						if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+						else { _Result.AffectedRows = tt.Result; }
+						return _Result;
+					});
 				}
 				foreach (AbstractEntity entity in entities)
 				{

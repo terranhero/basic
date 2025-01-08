@@ -101,9 +101,8 @@ namespace Basic.Configuration
 
 		#region 控件显示属性
 		private System.Windows.Visibility _EnterEntity = System.Windows.Visibility.Collapsed;
-		/// <summary>
-		/// Gets or sets the entity project folder name.
-		/// </summary>
+
+		/// <summary>Gets or sets the entity project folder name.</summary>
 		/// <value>The string value assigned to the entity project folder name</value>
 		[System.ComponentModel.Bindable(true), System.ComponentModel.Browsable(false)]
 		public System.Windows.Visibility EnterEntity

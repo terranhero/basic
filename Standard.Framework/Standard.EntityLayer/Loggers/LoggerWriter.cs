@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Basic.Collections;
 using Basic.Configuration;
@@ -24,6 +25,28 @@ namespace Basic.LogInfo
 	/// <summary>表示抽象的日志写入类</summary>
 	public abstract class LoggerWriter : ILoggerWriter, IFileLoggerWriter
 	{
+		private static ILoggerWriter UpdateValue(string key, ILoggerWriter value) { return value; }
+
+		private static readonly ConcurrentDictionary<string, ILoggerWriter> writers = new ConcurrentDictionary<string, ILoggerWriter>();
+
+		/// <summary>获取缓存的日志写入器</summary>
+		/// <param name="key">数据库连接名称</param>
+		/// <param name="writer">日志写入器</param>
+		/// <returns><!--true if the key was found in the <see cref="ConcurrentDictionary{TKey,TValue}"/>; otherwise, false--></returns>
+		public static bool TryGetWriter(string key, out ILoggerWriter writer)
+		{
+			return writers.TryGetValue(key, out writer);
+		}
+
+		/// <summary>获取缓存的日志写入器</summary>
+		/// <param name="key">数据库连接名称</param>
+		/// <param name="writer">日志写入器</param>
+		/// <returns><!--true if the key was found in the <see cref="ConcurrentDictionary{TKey,TValue}"/>; otherwise, false--></returns>
+		public static ILoggerWriter AddOrUpdate(string key, ILoggerWriter writer)
+		{
+			return writers.AddOrUpdate(key, writer, UpdateValue);
+		}
+
 		/// <summary></summary>
 		internal protected readonly ILoggerStorage _storage = null;
 		internal readonly static ActionCollection _actions = new ActionCollection();

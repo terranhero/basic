@@ -93,11 +93,13 @@ namespace Basic.SqlServer
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync()
 		{
-			IAsyncResult result = sqlCommand.BeginExecuteReader();
-			return System.Threading.Tasks.Task<DbDataReader>.Factory.FromAsync(result, (iar) =>
-			{
-				return sqlCommand.EndExecuteReader(iar);
-			});
+			return sqlCommand.ExecuteReaderAsync().ContinueWith<DbDataReader>((reader) => { return reader.Result; });
+
+			//IAsyncResult result = sqlCommand.BeginExecuteReader();
+			//return System.Threading.Tasks.Task<DbDataReader>.Factory.FromAsync(result, (iar) =>
+			//{
+			//	return sqlCommand.EndExecuteReader(iar);
+			//});
 		}
 
 		/// <summary>
@@ -107,11 +109,12 @@ namespace Basic.SqlServer
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior)
 		{
-			IAsyncResult result = sqlCommand.BeginExecuteReader(behavior);
-			return System.Threading.Tasks.Task<DbDataReader>.Factory.FromAsync(result, (iar) =>
-			{
-				return sqlCommand.EndExecuteReader(iar);
-			});
+			return sqlCommand.ExecuteReaderAsync(behavior).ContinueWith<DbDataReader>((reader) => { return reader.Result; });
+			//IAsyncResult result = sqlCommand.BeginExecuteReader(behavior);
+			//return System.Threading.Tasks.Task<DbDataReader>.Factory.FromAsync(result, (iar) =>
+			//{
+			//	return sqlCommand.EndExecuteReader(iar);
+			//});
 		}
 
 		/// <summary>
