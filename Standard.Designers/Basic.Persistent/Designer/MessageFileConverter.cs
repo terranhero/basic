@@ -128,10 +128,10 @@ namespace Basic.Designer
 					this.Items.Add(new MessageInfo(persistent, fileName, resxPath));
 					if (fileName == value) { SelectedIndex = this.Items.Count - 1; }
 				}
-				this.Height = this.ItemHeight * 12;
-				if (this.PreferredHeight <= this.Height)
-					this.Height = this.PreferredHeight;
-				if (this.Height <= 39) { this.Height = 39; }
+				//this.Height = this.ItemHeight * 12;
+				//if (this.PreferredHeight <= this.Height)
+				//	this.Height = this.PreferredHeight;
+				//if (this.Height <= 39) { this.Height = 39; }
 				//if (value != null) { SelectedValue = value; }
 			}
 

@@ -34,8 +34,8 @@ namespace <#= defaultNamespance#>
 <# if(builder.IndexEnabled) {#>
 
 		/// <summary>初始化加载页面</summary>
-		[AcceptVerbs("GET")]
-		public async Task<IActionResult> Index() { return await Task.FromResult(this.PartialView()); }
+		[AcceptVerbs("GET"), ActionName("index")]
+		public async Task<IActionResult> Index() { return await Task.FromResult(this.PartialView("index")); }
 <# }#>
 <# if(builder.GridEnabled) {#>
 
@@ -46,14 +46,14 @@ namespace <#= defaultNamespance#>
 <# if(builder.CreateEnabled && builder.NewEntityName != null) {#>
 
 		/// <summary>新增数据Get请求</summary>
-		[AcceptVerbs("GET"), ActionName("Create")]
+		[AcceptVerbs("GET"), ActionName("create")]
 		public async Task<IActionResult> CreateGet(<#= builder.NewEntityName #> entity)
 		{
-			return await Task.FromResult(this.PartialView(entity));
+			return await Task.FromResult(this.PartialView("create", entity));
 		}
 
 		/// <summary>Create Post Action</summary>
-        [AcceptVerbs("POST"), ValidateAntiForgery()]
+        [AcceptVerbs("POST"), ActionName("create"), ValidateAntiForgery()]
         public async Task<IActionResult> Create(<#= builder.NewEntityName #> entity)
         {
             if (ModelState.IsValid)
@@ -72,7 +72,7 @@ namespace <#= defaultNamespance#>
 <# if(builder.EditEnabled && builder.EditEntityName != null) {#>
 
 		/// <summary>Edit Get Action</summary>
-		[AcceptVerbs("GET"), ActionName("Edit")]
+		[AcceptVerbs("GET"), ActionName("edit")]
 		public async Task<IActionResult> EditGet(<#= builder.SearchEntityName #> entity)
 		{
 			ModelState.Clear();
@@ -82,11 +82,11 @@ namespace <#= defaultNamespance#>
 			<#=builder.ContextName#> context = new  <#=builder.ContextName#>();
 			<#}#>
 			context.SearchByKey(entity);
-			return await Task.FromResult(this.PartialView(entity));
+			return await Task.FromResult(this.PartialView("edit", entity));
 		}
 
 		/// <summary>Edit Post Action</summary>
-        [AcceptVerbs("POST"), ValidateAntiForgery()]
+        [AcceptVerbs("POST"), ActionName("edit"), ValidateAntiForgery()]
         public async Task<IActionResult> Edit(<#= builder.EditEntityName #> entity)
         {
             if (ModelState.IsValid)
@@ -107,7 +107,7 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		///	Delete Post Action
 		/// </summary>
-		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		[AcceptVerbs("POST"), ActionName("delete"), ValidateAntiForgery()]
 		public async Task<IActionResult> Delete(<#= builder.DeleteEntityName #>[] entities)
 		{
 			if (ModelState.IsValid)
@@ -131,7 +131,7 @@ namespace <#= defaultNamespance#>
 <# if(builder.SearchAsyncEnabled && builder.SearchEntityName != null) {#>
 
 		/// <summary>简单查询数据</summary>
-		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		[AcceptVerbs("POST"), ActionName("search"), ValidateAntiForgery()]
 		public async Task<IActionResult> Search(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
@@ -144,7 +144,7 @@ namespace <#= defaultNamespance#>
 		}
 <# }else if(builder.SearchEnabled && builder.SearchEntityName != null) {#>
 		/// <summary>简单查询数据</summary>
-		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		[AcceptVerbs("POST"), ActionName("search"), ValidateAntiForgery()]
 		public IActionResult Search(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
@@ -159,14 +159,14 @@ namespace <#= defaultNamespance#>
 <# if(builder.ComplexSearchAsyncEnabled && builder.SearchEntityName != null) {#>
 
 		/// <summary>高级查询页面打开</summary>
-		[AcceptVerbs("GET"), ActionName("ComplexSearch")]
+		[AcceptVerbs("GET"), ActionName("complexsearch")]
 		public IActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
 		{ 
 			return this.PartialView(condition); 
 		}
 
 		/// <summary>高级查询</summary>
-		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		[AcceptVerbs("POST"), ActionName("complexsearch"), ValidateAntiForgery()]
 		public async Task<IActionResult> ComplexSearch(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
@@ -182,7 +182,7 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		/// Complex Search Get Action
 		/// </summary>
-		[AcceptVerbs("GET"), ActionName("ComplexSearch")]
+		[AcceptVerbs("GET"), ActionName("complexsearch")]
 		public IActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
 		{ 
 			return this.PartialView(condition); 
@@ -191,7 +191,7 @@ namespace <#= defaultNamespance#>
 		/// <summary>
 		/// Complex Search Post Action
 		/// </summary>
-		[AcceptVerbs("POST"), ValidateAntiForgery()]
+		[AcceptVerbs("POST"), ActionName("complexsearch"), ValidateAntiForgery()]
 		public IActionResult ComplexSearch(<#= builder.SearchConditionName #> condition)
 		{
 			<# if(builder.Connection == true) {#>
