@@ -16,7 +16,7 @@
 	<dpdl:DataCommands>
 		<DynamicCommand Name="SearchTableConfig" Kind="SearchTable">
 			<SelectText><![CDATA[T1.GUIDKEY,T1.BATCHNO,T1.CONTROLLER,T1.ACTION,T1.COMPUTER,T1.USERNAME,T1.MESSAGE,T1.LOGLEVEL,T1.RESULTTYPE,T1.OPERATIONTIME]]></SelectText>
-			<FromText><![CDATA[{$EVENTLOG_TABLENAME$} T1]]></FromText>
+			<FromText><![CDATA[{$EVENTLOG_TABLENAME$} T1 WITH(NOLOCK)]]></FromText>
 			<OrderText>T1.OPERATIONTIME</OrderText>
 		</DynamicCommand>
 		<StaticCommand Name="AddNewConfig" Kind="AddNew">

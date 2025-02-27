@@ -32,19 +32,20 @@ namespace <#= defaultNamespance#>
 		public <#= builder.ControllerClass#>() : base() { }
 <#}#>
 <# if(builder.IndexEnabled) {#>
-
+		#region <#= builder.ControllerDescription#> - 加载页面
 		/// <summary>初始化加载页面</summary>
 		[AcceptVerbs("GET"), ActionName("index")]
 		public async Task<IActionResult> Index() { return await Task.FromResult(this.PartialView("index")); }
+		#endregion
 <# }#>
 <# if(builder.GridEnabled) {#>
-
 		/// <summary>初始化加载表格</summary>
 		[AcceptVerbs("GET"), ChildActionOnly()]
 		public IActionResult Grid() { return this.PartialView("Grid"); }
 <# }#>
 <# if(builder.CreateEnabled && builder.NewEntityName != null) {#>
 
+		#region <#= builder.ControllerDescription#> - 新增数据
 		/// <summary>新增数据Get请求</summary>
 		[AcceptVerbs("GET"), ActionName("create")]
 		public async Task<IActionResult> CreateGet(<#= builder.NewEntityName #> entity)
@@ -68,9 +69,11 @@ namespace <#= defaultNamespance#>
             }
             return this.ToJson(ModelState);
         }
+		#endregion
 <# }#>
 <# if(builder.EditEnabled && builder.EditEntityName != null) {#>
 
+		#region <#= builder.ControllerDescription#> - 修改数据
 		/// <summary>Edit Get Action</summary>
 		[AcceptVerbs("GET"), ActionName("edit")]
 		public async Task<IActionResult> EditGet(<#= builder.SearchEntityName #> entity)
@@ -101,12 +104,12 @@ namespace <#= defaultNamespance#>
             }
             return this.ToJson(ModelState);
         }
+		#endregion
 <# }#>
 <# if(builder.DeleteEnabled && builder.DeleteEntityName != null) {#>
 
-		/// <summary>
-		///	Delete Post Action
-		/// </summary>
+		#region <#= builder.ControllerDescription#> - 删除数据
+		/// <summary>删除数据</summary>
 		[AcceptVerbs("POST"), ActionName("delete"), ValidateAntiForgery()]
 		public async Task<IActionResult> Delete(<#= builder.DeleteEntityName #>[] entities)
 		{
@@ -127,9 +130,11 @@ namespace <#= defaultNamespance#>
 			}
 			return this.ToJson(ModelState);
 		}
+		#endregion
 <# }#>
 <# if(builder.SearchAsyncEnabled && builder.SearchEntityName != null) {#>
 
+		#region <#= builder.ControllerDescription#> - 查询数据
 		/// <summary>简单查询数据</summary>
 		[AcceptVerbs("POST"), ActionName("search"), ValidateAntiForgery()]
 		public async Task<IActionResult> Search(<#= builder.SearchConditionName #> condition)
@@ -142,7 +147,9 @@ namespace <#= defaultNamespance#>
 			IPagination<<#= builder.SearchEntityName #>> result = await context.GetEntitiesAsync(condition);
 			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
 		}
+		#endregion
 <# }else if(builder.SearchEnabled && builder.SearchEntityName != null) {#>
+		#region <#= builder.ControllerDescription#> - 查询数据
 		/// <summary>简单查询数据</summary>
 		[AcceptVerbs("POST"), ActionName("search"), ValidateAntiForgery()]
 		public IActionResult Search(<#= builder.SearchConditionName #> condition)
@@ -155,9 +162,10 @@ namespace <#= defaultNamespance#>
 			IPagination<<#= builder.SearchEntityName #>> result = context.GetEntities(condition);
 			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
 		}
+		#endregion
 <# }#>
 <# if(builder.ComplexSearchAsyncEnabled && builder.SearchEntityName != null) {#>
-
+		#region <#= builder.ControllerDescription#> - 查询数据
 		/// <summary>高级查询页面打开</summary>
 		[AcceptVerbs("GET"), ActionName("complexsearch")]
 		public IActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
@@ -177,20 +185,17 @@ namespace <#= defaultNamespance#>
 			IPagination<<#= builder.SearchEntityName #>> result = await context.GetEntitiesAsync(condition);
 			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
 		}
+		#endregion
 <# }else if(builder.ComplexSearchEnabled && builder.SearchEntityName != null) {#>
-
-		/// <summary>
-		/// Complex Search Get Action
-		/// </summary>
+		#region <#= builder.ControllerDescription#> - 查询数据
+		/// <summary>高级查询，查询条件更多</summary>
 		[AcceptVerbs("GET"), ActionName("complexsearch")]
 		public IActionResult ComplexSearchGet(<#= builder.SearchConditionName #> condition)
 		{ 
 			return this.PartialView(condition); 
 		}
 
-		/// <summary>
-		/// Complex Search Post Action
-		/// </summary>
+		/// <summary>高级查询，查询条件更多</summary>
 		[AcceptVerbs("POST"), ActionName("complexsearch"), ValidateAntiForgery()]
 		public IActionResult ComplexSearch(<#= builder.SearchConditionName #> condition)
 		{
@@ -202,6 +207,7 @@ namespace <#= defaultNamespance#>
 			IPagination<<#= builder.SearchEntityName #>> result = context.GetEntities(condition);
 			return this.JsonView<<#= builder.SearchEntityName #>>("Grid", result);
 		}
+		#endregion
 <# }#>
 	}
 }

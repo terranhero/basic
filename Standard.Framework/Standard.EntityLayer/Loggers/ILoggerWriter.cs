@@ -33,6 +33,54 @@ namespace Basic.Interfaces
 		/// <summary>系统是否已经所有可用请求</summary>
 		bool HasActions { get; }
 
+		#region 日志信息事件 - 异步
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task InformationAsync(string url, string userName, string message);
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task InformationAsync(Guid batchNo, string url, string userName, string message);
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task InformationAsync(string url, string host, string userName, string message);
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task InformationAsync(Guid batchNo, string url, string host, string userName, string message);
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task InformationAsync(string controller, string action, string host, string userName, string message);
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task InformationAsync(Guid batchNo, string controller, string action, string host, string userName, string message);
+		#endregion
+
+		#region 日志信息事件 - 同步
 		/// <summary>记录操作成功的日志</summary>
 		/// <param name="url">当前请求全路径</param>
 		/// <param name="userName">当前操作用户</param>
@@ -77,8 +125,9 @@ namespace Basic.Interfaces
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="message">操作描述</param>
 		void Information(Guid batchNo, string controller, string action, string host, string userName, string message);
+		#endregion
 
-		#region 日志警告事件
+		#region 日志警告事件 - 同步
 		/// <summary>记录操作成功的日志</summary>
 		/// <param name="url">当前请求全路径</param>
 		/// <param name="userName">当前操作用户</param>
@@ -125,7 +174,7 @@ namespace Basic.Interfaces
 		void Warning(Guid batchNo, string controller, string action, string host, string userName, string message);
 		#endregion
 
-		#region 日志调试事件
+		#region 日志调试事件 - 同步
 		/// <summary>记录操作成功的日志</summary>
 		/// <param name="url">当前请求全路径</param>
 		/// <param name="userName">当前操作用户</param>
@@ -172,6 +221,99 @@ namespace Basic.Interfaces
 		void Debug(Guid batchNo, string controller, string action, string host, string userName, string message);
 		#endregion
 
+		#region 错误日志记录 - 异步
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task ErrorAsync(string url, string userName, string message);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task ErrorAsync(string url, string host, string userName, string message);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task ErrorAsync(string controller, string action, string host, string userName, string message);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task ErrorAsync(Guid batchNo, string url, string userName, string message);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task ErrorAsync(Guid batchNo, string url, string host, string userName, string message);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		Task ErrorAsync(Guid batchNo, string controller, string action, string host, string userName, string message);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作异常</param>
+		Task ErrorAsync(string url, string userName, Exception ex);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作异常</param>
+		Task ErrorAsync(string url, string host, string userName, Exception ex);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作异常</param>
+		Task ErrorAsync(string controller, string action, string host, string userName, Exception ex);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作异常</param>
+		Task ErrorAsync(Guid batchNo, string url, string userName, Exception ex);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作异常</param>
+		Task ErrorAsync(Guid batchNo, string url, string host, string userName, Exception ex);
+
+		/// <summary>记录系统异常的操作日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作异常</param>
+		Task ErrorAsync(Guid batchNo, string controller, string action, string host, string userName, Exception ex);
+		#endregion
+
+		#region 错误日志记录 - 同步
 		/// <summary>记录系统异常的操作日志</summary>
 		/// <param name="url">当前请求全路径</param>
 		/// <param name="userName">当前操作用户</param>
@@ -261,5 +403,6 @@ namespace Basic.Interfaces
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作异常</param>
 		void Error(Guid batchNo, string controller, string action, string host, string userName, Exception ex);
+		#endregion
 	}
 }
