@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Basic.EntityLayer
 {
-	/// <summary>
-	/// 表示可为空的属性基元类型
-	/// </summary>
+	/// <summary>表示可为空的属性基元类型</summary>
 	/// <typeparam name="T">表示DocNet 基元类型</typeparam>
+	[StructLayout(LayoutKind.Auto)]
 	public struct PropertyMetaNullable<T> : IPropertyMeta<T> where T : struct, IComparable<T>, IEquatable<T>
 	{
 		private Nullable<T> m_Value;
@@ -182,10 +182,9 @@ namespace Basic.EntityLayer
 		#endregion
 	}
 
-	/// <summary>
-	/// 表示属性基元类型
-	/// </summary>
+	/// <summary>表示属性基元类型</summary>
 	/// <typeparam name="T">表示DocNet 基元类型</typeparam>
+	[StructLayout(LayoutKind.Auto)]
 	public struct PropertyMeta<T> : IPropertyMeta<T> where T : struct, IComparable<T>, IEquatable<T>
 	{
 		private T m_Value;
