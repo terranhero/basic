@@ -34,6 +34,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.DB2Access", "Stand
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.PostgreAccess", "Standard.Framework\Standard.NpgSqlAccess\Standard.PostgreAccess.csproj", "{D80F307F-C9F8-40F7-A67C-52C49D6642AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Standard.EntityLayer.Test", "Standard.Framework\Standard.EntityLayer.Test\Standard.EntityLayer.Test.csproj", "{C672A86F-6FA2-4AB5-8676-4BB6402AC053}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Standard.DataAccess.Test", "Standard.Framework\Standard.DataAccess.Test\Standard.DataAccess.Test.csproj", "{966ACF9A-8961-435B-BB5E-6C67E1929EB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +156,30 @@ Global
 		{D80F307F-C9F8-40F7-A67C-52C49D6642AE}.Release|x64.Build.0 = Release|Any CPU
 		{D80F307F-C9F8-40F7-A67C-52C49D6642AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{D80F307F-C9F8-40F7-A67C-52C49D6642AE}.Release|x86.Build.0 = Release|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Debug|x64.Build.0 = Debug|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Debug|x86.Build.0 = Debug|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Release|x64.ActiveCfg = Release|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Release|x64.Build.0 = Release|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Release|x86.ActiveCfg = Release|Any CPU
+		{C672A86F-6FA2-4AB5-8676-4BB6402AC053}.Release|x86.Build.0 = Release|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Debug|x64.Build.0 = Debug|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Debug|x86.Build.0 = Debug|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Release|x64.ActiveCfg = Release|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Release|x64.Build.0 = Release|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Release|x86.ActiveCfg = Release|Any CPU
+		{966ACF9A-8961-435B-BB5E-6C67E1929EB3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

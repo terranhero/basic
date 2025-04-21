@@ -60,3 +60,19 @@ using(xxxAccess access = new xxxAccess(connectionstring, TimeSpan.FromSeconds(60
     access.SetComplate();
 }
 ```
+
+### 使用日志
+在 Program 文件中设置应用停止时缓冲区没有写入的日志信息
+```c#
+app.Lifetime.ApplicationStopping.Register(() =>
+{
+    LoggerWriterFactory.FlushAsync();
+});
+//使用 Lambda 表达式查询数据
+using(xxxAccess access = new xxxAccess(connectionstring))
+{
+    var queries = access.GetEntities<XXX>(0,0);
+    queries.Where(m => m.Enabled == true).Where(m => m.Key >= 1);
+    return queries.ToPaginationAsync();
+}
+```
