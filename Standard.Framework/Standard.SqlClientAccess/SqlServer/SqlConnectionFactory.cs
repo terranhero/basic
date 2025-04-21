@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using System.Data.Common;
 using Basic.Configuration;
-using System.Data.SqlClient;
 using Basic.DataAccess;
-using System.Xml.Linq;
+#if NET8_0_OR_GREATER
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
+#else
+using System.Data.Common;
+using System.Data.SqlClient;
+#endif
 
 namespace Basic.SqlServer
 {

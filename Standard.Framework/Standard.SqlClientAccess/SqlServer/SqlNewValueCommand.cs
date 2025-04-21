@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#if NET8_0_OR_GREATER
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
+#else
+using System.Data.Common;
 using System.Data.SqlClient;
+#endif
 using System.ComponentModel;
 
-using System.Data.Common;
 using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.DataAccess;

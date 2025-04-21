@@ -1,17 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
-using System.Linq;
+#if NET8_0_OR_GREATER
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
+#else
 using System.Data.Common;
 using System.Data.SqlClient;
+#endif
 using Basic.DataAccess;
 using Basic.Properties;
-using Basic.Exceptions;
-using Basic.Collections;
-using Basic.EntityLayer;
-using Basic.Interfaces;
 using Basic.Enums;
-using System.Drawing;
 
 namespace Basic.SqlServer
 {
