@@ -20,8 +20,8 @@ namespace Basic.LogInfo
 		private static System.Timers.Timer _EventTimer = new System.Timers.Timer(1000);
 
 		private readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
-		private readonly static EventLogContext _DbStorage = new EventLogContext(_EventLogs);
-		private readonly static LocalFileStorage _FileStorage;
+		private readonly static DataBaseStorage _DbStorage = new DataBaseStorage(_EventLogs);
+		private readonly static LocalFileStorage _FileStorage = new LocalFileStorage(_EventLogs);
 		private readonly static ActionCollection _Actions = new ActionCollection();
 		private readonly static string _HostName;
 
@@ -32,7 +32,6 @@ namespace Basic.LogInfo
 		{
 			_EventTimer.AutoReset = true;
 			_EventTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnEventTimerElapsed);
-			_FileStorage = new LocalFileStorage(_EventLogs);
 			_HostName = GetComputerAddress();
 		}
 		private static async void OnEventTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -45,12 +44,12 @@ namespace Basic.LogInfo
 					GetSectionInfo(log.LogLevel, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
 					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 					{
-						await _FileStorage.WriteLogAsync(log.BatchNo, log.Controller, log.Action, log.Computer,
+						await _FileStorage.WriteAsync(log.BatchNo, log.Controller, log.Action, log.Computer,
 						 log.UserName, log.Message, log.LogLevel, log.ResultType);
 					}
 					else if (savetype == LogSaveType.DataBase)
 					{
-						await _DbStorage.WriteLogAsync(log.BatchNo, log.Controller, log.Action, log.Computer,
+						await _DbStorage.WriteAsync(log.BatchNo, log.Controller, log.Action, log.Computer,
 						   log.UserName, log.Message, log.LogLevel, log.ResultType);
 					}
 
@@ -62,16 +61,16 @@ namespace Basic.LogInfo
 						GetSectionInfo(LogLevel.Error, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
 						if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 						{
-							await _FileStorage.WriteLogAsync(log.BatchNo, log.Controller, log.Action, log.Computer, log.UserName, ex);
+							await _FileStorage.WriteAsync(log.BatchNo, log.Controller, log.Action, log.Computer, log.UserName, ex);
 						}
 						else if (savetype == LogSaveType.DataBase)
 						{
-							await _DbStorage.WriteLogAsync(log.BatchNo, log.Controller, log.Action, log.Computer, log.UserName, ex);
+							await _DbStorage.WriteAsync(log.BatchNo, log.Controller, log.Action, log.Computer, log.UserName, ex);
 						}
 					}
 					catch (Exception ex1)
 					{
-						await _FileStorage.WriteLogAsync(log.BatchNo, log.Controller, log.Action, log.Computer, log.UserName, ex1);
+						await _FileStorage.WriteAsync(log.BatchNo, log.Controller, log.Action, log.Computer, log.UserName, ex1);
 					}
 				}
 			}

@@ -84,7 +84,7 @@ namespace Basic.LogInfo
 		/// <param name="message">操作消息</param>
 		/// <param name="logLevel">日志级别</param>
 		/// <param name="resultType">操作结果</param>
-		public async Task WriteLogAsync(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName,
+		public async Task WriteAsync(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName,
 			string message, LogLevel logLevel, LogResult resultType)
 		{
 			string logFileName = GetFileName();
@@ -111,7 +111,7 @@ namespace Basic.LogInfo
 		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作失败后的异常信息</param>
-		public async Task WriteLogAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
+		public async Task WriteAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
 		{
 			string logFileName = GetFileName();
 #if NET6_0_OR_GREATER

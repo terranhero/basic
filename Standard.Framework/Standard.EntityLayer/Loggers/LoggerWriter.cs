@@ -220,19 +220,20 @@ namespace Basic.LogInfo
 		{
 			try
 			{
+				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
 				GetSectionInfo(LogLevel.Error, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
 				if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 				{
-					await _FileStorage.WriteLogAsync(batchNo, controller, action, host, user, ex);
+					await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex);
 				}
 				else if (savetype == LogSaveType.DataBase && _storage != null)
 				{
-					await _storage.WriteLogAsync(batchNo, controller, action, host, user, ex);
+					await _storage.WriteAsync(batchNo, controller, action, host, user, ex);
 				}
 			}
 			catch (Exception ex1)
 			{
-				await _FileStorage.WriteLogAsync(batchNo, controller, action, host, user, ex1);
+				await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex1);
 			}
 		}
 
@@ -253,16 +254,16 @@ namespace Basic.LogInfo
 				GetSectionInfo(logLevel, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
 				if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 				{
-					await _FileStorage.WriteLogAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
+					await _FileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 				}
 				else if (savetype == LogSaveType.DataBase && _storage != null)
 				{
-					await _storage.WriteLogAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
+					await _storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 				}
 			}
 			catch (Exception ex1)
 			{
-				await _FileStorage.WriteLogAsync(batchNo, controller, action, host, user, ex1);
+				await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex1);
 			}
 		}
 

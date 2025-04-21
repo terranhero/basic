@@ -28,9 +28,9 @@
 		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />		
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Include="LogInfo\SYS_EVENTLOG.myf" />
-	  <EmbeddedResource Include="LogInfo\SYS_EVENTLOG.oraf" />
-	  <EmbeddedResource Include="LogInfo\SYS_EVENTLOG.sqlf" />
+	  <EmbeddedResource Include="Loggers\SYS_EVENTLOG.myf" />
+	  <EmbeddedResource Include="Loggers\SYS_EVENTLOG.oraf" />
+	  <EmbeddedResource Include="Loggers\SYS_EVENTLOG.sqlf" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />

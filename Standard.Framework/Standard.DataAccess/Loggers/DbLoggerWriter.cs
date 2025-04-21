@@ -11,13 +11,13 @@ namespace Basic.LogInfo
 	public class DbLoggerWriter : LoggerWriter, IDbLoggerWriter
 	{
 		/// <summary>初始化 DbLoggerWriter 类实例</summary>
-		internal DbLoggerWriter() : base(new EventLogContext(_EventLogs)) { }
+		internal DbLoggerWriter() : base(new DataBaseStorage(_EventLogs)) { }
 
 		/// <summary>初始化 DbLoggerWriter 类实例</summary>
-		public DbLoggerWriter(string connection) : base(new EventLogContext(connection, _EventLogs)) { }
+		public DbLoggerWriter(string connection) : base(new DataBaseStorage(connection, _EventLogs)) { }
 
 		/// <summary>初始化 DbLoggerWriter 类实例</summary>
-		public DbLoggerWriter(IUserContext ctx) : base(new EventLogContext(ctx, _EventLogs)) { }
+		public DbLoggerWriter(IUserContext ctx) : base(new DataBaseStorage(ctx, _EventLogs)) { }
 
 		private static IDbLoggerWriter _logger;
 		/// <summary>获取本地文件写入实例</summary>
