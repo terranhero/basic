@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Basic.EntityLayer;
 using Basic.Enums;
-using Basic.LogInfo;
+using Basic.Loggers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;

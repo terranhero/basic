@@ -1,6 +1,6 @@
 ﻿using Basic.Enums;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
 	/// <summary>记录系统日志</summary>
 	[global::System.Runtime.InteropServices.GuidAttribute("33ECA939-0B5F-46E0-89B8-7734ABFC200F")]

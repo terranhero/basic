@@ -18,7 +18,7 @@ namespace Basic.Windows
 		/// <summary>
 		/// 元素间的空隙
 		/// </summary>
-		private const double Gap = 10D;
+		private const double Gap = 50D;
 		/// <summary>
 		/// 初始化 Basic.Controls.DesignerCanvas 类的一个新实例。
 		/// </summary>

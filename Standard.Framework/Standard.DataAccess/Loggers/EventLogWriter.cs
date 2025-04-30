@@ -8,7 +8,7 @@ using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
 	/// <summary>
 	/// 日志代理类，提供开发用户调用日志服务

@@ -8,7 +8,7 @@ using Basic.Enums;
 using Basic.Interfaces;
 using static System.Collections.Specialized.BitVector32;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
 	/// <summary>将日志写入本地文件中</summary>
 	public interface IFileLoggerWriter : ILoggerWriter { }
@@ -17,15 +17,16 @@ namespace Basic.LogInfo
 	public interface IDbLoggerWriter : ILoggerWriter { }
 
 	/// <summary>允许写入文件日志</summary>
-	internal sealed class FileLoggerWriter : LoggerWriter
+	internal sealed class FileLoggerWriter : LoggerWriter, IFileLoggerWriter
 	{
 		/// <summary>初始化 LoggerWriter 类实例</summary>
 		internal FileLoggerWriter() : base(_FileStorage) { }
 	}
 
 	/// <summary>表示抽象的日志写入类</summary>
-	public abstract class LoggerWriter : ILoggerWriter, IFileLoggerWriter
+	public abstract class LoggerWriter : ILoggerWriter
 	{
+		#region ILoggerWriter 对应数据库实例缓存
 		private static ILoggerWriter UpdateValue(string key, ILoggerWriter value) { return value; }
 
 		private static readonly ConcurrentDictionary<string, ILoggerWriter> writers = new ConcurrentDictionary<string, ILoggerWriter>();
@@ -42,15 +43,15 @@ namespace Basic.LogInfo
 		/// <summary>获取缓存的日志写入器</summary>
 		/// <param name="key">数据库连接名称</param>
 		/// <param name="writer">日志写入器</param>
-		/// <returns><!--true if the key was found in the <see cref="ConcurrentDictionary{TKey,TValue}"/>; otherwise, false--></returns>
+		/// <remarks><!--true if the key was found in the <see cref="ConcurrentDictionary{TKey,TValue}"/>; otherwise, false--></remarks>
 		public static ILoggerWriter AddOrUpdate(string key, ILoggerWriter writer)
 		{
 			return writers.AddOrUpdate(key, writer, UpdateValue);
 		}
+		#endregion
 
 		/// <summary></summary>
 		internal protected readonly ILoggerStorage _storage = null;
-		internal readonly static ActionCollection _actions = new ActionCollection();
 		internal readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
 		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(_EventLogs);
 		internal readonly static string _host = GetComputerAddress();
@@ -116,6 +117,8 @@ namespace Basic.LogInfo
 				hostName = System.Net.Dns.GetHostName();
 			return hostName;
 		}
+
+		internal readonly static ActionCollection _actions = new ActionCollection();
 
 		/// <summary>添加 Action映射。</summary>
 		/// <param name="url">表示请求的路径。</param>

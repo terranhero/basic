@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
     /// <summary>
     /// 表示一个特性，该特性用于无限制调用方对操作方法的访问。

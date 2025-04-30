@@ -5,7 +5,7 @@ using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
 	/// <summary>日志记录数据库写入类</summary>
 	public class DbLoggerWriter : LoggerWriter, IDbLoggerWriter

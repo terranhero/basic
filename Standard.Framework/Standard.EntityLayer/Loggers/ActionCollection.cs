@@ -1,4 +1,4 @@
-﻿namespace Basic.LogInfo
+﻿namespace Basic.Loggers
 {
 	/// <summary>
 	/// 表示系统可用请求集合

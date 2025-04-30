@@ -1,9 +1,9 @@
 ﻿
-using Basic.EntityLayer;
-using Basic.Enums;
-using Basic.LogInfo;
 using System;
 using System.Threading.Tasks;
+using Basic.EntityLayer;
+using Basic.Enums;
+using Basic.Loggers;
 
 namespace Basic.Interfaces
 {

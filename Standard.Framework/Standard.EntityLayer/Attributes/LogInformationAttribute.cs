@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
 	/// <summary>
 	/// 表示一个特性，该特性用于无限制调用方对操作方法的访问。
@@ -15,7 +15,7 @@ namespace Basic.LogInfo
 		private readonly string _Information;
 		private readonly string[] _FormatProperties;
 		/// <summary>
-		/// 初始化 Basic.LogInfo.LogInformationAttribute 类实例
+		/// 初始化 Basic.Loggers.LogInformationAttribute 类实例
 		/// </summary>
 		/// <param name="msg">一个字符串对象，表示自定义日志信息。</param>
 		/// <example><![CDATA[LogInformation("新增角色")]]></example>
@@ -25,7 +25,7 @@ namespace Basic.LogInfo
 		}
 
 		/// <summary>
-		/// 初始化 Basic.LogInfo.LogInformationAttribute 类实例
+		/// 初始化 Basic.Loggers.LogInformationAttribute 类实例
 		/// </summary>
 		/// <param name="msg">一个字符串对象，表示自定义日志信息。</param>
 		/// <param name="args1">一个字符串对象，表示格式话msg参数对象的其中一个值。</param>

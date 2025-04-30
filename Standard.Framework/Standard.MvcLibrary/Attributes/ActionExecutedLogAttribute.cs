@@ -1,6 +1,6 @@
 ﻿using Basic.EntityLayer;
 using Basic.Interfaces;
-using Basic.LogInfo;
+using Basic.Loggers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

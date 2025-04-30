@@ -10,7 +10,7 @@ using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
 	/// <summary>将日志写入本地文件中</summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:使用简单的 \"using\" 语句", Justification = "<挂起>")]

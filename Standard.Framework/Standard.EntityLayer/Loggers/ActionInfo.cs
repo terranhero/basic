@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Basic.LogInfo
+namespace Basic.Loggers
 {
 	/// <summary>
 	/// 表示系统日志请求菜单名称和操作名称定义

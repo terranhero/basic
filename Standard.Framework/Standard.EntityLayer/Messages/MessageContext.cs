@@ -20,7 +20,7 @@ namespace Basic.Messages
 			{
 				/*判断当前资源中是否存在日志本地化资源*/
 				string fullName = typeof(MessageContext).Assembly.FullName;
-				string logType = fullName.Replace("Basic.EntityLayer", "Basic.LogInfo.AccessStrings, Basic.DataAccess");
+				string logType = fullName.Replace("Basic.EntityLayer", "Basic.Loggers.AccessStrings, Basic.DataAccess");
 				Type type = Type.GetType(logType, false, false);
 				if (type != null) { messagerConverters.Register(Activator.CreateInstance(type) as IMessageConverter); }
 			}
