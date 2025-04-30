@@ -15,6 +15,8 @@
 		<Product>Standard.PostgreAccess</Product>
 		<Authors>JACKY</Authors>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+		<PackageTags>ORM Linq Access Postgre SQL</PackageTags>
+		<Description>ORM 框架数据库持久实现（PostgreSQL）特定数据库实现。</Description>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
@@ -31,20 +33,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Update="SqlServer2012\SqlBatchCommand.cs" />
-		<Compile Update="SqlServer2012\SqlCheckCommand.cs" />
-		<Compile Update="SqlServer2012\SqlDynamicCommand.cs" />
-		<Compile Update="SqlServer2012\SqlNewValueCommand.cs" />
-		<Compile Update="SqlServer2012\SqlStaticAdapter.cs" />
-		<Compile Update="SqlServer2012\SqlStaticCommand.cs" />
-		<Compile Update="SqlServer\SqlBatchCommand.cs" />
-		<Compile Update="SqlServer\SqlCheckCommand.cs" />
-		<Compile Update="SqlServer\SqlDynamicCommand.cs" />
-		<Compile Update="SqlServer\SqlNewValueCommand.cs" />
-		<Compile Update="SqlServer\SqlStaticAdapter.cs" />
-		<Compile Update="SqlServer\SqlStaticCommand.cs" />
 	</ItemGroup>
 	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
 </Project>

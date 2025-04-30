@@ -9,7 +9,7 @@
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<PackageTags>ORM Linq Entity Lambda Simple LightWeight</PackageTags>
 		<Authors>JACKY</Authors>
-		<Description>Asp.Net Mvc Entity Model Supporting</Description>
+		<Description>ORM 框架实体模型定义，支持多种数据库(MSSQL,MYSQL,ORACLE,DB2,PostgreSQL等)，支持Linq表达式动态查询数据</Description>
 		<Product>Standard.EntityLayer</Product>
 		<Title>Standard.EntityLayer</Title>
 		<RepositoryUrl>https://gitee.com/terran-hero/basic</RepositoryUrl>

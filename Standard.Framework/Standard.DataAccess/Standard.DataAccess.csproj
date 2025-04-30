@@ -10,7 +10,7 @@
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<PackageTags>ORM Linq Access MSSQL MYSQL ORACLE</PackageTags>
 		<Authors>JACKY</Authors>
-		<Description>Asp.Net Mvc Data Access Supporting</Description>
+		<Description>ORM 框架数据库持久实现，支持多种数据库(MSSQL,MYSQL,ORACLE,DB2,PostgreSQL等)，支持Linq表达式动态查询数据</Description>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
 	  <WarningLevel>4</WarningLevel>

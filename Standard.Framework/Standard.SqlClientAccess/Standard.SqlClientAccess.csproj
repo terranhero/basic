@@ -5,11 +5,13 @@
 		<RootNamespace>Basic</RootNamespace>
 		<DelaySign>false</DelaySign>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>JACKY</Authors>
 		<PackageId>Standard.SqlClientAccess</PackageId>
 		<Product>Standard.SqlClientAccess</Product>
-		<Authors>JACKY</Authors>
-		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<Title>SQL Server 数据库支持类</Title>
+		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+		<PackageTags>ORM Linq Access MSSQL SqlServer</PackageTags>
+		<Description>ORM 框架数据库持久实现（Microsoft SQL Server）特定数据库实现。</Description>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />

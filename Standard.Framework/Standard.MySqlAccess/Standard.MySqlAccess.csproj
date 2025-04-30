@@ -9,6 +9,8 @@
 		<Product>Standard.MySqlAccess</Product>
 		<Authors>JACKY</Authors>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+		<PackageTags>ORM Linq Access MySQL</PackageTags>
+		<Description>ORM 框架数据库持久实现（MySQL）特定数据库实现。</Description>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
