@@ -190,15 +190,16 @@ namespace Basic.EntityLayer
 				MethodInfo getMethod = info2.GetGetMethod();
 				if ((getMethod != null) && (getMethod.GetParameters().Length <= 0))
 				{
-					if (!flag) { sb.Append(','); }
 					object propValue = MethodInfoInvoke(getMethod, value, null);
 					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
 					{
 						if (dicValue == null || dicValue.Count == 0) { flag = true; continue; }
+						if (!flag) { sb.Append(','); }
 						SerializeDictionaryNoBreak(sb, dicValue, depth);
 						flag = false; continue;
 					}
 
+					if (!flag) { sb.Append(','); }
 					DataMemberAttribute dma = info2.GetCustomAttribute<DataMemberAttribute>();
 					if (dma != null && dma.Name != null) { SerializeString(sb, dma.Name, null); }
 					else { SerializeString(sb, info2.Name, null); }
