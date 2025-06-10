@@ -3,11 +3,12 @@ using System.Collections.Specialized;
 using Basic.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Basic.MvcLibrary
 {
 	/// <summary>下载文件自定义名称特性</summary>
-	public sealed class DownloadFileAttribute : Attribute, IActionFilter
+	public class DownloadFileAttribute : Attribute, IActionFilter
 	{
 		/// <summary>
 		/// 下载文件在视图字典的键值。
@@ -76,12 +77,14 @@ namespace Basic.MvcLibrary
 		public void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			if (string.IsNullOrWhiteSpace(_DownloadFileName)) { return; }
-			HttpRequest request = filterContext.HttpContext.Request;
 			string resourceName = _DownloadFileName;
 			if (_IsLocaltion)
 			{
-				//Messages.MessageContext.GetString(_ConverterName, resourceName);
-				string fileName = request.GetString(_ConverterName, resourceName);
+				IServiceProvider servides = filterContext.HttpContext.RequestServices;
+				IMessageRequest request = servides.GetService<IMessageRequest>();
+				string fileName = resourceName;
+				if (request != null) { fileName = request.GetString(_ConverterName, resourceName); }
+				else { fileName = MessageContext.GetString(_ConverterName, resourceName); }
 				filterContext.HttpContext.Request.Headers.Append(ViewDataKey, fileName);
 			}
 			else { filterContext.HttpContext.Request.Headers.Append(ViewDataKey, _DownloadFileName); }

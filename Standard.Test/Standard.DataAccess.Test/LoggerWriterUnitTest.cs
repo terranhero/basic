@@ -6,10 +6,6 @@ namespace Standard.DataAccess.Test
 		[ClassInitialize]
 		public static void ClassInitialize(TestContext context)
 		{
-			//LoggerWriterFactory.InitializeOptions(opts =>
-			//{
-			//	opts.Interval = TimeSpan.FromSeconds(30);
-			//});
 			Assert.IsTrue(true, "ClassInitialize ≥ı ºªØ");
 			// Access TestContext properties and methods here. The properties related to the test run are not available.
 		}

@@ -95,6 +95,17 @@ namespace Basic.EntityLayer
 			return new Guid(md5.ComputeHash(bytes));
 		}
 
+		/// <summary>通过原有的 Guid 和新数字，重新Hash 一个新的 Guid</summary>
+		/// <param name="key"></param>
+		/// <param name="value"></param>
+		public static Guid Create(Guid key, long value)
+		{
+			byte[] bytes = new byte[20];
+			Array.Copy(key.ToByteArray(), bytes, 16);
+			Array.Copy(BitConverter.GetBytes(value), 0, bytes, 16, 4);
+			return new Guid(md5.ComputeHash(bytes));
+		}
+
 		/// <summary>
 		/// 生成新Guid值
 		/// </summary>

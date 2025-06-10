@@ -28,9 +28,9 @@ namespace Basic.Loggers
 		/// <summary>
 		/// 初始化LocalFileStorage类实例
 		/// </summary>
-		internal LocalFileStorage(EventLogsSection section)
+		internal LocalFileStorage(CycleMode mode)
 		{
-			cycleMode = section.Mode;
+			cycleMode = mode;
 #if NET6_0_OR_GREATER
 			options.Mode = FileMode.Append;
 			options.Access = FileAccess.Write;

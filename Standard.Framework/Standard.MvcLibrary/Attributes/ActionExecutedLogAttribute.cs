@@ -23,7 +23,6 @@ namespace Basic.MvcLibrary
 		internal readonly bool _UseArray;
 		internal readonly string[] _Arguments;
 		internal const string BatchNumber = "8E1103CCC862459B875FC7C4726F4289";
-		private static readonly ILoggerWriter _writer = DbLoggerWriter.Writer;
 		/// <summary>
 		/// 使用日志初始化 ActionExecutedLogAttribute 类实例
 		/// </summary>
@@ -70,7 +69,7 @@ namespace Basic.MvcLibrary
 		{
 			if (context == null) { throw new ArgumentNullException("context"); }
 			ILoggerWriter _writer = context.HttpContext.RequestServices.GetService<ILoggerWriter>();
-			if (_writer == null) { _writer = LoggerWriter.Writer; }
+			if (_writer == null) { throw new ArgumentNullException("ILoggerWriter"); }
 
 			Controller controller = (Controller)context.Controller; Guid guid = GuidConverter.NewGuid;
 			if (controller.ViewData.ContainsKey(BatchNumber)) { guid = (Guid)controller.ViewData[BatchNumber]; }

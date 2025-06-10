@@ -8,8 +8,11 @@ namespace Basic.Loggers
 	[global::Basic.EntityLayer.GroupNameAttribute("EventLog", "AccessStrings")]
 	public partial class LoggerEntity : global::Basic.EntityLayer.AbstractEntity
 	{
-		/// <summary>初始化 LoggingInfo 类的实例。</summary>
+		/// <summary>初始化 LoggerEntity 类的实例。</summary>
 		public LoggerEntity() : base() { }
+
+		/// <summary>初始化 LoggerEntity 类的实例。</summary>
+		public LoggerEntity(System.Guid guid) : base() { GuidKey = guid; }
 
 		/// <summary>关键字</summary>
 		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "GUIDKEY", DbTypeEnum.Guid, false)]
@@ -120,4 +123,54 @@ namespace Basic.Loggers
 		public System.DateTime EndDate { get; set; }
 	}
 
+	#region EventLogDelEntity Declaration
+	/// <summary>
+	/// 记录系统日志
+	/// </summary>
+	[global::System.SerializableAttribute()]
+	[global::System.ComponentModel.ToolboxItemAttribute(false)]
+	[global::System.Runtime.InteropServices.GuidAttribute("E5BE7F82-1551-4E7C-9233-FA908821AC5B")]
+	[global::Basic.EntityLayer.TableMappingAttribute("SYS_EVENTLOG")]
+	[global::Basic.EntityLayer.GroupNameAttribute("EventLog", "AccessStrings")]
+	public partial class LoggerDelEntity : global::Basic.EntityLayer.AbstractEntity
+	{
+
+		private System.Guid m_GuidKey;
+
+		/// <summary>
+		/// 初始化 EventLogDelEntity 类的实例。
+		/// </summary>
+		public LoggerDelEntity() : base() { }
+
+		/// <summary>
+		/// 使用关键字初始化 EventLogDelEntity 类的实例。
+		/// </summary>
+		/// <param name="pGuidKey">关键字</param>
+		public LoggerDelEntity(System.Guid pGuidKey) : base() { this.m_GuidKey = pGuidKey; }
+
+		/// <summary>
+		/// 关键字
+		/// </summary>
+		/// <value>关键字</value>
+		[global::Basic.EntityLayer.PrimaryKeyAttribute()]
+		[global::Basic.EntityLayer.ColumnMappingAttribute("GUIDKEY", DbTypeEnum.Guid, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("EventLog_GuidKey", "AccessStrings")]
+		public System.Guid GuidKey
+		{
+			get
+			{
+				return m_GuidKey;
+			}
+			set
+			{
+				if ((m_GuidKey != value))
+				{
+					base.OnPropertyChanging("GuidKey");
+					m_GuidKey = value;
+					base.OnPropertyChanged("GuidKey");
+				}
+			}
+		}
+	}
+	#endregion
 }

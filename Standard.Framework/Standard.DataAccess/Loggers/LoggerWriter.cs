@@ -6,23 +6,9 @@ using Basic.Configuration;
 using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Basic.Loggers
 {
-	/// <summary>将日志写入本地文件中</summary>
-	public interface IFileLoggerWriter : ILoggerWriter { }
-
-	/// <summary>将日志写入数据库中</summary>
-	public interface IDbLoggerWriter : ILoggerWriter { }
-
-	/// <summary>允许写入文件日志</summary>
-	internal sealed class FileLoggerWriter : LoggerWriter, IFileLoggerWriter
-	{
-		/// <summary>初始化 LoggerWriter 类实例</summary>
-		internal FileLoggerWriter() : base(_FileStorage) { }
-	}
-
 	/// <summary>表示抽象的日志写入类</summary>
 	public abstract class LoggerWriter : ILoggerWriter
 	{
@@ -30,6 +16,19 @@ namespace Basic.Loggers
 		private static ILoggerWriter UpdateValue(string key, ILoggerWriter value) { return value; }
 
 		private static readonly ConcurrentDictionary<string, ILoggerWriter> writers = new ConcurrentDictionary<string, ILoggerWriter>();
+
+		/// <summary>获取缓存的日志写入器</summary>
+		/// <param name="key">数据库连接名称</param>
+		/// <remarks><!--true if the key was found in the <see cref="ConcurrentDictionary{TKey,TValue}"/>; otherwise, false--></remarks>
+		public static ILoggerWriter GetWriter(string key)
+		{
+			if (writers.TryGetValue(key, out ILoggerWriter writer) == false)
+			{
+				writer = new DefaultLoggerWriter(key);
+				writers.AddOrUpdate(key, writer, UpdateValue);
+			}
+			return writer;
+		}
 
 		/// <summary>获取缓存的日志写入器</summary>
 		/// <param name="key">数据库连接名称</param>
@@ -50,15 +49,20 @@ namespace Basic.Loggers
 		}
 		#endregion
 
-		/// <summary></summary>
-		internal protected readonly ILoggerStorage _storage = null;
+		/// <summary>日志配置信息</summary>
 		internal readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
-		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(_EventLogs);
+
+		internal readonly static LoggerOptions options = LoggerOptions.Default;
+
+		internal readonly ILoggerStorage _storage;
+		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(options.Mode);
 		internal readonly static string _host = GetComputerAddress();
 
 		/// <summary>初始化 LoggerWriter 类实例</summary>
-		/// <param name="storage">日志存储器</param>
-		protected LoggerWriter(ILoggerStorage storage) { _storage = storage; }
+		protected LoggerWriter(string connection) { _storage = new DataBaseStorage(connection, _EventLogs); }
+
+		/// <summary>初始化 LoggerWriter 类实例</summary>
+		protected LoggerWriter(IUserContext ctx) { _storage = new DataBaseStorage(ctx, _EventLogs); }
 
 		/// <summary>根据条件查询日志记录</summary>
 		/// <param name="batchNo">日志批次</param>
@@ -118,13 +122,15 @@ namespace Basic.Loggers
 			return hostName;
 		}
 
-		internal readonly static ActionCollection _actions = new ActionCollection();
+		#region 注入请求集合 - 将请求转换为菜单和功能
+
+		private readonly static ActionCollection _actions = new ActionCollection();
 
 		/// <summary>添加 Action映射。</summary>
 		/// <param name="url">表示请求的路径。</param>
 		/// <param name="controller">表示当前请求所属控制器、窗体名称</param>
 		/// <param name="action">表示当前请求名称</param>
-		public void AddAction(string url, string controller, string action)
+		public static void AddAction(string url, string controller, string action)
 		{
 			if (url == null) { return; } else { url = url.ToLower(); }
 			if (_actions.ContainsKey(url)) { _actions[url] = new ActionInfo(url, controller, action); }
@@ -132,21 +138,11 @@ namespace Basic.Loggers
 		}
 
 		/// <summary>系统请求配置数量</summary>
-		public int ActionCount { get { return _actions.Count; } }
+		public static int ActionCount { get { return _actions.Count; } }
 
 		/// <summary>系统是否已经存在请求配置</summary>
-		public bool HasActions { get { return _actions.Count > 0; } }
-
-		private static IFileLoggerWriter _logger;
-		/// <summary>获取本地文件写入实例</summary>
-		public static IFileLoggerWriter Writer
-		{
-			get
-			{
-				if (_logger == null) { _logger = new FileLoggerWriter(); }
-				return _logger;
-			}
-		}
+		public static bool HasActions { get { return _actions.Count > 0; } }
+		#endregion
 
 		/// <summary>读取配置文件信息</summary>
 		/// <param name="logLevel">日志级别</param>
@@ -193,27 +189,6 @@ namespace Basic.Loggers
 
 		/// <summary>记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>
-		/// <param name="url">当前请求全路径</param>
-		/// <param name="host">操作计算机名称或操作计算机地址</param>
-		/// <param name="user">当前操作用户</param>
-		/// <param name="message">操作描述</param>
-		/// <param name="logLevel">日志级别</param>
-		/// <param name="resultType">操作结果</param>
-		private async Task LoggerAsync(Guid batchNo, string url, string host, string user, string message, LogLevel logLevel, LogResult resultType)
-		{
-			if (url == null) { return; } else { url = url.ToLower(); }
-			if (_actions.TryGetValue(url, out ActionInfo ai))
-			{
-				await LoggerAsync(batchNo, ai.Controller, ai.Action, host, user, message, logLevel, LogResult.Successful);
-			}
-			else
-			{
-				await LoggerAsync(batchNo, url, url, host, user, message, logLevel, LogResult.Successful);
-			}
-		}
-
-		/// <summary>记录日志信息</summary>
-		/// <param name="batchNo">日志批次</param>
 		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
 		/// <param name="action">当前操作名称</param>
 		/// <param name="host">操作计算机名称或操作计算机地址</param>
@@ -237,6 +212,27 @@ namespace Basic.Loggers
 			catch (Exception ex1)
 			{
 				await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex1);
+			}
+		}
+
+		/// <summary>记录日志信息</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">操作计算机名称或操作计算机地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		/// <param name="logLevel">日志级别</param>
+		/// <param name="resultType">操作结果</param>
+		private async Task LoggerAsync(Guid batchNo, string url, string host, string user, string message, LogLevel logLevel, LogResult resultType)
+		{
+			if (url == null) { return; } else { url = url.ToLower(); }
+			if (_actions.TryGetValue(url, out ActionInfo ai))
+			{
+				await LoggerAsync(batchNo, ai.Controller, ai.Action, host, user, message, logLevel, LogResult.Successful);
+			}
+			else
+			{
+				await LoggerAsync(batchNo, url, url, host, user, message, logLevel, LogResult.Successful);
 			}
 		}
 
@@ -272,7 +268,7 @@ namespace Basic.Loggers
 
 		#endregion
 
-		#region 日志信息事件 - 异步
+		#region 消息日志事件 - 异步
 		/// <summary>记录操作成功的日志</summary>
 		/// <param name="url">当前请求全路径</param>
 		/// <param name="user">当前操作用户</param>
@@ -334,6 +330,71 @@ namespace Basic.Loggers
 		async Task ILoggerWriter.InformationAsync(Guid batchNo, string controller, string action, string host, string user, string message)
 		{
 			await LoggerAsync(batchNo, controller, action, host, user, message, LogLevel.Information, LogResult.Successful);
+		}
+		#endregion
+
+		#region 警告日志事件 - 异步
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.WarningAsync(string url, string user, string message)
+		{
+			await LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Warning, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.WarningAsync(Guid batchNo, string url, string user, string message)
+		{
+			await LoggerAsync(batchNo, url, _host, user, message, LogLevel.Warning, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.WarningAsync(string url, string host, string user, string message)
+		{
+			await LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Warning, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.WarningAsync(Guid batchNo, string url, string host, string user, string message)
+		{
+			await LoggerAsync(batchNo, url, _host, user, message, LogLevel.Warning, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.WarningAsync(string controller, string action, string host, string user, string message)
+		{
+			await LoggerAsync(Guid.NewGuid(), controller, action, _host, user, message, LogLevel.Warning, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.WarningAsync(Guid batchNo, string controller, string action, string host, string user, string message)
+		{
+			await LoggerAsync(batchNo, controller, action, _host, user, message, LogLevel.Warning, LogResult.Successful);
 		}
 		#endregion
 
@@ -462,6 +523,71 @@ namespace Basic.Loggers
 		async Task ILoggerWriter.ErrorAsync(Guid batchNo, string controller, string action, string host, string user, Exception ex)
 		{
 			await LoggerAsync(batchNo, controller, action, host, user, ex);
+		}
+		#endregion
+
+		#region 调试日志事件 - 异步
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.DebugAsync(string url, string user, string message)
+		{
+			await LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Debug, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.DebugAsync(Guid batchNo, string url, string user, string message)
+		{
+			await LoggerAsync(batchNo, url, _host, user, message, LogLevel.Debug, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.DebugAsync(string url, string host, string user, string message)
+		{
+			await LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Debug, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="url">当前请求全路径</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.DebugAsync(Guid batchNo, string url, string host, string user, string message)
+		{
+			await LoggerAsync(batchNo, url, _host, user, message, LogLevel.Debug, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.DebugAsync(string controller, string action, string host, string user, string message)
+		{
+			await LoggerAsync(Guid.NewGuid(), controller, action, _host, user, message, LogLevel.Debug, LogResult.Successful);
+		}
+
+		/// <summary>记录操作成功的日志</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controller">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="action">当前操作名称</param>
+		/// <param name="host">当前操作的计算机名称或地址</param>
+		/// <param name="user">当前操作用户</param>
+		/// <param name="message">操作描述</param>
+		async Task ILoggerWriter.DebugAsync(Guid batchNo, string controller, string action, string host, string user, string message)
+		{
+			await LoggerAsync(batchNo, controller, action, _host, user, message, LogLevel.Debug, LogResult.Successful);
 		}
 		#endregion
 
@@ -623,7 +749,7 @@ namespace Basic.Loggers
 		}
 		#endregion
 
-		#region 记录日志信息 - 异步
+		#region 记录日志信息 - 同步
 		/// <summary>记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>
 		/// <param name="url">当前请求全路径</param>

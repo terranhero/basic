@@ -15,12 +15,12 @@ namespace Basic.Loggers
 	/// </summary>
 	public static class EventLogWriter
 	{
-		private static readonly ConcurrentQueue<EventLogEntity> _EventEntities = new ConcurrentQueue<EventLogEntity>();
+		private static readonly ConcurrentQueue<LoggerEntity> _EventEntities = new ConcurrentQueue<LoggerEntity>();
 		/// <summary>系统每一秒钟确认一次日志队列，如果有数据则进行数据持久化操作</summary>
 		private static System.Timers.Timer _EventTimer = new System.Timers.Timer(1000);
 
 		private readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
-		private readonly static DataBaseStorage _DbStorage = new DataBaseStorage(_EventLogs);
+		private readonly static DataBaseStorage _DbStorage = new DataBaseStorage(ConnectionContext.DefaultName, _EventLogs);
 		private readonly static LocalFileStorage _FileStorage = new LocalFileStorage(_EventLogs);
 		private readonly static ActionCollection _Actions = new ActionCollection();
 		private readonly static string _HostName;
@@ -37,7 +37,7 @@ namespace Basic.Loggers
 		private static async void OnEventTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
 			if (_EventEntities.IsEmpty) { _EventTimer.Stop(); return; }
-			while (_EventEntities.TryDequeue(out EventLogEntity log))
+			while (_EventEntities.TryDequeue(out LoggerEntity log))
 			{
 				try
 				{
@@ -217,7 +217,7 @@ namespace Basic.Loggers
 		/// <param name="resultType">操作结果</param>
 		public static void WriteLogging(Guid batchNo, string controller, string action, string hostName, string userName, string message, LogLevel logLevel, LogResult resultType)
 		{
-			EventLogEntity entity = new EventLogEntity()
+			LoggerEntity entity = new LoggerEntity()
 			{
 				GuidKey = EntityLayer.GuidConverter.NewGuid,
 				BatchNo = batchNo,
@@ -429,42 +429,42 @@ namespace Basic.Loggers
 			}
 		}
 
-		/// <summary>
-		/// 根据条件查询日志记录
-		/// </summary>
-		/// <param name="eventLogEntity">需要查询的日志实体</param>
-		/// <param name="condition">查询条件</param>
-		public static void SearchEventLog(EventLogTable eventLogEntity, EventLogCondition condition)
-		{
-			_DbStorage.SearchEventLog(eventLogEntity, condition);
-		}
+		///// <summary>
+		///// 根据条件查询日志记录
+		///// </summary>
+		///// <param name="eventLogEntity">需要查询的日志实体</param>
+		///// <param name="condition">查询条件</param>
+		//public static void SearchEventLog(EventLogTable eventLogEntity, EventLogCondition condition)
+		//{
+		//	_DbStorage.SearchEventLog(eventLogEntity, condition);
+		//}
 
-		/// <summary>
-		/// 根据条件查询日志记录
-		/// </summary>
-		/// <param name="listEventLog">查询的日志信息列表。</param>
-		/// <param name="condition">查询条件</param>
-		public static void SearchEventLog(Pagination<EventLogEntity> listEventLog, EventLogCondition condition)
-		{
-			_DbStorage.SearchEventLog(listEventLog, condition);
-		}
+		///// <summary>
+		///// 根据条件查询日志记录
+		///// </summary>
+		///// <param name="listEventLog">查询的日志信息列表。</param>
+		///// <param name="condition">查询条件</param>
+		//public static void SearchEventLog(Pagination<EventLogEntity> listEventLog, EventLogCondition condition)
+		//{
+		//	_DbStorage.SearchEventLog(listEventLog, condition);
+		//}
 
-		/// <summary>
-		/// 根据条件查询日志记录
-		/// </summary>
-		/// <param name="condition">查询条件</param>
-		public static IPagination<EventLogEntity> SearchEventLog(EventLogCondition condition)
-		{
-			return _DbStorage.SearchEventLog(condition);
-		}
+		///// <summary>
+		///// 根据条件查询日志记录
+		///// </summary>
+		///// <param name="condition">查询条件</param>
+		//public static IPagination<EventLogEntity> SearchEventLog(EventLogCondition condition)
+		//{
+		//	return _DbStorage.SearchEventLog(condition);
+		//}
 
-		/// <summary>
-		/// 根据条件查询日志记录
-		/// </summary>
-		/// <param name="entityArray">需要删除的日志信息(只需要属性GUIDKEY)</param>
-		public static Result DeleteEventLog(EventLogDelEntity[] entityArray)
-		{
-			return _DbStorage.Delete(entityArray);
-		}
+		///// <summary>
+		///// 根据条件查询日志记录
+		///// </summary>
+		///// <param name="entityArray">需要删除的日志信息(只需要属性GUIDKEY)</param>
+		//public static Result DeleteEventLog(EventLogDelEntity[] entityArray)
+		//{
+		//	return _DbStorage.Delete(entityArray);
+		//}
 	}
 }
