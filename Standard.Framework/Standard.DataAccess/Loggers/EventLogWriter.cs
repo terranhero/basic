@@ -21,7 +21,7 @@ namespace Basic.Loggers
 
 		private readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
 		private readonly static DataBaseStorage _DbStorage = new DataBaseStorage(ConnectionContext.DefaultName, _EventLogs);
-		private readonly static LocalFileStorage _FileStorage = new LocalFileStorage(_EventLogs);
+		private readonly static LocalFileStorage _FileStorage = new LocalFileStorage(_EventLogs.Mode);
 		private readonly static ActionCollection _Actions = new ActionCollection();
 		private readonly static string _HostName;
 

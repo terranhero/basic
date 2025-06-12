@@ -34,13 +34,13 @@
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="SqlServer2012\SqlBatchCommand.cs" />
+		<Compile Update="SqlServer2012\SqlBulkCopyCommand.cs" />
 		<Compile Update="SqlServer2012\SqlCheckCommand.cs" />
 		<Compile Update="SqlServer2012\SqlDynamicCommand.cs" />
 		<Compile Update="SqlServer2012\SqlNewValueCommand.cs" />
 		<Compile Update="SqlServer2012\SqlStaticAdapter.cs" />
 		<Compile Update="SqlServer2012\SqlStaticCommand.cs" />
-		<Compile Update="SqlServer\SqlBatchCommand.cs" />
+		<Compile Update="SqlServer\SqlBulkCopyCommand.cs" />
 		<Compile Update="SqlServer\SqlCheckCommand.cs" />
 		<Compile Update="SqlServer\SqlDynamicCommand.cs" />
 		<Compile Update="SqlServer\SqlNewValueCommand.cs" />

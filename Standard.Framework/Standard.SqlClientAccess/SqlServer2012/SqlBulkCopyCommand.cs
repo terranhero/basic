@@ -4,6 +4,9 @@ using System.ComponentModel;
 using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Tables;
+using STT = System.Threading.Tasks;
+using Basic.EntityLayer;
+using System.Threading.Tasks;
 
 #if NET8_0_OR_GREATER
 using System.Data.Common;
@@ -20,17 +23,17 @@ namespace Basic.SqlServer2012
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
 	[System.Xml.Serialization.XmlRoot(DataCommand.StaticCommandConfig)]
-	internal sealed class SqlBatchCommand : BatchCommand, IDisposable
+	internal sealed class SqlBulkCopyCommand : BulkCopyCommand, IDisposable
 	{
 		private readonly SqlBulkCopy _SqlBulkCopy;
 		private readonly List<string> _DestinationColumns = new List<string>(100);
 		private readonly TableConfiguration _TableInfo;
 		/// <summary>
-		/// 初始化 SqlBatchCommand 类的新实例。 
+		/// 初始化 BulkCopyCommand 类的新实例。 
 		/// </summary>
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.SqlConnection 实例。</param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
-		public SqlBatchCommand(SqlConnection connection, TableConfiguration configInfo)
+		public SqlBulkCopyCommand(SqlConnection connection, TableConfiguration configInfo)
 			: base(new SqlCommand(), configInfo)
 		{
 			_SqlBulkCopy = new SqlBulkCopy(connection);
@@ -54,7 +57,7 @@ namespace Basic.SqlServer2012
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
+		internal protected override STT.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
 		{
 			_SqlBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
 			_SqlBulkCopy.BulkCopyTimeout = timeout;
@@ -75,6 +78,23 @@ namespace Basic.SqlServer2012
 			_DestinationColumns.Add(destinationColumn);
 			return true;
 		}
+
+#if NET8_0_OR_GREATER
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
+		/// <param name="entities">类型 <see cref="Basic.EntityLayer.AbstractEntity">Basic.EntityLayer.AbstractEntity</see> 实例，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected override async STT.Task<Result> BatchAsync<TModel>(params TModel[] entities)
+		{
+			if (entities == null || entities.Length == 0) { return await Task.FromResult(Result.Success); }
+			using (SqlBatch batch = new SqlBatch((SqlConnection)dataDbCommand.Connection))
+			{
+				batch.CreateBatchCommand();
+			}
+
+			return await Task.FromResult(Result.Success);
+		}
+#endif
+
 
 		/// <summary>
 		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。

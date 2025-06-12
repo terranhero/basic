@@ -1,8 +1,10 @@
-﻿using Basic.Enums;
+﻿using Basic.EntityLayer;
+using Basic.Enums;
 using Basic.Tables;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using STT = System.Threading.Tasks;
 
@@ -13,16 +15,16 @@ namespace Basic.DataAccess
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
 	[System.ComponentModel.ToolboxItem(false)]
-	public abstract class BatchCommand : AbstractDataCommand, IDbCommand, IXmlSerializable
+	public abstract class BulkCopyCommand : AbstractDataCommand, IDbCommand, IXmlSerializable
 	{
 		private readonly TableConfiguration _TableInfo;
 
 		/// <summary>
-		/// 初始化 StaticCommand 类的新实例。 
+		/// 初始化 BulkCopyCommand 类的新实例。 
 		/// </summary>
 		/// <param name="dbCommand"></param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
-		protected BatchCommand(DbCommand dbCommand, TableConfiguration configInfo) : base(dbCommand) { _TableInfo = configInfo; }
+		protected BulkCopyCommand(DbCommand dbCommand, TableConfiguration configInfo) : base(dbCommand) { _TableInfo = configInfo; }
 
 		/// <summary>
 		/// 创建新的 XXXBulkCopyColumnMapping 并将其添加到集合中，
@@ -71,5 +73,11 @@ namespace Basic.DataAccess
 		/// <returns>受影响的行数。</returns>
 		internal protected abstract STT.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType;
 
+#if NET8_0_OR_GREATER
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
+		/// <param name="entities">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected abstract STT.Task<Result> BatchAsync<TModel>(params TModel[] entities) where TModel : AbstractEntity;
+#endif
 	}
 }

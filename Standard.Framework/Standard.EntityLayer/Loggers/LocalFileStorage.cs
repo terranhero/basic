@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Basic.Collections;
 using Basic.Configuration;
@@ -74,6 +75,22 @@ namespace Basic.Loggers
 		{
 			return Task.FromResult(Result.Success);
 		}
+
+		/// <summary>
+		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		/// </summary>
+		/// <returns>表示异步刷新操作的任务</returns>
+		public Task FlushAsync() { return Task.CompletedTask; }
+
+		/// <summary>
+		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// 用于监视取消请求的 
+		/// <see cref="System.Threading.CancellationToken">System.Threading.CancellationToken</see>
+		/// </param>
+		/// <returns>表示异步刷新操作的任务</returns>
+		public Task FlushAsync(CancellationToken cancellationToken) { return Task.CompletedTask; }
 
 		/// <summary>记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>

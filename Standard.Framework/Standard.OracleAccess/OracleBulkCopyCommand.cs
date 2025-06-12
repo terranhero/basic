@@ -1,45 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-#if NET8_0_OR_GREATER
 using System.Data.Common;
-using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
 using Basic.DataAccess;
+using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Tables;
+using Oracle.ManagedDataAccess.Client;
+using STT = System.Threading.Tasks;
 
-namespace Basic.SqlServer
+namespace Basic.OracleAccess
 {
 	/// <summary>
 	/// 表示要对 SQL Server 数据库执行的一个静态结构的 Transact-SQL 语句或存储过程。
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
 	[System.Xml.Serialization.XmlRoot(DataCommand.StaticCommandConfig)]
-	internal sealed class SqlBatchCommand : BatchCommand, IDisposable
+	internal sealed class OracleBulkCopyCommand : BulkCopyCommand, IDisposable
 	{
-		private readonly SqlBulkCopy _SqlBulkCopy;
+		private readonly OracleBulkCopy _OracleBulkCopy;
 		private readonly List<string> _DestinationColumns = new List<string>(100);
 		private readonly TableConfiguration _TableInfo;
-
-		/// <summary>初始化 SqlBatchCommand 类的新实例。 </summary>
-		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.SqlConnection 实例。</param>
+		/// <summary>
+		/// 初始化 OracleBulkCopyCommand 类的新实例。 
+		/// </summary>
+		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.OracleConnection 实例。</param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
-		public SqlBatchCommand(SqlConnection connection, TableConfiguration configInfo)
-			: base(new SqlCommand(), configInfo)
+		public OracleBulkCopyCommand(OracleConnection connection, TableConfiguration configInfo)
+			: base(new OracleCommand(), configInfo)
 		{
-			_SqlBulkCopy = new SqlBulkCopy(connection);
-			_TableInfo = configInfo;
+			_OracleBulkCopy = new OracleBulkCopy(connection); _TableInfo = configInfo;
 			foreach (ColumnInfo column in _TableInfo.Columns)
 			{
-				_SqlBulkCopy.ColumnMappings.Add(column.Name, column.Name);
+				_OracleBulkCopy.ColumnMappings.Add(column.Name, column.Name);
 				_DestinationColumns.Add(column.Name);
 			}
-			_SqlBulkCopy.DestinationTableName = _TableInfo.TableName;
+			_OracleBulkCopy.DestinationTableName = _TableInfo.TableName;
 		}
+
+		/// <summary>当前命令的数据库类型</summary>
+		public override ConnectionType ConnectionType { get { return ConnectionType.OracleConnection; } }
 
 		/// <summary>
 		/// 创建新的 XXXBulkCopyColumnMapping 并将其添加到集合中，
@@ -51,7 +51,7 @@ namespace Basic.SqlServer
 		public override bool TryAddOrUpdateMapping(string sourceColumn, string destinationColumn)
 		{
 			if (_DestinationColumns.Contains(destinationColumn)) { return false; }
-			_SqlBulkCopy.ColumnMappings.Add(sourceColumn, destinationColumn);
+			_OracleBulkCopy.ColumnMappings.Add(sourceColumn, destinationColumn);
 			_DestinationColumns.Add(destinationColumn);
 			return true;
 		}
@@ -65,13 +65,11 @@ namespace Basic.SqlServer
 		/// <returns>受影响的行数。</returns>
 		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
 		{
-			_SqlBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
-			_SqlBulkCopy.BulkCopyTimeout = timeout;
-			return _SqlBulkCopy.WriteToServerAsync(table);
+			_OracleBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
+			_OracleBulkCopy.BulkCopyTimeout = timeout;
+			_OracleBulkCopy.WriteToServer(table);
+			return System.Threading.Tasks.Task.CompletedTask;
 		}
-
-		/// <summary>当前命令的数据库类型</summary>
-		public override ConnectionType ConnectionType { get { return ConnectionType.SqlConnection; } }
 
 		/// <summary>
 		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
@@ -80,12 +78,23 @@ namespace Basic.SqlServer
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		protected internal override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
+		internal protected override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
 		{
-			_SqlBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
-			_SqlBulkCopy.BulkCopyTimeout = timeout;
-			_SqlBulkCopy.WriteToServer(table);
+			_OracleBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
+			_OracleBulkCopy.BulkCopyTimeout = timeout;
+			_OracleBulkCopy.WriteToServer(table);
 		}
+
+#if NET8_0_OR_GREATER
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
+		/// <param name="entities">类型 <see cref="Basic.EntityLayer.AbstractEntity">Basic.EntityLayer.AbstractEntity</see> 实例，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected override async STT.Task<Result> BatchAsync<TModel>(params TModel[] entities)
+		{
+			if (entities == null || entities.Length == 0) { return await STT.Task.FromResult(Result.Success); }
+			return await STT.Task.FromResult(Result.Success);
+		}
+#endif
 
 		/// <summary>
 		/// 返回存储过程参数名称全名称
@@ -108,8 +117,8 @@ namespace Basic.SqlServer
 		/// <param name="scale">获取或设置数据库参数值解析为的小数位数。</param>
 		internal protected override void ConvertParameterType(DbParameter parameter, DbTypeEnum dbType, byte precision, byte scale)
 		{
-			SqlParameter sqlParameter = parameter as SqlParameter;
-			SqlParameterConverter.ConvertSqlParameterType(sqlParameter, dbType, precision, scale);
+			OracleParameter dbParameter = parameter as OracleParameter;
+			ParameterConverter.ConvertParameterType(dbParameter, dbType, precision, scale);
 		}
 	}
 }

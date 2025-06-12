@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Basic.EntityLayer;
 using Basic.Enums;
@@ -63,5 +64,20 @@ namespace Basic.Interfaces
 		/// <param name="keys">需要删除的日志主键</param>
 		/// <returns>返回日志查询结果</returns>
 		Task<Result> DeleteAsync(Guid[] keys);
+
+		/// <summary>
+		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		/// </summary>
+		/// <returns>表示异步刷新操作的任务</returns>
+		Task FlushAsync();
+
+		/// <summary>
+		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// 用于监视取消请求的 <see cref="System.Threading.CancellationToken">System.Threading.CancellationToken</see>
+		/// </param>
+		/// <returns>表示异步刷新操作的任务</returns>
+		Task FlushAsync(CancellationToken cancellationToken);
 	}
 }

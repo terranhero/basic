@@ -1,16 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
-	<PropertyGroup Label="Globals">
-		<SccProjectName>Svn</SccProjectName>
-		<SccProvider></SccProvider>
-		<SccAuxPath>Svn</SccAuxPath>
-		<SccLocalPath>Svn</SccLocalPath>
-	</PropertyGroup>
-
 	<PropertyGroup>
+		<TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
 		<AssemblyName>Basic.OracleAccess</AssemblyName>
 		<RootNamespace>Basic</RootNamespace>
-		<TargetFrameworks>netstandard2.1;net6.0;net8.0;</TargetFrameworks>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<Authors>JACKY</Authors>
 		<Product>Standard.OracleAccess</Product>
@@ -37,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="OracleBatchCommand.cs" />
+		<Compile Update="OracleBulkCopyCommand.cs" />
 		<Compile Update="OracleCheckCommand.cs" />
 		<Compile Update="OracleDynamicCommand.cs" />
 		<Compile Update="OracleNewValueCommand.cs" />

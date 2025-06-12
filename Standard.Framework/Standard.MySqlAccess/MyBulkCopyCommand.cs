@@ -1,43 +1,56 @@
-﻿using System;
+﻿using Basic.DataAccess;
+using Basic.Enums;
+using Basic.Tables;
+using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Relational;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
-using Basic.DataAccess;
-using Basic.Enums;
-using Basic.Tables;
-using Oracle.ManagedDataAccess.Client;
+using System.Text;
+using STT = System.Threading.Tasks;
+using Basic.EntityLayer;
+using System.Threading.Tasks;
 
-namespace Basic.OracleAccess
+namespace Basic.MySqlAccess
 {
 	/// <summary>
 	/// 表示要对 SQL Server 数据库执行的一个静态结构的 Transact-SQL 语句或存储过程。
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
 	[System.Xml.Serialization.XmlRoot(DataCommand.StaticCommandConfig)]
-	internal sealed class OracleBatchCommand : BatchCommand, IDisposable
+	internal sealed class MyBulkCopyCommand : BulkCopyCommand, IDisposable
 	{
-		private readonly OracleBulkCopy _OracleBulkCopy;
-		private readonly List<string> _DestinationColumns = new List<string>(100);
+		private readonly MySqlBulkLoader _MySqlBulkLoader;
+		private readonly MySqlConnection _Connection;
 		private readonly TableConfiguration _TableInfo;
+
 		/// <summary>
-		/// 初始化 SqlBatchCommand 类的新实例。 
+		/// 初始化 MyBulkCopyCommand 类的新实例。 
 		/// </summary>
-		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.OracleConnection 实例。</param>
+		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.SqlConnection 实例。</param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
-		public OracleBatchCommand(OracleConnection connection, TableConfiguration configInfo)
-			: base(new OracleCommand(), configInfo)
+		public MyBulkCopyCommand(MySqlConnection connection, TableConfiguration configInfo)
+			: base(new MySqlCommand(), configInfo)
 		{
-			_OracleBulkCopy = new OracleBulkCopy(connection); _TableInfo = configInfo;
+			_Connection = connection; _TableInfo = configInfo;
+			_MySqlBulkLoader = new MySqlBulkLoader(_Connection)
+			{
+				FieldTerminator = ",",
+				FieldQuotationCharacter = '"',
+				EscapeCharacter = '"',
+				LineTerminator = "\r\n",
+				NumberOfLinesToSkip = 0,
+				TableName = _TableInfo.TableName,
+			};
 			foreach (ColumnInfo column in _TableInfo.Columns)
 			{
-				_OracleBulkCopy.ColumnMappings.Add(column.Name, column.Name);
-				_DestinationColumns.Add(column.Name);
+				_MySqlBulkLoader.Columns.Add(column.Name);
 			}
-			_OracleBulkCopy.DestinationTableName = _TableInfo.TableName;
 		}
 
 		/// <summary>当前命令的数据库类型</summary>
-		public override ConnectionType ConnectionType { get { return ConnectionType.OracleConnection; } }
+		public override ConnectionType ConnectionType { get { return ConnectionType.MySqlConnection; } }
 
 		/// <summary>
 		/// 创建新的 XXXBulkCopyColumnMapping 并将其添加到集合中，
@@ -48,9 +61,8 @@ namespace Basic.OracleAccess
 		/// <returns>受影响的行数。</returns>
 		public override bool TryAddOrUpdateMapping(string sourceColumn, string destinationColumn)
 		{
-			if (_DestinationColumns.Contains(destinationColumn)) { return false; }
-			_OracleBulkCopy.ColumnMappings.Add(sourceColumn, destinationColumn);
-			_DestinationColumns.Add(destinationColumn);
+			if (_MySqlBulkLoader.Columns.Contains(destinationColumn)) { return false; }
+			_MySqlBulkLoader.Columns.Add(destinationColumn);
 			return true;
 		}
 
@@ -63,25 +75,29 @@ namespace Basic.OracleAccess
 		/// <returns>受影响的行数。</returns>
 		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
 		{
-			_OracleBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
-			_OracleBulkCopy.BulkCopyTimeout = timeout;
-			_OracleBulkCopy.WriteToServer(table);
 			return System.Threading.Tasks.Task.CompletedTask;
 		}
 
-		/// <summary>
-		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
-		/// </summary>
+		/// <summary>针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。</summary>
 		/// <typeparam name="TR">表示 BaseTableRowType 子类类型</typeparam>
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
+		protected internal override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
 		{
-			_OracleBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
-			_OracleBulkCopy.BulkCopyTimeout = timeout;
-			_OracleBulkCopy.WriteToServer(table);
 		}
+
+#if NET8_0_OR_GREATER
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
+		/// <param name="entities">类型 <see cref="Basic.EntityLayer.AbstractEntity">Basic.EntityLayer.AbstractEntity</see> 实例，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected override async STT.Task<Result> BatchAsync<TModel>(params TModel[] entities)
+		{
+			if (entities == null || entities.Length == 0) { return await Task.FromResult(Result.Success); }
+			//MySql.Data.MySqlClient.BaseTableCache cache=new BaseTableCache()
+			return await Task.FromResult(Result.Success);
+		}
+#endif
 
 		/// <summary>
 		/// 返回存储过程参数名称全名称
@@ -90,8 +106,7 @@ namespace Basic.OracleAccess
 		/// <returns>返回带存储过程符号的参数名称</returns>
 		public override string CreateParameterName(string parameterName)
 		{
-			if (parameterName.StartsWith("@"))
-				return parameterName;
+			if (parameterName.StartsWith("@")) { return parameterName; }
 			return string.Concat("@", parameterName);
 		}
 
@@ -104,8 +119,8 @@ namespace Basic.OracleAccess
 		/// <param name="scale">获取或设置数据库参数值解析为的小数位数。</param>
 		internal protected override void ConvertParameterType(DbParameter parameter, DbTypeEnum dbType, byte precision, byte scale)
 		{
-			OracleParameter dbParameter = parameter as OracleParameter;
-			ParameterConverter.ConvertParameterType(dbParameter, dbType, precision, scale);
+			MySqlParameter sqlParameter = parameter as MySqlParameter;
+			MySqlParameterConverter.ConvertSqlParameterType(sqlParameter, dbType, precision, scale);
 		}
 	}
 }

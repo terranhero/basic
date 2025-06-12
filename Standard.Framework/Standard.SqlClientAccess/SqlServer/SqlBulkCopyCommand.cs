@@ -1,53 +1,49 @@
-﻿using Basic.DataAccess;
-using Basic.Enums;
-using Basic.Tables;
-using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Relational;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
-using System.Text;
+using Basic.DataAccess;
+using Basic.Enums;
+using Basic.Tables;
+using STT = System.Threading.Tasks;
+using Basic.EntityLayer;
+using System.Threading.Tasks;
 
-namespace Basic.MySqlAccess
+#if NET8_0_OR_GREATER
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
+#else
+using System.Data.Common;
+using System.Data.SqlClient;
+#endif
+
+namespace Basic.SqlServer
 {
 	/// <summary>
 	/// 表示要对 SQL Server 数据库执行的一个静态结构的 Transact-SQL 语句或存储过程。
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
 	[System.Xml.Serialization.XmlRoot(DataCommand.StaticCommandConfig)]
-	internal sealed class MySqlBatchCommand : BatchCommand, IDisposable
+	internal sealed class SqlBulkCopyCommand : BulkCopyCommand, IDisposable
 	{
-		private readonly MySqlBulkLoader _MySqlBulkLoader;
-		private readonly MySqlConnection _Connection;
+		private readonly SqlBulkCopy _SqlBulkCopy;
+		private readonly List<string> _DestinationColumns = new List<string>(100);
 		private readonly TableConfiguration _TableInfo;
 
-		/// <summary>
-		/// 初始化 MySqlBatchCommand 类的新实例。 
-		/// </summary>
+		/// <summary>初始化 SqlBatchCommand 类的新实例。 </summary>
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.SqlConnection 实例。</param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
-		public MySqlBatchCommand(MySqlConnection connection, TableConfiguration configInfo)
-			: base(new MySqlCommand(), configInfo)
+		public SqlBulkCopyCommand(SqlConnection connection, TableConfiguration configInfo)
+			: base(new SqlCommand(), configInfo)
 		{
-			_Connection = connection; _TableInfo = configInfo;
-			_MySqlBulkLoader = new MySqlBulkLoader(_Connection)
-			{
-				FieldTerminator = ",",
-				FieldQuotationCharacter = '"',
-				EscapeCharacter = '"',
-				LineTerminator = "\r\n",
-				NumberOfLinesToSkip = 0,
-				TableName = _TableInfo.TableName,
-			};
+			_SqlBulkCopy = new SqlBulkCopy(connection);
+			_TableInfo = configInfo;
 			foreach (ColumnInfo column in _TableInfo.Columns)
 			{
-				_MySqlBulkLoader.Columns.Add(column.Name);
+				_SqlBulkCopy.ColumnMappings.Add(column.Name, column.Name);
+				_DestinationColumns.Add(column.Name);
 			}
+			_SqlBulkCopy.DestinationTableName = _TableInfo.TableName;
 		}
-
-		/// <summary>当前命令的数据库类型</summary>
-		public override ConnectionType ConnectionType { get { return ConnectionType.MySqlConnection; } }
 
 		/// <summary>
 		/// 创建新的 XXXBulkCopyColumnMapping 并将其添加到集合中，
@@ -58,8 +54,9 @@ namespace Basic.MySqlAccess
 		/// <returns>受影响的行数。</returns>
 		public override bool TryAddOrUpdateMapping(string sourceColumn, string destinationColumn)
 		{
-			if (_MySqlBulkLoader.Columns.Contains(destinationColumn)) { return false; }
-			_MySqlBulkLoader.Columns.Add(destinationColumn);
+			if (_DestinationColumns.Contains(destinationColumn)) { return false; }
+			_SqlBulkCopy.ColumnMappings.Add(sourceColumn, destinationColumn);
+			_DestinationColumns.Add(destinationColumn);
 			return true;
 		}
 
@@ -72,17 +69,43 @@ namespace Basic.MySqlAccess
 		/// <returns>受影响的行数。</returns>
 		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
 		{
-			return System.Threading.Tasks.Task.CompletedTask;
+			_SqlBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
+			_SqlBulkCopy.BulkCopyTimeout = timeout;
+			return _SqlBulkCopy.WriteToServerAsync(table);
 		}
 
-		/// <summary>针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。</summary>
+		/// <summary>当前命令的数据库类型</summary>
+		public override ConnectionType ConnectionType { get { return ConnectionType.SqlConnection; } }
+
+		/// <summary>
+		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
+		/// </summary>
 		/// <typeparam name="TR">表示 BaseTableRowType 子类类型</typeparam>
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
 		protected internal override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
 		{
+			_SqlBulkCopy.BatchSize = table.Count > 1000 ? 1000 : table.Count;
+			_SqlBulkCopy.BulkCopyTimeout = timeout;
+			_SqlBulkCopy.WriteToServer(table);
 		}
+
+#if NET8_0_OR_GREATER
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
+		/// <param name="entities">类型 <see cref="Basic.EntityLayer.AbstractEntity">Basic.EntityLayer.AbstractEntity</see> 实例，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected override async STT.Task<Result> BatchAsync<TModel>(params TModel[] entities)
+		{
+			if (entities == null || entities.Length == 0) { return await Task.FromResult(Result.Success); }
+			using (SqlBatch batch = new SqlBatch((SqlConnection)dataDbCommand.Connection))
+			{
+				batch.CreateBatchCommand();
+			}
+
+			return await Task.FromResult(Result.Success);
+		}
+#endif
 
 		/// <summary>
 		/// 返回存储过程参数名称全名称
@@ -91,7 +114,8 @@ namespace Basic.MySqlAccess
 		/// <returns>返回带存储过程符号的参数名称</returns>
 		public override string CreateParameterName(string parameterName)
 		{
-			if (parameterName.StartsWith("@")) { return parameterName; }
+			if (parameterName.StartsWith("@"))
+				return parameterName;
 			return string.Concat("@", parameterName);
 		}
 
@@ -104,8 +128,8 @@ namespace Basic.MySqlAccess
 		/// <param name="scale">获取或设置数据库参数值解析为的小数位数。</param>
 		internal protected override void ConvertParameterType(DbParameter parameter, DbTypeEnum dbType, byte precision, byte scale)
 		{
-			MySqlParameter sqlParameter = parameter as MySqlParameter;
-			MySqlParameterConverter.ConvertSqlParameterType(sqlParameter, dbType, precision, scale);
+			SqlParameter sqlParameter = parameter as SqlParameter;
+			SqlParameterConverter.ConvertSqlParameterType(sqlParameter, dbType, precision, scale);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Basic.Collections;
 using Basic.Configuration;
@@ -13,13 +14,26 @@ namespace Basic.Loggers
 	public abstract class LoggerWriter : ILoggerWriter
 	{
 		#region ILoggerWriter 对应数据库实例缓存
+		/// <summary>
+		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		/// </summary>
+		/// <returns>表示异步刷新操作的任务</returns>
+		public static Task FlushAllAsync()
+		{
+			foreach (ILoggerWriter write in writers.Values)
+			{
+				write.FlushAsync();
+			}
+			return Task.CompletedTask;
+		}
+
 		private static ILoggerWriter UpdateValue(string key, ILoggerWriter value) { return value; }
 
 		private static readonly ConcurrentDictionary<string, ILoggerWriter> writers = new ConcurrentDictionary<string, ILoggerWriter>();
 
 		/// <summary>获取缓存的日志写入器</summary>
 		/// <param name="key">数据库连接名称</param>
-		/// <remarks><!--true if the key was found in the <see cref="ConcurrentDictionary{TKey,TValue}"/>; otherwise, false--></remarks>
+		/// <returns>日志写入器,如果缓存不存在则创建新的实例</returns>
 		public static ILoggerWriter GetWriter(string key)
 		{
 			if (writers.TryGetValue(key, out ILoggerWriter writer) == false)
@@ -54,10 +68,10 @@ namespace Basic.Loggers
 
 		internal readonly static LoggerOptions options = LoggerOptions.Default;
 
-		internal readonly ILoggerStorage _storage;
 		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(options.Mode);
 		internal readonly static string _host = GetComputerAddress();
 
+		internal readonly ILoggerStorage _storage;
 		/// <summary>初始化 LoggerWriter 类实例</summary>
 		protected LoggerWriter(string connection) { _storage = new DataBaseStorage(connection, _EventLogs); }
 
@@ -105,6 +119,21 @@ namespace Basic.Loggers
 		{
 			return Task.FromResult(Result.Success);
 		}
+
+		/// <summary>
+		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		/// </summary>
+		/// <returns>表示异步刷新操作的任务</returns>
+		public abstract Task FlushAsync();
+
+		/// <summary>
+		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// 用于监视取消请求的 <see cref="System.Threading.CancellationToken">System.Threading.CancellationToken</see>
+		/// </param>
+		/// <returns>表示异步刷新操作的任务</returns>
+		public abstract Task FlushAsync(CancellationToken cancellationToken);
 
 		/// <summary>获取Web程序客户端IP地址或Windows程序本机IP地址</summary>
 		/// <returns></returns>
@@ -846,6 +875,7 @@ namespace Basic.Loggers
 				_FileStorage.WriteLog(batchNo, controller, action, host, user, ex1);
 			}
 		}
+
 		#endregion
 	}
 

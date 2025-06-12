@@ -382,6 +382,17 @@ namespace Basic.DataAccess
 			dataCommand.ResetConnection(DbConnection);
 			return dataCommand;
 		}
+
+		private async Task<T> BeginExecuteAsync<T>(T dataCommand) where T : DataCommand
+		{
+			_Result.Clear();
+			if (DbConnection != null && DbConnection.State != ConnectionState.Open)
+			{
+				await DbConnection.OpenAsync();
+			}
+			dataCommand.ResetConnection(DbConnection);
+			return dataCommand;
+		}
 		#endregion
 
 		#region 获取区域字符串资源
@@ -817,15 +828,27 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		#region 异步执行数据库方法(BatchExecuteAsync)
-		/// <summary>
-		/// 使用 XXXBulkCopy 类执行数据插入命令
-		/// </summary>
+		#region 异步执行数据库方法(XXXBulkCopy，BatchExecuteAsync)
+		/// <summary>创建 数据库表批处理命令</summary>
+		/// <returns>返回 BulkCopyCommand 类型对象</returns>
+		internal protected BulkCopyCommand CreateBulkCopy()
+		{
+			if (_TableInfo.Columns.HasRows == false)
+			{
+				using (CommandBuilder builder = _ConfigInfo.CreateCommandBuilder())
+				{
+					builder.CreateDataCommand(_TableInfo);
+				}
+			}
+			return _ConnectionFactory.CreateBulkCopyCommand(_dbConnection, _TableInfo);
+		}
+		
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
 		/// <param name="batchCommand">批处理命令</param>
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		protected Task<Result> BatchExecuteAsync<TR>(BatchCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		protected Task<Result> BatchExecuteAsync<TR>(BulkCopyCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			using (batchCommand)
 			{
@@ -849,7 +872,7 @@ namespace Basic.DataAccess
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
 		protected Task<Result> BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
-			BatchCommand batchCommand = CreateBatchCommand();
+			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BatchExecuteAsync(batchCommand, table, timeout);
 		}
 
@@ -860,12 +883,30 @@ namespace Basic.DataAccess
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
 		protected Task<Result> BatchExecuteAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
-			BatchCommand batchCommand = CreateBatchCommand();
+			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BatchExecuteAsync(batchCommand, table, 30);
 		}
+
+#if NET8_0_OR_GREATER
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
+		/// <param name="entities">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		protected Task<Result> BatchExecuteAsync<TModel>(params TModel[] entities) where TModel : AbstractEntity
+		{
+			using (BulkCopyCommand batchCommand = CreateBulkCopy())
+			{
+				return batchCommand.BatchAsync(entities).ContinueWith(tt =>
+				{
+					if (tt.IsCompleted && tt.Exception != null) { _Result.AddError(tt.Exception.Message); }
+					return _Result;
+				});
+			}
+		}
+#endif
+
 		#endregion
 
-		#region 执行数据库方法(BatchExecute)
+		#region 同步执行数据库方法(XXXBulkCopy，BatchExecute)
 		/// <summary>
 		/// 使用 XXXBulkCopy 类执行数据插入命令
 		/// </summary>
@@ -873,7 +914,7 @@ namespace Basic.DataAccess
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		protected Result BatchExecute<TR>(BatchCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		protected Result BatchExecute<TR>(BulkCopyCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			using (batchCommand)
 			{
@@ -891,7 +932,7 @@ namespace Basic.DataAccess
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
 		protected Result BatchExecute<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
-			BatchCommand batchCommand = CreateBatchCommand();
+			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BatchExecute(batchCommand, table, timeout);
 		}
 
@@ -902,7 +943,7 @@ namespace Basic.DataAccess
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
 		protected Result BatchExecute<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
-			BatchCommand batchCommand = CreateBatchCommand();
+			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BatchExecute(batchCommand, table, 30);
 		}
 		#endregion
@@ -1034,6 +1075,117 @@ namespace Basic.DataAccess
 				return _Result;
 			}
 		}
+		#endregion
+
+		#region 执行数据库方法(ExecuteScalarAsync)
+		/// <summary>
+		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
+		/// </summary>
+		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程名称。</param>
+		/// <returns>返回查询结果，如果为空则返回空引用</returns>
+		protected Task<object> ExecuteScalarAsync(string cmdName)
+		{
+			StaticCommand dataCommand = CreateStaticCommand(cmdName);
+			return ExecuteScalarAsync(dataCommand);
+		}
+
+		/// <summary>
+		/// 采用匿名类为参数，执行Transact-SQL命令。
+		/// </summary>
+		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <param name="anonObject">包含可执行参数的匿名类。</param>
+		/// <exception cref="System.ArgumentNullException">参数 anonObject 为null。</exception>
+		/// <returns>执行ransact-SQL语句的返回值</returns>
+		protected Task<object> ExecuteScalarAsync(string cmdName, object anonObject)
+		{
+			StaticCommand dataCommand = CreateStaticCommand(cmdName);
+			return ExecuteScalarAsync(dataCommand, anonObject);
+		}
+
+		/// <summary>
+		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
+		/// </summary>
+		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程名称。</param>
+		/// <param name="objArray">包含执行命令的参数信息。</param>
+		/// <returns>返回查询结果，如果为空则返回空引用</returns>
+		protected Task<object> ExecuteScalarAsync(string cmdName, BaseTableRowType objArray)
+		{
+			StaticCommand dataCommand = CreateStaticCommand(cmdName);
+			return ExecuteScalarAsync(dataCommand, objArray);
+		}
+
+		/// <summary>
+		/// 获取数据库的只读流
+		/// </summary>
+		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程名称。</param>
+		/// <param name="entity">实体类，包含了需要执行参数的值。</param>
+		/// <returns>返回查询结果，如果为空则返回空引用</returns>
+		protected Task<object> ExecuteScalarAsync(string cmdName, AbstractEntity entity)
+		{
+			StaticCommand dataCommand = CreateStaticCommand(cmdName);
+			return ExecuteScalarAsync(dataCommand, entity);
+		}
+
+		/// <summary>
+		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
+		/// </summary>
+		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <returns>返回查询结果，如果为空则返回空引用</returns>
+		internal protected Task<object> ExecuteScalarAsync(StaticCommand dataCommand)
+		{
+			using (dataCommand = BeginStaticExecute(dataCommand))
+			{
+				return dataCommand.ExecuteScalarAsync();
+			}
+		}
+
+		/// <summary>
+		/// 采用匿名类为参数，执行Transact-SQL命令。
+		/// </summary>
+		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <param name="anonObject">包含可执行参数的匿名类。</param>
+		/// <exception cref="System.ArgumentNullException">参数 entities 为null或数组长度为0。</exception>
+		/// <returns>执行ransact-SQL语句的返回值</returns>
+		internal protected Task<object> ExecuteScalarAsync(StaticCommand dataCommand, object anonObject)
+		{
+			using (dataCommand = BeginStaticExecute(dataCommand))
+			{
+				dataCommand.ResetParameters(anonObject);
+				return dataCommand.ExecuteScalarAsync();
+			}
+		}
+
+
+		/// <summary>
+		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
+		/// </summary>
+		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <param name="entity">实体类，包含了需要执行参数的值。</param>
+		/// <returns>返回查询结果，如果为空则返回空引用</returns>
+		protected internal Task<object> ExecuteScalarAsync(StaticCommand dataCommand, AbstractEntity entity)
+		{
+			using (dataCommand = BeginStaticExecute(dataCommand))
+			{
+				dataCommand.ResetParameters(entity);
+				return dataCommand.ExecuteScalarAsync();
+			}
+		}
+
+		/// <summary>
+		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
+		/// </summary>
+		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <param name="objArray">键/值对数组，包含了需要执行参数的值。</param>
+		/// <returns>返回查询结果，如果为空则返回空引用</returns>
+		internal protected Task<object> ExecuteScalarAsync(StaticCommand dataCommand, BaseTableRowType objArray)
+		{
+			using (dataCommand = BeginStaticExecute(dataCommand))
+			{
+				dataCommand.ResetParameters(objArray);
+				return dataCommand.ExecuteScalarAsync();
+			}
+		}
+
 		#endregion
 
 		#region 执行数据库方法(ExecuteScalar)
@@ -2385,20 +2537,6 @@ namespace Basic.DataAccess
 		#endregion
 
 		#region 获取数据库命令
-		/// <summary>创建 数据库表批处理命令</summary>
-		/// <returns>返回 BatchCommand 类型对象</returns>
-		internal protected BatchCommand CreateBatchCommand()
-		{
-			if (_TableInfo.Columns.HasRows == false)
-			{
-				using (CommandBuilder builder = _ConfigInfo.CreateCommandBuilder())
-				{
-					builder.CreateDataCommand(_TableInfo);
-				}
-			}
-			return _ConnectionFactory.CreateBatchCommand(_dbConnection, _TableInfo);
-		}
-
 		/// <summary>
 		/// 创建执行数据库的结构
 		/// </summary>

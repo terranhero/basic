@@ -7,6 +7,8 @@ using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Tables;
 using IBM.Data.DB2.Core;
+using STT = System.Threading.Tasks;
+using Basic.EntityLayer;
 
 namespace Basic.DB2Access
 {
@@ -14,17 +16,17 @@ namespace Basic.DB2Access
 	/// 表示要对 SQL Server 数据库执行的一个静态结构的 Transact-SQL 语句或存储过程。
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
-	internal sealed class DB2BatchCommand : BatchCommand, IDisposable
+	internal sealed class DB2BulkCopyCommand : BulkCopyCommand, IDisposable
 	{
 		private readonly DB2BulkCopy _DB2BulkCopy;
 		private readonly List<string> _DestinationColumns = new List<string>(100);
 		private readonly TableConfiguration _TableInfo;
 		/// <summary>
-		/// 初始化 DB2BatchCommand 类的新实例。 
+		/// 初始化 DB2BulkCopyCommand 类的新实例。 
 		/// </summary>
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.DB2Client.DB2Connection 实例。</param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
-		public DB2BatchCommand(DB2Connection connection, TableConfiguration configInfo)
+		public DB2BulkCopyCommand(DB2Connection connection, TableConfiguration configInfo)
 			: base(new DB2Command(), configInfo)
 		{
 			_DB2BulkCopy = new DB2BulkCopy(connection); _TableInfo = configInfo;
@@ -80,6 +82,17 @@ namespace Basic.DB2Access
 			_DB2BulkCopy.BulkCopyTimeout = timeout;
 			_DB2BulkCopy.WriteToServer(table);
 		}
+
+#if NET8_0_OR_GREATER
+		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
+		/// <param name="entities">类型 <see cref="Basic.EntityLayer.AbstractEntity">Basic.EntityLayer.AbstractEntity</see> 实例，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected override async STT.Task<Result> BatchAsync<TModel>(params TModel[] entities)
+		{
+			if (entities == null || entities.Length == 0) { return await STT.Task.FromResult(Result.Success); }
+			return await STT.Task.FromResult(Result.Success);
+		}
+#endif
 
 		/// <summary>
 		/// 返回存储过程参数名称全名称

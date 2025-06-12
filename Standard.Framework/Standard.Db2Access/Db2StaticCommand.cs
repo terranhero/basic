@@ -146,7 +146,7 @@ namespace Basic.DB2Access
 			}
 			if (parameter.DB2Type == DB2Type.NVarChar && value is int[])
 			{
-				parameter.Value = string.Join(",", (value as int[]).Cast<string>().ToArray());
+				parameter.Value = string.Join(",", (value as int[]));
 				return;
 			}
 			parameter.Value = value;

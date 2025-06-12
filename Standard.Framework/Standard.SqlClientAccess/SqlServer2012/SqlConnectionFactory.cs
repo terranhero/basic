@@ -113,9 +113,9 @@ namespace Basic.SqlServer2012
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 DbConnection 实例。</param>
 		/// <param name="tableInfo">表示当前表结构信息</param>
 		/// <returns>返回 BatchCommand 类对应数据库类型的实例。</returns>
-		public override BatchCommand CreateBatchCommand(DbConnection connection, TableConfiguration tableInfo)
+		public override BulkCopyCommand CreateBulkCopyCommand(DbConnection connection, TableConfiguration tableInfo)
 		{
-			return new SqlServer2012.SqlBatchCommand(connection as SqlConnection, tableInfo);
+			return new SqlServer2012.SqlBulkCopyCommand(connection as SqlConnection, tableInfo);
 		}
 
 		/// <summary>
