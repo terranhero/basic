@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq.Expressions;
@@ -364,33 +365,34 @@ namespace Basic.DataAccess
 		#region 登记数据库连接
 		private DynamicCommand BeginDynamicExecute(DynamicCommand dataCommand)
 		{
-			BeginExecute(dataCommand);
-			return dataCommand;
+			return BeginExecute(dataCommand);
 		}
 
 		private StaticCommand BeginStaticExecute(StaticCommand dataCommand)
 		{
-			BeginExecute(dataCommand);
-			return dataCommand;
+			return BeginExecute(dataCommand);
 		}
 
-		internal virtual DataCommand BeginExecute(DataCommand dataCommand)
+		internal virtual TCMD BeginExecute<TCMD>(TCMD dataCommand) where TCMD : DataCommand
 		{
 			_Result.Clear();
-			if (DbConnection != null && DbConnection.State != ConnectionState.Open)
-				DbConnection.Open();
-			dataCommand.ResetConnection(DbConnection);
+			if (_dbConnection != null && _dbConnection.State != ConnectionState.Open)
+			{
+				_dbConnection.Open();
+				dataCommand.ResetConnection(_dbConnection);
+			}
 			return dataCommand;
 		}
 
 		private async Task<T> BeginExecuteAsync<T>(T dataCommand) where T : DataCommand
 		{
 			_Result.Clear();
-			if (DbConnection != null && DbConnection.State != ConnectionState.Open)
+			if (_dbConnection != null && _dbConnection.State != ConnectionState.Open)
 			{
-				await DbConnection.OpenAsync();
+				await _dbConnection.OpenAsync();
+				dataCommand.ResetConnection(_dbConnection);
 			}
-			dataCommand.ResetConnection(DbConnection);
+
 			return dataCommand;
 		}
 		#endregion
@@ -828,6 +830,82 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
+		#region 异步执行批处理命令 ( BatchAsync )
+		/// <summary>使用 BatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
+		/// <see  cref="StaticCommand.CheckCommands">CheckCommands</see> 和 
+		/// <see cref="StaticCommand.NewValues">NewValues</see> 中包含的命令
+		/// 所以在执行此命令前，需要将数据有效性验证和取值命令提前执行完成/// </remarks>
+		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程结构名称。</param>
+		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
+		/// <returns>执行ransact-SQL语句的返回值</returns>
+		protected System.Threading.Tasks.Task<Result> BatchAsync<TModel>(string cmdName, params TModel[] entities) where TModel : AbstractEntity
+		{
+			StaticCommand dataCommand = CreateStaticCommand(cmdName);
+			return this.BatchAsync(dataCommand, entities);
+		}
+
+		/// <summary>使用 BatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
+		/// <see  cref="StaticCommand.CheckCommands">CheckCommands</see> 和 
+		/// <see cref="StaticCommand.NewValues">NewValues</see> 中包含的命令
+		/// 所以在执行此命令前，需要将数据有效性验证和取值命令提前执行完成/// </remarks>
+		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, params TModel[] entities) where TModel : AbstractEntity
+		{
+			using (dataCommand = await BeginExecuteAsync(dataCommand))
+			{
+				return await dataCommand.BatchAsync(entities).ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
+			}
+		}
+
+		/// <summary>使用 BatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
+		/// <see  cref="StaticCommand.CheckCommands">CheckCommands</see> 和 
+		/// <see cref="StaticCommand.NewValues">NewValues</see> 中包含的命令
+		/// 所以在执行此命令前，需要将数据有效性验证和取值命令提前执行完成/// </remarks>
+		/// <param name="cmdName">表示要对数据源执行的 SQL 语句或存储过程结构名称。</param>
+		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
+		/// <returns>执行ransact-SQL语句的返回值</returns>
+		protected System.Threading.Tasks.Task<Result> BatchAsync<TModel>(string cmdName, IEnumerable<TModel> entities) where TModel : AbstractEntity
+		{
+			StaticCommand dataCommand = CreateStaticCommand(cmdName);
+			return this.BatchAsync(dataCommand, entities);
+		}
+
+		/// <summary>使用 BatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
+		/// <see  cref="StaticCommand.CheckCommands">CheckCommands</see> 和 
+		/// <see cref="StaticCommand.NewValues">NewValues</see> 中包含的命令
+		/// 所以在执行此命令前，需要将数据有效性验证和取值命令提前执行完成/// </remarks>
+		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities) where TModel : AbstractEntity
+		{
+			using (dataCommand = await BeginExecuteAsync(dataCommand))
+			{
+				return await dataCommand.BatchAsync(entities).ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
+			}
+		}
+		#endregion
+
 		#region 异步执行数据库方法(XXXBulkCopy，BatchExecuteAsync)
 		/// <summary>创建 数据库表批处理命令</summary>
 		/// <returns>返回 BulkCopyCommand 类型对象</returns>
@@ -842,7 +920,7 @@ namespace Basic.DataAccess
 			}
 			return _ConnectionFactory.CreateBulkCopyCommand(_dbConnection, _TableInfo);
 		}
-		
+
 		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
 		/// <param name="batchCommand">批处理命令</param>
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
@@ -886,23 +964,6 @@ namespace Basic.DataAccess
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BatchExecuteAsync(batchCommand, table, 30);
 		}
-
-#if NET8_0_OR_GREATER
-		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
-		/// <param name="entities">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		protected Task<Result> BatchExecuteAsync<TModel>(params TModel[] entities) where TModel : AbstractEntity
-		{
-			using (BulkCopyCommand batchCommand = CreateBulkCopy())
-			{
-				return batchCommand.BatchAsync(entities).ContinueWith(tt =>
-				{
-					if (tt.IsCompleted && tt.Exception != null) { _Result.AddError(tt.Exception.Message); }
-					return _Result;
-				});
-			}
-		}
-#endif
 
 		#endregion
 

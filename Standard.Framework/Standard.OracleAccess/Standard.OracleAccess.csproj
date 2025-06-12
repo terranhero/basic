@@ -30,6 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="OracleBatchCommand.cs" />
 		<Compile Update="OracleBulkCopyCommand.cs" />
 		<Compile Update="OracleCheckCommand.cs" />
 		<Compile Update="OracleDynamicCommand.cs" />

@@ -1,14 +1,7 @@
-﻿#if NET8_0_OR_GREATER
-using System.Data.Common;
-using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
-using Basic.EntityLayer;
-using System.Data;
-using Basic.Exceptions;
+﻿using System.Data;
 using Basic.Enums;
+using Basic.Exceptions;
+using Microsoft.Data.SqlClient;
 
 namespace Basic.SqlServer
 {
@@ -92,7 +85,7 @@ namespace Basic.SqlServer
 					sqlParameter.SqlDbType = SqlDbType.Time;
 					break;
 				case DataTypeEnum.Timestamp:
-                    sqlParameter.SqlDbType = SqlDbType.DateTime;
+					sqlParameter.SqlDbType = SqlDbType.DateTime;
 					//sqlParameter.Size = 3;
 					break;
 				case DataTypeEnum.VarBinary:

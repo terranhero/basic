@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Basic.Configuration;
 using Basic.DataAccess;
+using Basic.SqlServer;
 using MySql.Data.MySqlClient;
 
 namespace Basic.MySqlAccess
@@ -115,7 +116,6 @@ namespace Basic.MySqlAccess
 		/// <summary>创建静态命令</summary>
 		/// <returns>命令配置文件缓存</returns>
 		public override StaticCommand CreateStaticCommand() { return new MySqlStaticCommand(); }
-
 
 		/// <summary>创建 BatchCommand 类实例。</summary>
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 DbConnection 实例。</param>

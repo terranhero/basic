@@ -1,10 +1,5 @@
-﻿#if NET8_0_OR_GREATER
-using System.Data.Common;
+﻿using System.Data.Common;
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
 using Basic.DataAccess;
 using Basic.Enums;
 

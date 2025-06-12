@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-#if NET8_0_OR_GREATER
 using System.Data.Common;
-using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
-using System.Linq;
-using System.Threading.Tasks;
-using Basic.Collections;
 using Basic.DataAccess;
-using Basic.EntityLayer;
 using Basic.Enums;
-using Basic.Interfaces;
 using Basic.Properties;
+using Microsoft.Data.SqlClient;
 
 namespace Basic.SqlServer2012
 {
@@ -71,9 +60,13 @@ namespace Basic.SqlServer2012
 		}
 
 		/// <summary>
-		/// 重置数据库连接
+		/// 当前可用数据库连接
 		/// </summary>
 		internal SqlConnection Connection { get { return sqlCommand.Connection; } }
+
+		/// <summary>创建批处理命令</summary>
+		/// <returns>返回 SqlServerBatchCommand 的实例</returns>
+		protected internal override BatchCommand CreateBatchCommand() { return new SqlServerBatchCommand(this); }
 
 		/// <summary>
 		/// 重置数据库连接
@@ -502,6 +495,11 @@ namespace Basic.SqlServer2012
 		/// <summary>
 		/// 创建作为当前实例副本的新对象。
 		/// </summary>
+		internal SqlCommand SqlCommand { get { return sqlCommand; } }
+
+		/// <summary>
+		/// 创建作为当前实例副本的新对象。
+		/// </summary>
 		/// <returns>作为此实例副本的新对象。</returns>
 		internal protected override DataCommand CloneCommand() { return Clone(); }
 
@@ -543,5 +541,6 @@ namespace Basic.SqlServer2012
 		{
 			return this.Clone();
 		}
+
 	}
 }

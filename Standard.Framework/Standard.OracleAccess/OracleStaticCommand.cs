@@ -7,6 +7,7 @@ using System.Linq;
 using Basic.DataAccess;
 using Basic.Enums;
 using Oracle.ManagedDataAccess.Client;
+using Basic.EntityLayer;
 
 namespace Basic.OracleAccess
 {
@@ -64,6 +65,10 @@ namespace Basic.OracleAccess
 		/// 重置数据库连接
 		/// </summary>
 		internal OracleConnection Connection { get { return oracleCommand.Connection; } }
+
+		/// <summary>创建批处理命令</summary>
+		/// <returns>返回 SqlServerBatchCommand 的实例</returns>
+		protected internal override BatchCommand CreateBatchCommand() { return new OracleBatchCommand(this); }
 
 		/// <summary>
 		/// 重置数据库连接
@@ -127,6 +132,51 @@ namespace Basic.OracleAccess
 		internal protected override DbDataReader ExecuteReader(CommandBehavior behavior)
 		{
 			return oracleCommand.ExecuteReader(behavior);
+		}
+
+		/// <summary></summary>
+		/// <param name="entities"></param>
+		/// <returns></returns>
+		protected internal override bool ResetParameters(AbstractEntity[] entities)
+		{
+			//string connectStr = "User Id=scott;Password=tiger;Data Source=";
+			//OracleConnection conn = new OracleConnection(connectStr);
+			//OracleCommand command = new OracleCommand();
+			//command.Connection = conn;
+			////到此为止，还都是我们熟悉的代码，下面就要开始喽
+			////这个参数需要指定每次批插入的记录数
+			//command.ArrayBindCount = recc;
+			////在这个命令行中,用到了参数,参数我们很熟悉,但是这个参数在传值的时候
+			////用到的是数组,而不是单个的值,这就是它独特的地方
+			//command.CommandText = "insert into dept values(:deptno, :deptname, :loc)";
+			//conn.Open();
+			////下面定义几个数组,分别表示三个字段,数组的长度由参数直接给出
+			//int[] deptNo = new int[recc];
+			//string[] dname = new string[recc];
+			//string[] loc = new string[recc];
+			//// 为了传递参数,不可避免的要使用参数,下面会连续定义三个
+			//// 从名称可以直接看出每个参数的含义,不在每个解释了
+			//OracleParameter deptNoParam = new OracleParameter("deptno", OracleDbType.Int32);
+			//deptNoParam.Direction = ParameterDirection.Input;
+			//deptNoParam.Value = deptNo;
+			//command.Parameters.Add(deptNoParam);
+			//OracleParameter deptNameParam = new OracleParameter("deptname", OracleDbType.Varchar2);
+			//deptNameParam.Direction = ParameterDirection.Input;
+			//deptNameParam.Value = dname; command.Parameters.Add(deptNameParam);
+			//OracleParameter deptLocParam = new OracleParameter("loc", OracleDbType.Varchar2);
+			//deptLocParam.Direction = ParameterDirection.Input;
+			//deptLocParam.Value = loc;
+			//command.Parameters.Add(deptLocParam);
+			////在下面的循环中,先把数组定义好,而不是像上面那样直接生成SQL
+			//for (int i = 0; i < recc; i++)
+			//{
+			//	deptNo[i] = i;
+			//	dname[i] = i.ToString();
+			//	loc[i] = i.ToString();
+			//}
+			////这个调用将把参数数组传进SQL,同时写入数据库
+			//command.ExecuteNonQuery();
+			return base.ResetParameters(entities);
 		}
 
 		/// <summary>

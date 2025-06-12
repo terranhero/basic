@@ -1,56 +1,45 @@
-﻿using Basic.DataAccess;
-using Basic.Enums;
-using Basic.Tables;
-using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Relational;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
-using System.Text;
+using System.Linq;
+using Basic.DataAccess;
+using Basic.Enums;
+using Basic.Tables;
+using IBM.Data.DB2.Core;
 using STT = System.Threading.Tasks;
 using Basic.EntityLayer;
-using System.Threading.Tasks;
 
-namespace Basic.MySqlAccess
+namespace Basic.DB2Access
 {
 	/// <summary>
 	/// 表示要对 SQL Server 数据库执行的一个静态结构的 Transact-SQL 语句或存储过程。
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
-	[System.Xml.Serialization.XmlRoot(DataCommand.StaticCommandConfig)]
-	internal sealed class MyBulkCopyCommand : BulkCopyCommand, IDisposable
+	internal sealed class DB2BulkCopyCommand : BulkCopyCommand, IDisposable
 	{
-		private readonly MySqlBulkLoader _MySqlBulkLoader;
-		private readonly MySqlConnection _Connection;
+		private readonly DB2BulkCopy _DB2BulkCopy;
+		private readonly List<string> _DestinationColumns = new List<string>(100);
 		private readonly TableConfiguration _TableInfo;
-
 		/// <summary>
-		/// 初始化 MyBulkCopyCommand 类的新实例。 
+		/// 初始化 DB2BulkCopyCommand 类的新实例。 
 		/// </summary>
-		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.SqlConnection 实例。</param>
+		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.DB2Client.DB2Connection 实例。</param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
-		public MyBulkCopyCommand(MySqlConnection connection, TableConfiguration configInfo)
-			: base(new MySqlCommand(), configInfo)
+		public DB2BulkCopyCommand(DB2Connection connection, TableConfiguration configInfo)
+			: base(new DB2Command(), configInfo)
 		{
-			_Connection = connection; _TableInfo = configInfo;
-			_MySqlBulkLoader = new MySqlBulkLoader(_Connection)
-			{
-				FieldTerminator = ",",
-				FieldQuotationCharacter = '"',
-				EscapeCharacter = '"',
-				LineTerminator = "\r\n",
-				NumberOfLinesToSkip = 0,
-				TableName = _TableInfo.TableName,
-			};
+			_DB2BulkCopy = new DB2BulkCopy(connection); _TableInfo = configInfo;
 			foreach (ColumnInfo column in _TableInfo.Columns)
 			{
-				_MySqlBulkLoader.Columns.Add(column.Name);
+				_DB2BulkCopy.ColumnMappings.Add(column.Name, column.Name);
+				_DestinationColumns.Add(column.Name);
 			}
+			_DB2BulkCopy.DestinationTableName = _TableInfo.TableName;
 		}
 
 		/// <summary>当前命令的数据库类型</summary>
-		public override ConnectionType ConnectionType { get { return ConnectionType.MySqlConnection; } }
+		public override ConnectionType ConnectionType { get { return ConnectionType.Db2Connection; } }
 
 		/// <summary>
 		/// 创建新的 XXXBulkCopyColumnMapping 并将其添加到集合中，
@@ -61,8 +50,9 @@ namespace Basic.MySqlAccess
 		/// <returns>受影响的行数。</returns>
 		public override bool TryAddOrUpdateMapping(string sourceColumn, string destinationColumn)
 		{
-			if (_MySqlBulkLoader.Columns.Contains(destinationColumn)) { return false; }
-			_MySqlBulkLoader.Columns.Add(destinationColumn);
+			if (_DestinationColumns.Contains(destinationColumn)) { return false; }
+			_DB2BulkCopy.ColumnMappings.Add(sourceColumn, destinationColumn);
+			_DestinationColumns.Add(destinationColumn);
 			return true;
 		}
 
@@ -75,25 +65,22 @@ namespace Basic.MySqlAccess
 		/// <returns>受影响的行数。</returns>
 		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
 		{
-			_MySqlBulkLoader.Timeout = timeout;
-			_MySqlBulkLoader.LoadAsync(); // 执行批量导入
-
+			_DB2BulkCopy.BulkCopyTimeout = timeout;
+			_DB2BulkCopy.WriteToServer(table);
 			return System.Threading.Tasks.Task.CompletedTask;
 		}
 
-		/// <summary>针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。</summary>
+		/// <summary>
+		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
+		/// </summary>
 		/// <typeparam name="TR">表示 BaseTableRowType 子类类型</typeparam>
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		protected internal override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
+		internal protected override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
 		{
-			//_MySqlBulkLoader.TableName = "myTable"; // 目标表名
-			//_MySqlBulkLoader.Columns.AddRange(new[] { "Column1", "Column2" }); // 列名，顺序必须与DataTable中的列匹配
-			//_MySqlBulkLoader.FieldTerminator = ";"; // 字段分隔符，默认为逗号
-			//_MySqlBulkLoader.NumberOfLinesToSkip = 0; // 跳过的行数，通常为0，除非你的数据文件有标题行或注释行
-			//_MySqlBulkLoader.FieldTerminator = table; // 数据源
-			_MySqlBulkLoader.Load(); // 执行批量导入
+			_DB2BulkCopy.BulkCopyTimeout = timeout;
+			_DB2BulkCopy.WriteToServer(table);
 		}
 
 		/// <summary>
@@ -103,7 +90,8 @@ namespace Basic.MySqlAccess
 		/// <returns>返回带存储过程符号的参数名称</returns>
 		public override string CreateParameterName(string parameterName)
 		{
-			if (parameterName.StartsWith("@")) { return parameterName; }
+			if (parameterName.StartsWith("@"))
+				return parameterName;
 			return string.Concat("@", parameterName);
 		}
 
@@ -111,13 +99,13 @@ namespace Basic.MySqlAccess
 		/// 转换数据库参数类型
 		/// </summary>
 		/// <param name="parameter">数据库命令执行的参数</param>
-		/// <param name="dbType">SqlServer数据库列类型,SqlDbType枚举的值</param>
+		/// <param name="dbType">DB2Server数据库列类型,DB2DbType枚举的值</param>
 		/// <param name="precision">获取或设置列中数据的最大大小（以字节为单位）。</param>
 		/// <param name="scale">获取或设置数据库参数值解析为的小数位数。</param>
 		internal protected override void ConvertParameterType(DbParameter parameter, DbTypeEnum dbType, byte precision, byte scale)
 		{
-			MySqlParameter sqlParameter = parameter as MySqlParameter;
-			MySqlParameterConverter.ConvertSqlParameterType(sqlParameter, dbType, precision, scale);
+			DB2Parameter sqlParameter = parameter as DB2Parameter;
+			DB2ParameterConverter.ConvertDB2ParameterType(sqlParameter, dbType, precision, scale);
 		}
 	}
 }

@@ -1,16 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
-#if NET8_0_OR_GREATER
 using System.Data.Common;
-using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
 using Basic.DataAccess;
-using Basic.Properties;
 using Basic.Enums;
+using Basic.Properties;
+using Microsoft.Data.SqlClient;
 
 namespace Basic.SqlServer
 {
@@ -68,6 +63,10 @@ namespace Basic.SqlServer
 		/// 重置数据库连接
 		/// </summary>
 		internal SqlConnection Connection { get { return sqlCommand.Connection; } }
+
+		/// <summary>创建批处理命令</summary>
+		/// <returns>返回 SqlServerBatchCommand 的实例</returns>
+		protected internal override BatchCommand CreateBatchCommand() { return new SqlServerBatchCommand(this); }
 
 		/// <summary>
 		/// 重置数据库连接

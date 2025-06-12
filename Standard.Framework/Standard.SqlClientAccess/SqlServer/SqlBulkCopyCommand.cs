@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Common;
 using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Tables;
-using STT = System.Threading.Tasks;
-using Basic.EntityLayer;
-using System.Threading.Tasks;
-
-#if NET8_0_OR_GREATER
-using System.Data.Common;
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
 
 namespace Basic.SqlServer
 {
@@ -90,22 +81,6 @@ namespace Basic.SqlServer
 			_SqlBulkCopy.BulkCopyTimeout = timeout;
 			_SqlBulkCopy.WriteToServer(table);
 		}
-
-#if NET8_0_OR_GREATER
-		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
-		/// <param name="entities">类型 <see cref="Basic.EntityLayer.AbstractEntity">Basic.EntityLayer.AbstractEntity</see> 实例，包含了需要执行参数的值。</param>
-		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected override async STT.Task<Result> BatchAsync<TModel>(params TModel[] entities)
-		{
-			if (entities == null || entities.Length == 0) { return await Task.FromResult(Result.Success); }
-			using (SqlBatch batch = new SqlBatch((SqlConnection)dataDbCommand.Connection))
-			{
-				batch.CreateBatchCommand();
-			}
-
-			return await Task.FromResult(Result.Success);
-		}
-#endif
 
 		/// <summary>
 		/// 返回存储过程参数名称全名称

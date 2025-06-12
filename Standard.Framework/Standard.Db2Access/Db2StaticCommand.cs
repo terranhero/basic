@@ -6,6 +6,7 @@ using System.Linq;
 using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Properties;
+using Basic.SqlServer;
 using IBM.Data.DB2.Core;
 
 namespace Basic.DB2Access
@@ -64,6 +65,10 @@ namespace Basic.DB2Access
 		/// 重置数据库连接
 		/// </summary>
 		internal DB2Connection Connection { get { return dbCommand.Connection; } }
+
+		/// <summary>创建批处理命令</summary>
+		/// <returns>返回 DB2BatchCommand 的实例</returns>
+		protected internal override BatchCommand CreateBatchCommand() { return new DB2BatchCommand(this); }
 
 		/// <summary>
 		/// 重置数据库连接

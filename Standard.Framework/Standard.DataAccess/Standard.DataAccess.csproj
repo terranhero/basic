@@ -41,6 +41,7 @@
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Update="DataCommand\BatchCommand.cs" />
 		<Compile Update="DataCommand\DynamicJoinCommand.cs">
 			<SubType>Component</SubType>
 		</Compile>

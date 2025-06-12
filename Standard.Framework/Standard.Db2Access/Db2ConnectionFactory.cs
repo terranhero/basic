@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Basic.Configuration;
 using Basic.DataAccess;
+using Basic.SqlServer;
 using IBM.Data.DB2.Core;
 
 namespace Basic.DB2Access
@@ -105,7 +106,7 @@ namespace Basic.DB2Access
 		public override StaticCommand CreateStaticCommand() { return new DB2StaticCommand(); }
 
 		/// <summary>
-		/// 创建 BatchCommand 类实例。
+		/// 创建 BulkCopyCommand 类实例。
 		/// </summary>
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 DbConnection 实例。</param>
 		/// <param name="tableInfo">表示当前表结构信息</param>

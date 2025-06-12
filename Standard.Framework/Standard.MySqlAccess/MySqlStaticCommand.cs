@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using STT = System.Threading.Tasks;
+using Basic.SqlServer;
 
 namespace Basic.MySqlAccess
 {
@@ -83,6 +84,10 @@ namespace Basic.MySqlAccess
 		/// 获取数据库连接
 		/// </summary>
 		internal MySqlConnection Connection { get { return _MySqlCommand.Connection; } }
+
+		/// <summary>创建批处理命令</summary>
+		/// <returns>返回 MySqlBatchCommand 的实例</returns>
+		protected internal override BatchCommand CreateBatchCommand() { return new MySqlBatchCommand(this); }
 
 		/// <summary>
 		/// 获取 MySqlCommand 类实例。

@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
-using System.Linq;
-using Basic.DataAccess;
-using Basic.Enums;
-using Basic.Tables;
-using IBM.Data.DB2.Core;
-using STT = System.Threading.Tasks;
-using Basic.EntityLayer;
-using Basic.DB2Access;
 using System.Threading.Tasks;
+using Basic.DataAccess;
+using Basic.EntityLayer;
+using Basic.Enums;
+using Basic.MySqlAccess;
+using MySql.Data.MySqlClient;
+using STT = System.Threading.Tasks;
+
 
 namespace Basic.SqlServer
 {
 	/// <summary>
-	/// 执行批处理的静态命令，
-	/// 一般执行INSERT 或 UPDATE 或 DELETE命令。
+	/// 执行批处理的静态命令，一般执行INSERT 或 UPDATE 或 DELETE命令。
 	/// </summary>
-	public sealed class DB2BatchCommand : BatchCommand
+	public sealed class MySqlBatchCommand : BatchCommand
 	{
-		/// <summary>初始化 DB2BatchCommand 类的新实例。</summary>
+		/// <summary>
+		/// 初始化 MySqlBatchCommand 类的新实例。 
+		/// </summary>
 		/// <param name="cmd">表示 <see cref="StaticCommand"/> 实例。</param>
-		public DB2BatchCommand(StaticCommand cmd) : base(cmd) { }
+		public MySqlBatchCommand(StaticCommand cmd) : base(cmd) { }
 
 		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
 		/// <typeparam name="TModel">表示 AbstractEntity 子类类型</typeparam>

@@ -85,17 +85,6 @@ namespace Basic.OracleAccess
 			_OracleBulkCopy.WriteToServer(table);
 		}
 
-#if NET8_0_OR_GREATER
-		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
-		/// <param name="entities">类型 <see cref="Basic.EntityLayer.AbstractEntity">Basic.EntityLayer.AbstractEntity</see> 实例，包含了需要执行参数的值。</param>
-		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected override async STT.Task<Result> BatchAsync<TModel>(params TModel[] entities)
-		{
-			if (entities == null || entities.Length == 0) { return await STT.Task.FromResult(Result.Success); }
-			return await STT.Task.FromResult(Result.Success);
-		}
-#endif
-
 		/// <summary>
 		/// 返回存储过程参数名称全名称
 		/// </summary>

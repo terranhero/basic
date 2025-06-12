@@ -2,13 +2,9 @@
 using System.ComponentModel;
 using Basic.Enums;
 using Basic.DataAccess;
-#if NET8_0_OR_GREATER
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
+
 namespace Basic.SqlServer
 {
 	/// <summary>

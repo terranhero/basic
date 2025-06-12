@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Basic.Configuration;
-#if NET8_0_OR_GREATER
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
-#else
-using System.Data.Common;
-using System.Data.SqlClient;
-#endif
 using Basic.DataAccess;
 
 namespace Basic.SqlServer2012

@@ -72,12 +72,5 @@ namespace Basic.DataAccess
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
 		internal protected abstract STT.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType;
-
-#if NET8_0_OR_GREATER
-		/// <summary>使用 XXXBulkCopy 类执行数据插入命令</summary>
-		/// <param name="entities">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected abstract STT.Task<Result> BatchAsync<TModel>(params TModel[] entities) where TModel : AbstractEntity;
-#endif
 	}
 }

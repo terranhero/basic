@@ -15,6 +15,7 @@ using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
 using Basic.Tables;
+using STT = System.Threading.Tasks;
 
 namespace Basic.DataAccess
 {
@@ -45,6 +46,12 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="dbCommand"></param>
 		protected StaticCommand(DbCommand dbCommand) : base(dbCommand) { }
+
+		///// <summary>
+		/////  获取或设置此 System.Data.Common.DbCommand 使用的 System.Data.Common.DbConnection。
+		///// </summary>
+		//[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		//internal DbConnection Connection { get { return dataDbCommand.Connection; } }
 
 		/// <summary>
 		/// SQL 语句或存储过程的参数。
@@ -769,6 +776,25 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
+		#region 异步执行批处理命令
+		/// <summary>创建批处理命令</summary>
+		/// <returns>返回 BatchCommand 的实例</returns>
+		internal protected abstract BatchCommand CreateBatchCommand();
+
+		/// <summary>使用 BatchCommand 类执行数据插入命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected virtual Task<int> BatchAsync<TModel>(IEnumerable<TModel> entities) where TModel : AbstractEntity
+		{
+			using (BatchCommand batch = CreateBatchCommand())
+			{
+				return batch.ExecuteAsync<TModel>(entities, CommandTimeout);
+			}
+		}
+		#endregion
+
+		#region 实现接口 IXmlSerializable
 		/// <summary>
 		/// 从对象的 XML 表示形式生成该对象。
 		/// </summary>
@@ -810,7 +836,7 @@ namespace Basic.DataAccess
 			}
 			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DataCommand.CheckCommandsConfig)
 			{
-				#region 读取数据检测命令
+				#region 读取数据有效性验证命令
 				System.Xml.XmlReader reader2 = reader.ReadSubtree();
 				while (reader2.Read())  //读取所有检测命令节点信息
 				{
@@ -848,5 +874,7 @@ namespace Basic.DataAccess
 			}
 			return base.ReadContent(reader);
 		}
+
+		#endregion
 	}
 }

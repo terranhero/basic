@@ -17,29 +17,31 @@
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
 		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.3" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
 		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.3" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
 		<PackageReference Include="System.Runtime.Caching" Version="9.0.4" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Update="SqlServer2012\SqlServerBatchCommand.cs" />
 		<Compile Update="SqlServer2012\SqlBulkCopyCommand.cs" />
 		<Compile Update="SqlServer2012\SqlCheckCommand.cs" />
 		<Compile Update="SqlServer2012\SqlDynamicCommand.cs" />
 		<Compile Update="SqlServer2012\SqlNewValueCommand.cs" />
 		<Compile Update="SqlServer2012\SqlStaticAdapter.cs" />
 		<Compile Update="SqlServer2012\SqlStaticCommand.cs" />
+		<Compile Update="SqlServer\SqlServerBatchCommand.cs" />
 		<Compile Update="SqlServer\SqlBulkCopyCommand.cs" />
 		<Compile Update="SqlServer\SqlCheckCommand.cs" />
 		<Compile Update="SqlServer\SqlDynamicCommand.cs" />

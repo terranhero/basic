@@ -38,28 +38,20 @@ namespace Basic.DataAccess
 		/// <returns>DbConnection 的新实例。</returns>
 		public abstract DbConnection CreateConnection(ConnectionInfo info);
 
-		/// <summary>
-		/// 返回实现 DbConnection 类的提供程序的类的一个新实例。
-		/// </summary>
+		/// <summary>返回实现 DbConnection 类的提供程序的类的一个新实例。</summary>
 		/// <param name="connectionString">数据库连接字符串</param>
 		/// <returns>DbConnection 的新实例。</returns>
 		public abstract DbConnection CreateConnection(string connectionString);
 
-		/// <summary>
-		/// 创建 DynamicCommand 类实例。
-		/// </summary>
+		/// <summary>创建 DynamicCommand 类实例。</summary>
 		/// <returns>返回 DynamicCommand 类对应数据库类型的实例。</returns>
 		public abstract DynamicCommand CreateDynamicCommand();
 
-		/// <summary>
-		/// 创建 StaticCommand 类实例。
-		/// </summary>
+		/// <summary>创建 StaticCommand 类实例。</summary>
 		/// <returns>返回 StaticCommand 类对应数据库类型的实例。</returns>
 		public abstract StaticCommand CreateStaticCommand();
 
-		/// <summary>
-		/// 创建 BulkCopyCommand 类实例。
-		/// </summary>
+		/// <summary>创建 BulkCopyCommand 类实例。</summary>
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 DbConnection 实例。</param>
 		/// <param name="tableInfo">表示当前表结构信息</param>
 		/// <returns>返回 BulkCopyCommand 类对应数据库类型的实例。</returns>
