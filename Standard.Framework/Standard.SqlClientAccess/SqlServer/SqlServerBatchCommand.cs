@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Basic.Collections;
 using Basic.DataAccess;
 using Basic.EntityLayer;
 using Basic.Enums;
@@ -34,26 +37,45 @@ namespace Basic.SqlServer
 			SqlCommand command = staticCommand.DbCommand as SqlCommand;
 			using (SqlBatch batch = new SqlBatch(command.Connection))
 			{
+				EntityPropertyCollection properties = EntityPropertyProvidor.GetProperties(typeof(TModel));
 				foreach (TModel entity in entities)
 				{
 					SqlBatchCommand batchCommand = new SqlBatchCommand(staticCommand.CommandText);
+					SqlParameterCollection parameters = batchCommand.Parameters;
 					foreach (SqlParameter parameter in command.Parameters)
 					{
-						SqlParameter param = batchCommand.Parameters.Add(parameter.ParameterName, parameter.SqlDbType, parameter.Size);
-						param.Precision = parameter.Precision;
-						param.Scale = parameter.Scale;
-						staticCommand.ResetParameterValue(param, null);
+						SqlParameter param = ((ICloneable)parameter).Clone() as SqlParameter;
+						if (properties.TryGetDbProperty(param.SourceColumn, out EntityPropertyMeta propertyInfo))
+						{
+							object value = propertyInfo.GetValue(entity);
+							staticCommand.ResetParameterValue(param, value);
+						}
 					}
 					batchCommand.CommandType = staticCommand.CommandType;
-					//batchCommand.Parameters.Add(new SqlParameter(parameterName, i));
 					batch.BatchCommands.Add(batchCommand);
 				}
 
 				return await batch.ExecuteNonQueryAsync();
 			}
-
 #else
-			return await Task.FromResult(0);
+			int AffectedRows = 0;
+			SqlCommand command = staticCommand.DbCommand as SqlCommand;
+			EntityPropertyCollection properties = EntityPropertyProvidor.GetProperties(typeof(TModel));
+			foreach (TModel entity in entities)
+			{
+				SqlCommand batchCommand = command.Clone(); ;
+				foreach (SqlParameter parameter in batchCommand.Parameters)
+				{
+					if (properties.TryGetDbProperty(parameter.SourceColumn, out EntityPropertyMeta propertyInfo))
+					{
+						object value = propertyInfo.GetValue(entity);
+						staticCommand.ResetParameterValue(parameter, value);
+					}
+				}
+				batchCommand.CommandType = staticCommand.CommandType;
+				AffectedRows += await batchCommand.ExecuteNonQueryAsync();
+			}
+			return await Task.FromResult(AffectedRows);
 #endif
 		}
 	}
