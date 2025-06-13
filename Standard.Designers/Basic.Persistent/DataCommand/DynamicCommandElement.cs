@@ -509,7 +509,6 @@ namespace Basic.Configuration
 		/// <summary>
 		/// 实现设计时代码
 		/// </summary>
-		/// <param name="entity">当前命令使用的实体类信息</param>
 		/// <param name="classCode">表示需要写入代码的类空间</param>
 		/// <param name="targetFramework">生成代码的目标框架版本（例如：262144=v4.0）</param>
 		protected internal override void WriteDesignerCode(CodeTypeDeclaration classCode, int targetFramework)
@@ -778,7 +777,7 @@ namespace Basic.Configuration
 			CodeVariableReferenceExpression accessReference = new CodeVariableReferenceExpression("access");
 			CodeVariableReferenceExpression conditionReference = new CodeVariableReferenceExpression("condition");
 
-			string methodName = Kind == ConfigurationTypeEnum.SearchTable ? "GetEntities" : MethodName;
+			string methodName = Kind == ConfigurationTypeEnum.SearchTable ? "GetJoinEntities" : MethodName;
 			CodeMethodReferenceExpression methodReference = new CodeMethodReferenceExpression(accessReference, methodName);
 
 			if (Kind == ConfigurationTypeEnum.SearchTable && Persistent.BaseAccess == typeof(AbstractAccess).Name)
@@ -848,9 +847,7 @@ namespace Basic.Configuration
 			method.Statements.Add(codeResult);
 		}
 
-		/// <summary>
-		/// 表示执行 GetEntities 方法的命令。
-		/// </summary>
+		/// <summary>表示执行 GetEntities 方法的命令。</summary>
 		/// <param name="members">当前类型申明的 CodeTypeMemberCollection 。</param>
 		/// <param name="isJoinFunction">是否调用Join方法</param>
 		protected internal void GenerateDesignerGetEntities(CodeTypeMemberCollection members, bool isJoinFunction)
@@ -858,7 +855,7 @@ namespace Basic.Configuration
 			DataEntityElement entity = EntityElement;
 			string returnComment = string.Format("<returns>返回查询结果，此结果表示 {0} 类的集合。</returns>", entity.EntityName);
 			CodeMethodReferenceExpression methodReference = new CodeMethodReferenceExpression();
-			methodReference.MethodName = "GetEntities";
+			methodReference.MethodName = isJoinFunction ? "GetJoinEntities" : "GetEntities";
 			methodReference.TargetObject = new CodeBaseReferenceExpression();
 			methodReference.TypeArguments.Add(EntityElement.EntityName);
 
