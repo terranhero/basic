@@ -9,7 +9,7 @@
 		<PackageId>Standard.DB2Access</PackageId>
 		<PackageTags>Basic Entity</PackageTags>
 		<Authors>JACKY</Authors>
-		<Description>Asp.Net Mvc DB2 Access Supporting</Description>
+		<Description>ORM 框架数据库持久实现（IBM DB2）特定数据库实现。</Description>
 		<Product>Standard.DB2Access</Product>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<NoWarn>1701;1702;MSB3270</NoWarn>
