@@ -1,112 +1,57 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Data.Common;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Basic.Collections;
 using Basic.DataAccess;
-using Basic.Enums;
-using Basic.Tables;
+using Basic.EntityLayer;
+using STT = System.Threading.Tasks;
 using Npgsql;
 
 namespace Basic.PostgreSql
 {
 	/// <summary>
-	/// 表示要对 SQL Server 数据库执行的一个静态结构的 Transact-SQL 语句或存储过程。
+	/// 执行批处理的静态命令，一般执行INSERT 或 UPDATE 或 DELETE命令。
 	/// </summary>
-	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
-	internal sealed class NpgBatchCommand : BatchCommand, IDisposable
+	public sealed class NpgBatchCommand : BatchCommand
 	{
-		private readonly NpgsqlBatch _Batch;
-		private readonly TableConfiguration _TableInfo;
 		/// <summary>
-		/// 初始化 NpgBatchCommand 类的新实例。 
+		/// 初始化 SqlServerBatchCommand 类的新实例。 
 		/// </summary>
-		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.SqlConnection 实例。</param>
-		///<param name="configInfo">表示当前数据库表配置信息</param>
-		public NpgBatchCommand(NpgsqlConnection connection, TableConfiguration configInfo)
-			: base(new NpgsqlCommand(), configInfo)
-		{
-			_Batch = new NpgsqlBatch(connection);
-			_TableInfo = configInfo;
-		}
+		/// <param name="cmd">表示 <see cref="StaticCommand"/> 实例。</param>
+		public NpgBatchCommand(StaticCommand cmd) : base(cmd) { }
 
-		/// <summary>
-		/// 创建新的 XXXBulkCopyColumnMapping 并将其添加到集合中，
-		/// 使用列名指定源列和目标列。
-		/// </summary>
-		/// <param name="sourceColumn">数据源中源列的名称</param>
-		/// <param name="destinationColumn">数据源中目标列的名称</param>
-		/// <returns>受影响的行数。</returns>
-		public override bool TryAddOrUpdateMapping(string sourceColumn, string destinationColumn)
-		{
-			//if (_DestinationColumns.Contains(destinationColumn)) { return false; }
-			//_SqlBulkCopy.ColumnMappings.Add(sourceColumn, destinationColumn);
-			//_DestinationColumns.Add(destinationColumn);
-			return true;
-		}
-
-		/// <summary>
-		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
-		/// </summary>
-		/// <typeparam name="TR">表示 BaseTableRowType 子类类型</typeparam>
-		/// <param name="table">实体类，包含了需要执行参数的值。</param>
+		/// <summary>使用 SqlBatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 AbstractEntity 子类类型</typeparam>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
+		/// <param name="entities">类型 <typeparamref name='TModel'/>子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
+		internal protected override async STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, int timeout)
 		{
-			//_Batch.BatchSize = table.Count > 1000 ? 1000 : table.Count;
-			//_Batch.BulkCopyTimeout = timeout;
-			//return _Batch.WriteToServerAsync(table);
-			return Task.CompletedTask;
-		}
+			if (entities == null || entities.Any() == false) { return await Task.FromResult(0); }
+			NpgsqlCommand command = staticCommand.DbCommand as NpgsqlCommand;
+			using (NpgsqlBatch batch = new NpgsqlBatch(command.Connection))
+			{
+				EntityPropertyCollection properties = EntityPropertyProvidor.GetProperties(typeof(TModel));
+				foreach (TModel entity in entities)
+				{
+					NpgsqlBatchCommand batchCommand = new NpgsqlBatchCommand(staticCommand.CommandText);
+					NpgsqlParameterCollection parameters = batchCommand.Parameters;
+					foreach (NpgsqlParameter parameter in command.Parameters)
+					{
+						NpgsqlParameter param = ((ICloneable)parameter).Clone() as NpgsqlParameter;
+						if (properties.TryGetDbProperty(param.SourceColumn, out EntityPropertyMeta propertyInfo))
+						{
+							object value = propertyInfo.GetValue(entity);
+							staticCommand.ResetParameterValue(param, value);
+						}
+					}
+					batchCommand.CommandType = staticCommand.CommandType;
+					batch.BatchCommands.Add(batchCommand);
+				}
 
-		/// <summary>当前命令的数据库类型</summary>
-		public override ConnectionType ConnectionType { get { return ConnectionType.SqlConnection; } }
-
-		/// <summary>
-		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
-		/// </summary>
-		/// <typeparam name="TR">表示 BaseTableRowType 子类类型</typeparam>
-		/// <param name="table">实体类，包含了需要执行参数的值。</param>
-		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
-		/// <returns>受影响的行数。</returns>
-		internal protected override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
-		{
-			//_DataAdapter.BatchSize = table.Count > 1000 ? 1000 : table.Count;
-			//_DataAdapter.BulkCopyTimeout = timeout;
-			//foreach (ColumnInfo column in _TableInfo.Columns)
-			//{
-			//	if (table.Columns.Contains(column.Name))
-			//	{
-			//		_DataAdapter.ColumnMappings.Add(column.Name, column.Name);
-			//	}
-			//}
-			//_DataAdapter.DestinationTableName = _TableInfo.TableName;
-			//_DataAdapter.WriteToServer(table);
-		}
-
-		/// <summary>
-		/// 返回存储过程参数名称全名称
-		/// </summary>
-		/// <param name="parameterName">不带参数符号的参数名称</param>
-		/// <returns>返回带存储过程符号的参数名称</returns>
-		public override string CreateParameterName(string parameterName)
-		{
-			if (parameterName.StartsWith("@"))
-				return parameterName;
-			return string.Concat("@", parameterName);
-		}
-
-		/// <summary>
-		/// 转换数据库参数类型
-		/// </summary>
-		/// <param name="parameter">数据库命令执行的参数</param>
-		/// <param name="dbType">Npg数据库列类型,SqlDbType枚举的值</param>
-		/// <param name="precision">获取或设置列中数据的最大大小（以字节为单位）。</param>
-		/// <param name="scale">获取或设置数据库参数值解析为的小数位数。</param>
-		internal protected override void ConvertParameterType(DbParameter parameter, DbTypeEnum dbType, byte precision, byte scale)
-		{
-			NpgsqlParameter sqlParameter = parameter as NpgsqlParameter;
-			NpgParameterConverter.ConvertSqlParameterType(sqlParameter, dbType, precision, scale);
+				return await batch.ExecuteNonQueryAsync();
+			}
 		}
 	}
 }

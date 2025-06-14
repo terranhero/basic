@@ -7,7 +7,7 @@ using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Properties;
 using Basic.SqlServer;
-using IBM.Data.DB2.Core;
+using IBM.Data.Db2;
 
 namespace Basic.DB2Access
 {

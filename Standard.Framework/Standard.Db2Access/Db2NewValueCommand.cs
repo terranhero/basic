@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using Basic.DataAccess;
 using Basic.Enums;
-using IBM.Data.DB2.Core;
+using IBM.Data.Db2;
 
 namespace Basic.DB2Access
 {

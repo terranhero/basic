@@ -4,7 +4,7 @@ using System.Data.Common;
 using Basic.Configuration;
 using Basic.DataAccess;
 using Basic.SqlServer;
-using IBM.Data.DB2.Core;
+using IBM.Data.Db2;
 
 namespace Basic.DB2Access
 {

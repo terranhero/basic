@@ -51,12 +51,13 @@ namespace Basic.MvcLibrary
 			if (context == null) { throw new ArgumentNullException("context"); }
 
 			if (next == null) { throw new ArgumentNullException("next"); }
-			UrlHelper urlHelper = new UrlHelper(context);
 			if (context.ModelState.IsValid == false) { return Task.CompletedTask; }
+			Controller controller = (Controller)context.Controller;
 			string hostName = GetRequestAddress(context);
 			string controllerName = (string)context.RouteData.Values["Controller"];
 			string actionName = (string)context.RouteData.Values["Action"];
 			string UserName = context.HttpContext.User.Identity.Name;
+			IUrlHelper urlHelper = controller.Url;
 			string url = urlHelper.Action(actionName, controllerName, context.RouteData.Values);
 			string msg = base.GetMessage(context);
 			EventLogWriter.WriteLogging(GuidConverter.NewGuid, url, hostName, UserName, msg, LogLevel.Information, LogResult.Successful);

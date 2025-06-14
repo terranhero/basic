@@ -6,7 +6,7 @@ using System.Linq;
 using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Tables;
-using IBM.Data.DB2.Core;
+using IBM.Data.Db2;
 using STT = System.Threading.Tasks;
 using Basic.EntityLayer;
 using Basic.DB2Access;

@@ -41,6 +41,14 @@ namespace Basic.Loggers
 			return await _storage.DeleteAsync(keys);
 		}
 
+		/// <summary>根据条件删除日志记录</summary>
+		/// <param name="entities">需要删除的日志主键</param>
+		/// <returns>返回日志查询结果</returns>
+		public override async Task<Result> DeleteAsync(LoggerDelEntity[] entities)
+		{
+			return await _storage.DeleteAsync(entities);
+		}
+
 		/// <summary>
 		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
 		/// </summary>

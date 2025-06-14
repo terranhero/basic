@@ -376,11 +376,8 @@ namespace Basic.DataAccess
 		internal virtual TCMD BeginExecute<TCMD>(TCMD dataCommand) where TCMD : DataCommand
 		{
 			_Result.Clear();
-			if (_dbConnection != null && _dbConnection.State != ConnectionState.Open)
-			{
-				_dbConnection.Open();
-				dataCommand.ResetConnection(_dbConnection);
-			}
+			if (_dbConnection != null && _dbConnection.State != ConnectionState.Open) { _dbConnection.Open(); }
+			if (_dbConnection != null) { dataCommand.ResetConnection(_dbConnection); }
 			return dataCommand;
 		}
 
@@ -390,8 +387,8 @@ namespace Basic.DataAccess
 			if (_dbConnection != null && _dbConnection.State != ConnectionState.Open)
 			{
 				await _dbConnection.OpenAsync();
-				dataCommand.ResetConnection(_dbConnection);
 			}
+			if (_dbConnection != null) { dataCommand.ResetConnection(_dbConnection); }
 
 			return dataCommand;
 		}

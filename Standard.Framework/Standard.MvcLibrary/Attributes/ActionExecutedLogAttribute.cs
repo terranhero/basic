@@ -1,17 +1,16 @@
-﻿using Basic.EntityLayer;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using Basic.EntityLayer;
 using Basic.Interfaces;
-using Basic.Loggers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Basic.MvcLibrary
 {
@@ -74,7 +73,6 @@ namespace Basic.MvcLibrary
 			Controller controller = (Controller)context.Controller; Guid guid = GuidConverter.NewGuid;
 			if (controller.ViewData.ContainsKey(BatchNumber)) { guid = (Guid)controller.ViewData[BatchNumber]; }
 
-			UrlHelper urlHelper = new UrlHelper(context);
 			if (context.ModelState.IsValid == false) { return; }
 			if (context.ExceptionHandled == false && context.Exception == null)
 			{
@@ -82,6 +80,7 @@ namespace Basic.MvcLibrary
 				string controllerName = (string)context.RouteData.Values["Controller"];
 				string actionName = (string)context.RouteData.Values["Action"];
 				string UserName = context.HttpContext.User.Identity.Name;
+				IUrlHelper urlHelper = controller.Url;
 				string url = urlHelper.Action(actionName, controllerName, context.RouteData.Values);
 				string msg = await GetMessageAsync(context);
 				_writer.Information(guid, url, hostName, UserName, msg);
@@ -93,6 +92,7 @@ namespace Basic.MvcLibrary
 				string actionName = (string)context.RouteData.Values["Action"];
 
 				string UserName = context.HttpContext.User.Identity.Name;
+				IUrlHelper urlHelper = controller.Url;
 				string url = urlHelper.Action(actionName, controllerName, context.RouteData.Values);
 				_writer.Error(guid, url, hostName, UserName, context.Exception);
 				if (IsAjaxRequest(context.HttpContext.Request))
@@ -176,11 +176,43 @@ namespace Basic.MvcLibrary
 		/// <returns>返回地址信息。</returns>
 		private string GetRequestAddress(FilterContext context)
 		{
-			HttpRequest request = context.HttpContext.Request;
-			IHeaderDictionary headers = request.Headers;
-			if (headers.TryGetValue("HTTP_X_FORWARDED_FOR", out StringValues value)) { return value; }
-			else if (headers.TryGetValue("REMOTE_ADDR", out StringValues value1)) { return value1; }
-			else { return request.Host.Host; }
+			HttpContext httpContext = context.HttpContext;
+			if (httpContext.Connection.RemoteIpAddress != null)
+			{
+				IPAddress address = httpContext.Connection.RemoteIpAddress;
+				if (address == IPAddress.IPv6Loopback) { return null; }
+				else if (address == IPAddress.IPv6None) { return null; }
+				return address.ToString();
+			}
+
+			HttpRequest request = httpContext.Request; IHeaderDictionary headers = request.Headers;
+			if (headers.TryGetValue("X_FORWARDED_FOR", out StringValues value6))
+			{
+				if (value6.Count >= 1) { return value6[0]; }
+				return value6;
+			}
+			else if (headers.TryGetValue("HTTP_X_FORWARDED_FOR", out StringValues value3))
+			{
+				if (value3.Count >= 1) { return value3[0]; }
+				return value3;
+			}
+			else if (headers.TryGetValue("REMOTE_ADDR", out StringValues value4))
+			{
+				return value4;
+			}
+			else if (headers.TryGetValue("HTTP_VIA ", out StringValues value5))
+			{
+				return value5;
+			}
+			else if (headers.TryGetValue("WL-Proxy-Client-IP", out StringValues value1))
+			{
+				return value1;
+			}
+			else if (headers.TryGetValue("Proxy-Client-IP", out StringValues value2))
+			{
+				return value2;
+			}
+			return request.Host.Host;
 		}
 
 		private sealed class ValueProviderFactoriesContext : ValueProviderFactoryContext

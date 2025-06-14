@@ -45,12 +45,16 @@ namespace Basic.Loggers
 		}
 
 		/// <summary>获取缓存的日志写入器</summary>
+		/// <remarks>参数 <paramref name="writer"/>使用返回有效值，永不为null。</remarks>
 		/// <param name="key">数据库连接名称</param>
 		/// <param name="writer">日志写入器</param>
-		/// <returns><!--true if the key was found in the <see cref="ConcurrentDictionary{TKey,TValue}"/>; otherwise, false--></returns>
+		/// <returns>如果已经存在则返回true，否则返回false。</returns>
 		public static bool TryGetWriter(string key, out ILoggerWriter writer)
 		{
-			return writers.TryGetValue(key, out writer);
+			if (writers.TryGetValue(key, out writer) == true) { return true; }
+			writer = new DefaultLoggerWriter(key);
+			writers.AddOrUpdate(key, writer, UpdateValue);
+			return false;
 		}
 
 		/// <summary>获取缓存的日志写入器</summary>
@@ -116,6 +120,14 @@ namespace Basic.Loggers
 		/// <param name="keys">需要删除的日志主键</param>
 		/// <returns>返回日志查询结果</returns>
 		public virtual Task<Result> DeleteAsync(Guid[] keys)
+		{
+			return Task.FromResult(Result.Success);
+		}
+
+		/// <summary>根据条件删除日志记录</summary>
+		/// <param name="entities">需要删除的日志主键</param>
+		/// <returns>返回日志查询结果</returns>
+		public virtual Task<Result> DeleteAsync(LoggerDelEntity[] entities)
 		{
 			return Task.FromResult(Result.Success);
 		}
