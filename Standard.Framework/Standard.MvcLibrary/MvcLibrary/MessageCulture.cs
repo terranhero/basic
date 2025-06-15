@@ -67,18 +67,18 @@ namespace Basic.Messages
 			{
 				return System.Globalization.CultureInfo.GetCultureInfo(cultureString);
 			}
-			StringValues valus = request.Headers[HeaderNames.AcceptLanguage];
-			var languages = valus.ToArray();
-			if (languages != null && languages.Length > 0)
-			{
-				string cultureString1 = languages[0];
-				csInfo = EventLogElementContext.Cultures.DefaultName;
-				foreach (CultureElement cs in EventLogElementContext.Cultures.Cultures)
-				{
-					if (string.Compare(cultureString1, cs.Name, true) == 0) { csInfo = cs.Name; }
-					else if (cs.Values.Contains(cultureString1)) { csInfo = cs.Name; break; }
-				}
-			}
+			//StringValues valus = request.Headers[HeaderNames.AcceptLanguage];
+			//var languages = valus.ToArray();
+			//if (languages != null && languages.Length > 0)
+			//{
+			//	string cultureString1 = languages[0];
+			//	csInfo = EventLogElementContext.Cultures.DefaultName;
+			//	foreach (CultureElement cs in EventLogElementContext.Cultures.Cultures)
+			//	{
+			//		if (string.Compare(cultureString1, cs.Name, true) == 0) { csInfo = cs.Name; }
+			//		else if (cs.Values.Contains(cultureString1)) { csInfo = cs.Name; break; }
+			//	}
+			//}
 			return System.Globalization.CultureInfo.GetCultureInfo(csInfo);
 		}
 

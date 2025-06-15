@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using Basic.DataAccess;
 using Basic.Enums;
 using Basic.Exceptions;
+using Basic.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using SC = System.Configuration;
 
 namespace Basic.Configuration
@@ -13,16 +17,16 @@ namespace Basic.Configuration
 	/// </summary>
 	public static class ConnectionContext
 	{
-		static ConnectionContext()
-		{
-			string configName = ConfigurationGroup.ElementName;
-			string secName = ConnectionsSection.ElementName;
-			object section = ConfigurationManager.GetSection(string.Concat(configName, "/", secName));
-			if (section != null && section is ConnectionsSection configurationSection)
-			{
-				InitializeConnection(configurationSection);
-			}
-		}
+		//static ConnectionContext()
+		//{
+		//	string configName = ConfigurationGroup.ElementName;
+		//	string secName = ConnectionsSection.ElementName;
+		//	object section = ConfigurationManager.GetSection(string.Concat(configName, "/", secName));
+		//	if (section != null && section is ConnectionsSection configurationSection)
+		//	{
+		//		InitializeConnection(configurationSection);
+		//	}
+		//}
 
 		private readonly static SortedList<string, ConnectionInfo> _Connections = new SortedList<string, ConnectionInfo>(100);
 		private static ConnectionInfo _DefaultConnection;
@@ -76,17 +80,23 @@ namespace Basic.Configuration
 			}
 		}
 
-		///// <summary>初始化数据库连接参数</summary>
-		//public static void InitializeConnection(IConfigurationRoot configuration)
-		//{
-		//	string configName = ConfigurationGroup.ElementName;
-		//	string secName = ConnectionsSection.ElementName;
-		//	object section = configuration.GetSection(string.Concat(configName, "/", secName));
-		//	if (section != null && section is ConnectionsSection configurationSection)
-		//	{
-		//		InitializeConnection(configurationSection);
-		//	}
-		//}
+		/// <summary>初始化数据库连接参数</summary>
+		/// <param name="connections">表示数据库连接配置</param>
+		public static void InitializeConnection(IConfigurationSection connections)
+		{
+			Clear(); _DefaultName = connections.GetValue<string>("DefaultName");
+			foreach (IConfigurationSection item in connections.GetChildren())
+			{
+				if (string.Compare("DefaultName", item.Key, true) == 0) { continue; }
+				JsonConnectionInfo info = item.Get<JsonConnectionInfo>();
+				if (info == null) { continue; }
+				info.Name = item.Key; info.Version = item.GetValue<int>("Version");
+				info.ConnectionType = item.GetValue<ConnectionType>("ConnectionType");
+				info.Remove("Version"); info.Remove("ConnectionType");
+				Basic.Configuration.ConnectionInfo connection = ConnectionFactoryBuilder.CreateConnectionInfo(info);
+				Create(connection); if (_DefaultName == item.Key) { _DefaultConnection = connection; }
+			}
+		}
 
 		/// <summary>初始化数据库连接参数</summary>
 		internal static void InitializeConnection(ConnectionsSection section)
@@ -197,6 +207,20 @@ namespace Basic.Configuration
 		/// <summary>
 		/// 将 ConnectionInfo 类实例添加到系统数据库连接集合中。
 		/// </summary>
+		/// <param name="info">数据库连接名称</param>
+		/// <returns>返回当前添加成功的 ConnectionInfo 类实例</returns>
+		/// <exception cref="System.ArgumentNullException">参数 name 为空或null。</exception>
+		/// <exception cref="System.ArgumentException">参数 name 已经存在。</exception>
+		public static ConnectionInfo CreateOrReplace(IConnectionInfo info)
+		{
+			ConnectionInfo connection = ConnectionFactoryBuilder.CreateConnectionInfo(info);
+			_Connections[connection.Name] = connection;
+			return connection;
+		}
+
+		/// <summary>
+		/// 将 ConnectionInfo 类实例添加到系统数据库连接集合中。
+		/// </summary>
 		/// <param name="name">数据库连接名称</param>
 		/// <param name="type">数据库连接类型</param>
 		/// <param name="version">数据库版本号</param>
@@ -255,6 +279,73 @@ namespace Basic.Configuration
 		public static bool TryGetConnection(string name, out ConnectionInfo info)
 		{
 			return _Connections.TryGetValue(name, out info);
+		}
+	}
+
+	/// <summary>
+	/// 依赖注入扩展，添加日志配置信息
+	/// </summary>
+	public static class ConnectionExtension
+	{
+		/// <summary>使用默认配置节加载数据库连接（Connections）</summary>
+		/// <remarks>
+		/// <code>	
+		/// json配置文件格式如下所示：<br/>
+		/// "Connections": {
+		/// 	"DefaultName": "HRMS",
+		/// 	"HRMS": {
+		///			"ConnectionType": "SqlConnection",
+		///			"Version": 12,
+		///			"Application Name": "HRMS",
+		/// 		"Initial Catalog": "HRMS-V5",
+		/// 		"Data Source": "(local)",
+		/// 		"User ID": "sa",
+		/// 		"Password": "C/1Shp55C14b0TtEhs87bg==",
+		/// 		"TrustServerCertificate": "True"
+		/// 	}
+		/// }
+		/// </code>
+		/// <code>
+		/// Program.cs 启动文件中代码如下：<br/>
+		/// services.AddConnections(root);</code>
+		/// </remarks>
+		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+		/// <param name="root">包含要使用的设置的 <see cref="IConfigurationRoot"/></param>
+		public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationRoot root)
+		{
+			IConfigurationSection connections = root.GetSection("Connections");
+			ConnectionContext.InitializeConnection(connections);
+			return services;
+		}
+
+		/// <summary>使用自定义配置节名称绑定日志配置参数</summary>
+		/// <remarks>
+		/// <code>	
+		/// json配置文件格式如下所示：<br/>
+		/// "Connections": {
+		/// 	"DefaultName": "HRMS",
+		/// 	"HRMS": {
+		///			"ConnectionType": "SqlConnection",
+		///			"Version": 12,
+		///			"Application Name": "HRMS",
+		/// 		"Initial Catalog": "HRMS-V5",
+		/// 		"Data Source": "(local)",
+		/// 		"User ID": "sa",
+		/// 		"Password": "C/1Shp55C14b0TtEhs87bg==",
+		/// 		"TrustServerCertificate": "True"
+		/// 	}
+		/// }
+		/// </code>
+		/// <code>
+		/// Program.cs 启动文件中代码如下：<br/>
+		/// services.AddConnections(root);</code>
+		/// </remarks>
+		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+		/// <param name="connections">包含要使用的设置的 <see cref="IConfigurationSection"/></param>
+		public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationSection connections)
+		{
+			ConnectionContext.InitializeConnection(connections);
+			return services;
 		}
 	}
 

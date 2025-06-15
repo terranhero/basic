@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using Basic.Configuration;
 using Basic.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Basic.DataAccess
 {
@@ -30,6 +31,13 @@ namespace Basic.DataAccess
 		/// <param name="element">数据库连接配置信息</param>
 		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
 		internal abstract ConnectionInfo CreateConnectionInfo(ConnectionElement element);
+
+		///// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
+		///// <param name="section">数据库连接配置信息</param>
+		///// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
+		//internal ConnectionInfo CreateConnectionInfo(IConfigurationSection section)
+		//{
+		//}
 
 		/// <summary>
 		/// 返回实现 DbConnection 类的提供程序的类的一个新实例。

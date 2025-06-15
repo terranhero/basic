@@ -3,10 +3,11 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Basic.Collections;
-using Basic.Configuration;
 using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Basic.Loggers
 {
@@ -67,9 +68,35 @@ namespace Basic.Loggers
 		}
 		#endregion
 
-		/// <summary>日志配置信息</summary>
-		internal readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
+		#region 注入请求集合 - 将请求转换为菜单和功能
+		private readonly static ActionCollection _actions = new ActionCollection();
 
+		/// <summary>添加 Action映射。</summary>
+		/// <param name="url">表示请求的路径。</param>
+		/// <param name="controller">表示当前请求所属控制器、窗体名称</param>
+		/// <param name="action">表示当前请求名称</param>
+		public static void AddAction(string url, string controller, string action)
+		{
+			if (url == null) { return; } else { url = url.ToLower(); }
+			if (_actions.ContainsKey(url)) { _actions[url] = new ActionInfo(url, controller, action); }
+			else { _actions.Add(new ActionInfo(url, controller, action)); }
+		}
+
+		/// <summary>系统请求配置数量</summary>
+		public static ActionCollection Actions { get { return _actions; } }
+
+		/// <summary>系统请求配置数量</summary>
+		public static int ActionCount { get { return _actions.Count; } }
+
+		/// <summary>系统是否已经存在请求配置</summary>
+		public static bool HasActions { get { return _actions.Count > 0; } }
+		#endregion
+
+
+		///// <summary>日志配置信息</summary>
+		//internal readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
+
+		/// <summary>日志配置信息</summary>
 		internal readonly static LoggerOptions options = LoggerOptions.Default;
 
 		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(options.Mode);
@@ -77,10 +104,10 @@ namespace Basic.Loggers
 
 		internal readonly ILoggerStorage _storage;
 		/// <summary>初始化 LoggerWriter 类实例</summary>
-		protected LoggerWriter(string connection) { _storage = new DataBaseStorage(connection, _EventLogs); }
+		protected LoggerWriter(string connection) { _storage = new DataBaseStorage(connection, options); }
 
 		/// <summary>初始化 LoggerWriter 类实例</summary>
-		protected LoggerWriter(IUserContext ctx) { _storage = new DataBaseStorage(ctx, _EventLogs); }
+		protected LoggerWriter(IUserContext ctx) { _storage = new DataBaseStorage(ctx, options); }
 
 		/// <summary>根据条件查询日志记录</summary>
 		/// <param name="batchNo">日志批次</param>
@@ -163,49 +190,19 @@ namespace Basic.Loggers
 			return hostName;
 		}
 
-		#region 注入请求集合 - 将请求转换为菜单和功能
-
-		private readonly static ActionCollection _actions = new ActionCollection();
-
-		/// <summary>添加 Action映射。</summary>
-		/// <param name="url">表示请求的路径。</param>
-		/// <param name="controller">表示当前请求所属控制器、窗体名称</param>
-		/// <param name="action">表示当前请求名称</param>
-		public static void AddAction(string url, string controller, string action)
-		{
-			if (url == null) { return; } else { url = url.ToLower(); }
-			if (_actions.ContainsKey(url)) { _actions[url] = new ActionInfo(url, controller, action); }
-			else { _actions.Add(new ActionInfo(url, controller, action)); }
-		}
-
-		/// <summary>系统请求配置数量</summary>
-		public static int ActionCount { get { return _actions.Count; } }
-
-		/// <summary>系统是否已经存在请求配置</summary>
-		public static bool HasActions { get { return _actions.Count > 0; } }
-		#endregion
-
 		/// <summary>读取配置文件信息</summary>
 		/// <param name="logLevel">日志级别</param>
 		/// <param name="saveType">日志保存类型</param>
-		/// <param name="mailToList">邮件接收人列表</param>
-		/// <param name="sendMail">是否需要发送邮件</param>
-		/// <returns></returns>
-		private static void GetSectionInfo(LogLevel logLevel, out LogSaveType saveType, out bool sendMail, out EventLogItemCollection mailToList)
+		/// <returns>返回当前级别日志是否需要记录</returns>
+		private static bool GetSectionInfo(LogLevel logLevel, out LogSaveType saveType)
 		{
-			EventLogElement eventLog = _EventLogs.Values.GetEventLog(logLevel);
-			if (eventLog != null && eventLog.Enabled)
-			{
-				saveType = eventLog.SaveType;
-				sendMail = eventLog.SendMail;
-				mailToList = eventLog.Items;
-			}
-			else
-			{
-				saveType = LogSaveType.None;
-				sendMail = false;
-				mailToList = new EventLogItemCollection();
-			}
+			LogLeveOption opts = options.Information;
+			if (logLevel == LogLevel.Information) { opts = options.Information; }
+			else if (logLevel == LogLevel.Warning) { opts = options.Warning; }
+			else if (logLevel == LogLevel.Error) { opts = options.Error; }
+			else if (logLevel == LogLevel.Debug) { opts = options.Debug; }
+			if (opts != null) { saveType = opts.SaveType; return opts.Enabled; }
+			else { saveType = LogSaveType.None; return false; }
 		}
 
 		#region 记录日志信息 - 异步
@@ -240,15 +237,18 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				GetSectionInfo(LogLevel.Error, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
-				if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+				if (GetSectionInfo(LogLevel.Error, out LogSaveType savetype))
 				{
-					await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex);
+					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					{
+						await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex);
+					}
+					else if (savetype == LogSaveType.DataBase && _storage != null)
+					{
+						await _storage.WriteAsync(batchNo, controller, action, host, user, ex);
+					}
 				}
-				else if (savetype == LogSaveType.DataBase && _storage != null)
-				{
-					await _storage.WriteAsync(batchNo, controller, action, host, user, ex);
-				}
+
 			}
 			catch (Exception ex1)
 			{
@@ -291,14 +291,16 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				GetSectionInfo(logLevel, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
-				if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+				if (GetSectionInfo(logLevel, out LogSaveType savetype))
 				{
-					await _FileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
-				}
-				else if (savetype == LogSaveType.DataBase && _storage != null)
-				{
-					await _storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
+					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					{
+						await _FileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
+					}
+					else if (savetype == LogSaveType.DataBase && _storage != null)
+					{
+						await _storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
+					}
 				}
 			}
 			catch (Exception ex1)
@@ -842,14 +844,17 @@ namespace Basic.Loggers
 		{
 			try
 			{
-				GetSectionInfo(LogLevel.Error, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
-				if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
+				if (GetSectionInfo(LogLevel.Error, out LogSaveType savetype))
 				{
-					_FileStorage.WriteLog(batchNo, controller, action, host, user, ex);
-				}
-				else if (savetype == LogSaveType.DataBase && _storage != null)
-				{
-					_storage.WriteLog(batchNo, controller, action, host, user, ex);
+					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					{
+						_FileStorage.WriteLog(batchNo, controller, action, host, user, ex);
+					}
+					else if (savetype == LogSaveType.DataBase && _storage != null)
+					{
+						_storage.WriteLog(batchNo, controller, action, host, user, ex);
+					}
 				}
 			}
 			catch (Exception ex1)
@@ -872,14 +877,16 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				GetSectionInfo(logLevel, out LogSaveType savetype, out bool sendMail, out EventLogItemCollection mailToList);
-				if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+				if (GetSectionInfo(logLevel, out LogSaveType savetype))
 				{
-					_FileStorage.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
-				}
-				else if (savetype == LogSaveType.DataBase && _storage != null)
-				{
-					_storage.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
+					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					{
+						_FileStorage.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
+					}
+					else if (savetype == LogSaveType.DataBase && _storage != null)
+					{
+						_storage.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
+					}
 				}
 			}
 			catch (Exception ex1)
@@ -891,4 +898,143 @@ namespace Basic.Loggers
 		#endregion
 	}
 
+	/// <summary>
+	/// 依赖注入扩展，添加日志配置信息
+	/// </summary>
+	public static class LoggerOptionsExtension
+	{
+		/// <summary>使用默认配置节绑定日志配置参数（Loggers）</summary>
+		/// <remarks>
+		/// <code>	
+		/// json配置文件格式如下所示：<br/>
+		/// "Loggers": {
+		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
+		///		"TableName": "SYS_EVENTLOGGER",
+		///		"Information": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Warning": {
+		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Error": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Debug": {
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": false //该级别日志配置信息是否有效
+		///		}
+		/// }
+		/// </code>
+		/// <code>
+		/// Program.cs 启动文件中代码如下：<br/>
+		/// services.AddLoggerOptions(root, opts =>
+		/// {
+		///		opts.BindNonPublicProperties = false;
+		///		opts.ErrorOnUnknownConfiguration = true;
+		/// });</code>
+		/// </remarks>
+		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+		/// <param name="root">包含要使用的设置的 <see cref="IConfigurationRoot"/></param>
+		public static IServiceCollection AddLoggerOptions(this IServiceCollection services, IConfigurationRoot root)
+		{
+			IConfigurationSection logger = root.GetSection("Loggers");
+			if (logger.Value == null) { return services; }
+			return services.AddLoggerOptions(logger, opts =>
+			{
+				opts.BindNonPublicProperties = false;
+				opts.ErrorOnUnknownConfiguration = true;
+			});
+		}
+
+		/// <summary>使用自定义配置节名称绑定日志配置参数</summary>
+		/// <remarks>
+		/// <code>	
+		/// json配置文件格式如下所示：<br/>
+		/// "Loggers": {
+		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
+		///		"TableName": "SYS_EVENTLOGGER",
+		///		"Information": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Warning": {
+		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Error": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Debug": {
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": false //该级别日志配置信息是否有效
+		///		}
+		/// }
+		/// </code>
+		/// <code>
+		/// Program.cs 启动文件中代码如下：<br/>
+		/// IConfigurationSection logger = config.GetSection("Loggers");
+		/// services.AddLoggerOptions(logger, opts =>
+		/// {
+		///		opts.BindNonPublicProperties = false;
+		///		opts.ErrorOnUnknownConfiguration = true;
+		/// });</code>
+		/// </remarks>
+		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+		/// <param name="logger">包含要使用的设置的 <see cref="IConfigurationSection"/></param>
+		public static IServiceCollection AddLoggerOptions(this IServiceCollection services, IConfigurationSection logger)
+		{
+			return services.AddLoggerOptions(logger, opts =>
+			{
+				opts.BindNonPublicProperties = false;
+				opts.ErrorOnUnknownConfiguration = true;
+			});
+		}
+
+		/// <summary>绑定日志配置参数</summary>
+		/// <remarks>
+		/// <code>	
+		/// json配置文件格式如下所示：<br/>
+		/// "Loggers": {
+		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
+		///		"TableName": "SYS_EVENTLOGGER",
+		///		"Information": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Warning": {
+		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Error": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Debug": {
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"Enabled": false //该级别日志配置信息是否有效
+		///		}
+		/// }
+		/// </code>
+		/// <code>
+		/// Program.cs 启动文件中代码如下：<br/>
+		/// IConfigurationSection logger = config.GetSection("Loggers");
+		/// services.AddLoggerOptions(logger, opts =>
+		/// {
+		///		opts.BindNonPublicProperties = false;
+		///		opts.ErrorOnUnknownConfiguration = true;
+		/// });</code>
+		/// </remarks>
+		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+		/// <param name="logger">包含要使用的设置的 <see cref="IConfigurationSection"/></param>
+		/// <param name="configureOptions">Configures the binder options.</param>
+		public static IServiceCollection AddLoggerOptions(this IServiceCollection services, IConfigurationSection logger, Action<BinderOptions> configureOptions)
+		{
+			logger.Bind(LoggerOptions.Default, configureOptions);
+			return services;
+		}
+	}
 }

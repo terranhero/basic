@@ -1,7 +1,6 @@
-﻿using System.Configuration;
-using Basic.Enums;
+﻿using Basic.Enums;
 
-namespace Basic.Configuration
+namespace Basic.Loggers
 {
 	/// <summary>
 	/// 自定义日志配置信息。
@@ -11,7 +10,7 @@ namespace Basic.Configuration
 		private static LoggerOptions _default = new LoggerOptions();
 
 		/// <summary>日志配置信息</summary>
-		internal static LoggerOptions Default { get { return _default; } }
+		public static LoggerOptions Default { get { return _default; } }
 
 		/// <summary>
 		/// 初始化 LoggerOptions 类实例
@@ -23,9 +22,6 @@ namespace Basic.Configuration
 
 		/// <summary>文件型日志保存模式(按天/按周/按月)。</summary>
 		public CycleMode Mode { get; set; } = CycleMode.Weekly;
-
-		/// <summary>日志记录级别(仅记录小于等于此级别的日志)</summary>
-		public LogLevel Level { get; set; } = LogLevel.Error;
 
 		/// <summary>消息日志保存方式</summary>
 		public LogLeveOption Information { get { return _information; } }
@@ -50,7 +46,7 @@ namespace Basic.Configuration
 		/// <summary>
 		/// 初始化 LogLeveOption 类实例。
 		/// </summary>
-		public LogLeveOption() : this(LogLevel.Information, LogSaveType.None, false) { }
+		public LogLeveOption(LogLevel logLevel) : this(logLevel, LogSaveType.None, false) { }
 
 		/// <summary>
 		/// 使用指定参数初始化 LogLeveOption 类实例。 
@@ -66,7 +62,7 @@ namespace Basic.Configuration
 		}
 
 		/// <summary>日志级别。</summary>
-		public LogLevel LogLevel { get; set; }
+		public LogLevel LogLevel { get; private set; }
 
 		/// <summary>日志保存类型</summary>
 		public LogSaveType SaveType { get; set; }

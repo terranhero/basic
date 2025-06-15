@@ -177,23 +177,5 @@ namespace Basic.Configuration
 		{
 			get { return GetGroupSection<ConnectionsSection>(ConnectionsSection.ElementName); }
 		}
-
-		/// <summary>
-		/// 读取配置文件中关于多语言配置信息的节
-		/// </summary>
-		/// <returns>表示数据库配置节集合，</returns>
-		public static CulturesSection Cultures
-		{
-			get { return GetGroupSection<CulturesSection>(CulturesSection.ElementName); }
-		}
-
-		/// <summary>
-		/// 读取配置文件中关于多语言配置信息的节
-		/// </summary>
-		/// <returns>表示数据库配置节集合，</returns>
-		public static EventLogsSection EventLogs
-		{
-			get { return GetGroupSection<EventLogsSection>(EventLogsSection.ElementName); }
-		}
 	}
 }

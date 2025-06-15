@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using Basic.EntityLayer;
 using Basic.Enums;
+using Basic.Interfaces;
 using Basic.Loggers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Basic.MvcLibrary
 {
@@ -46,12 +48,16 @@ namespace Basic.MvcLibrary
 		/// <param name="context"></param>
 		/// <param name="next"></param>
 		/// <returns></returns>
-		public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+		public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
 		{
 			if (context == null) { throw new ArgumentNullException("context"); }
 
 			if (next == null) { throw new ArgumentNullException("next"); }
-			if (context.ModelState.IsValid == false) { return Task.CompletedTask; }
+			if (context.ModelState.IsValid == false) { return; }
+
+			ILoggerWriter _writer = context.HttpContext.RequestServices.GetService<ILoggerWriter>();
+			if (_writer == null) { throw new ArgumentNullException("ILoggerWriter"); }
+
 			Controller controller = (Controller)context.Controller;
 			string hostName = GetRequestAddress(context);
 			string controllerName = (string)context.RouteData.Values["Controller"];
@@ -60,8 +66,7 @@ namespace Basic.MvcLibrary
 			IUrlHelper urlHelper = controller.Url;
 			string url = urlHelper.Action(actionName, controllerName, context.RouteData.Values);
 			string msg = base.GetMessage(context);
-			EventLogWriter.WriteLogging(GuidConverter.NewGuid, url, hostName, UserName, msg, LogLevel.Information, LogResult.Successful);
-			return Task.CompletedTask;
+			await _writer.InformationAsync(GuidConverter.NewGuid, url, hostName, UserName, msg);
 		}
 	}
 }

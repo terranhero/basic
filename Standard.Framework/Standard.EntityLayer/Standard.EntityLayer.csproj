@@ -19,10 +19,16 @@
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Configuration\**" />
+	  <Compile Remove="Loggers\Configuration\**" />
+	  <EmbeddedResource Remove="Configuration\**" />
+	  <EmbeddedResource Remove="Loggers\Configuration\**" />
+	  <None Remove="Configuration\**" />
+	  <None Remove="Loggers\Configuration\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="Interfaces\IRequestContext.cs" />

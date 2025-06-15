@@ -5,6 +5,7 @@ using Basic.Configuration;
 using Basic.Enums;
 using Basic.Exceptions;
 using Basic.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Basic.DataAccess
 {
