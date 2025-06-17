@@ -85,11 +85,10 @@ namespace Basic.Configuration
 		public static void InitializeConnection(IConfigurationSection connections)
 		{
 			Clear(); _DefaultName = connections.GetValue<string>("DefaultName");
-			foreach (IConfigurationSection item in connections.GetChildren())
+			IConfigurationSection dbConnections = connections.GetRequiredSection("Connections");
+			foreach (IConfigurationSection item in dbConnections.GetChildren())
 			{
-				if (string.Compare("DefaultName", item.Key, true) == 0) { continue; }
-				JsonConnectionInfo info = item.Get<JsonConnectionInfo>();
-				if (info == null) { continue; }
+				JsonConnectionInfo info = item.Get<JsonConnectionInfo>(); if (info == null) { continue; }
 				info.Name = item.Key; info.Version = item.GetValue<int>("Version");
 				info.ConnectionType = item.GetValue<ConnectionType>("ConnectionType");
 				info.Remove("Version"); info.Remove("ConnectionType");
