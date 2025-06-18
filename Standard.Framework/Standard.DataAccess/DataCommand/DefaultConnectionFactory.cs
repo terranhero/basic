@@ -12,6 +12,10 @@ namespace Basic.DataAccess
 	/// </summary>
 	internal sealed class DefaultConnectionFactory : ConnectionFactory
 	{
+		/// <summary>数据库服务器地址字段常用名称</summary>
+		private static readonly ICollection<string> dbKeys = new SortedSet<string>(new string[] {
+			"INITIAL CATALOG", "DATABASE" }, StringComparer.OrdinalIgnoreCase);
+
 		/// <summary>
 		/// 初始化 DefaultConnectionFactory 类实例。
 		/// </summary>
@@ -24,14 +28,14 @@ namespace Basic.DataAccess
 		{
 			DbConnectionStringBuilder display = new DbConnectionStringBuilder();
 			DbConnectionStringBuilder connection = new DbConnectionStringBuilder();
-			//builder.IntegratedSecurity = false;
-			foreach (var item in info)
+			foreach (KeyValuePair<string, string> item in info)
 			{
 				if (string.IsNullOrEmpty(item.Key)) { continue; }
 				else if (string.IsNullOrEmpty(item.Value)) { continue; }
 
 				if (dataSourceKeys.Contains(item.Key)) { display["Data Source"] = connection["Data Source"] = item.Value; }
-				else if (userKeys.Contains(item.Key)) { connection["User ID"] = item.Value; }
+				else if (dbKeys.Contains(item.Key)) { display["Initial Catalog"] = connection["Initial Catalog"] = item.Value; }
+				else if (userKeys.Contains(item.Key)) { display["User ID"] = connection["User ID"] = item.Value; }
 				else if (pwdKeys.Contains(item.Key))
 				{
 					connection["Password"] = ConfigurationAlgorithm.Decryption(item.Value);
