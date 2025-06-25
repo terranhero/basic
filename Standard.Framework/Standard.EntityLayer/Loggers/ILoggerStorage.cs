@@ -53,7 +53,7 @@ namespace Basic.Interfaces
 		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作失败后的异常信息</param>
-		Task WriteAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex);
+		Task ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex);
 
 		/// <summary>根据条件查询日志记录</summary>
 		/// <param name="condition">查询条件</param>

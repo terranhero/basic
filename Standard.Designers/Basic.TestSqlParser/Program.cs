@@ -64,141 +64,156 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]
 		static void Main(string[] args)
 		{
-			Type type = typeof(ConsecutiveWorkEntity);
-			if (_innerJoins.TryGetValue(type.FullName, out DynamicJoinCommand cmd))
-			{
-			 return ;
-			}
-			List<InnerJoinAttribute> joins = new List<InnerJoinAttribute>(10);
-			List<JoinParameterAttribute> parameters = new List<JoinParameterAttribute>(10);
-			List<JoinOrderAttribute> orders = new List<JoinOrderAttribute>(10);
-			for (Type et = type; et != null; et = et.BaseType)
-			{
-				foreach (var attribute in et.GetCustomAttributes(true))
-				{
-					if (attribute is InnerJoinAttribute) { joins.Add((InnerJoinAttribute)attribute); }
-					else if (attribute is JoinParameterAttribute) { parameters.Add((JoinParameterAttribute)attribute); }
-					else if (attribute is JoinOrderAttribute) { orders.Add((JoinOrderAttribute)attribute); }
-				}
-			}
-			EntityPropertyProvidor.TryGetProperties(type, out EntityPropertyCollection properties);
-			List<string> fields = new List<string>(50);
-			foreach (EntityPropertyMeta meta in properties)
-			{
-				if (meta.JoinField == null) { continue; }
-				fields.Add(meta.JoinField.Script);
-			}
-			List<string> whereClauses = new List<string>(10);
-			List<DbParameter> dbParameters = new List<DbParameter>(10);
-			foreach (JoinParameterAttribute param in parameters)
-			{
-				DbParameter parameter = CreateParameter(param);
-				dbParameters.Add(parameter);
-				whereClauses.Add(param.WhereClause.Replace("{%" + param.FieldName + "%}", parameter.ParameterName));
-			}
-			if (fields.Count == 0 || joins.Count == 0) { return false; }
-			_dynamicJoinCommand = new DynamicJoinCommand(string.Join(", ", fields),
-				string.Join("\r\n", joins.Select(m => m.JoinScript)),
-				string.Join(", ", whereClauses),
-				 string.Join(", ", orders.SelectMany(m => m.OrderClauses)),
-				dbParameters.ToArray()
-				);
-			//attributes.
-			TSqlParser parser = new TSql120Parser(false);
-			using (StringReader reader = new StringReader(sql3))
-			{
-				StatementList statementList = parser.ParseStatementList(reader, out IList<ParseError> errors);
-				if (errors != null && errors.Count > 0)
-				{
-					foreach (ParseError error in errors)
-					{
-						Console.WriteLine("Line:{0}, Column:{1}, Message:{2}", error.Line, error.Column, error.Message);
-					}
-					Console.ReadKey();
-					return;
-				}
-				var tokens = statementList.ScriptTokenStream.Where(m => m.TokenType == TSqlTokenType.Variable);
-				foreach (var token in tokens)
-				{
-					Console.WriteLine("Text :{0}, TokenType:{1}", token.Text, token.TokenType);
-				}
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER"));
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER"));
 
-				//Console.WriteLine(GenerateScript(statementList));
-				//Console.WriteLine("===========================================================");
-				foreach (TSqlStatement statement in statementList.Statements)
-				{
-					if (statement is not SelectStatement) { continue; }
-					SelectStatement selectStatement = (SelectStatement)statement;
-					//Console.WriteLine(GenerateScript(selectStatement));
-					//Console.WriteLine("===========================================================");
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGES"));
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGES"));
 
-					IList<CommonTableExpression> tableExpressions = selectStatement.WithCtesAndXmlNamespaces.CommonTableExpressions;
-					foreach (CommonTableExpression withClause in tableExpressions)
-					{
-						//Console.Write("WITH ");
-						//Console.Write(withClause.ExpressionName.Value);
-						//Console.Write("(");
-						//Console.WriteLine(GenerateScript(withClause.QueryExpression));
-						//Console.WriteLine(")");
-						if (withClause.QueryExpression is QuerySpecification withQuery)
-						{
-							Console.WriteLine(GenerateScript(withQuery));
-							if (withQuery.WhereClause != null) { Console.WriteLine(GenerateScript(withQuery.WhereClause)); }
-							if (withQuery.OrderByClause != null) { Console.WriteLine(GenerateScript(withQuery.OrderByClause)); }
-							if (withQuery.GroupByClause != null) { Console.WriteLine(GenerateScript(withQuery.GroupByClause)); }
-							if (withQuery.HavingClause != null) { Console.WriteLine(GenerateScript(withQuery.HavingClause)); }
-						}
-						else if (withClause.QueryExpression is BinaryQueryExpression query2)
-						{
-							StringBuilder stringBuilder = new StringBuilder(1000);
-							//Console.WriteLine(GenerateScript(withClause));
-							GenerateScript(query2, stringBuilder);
-							Console.WriteLine(stringBuilder.ToString());
-							Console.WriteLine("============================================================");
-							//Console.WriteLine(GenerateScript(query2));
-							//Console.WriteLine("===========================================================");
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOG"));
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOG"));
 
-							//Console.WriteLine(GenerateScript(query2.FirstQueryExpression));
-							//Console.WriteLine("===========================2================================");
-							//Console.WriteLine(GenerateScript(query2.SecondQueryExpression));
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_LEAVERECORD"));
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_LEAVERECORD"));
 
-							if (query2.OrderByClause != null) { Console.WriteLine(GenerateScript(query2.OrderByClause)); }
-							if (query2.OffsetClause != null) { Console.WriteLine(GenerateScript(query2.OffsetClause)); }
-						}
-					}
-					if (selectStatement.QueryExpression is QuerySpecification select)
-					{
-						//Console.WriteLine(GenerateScript(select));
-						if (select.SelectElements != null)
-						{
-							foreach (SelectElement item in select.SelectElements)
-							{
-								Console.Write(GenerateScript(item)); Console.Write(", ");
-							}
-							Console.WriteLine();
-						}
-						if (select.FromClause != null)
-						{
-							foreach (TableReference item in select.FromClause.TableReferences)
-							{
-								Console.Write(GenerateScript(item)); Console.Write(", ");
-							}
-							Console.WriteLine();
-							//Console.WriteLine(GenerateScript(select.FromClause));
-						}
-						if (select.WhereClause != null) { Console.WriteLine(GenerateScript(select.WhereClause)); }
-						if (select.GroupByClause != null) { Console.WriteLine(GenerateScript(select.GroupByClause)); }
-						if (select.HavingClause != null) { Console.WriteLine(GenerateScript(select.HavingClause)); }
-						if (select.OrderByClause != null) { Console.WriteLine(GenerateScript(select.OrderByClause)); }
-						if (select.OffsetClause != null) { Console.WriteLine(GenerateScript(select.OffsetClause)); }
-					}
-				}
-			}
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
+			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
 
-			Console.WriteLine("end");
+			//Type type = typeof(ConsecutiveWorkEntity);
+			//if (_innerJoins.TryGetValue(type.FullName, out DynamicJoinCommand cmd))
+			//{
+			// return ;
+			//}
+			//List<InnerJoinAttribute> joins = new List<InnerJoinAttribute>(10);
+			//List<JoinParameterAttribute> parameters = new List<JoinParameterAttribute>(10);
+			//List<JoinOrderAttribute> orders = new List<JoinOrderAttribute>(10);
+			//for (Type et = type; et != null; et = et.BaseType)
+			//{
+			//	foreach (var attribute in et.GetCustomAttributes(true))
+			//	{
+			//		if (attribute is InnerJoinAttribute) { joins.Add((InnerJoinAttribute)attribute); }
+			//		else if (attribute is JoinParameterAttribute) { parameters.Add((JoinParameterAttribute)attribute); }
+			//		else if (attribute is JoinOrderAttribute) { orders.Add((JoinOrderAttribute)attribute); }
+			//	}
+			//}
+			//EntityPropertyProvidor.TryGetProperties(type, out EntityPropertyCollection properties);
+			//List<string> fields = new List<string>(50);
+			//foreach (EntityPropertyMeta meta in properties)
+			//{
+			//	if (meta.JoinField == null) { continue; }
+			//	fields.Add(meta.JoinField.Script);
+			//}
+			//List<string> whereClauses = new List<string>(10);
+			//List<DbParameter> dbParameters = new List<DbParameter>(10);
+			//foreach (JoinParameterAttribute param in parameters)
+			//{
+			//	DbParameter parameter = CreateParameter(param);
+			//	dbParameters.Add(parameter);
+			//	whereClauses.Add(param.WhereClause.Replace("{%" + param.FieldName + "%}", parameter.ParameterName));
+			//}
+			//if (fields.Count == 0 || joins.Count == 0) { return false; }
+			//_dynamicJoinCommand = new DynamicJoinCommand(string.Join(", ", fields),
+			//	string.Join("\r\n", joins.Select(m => m.JoinScript)),
+			//	string.Join(", ", whereClauses),
+			//	 string.Join(", ", orders.SelectMany(m => m.OrderClauses)),
+			//	dbParameters.ToArray()
+			//	);
+			////attributes.
+			//TSqlParser parser = new TSql120Parser(false);
+			//using (StringReader reader = new StringReader(sql3))
+			//{
+			//	StatementList statementList = parser.ParseStatementList(reader, out IList<ParseError> errors);
+			//	if (errors != null && errors.Count > 0)
+			//	{
+			//		foreach (ParseError error in errors)
+			//		{
+			//			Console.WriteLine("Line:{0}, Column:{1}, Message:{2}", error.Line, error.Column, error.Message);
+			//		}
+			//		Console.ReadKey();
+			//		return;
+			//	}
+			//	var tokens = statementList.ScriptTokenStream.Where(m => m.TokenType == TSqlTokenType.Variable);
+			//	foreach (var token in tokens)
+			//	{
+			//		Console.WriteLine("Text :{0}, TokenType:{1}", token.Text, token.TokenType);
+			//	}
+
+			//	//Console.WriteLine(GenerateScript(statementList));
+			//	//Console.WriteLine("===========================================================");
+			//	foreach (TSqlStatement statement in statementList.Statements)
+			//	{
+			//		if (statement is not SelectStatement) { continue; }
+			//		SelectStatement selectStatement = (SelectStatement)statement;
+			//		//Console.WriteLine(GenerateScript(selectStatement));
+			//		//Console.WriteLine("===========================================================");
+
+			//		IList<CommonTableExpression> tableExpressions = selectStatement.WithCtesAndXmlNamespaces.CommonTableExpressions;
+			//		foreach (CommonTableExpression withClause in tableExpressions)
+			//		{
+			//			//Console.Write("WITH ");
+			//			//Console.Write(withClause.ExpressionName.Value);
+			//			//Console.Write("(");
+			//			//Console.WriteLine(GenerateScript(withClause.QueryExpression));
+			//			//Console.WriteLine(")");
+			//			if (withClause.QueryExpression is QuerySpecification withQuery)
+			//			{
+			//				Console.WriteLine(GenerateScript(withQuery));
+			//				if (withQuery.WhereClause != null) { Console.WriteLine(GenerateScript(withQuery.WhereClause)); }
+			//				if (withQuery.OrderByClause != null) { Console.WriteLine(GenerateScript(withQuery.OrderByClause)); }
+			//				if (withQuery.GroupByClause != null) { Console.WriteLine(GenerateScript(withQuery.GroupByClause)); }
+			//				if (withQuery.HavingClause != null) { Console.WriteLine(GenerateScript(withQuery.HavingClause)); }
+			//			}
+			//			else if (withClause.QueryExpression is BinaryQueryExpression query2)
+			//			{
+			//				StringBuilder stringBuilder = new StringBuilder(1000);
+			//				//Console.WriteLine(GenerateScript(withClause));
+			//				GenerateScript(query2, stringBuilder);
+			//				Console.WriteLine(stringBuilder.ToString());
+			//				Console.WriteLine("============================================================");
+			//				//Console.WriteLine(GenerateScript(query2));
+			//				//Console.WriteLine("===========================================================");
+
+			//				//Console.WriteLine(GenerateScript(query2.FirstQueryExpression));
+			//				//Console.WriteLine("===========================2================================");
+			//				//Console.WriteLine(GenerateScript(query2.SecondQueryExpression));
+
+			//				if (query2.OrderByClause != null) { Console.WriteLine(GenerateScript(query2.OrderByClause)); }
+			//				if (query2.OffsetClause != null) { Console.WriteLine(GenerateScript(query2.OffsetClause)); }
+			//			}
+			//		}
+			//		if (selectStatement.QueryExpression is QuerySpecification select)
+			//		{
+			//			//Console.WriteLine(GenerateScript(select));
+			//			if (select.SelectElements != null)
+			//			{
+			//				foreach (SelectElement item in select.SelectElements)
+			//				{
+			//					Console.Write(GenerateScript(item)); Console.Write(", ");
+			//				}
+			//				Console.WriteLine();
+			//			}
+			//			if (select.FromClause != null)
+			//			{
+			//				foreach (TableReference item in select.FromClause.TableReferences)
+			//				{
+			//					Console.Write(GenerateScript(item)); Console.Write(", ");
+			//				}
+			//				Console.WriteLine();
+			//				//Console.WriteLine(GenerateScript(select.FromClause));
+			//			}
+			//			if (select.WhereClause != null) { Console.WriteLine(GenerateScript(select.WhereClause)); }
+			//			if (select.GroupByClause != null) { Console.WriteLine(GenerateScript(select.GroupByClause)); }
+			//			if (select.HavingClause != null) { Console.WriteLine(GenerateScript(select.HavingClause)); }
+			//			if (select.OrderByClause != null) { Console.WriteLine(GenerateScript(select.OrderByClause)); }
+			//			if (select.OffsetClause != null) { Console.WriteLine(GenerateScript(select.OffsetClause)); }
+			//		}
+			//	}
+			//}
+
+			//Console.WriteLine("end");
 
 
-			Console.ReadKey();
+			//Console.ReadKey();
 		}
 		static void GenerateScript(BinaryQueryExpression query2, StringBuilder builder)
 		{

@@ -100,6 +100,9 @@ namespace Basic.Loggers
 		internal readonly static LoggerOptions options = LoggerOptions.Default;
 
 		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(options.Mode);
+
+		internal readonly static ConsoleStorage _console = new ConsoleStorage();
+
 		internal readonly static string _host = GetComputerAddress();
 
 		internal readonly ILoggerStorage _storage;
@@ -241,18 +244,23 @@ namespace Basic.Loggers
 				{
 					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 					{
-						await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex);
+						await _FileStorage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
 					else if (savetype == LogSaveType.DataBase && _storage != null)
 					{
-						await _storage.WriteAsync(batchNo, controller, action, host, user, ex);
+						await _storage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
+					else if (savetype == LogSaveType.Console && _console != null)
+					{
+						await _console.ErrorAsync(batchNo, controller, action, host, user, ex);
+					}
+
 				}
 
 			}
 			catch (Exception ex1)
 			{
-				await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex1);
+				await _FileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1);
 			}
 		}
 
@@ -301,11 +309,15 @@ namespace Basic.Loggers
 					{
 						await _storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
+					else if (savetype == LogSaveType.Console)
+					{
+						await _console.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
+					}
 				}
 			}
 			catch (Exception ex1)
 			{
-				await _FileStorage.WriteAsync(batchNo, controller, action, host, user, ex1);
+				await _FileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1);
 			}
 		}
 
@@ -855,6 +867,10 @@ namespace Basic.Loggers
 					{
 						_storage.WriteLog(batchNo, controller, action, host, user, ex);
 					}
+					else if (savetype == LogSaveType.Console)
+					{
+						_console.WriteLog(batchNo, controller, action, host, user, ex);
+					}
 				}
 			}
 			catch (Exception ex1)
@@ -887,6 +903,10 @@ namespace Basic.Loggers
 					{
 						_storage.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
+					else if (savetype == LogSaveType.Console)
+					{
+						_console.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
+					}
 				}
 			}
 			catch (Exception ex1)
@@ -911,19 +931,19 @@ namespace Basic.Loggers
 		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
 		///		"TableName": "SYS_EVENTLOGGER",
 		///		"Information": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Warning": {
-		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Error": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Debug": {
-		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": false //该级别日志配置信息是否有效
 		///		}
 		/// }
@@ -957,19 +977,19 @@ namespace Basic.Loggers
 		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
 		///		"TableName": "SYS_EVENTLOGGER",
 		///		"Information": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Warning": {
-		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Error": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Debug": {
-		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": false //该级别日志配置信息是否有效
 		///		}
 		/// }
@@ -1002,19 +1022,19 @@ namespace Basic.Loggers
 		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
 		///		"TableName": "SYS_EVENTLOGGER",
 		///		"Information": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Warning": {
-		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Error": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Debug": {
-		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase)
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase,Console)
 		/// 		"Enabled": false //该级别日志配置信息是否有效
 		///		}
 		/// }

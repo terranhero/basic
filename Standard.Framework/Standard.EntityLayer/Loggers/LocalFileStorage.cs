@@ -134,7 +134,7 @@ namespace Basic.Loggers
 		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作失败后的异常信息</param>
-		public async Task WriteAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
+		public async Task ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
 		{
 			string logFileName = GetFileName();
 #if NET6_0_OR_GREATER
