@@ -125,9 +125,7 @@ namespace Basic.Loggers
 			}
 		}
 
-		/// <summary>
-		/// 记录日志信息
-		/// </summary>
+		/// <summary>记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>
 		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
 		/// <param name="actionName">当前操作名称</param>

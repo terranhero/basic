@@ -101,6 +101,15 @@ namespace Basic.EntityLayer
 			return _Errors;
 		}
 
+		/// <summary>获取所有错误信息，并合并成单个字符串</summary>
+		/// <returns>由 \r\n 字符串分隔的 Errors 中的元素组成的字符串</returns>
+		public string GetErrorText() { return string.Join("\r\n", _Errors.Select(m => m.Message)); }
+
+		/// <summary>获取所有错误信息，并合并成单个字符串</summary>
+		/// <param name="separator">要用作分隔符的字符串</param>
+		/// <returns>由 separator 字符串分隔的 Errors 中的元素组成的字符串</returns>
+		public string GetErrorText(string separator) { return string.Join(separator, _Errors.Select(m => m.Message)); }
+
 		/// <summary>执行成功的消息</summary>
 		public string Message { get { return _Message; } }
 
