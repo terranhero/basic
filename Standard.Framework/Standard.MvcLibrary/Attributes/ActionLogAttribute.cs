@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -54,7 +55,7 @@ namespace Basic.MvcLibrary
 		/// </summary>
 		/// <param name="context">当前控制器上下文信息</param>
 		/// <returns>返回格式化后的日志消息。</returns>
-		protected string GetMessage(ActionExecutingContext context)
+		protected async Task<string> GetMessageAsync(ActionExecutingContext context)
 		{
 			if (_Arguments == null || _Arguments.Length == 0) { return _Format; }
 			List<object> list = new List<object>(_Arguments.Length);
@@ -63,7 +64,7 @@ namespace Basic.MvcLibrary
 			ValueProviderFactoriesContext valueProviders = new ValueProviderFactoriesContext(context);
 			foreach (IValueProviderFactory factory in factories)
 			{
-				factory.CreateValueProviderAsync(valueProviders).Wait();
+				await factory.CreateValueProviderAsync(valueProviders);
 			}
 			if (_UseArray)
 			{

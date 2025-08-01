@@ -65,7 +65,7 @@ namespace Basic.MvcLibrary
 			string UserName = context.HttpContext.User.Identity.Name;
 			IUrlHelper urlHelper = controller.Url;
 			string url = urlHelper.Action(actionName, controllerName, context.RouteData.Values);
-			string msg = base.GetMessage(context);
+			string msg = await base.GetMessageAsync(context);
 			await _writer.InformationAsync(GuidConverter.NewGuid, url, hostName, UserName, msg);
 		}
 	}
