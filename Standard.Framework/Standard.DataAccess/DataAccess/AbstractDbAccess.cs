@@ -671,11 +671,11 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程命令结构。</param>
 		/// <returns>执行ransact-SQL语句的返回值</returns>
-		internal protected System.Threading.Tasks.Task<Result> ExecuteNonQueryAsync(StaticCommand dataCommand)
+		internal protected async System.Threading.Tasks.Task<Result> ExecuteNonQueryAsync(StaticCommand dataCommand)
 		{
 			using (dataCommand = BeginStaticExecute(dataCommand))
 			{
-				return dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
+				return await dataCommand.ExecuteNonQueryAsync().ContinueWith(tt =>
 				{
 					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
 					else { _Result.AffectedRows = tt.Result; }
