@@ -270,7 +270,18 @@ namespace Basic.Configuration
 				DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
 				PersistentPane pane = this.GetPersistentPane();
 				if (canvas == null || canvas.SelectedItem == null) { return; }
-				if (config.ReadConfig(pane.ProjectItem))
+				if (config.ReadJson(pane.ProjectItem))
+				{
+					if (canvas.SelectedItem != null)
+					{
+						DataEntityElement entityEntityElement = canvas.SelectedItem.DataContext as DataEntityElement;
+						StaticCommandElement dataCommand = canvas.SelectedItem.SelectedObject as StaticCommandElement;
+						EnvDTE80.DTE2 dteClass = this.GetDTE();
+						CommandsWindow window1 = new CommandsWindow(dteClass, entityEntityElement, dataCommand);
+						if (window1.ShowModal() == true) { }
+					}
+				}
+				else if (config.ReadConfig(pane.ProjectItem))
 				{
 					if (canvas.SelectedItem != null)
 					{
@@ -322,7 +333,8 @@ namespace Basic.Configuration
 				if (canvas == null) { return; }
 				string text = Clipboard.GetText(TextDataFormat.UnicodeText);
 				ConnectionConfiguration config = new ConnectionConfiguration(this);
-				if (config.ReadConfig(pane.ProjectItem) == false) { return; }
+				if (config.ReadJson(pane.ProjectItem)) { }
+				else if (config.ReadConfig(pane.ProjectItem) == false) { return; }
 				if (canvas.SelectedItem != null)
 				{
 					DataEntityElement entityEntityElement = canvas.SelectedItem.DataContext as DataEntityElement;

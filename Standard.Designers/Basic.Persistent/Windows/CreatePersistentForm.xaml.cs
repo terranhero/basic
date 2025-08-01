@@ -114,7 +114,7 @@ namespace Basic.Windows
 		private void DialogWindow_Loaded(object sender, RoutedEventArgs e)
 		{
 			ConnectionConfiguration config = new ConnectionConfiguration(_CommandService);
-			if (config.ReadConfig(_ProjectItems.ContainingProject))
+			if (config.ReadJson(_ProjectItems.ContainingProject))
 			{
 				IList<ConnectionInfo> connections = ConnectionContext.GetConnections();
 				cmbConnections.ItemsSource = connections;
@@ -122,6 +122,15 @@ namespace Basic.Windows
 				lstTables.IsEnabled = cmbConnections.IsEnabled = false;
 				if (_BackgroundWorker.IsBusy == false) { _BackgroundWorker.RunWorkerAsync(ConnectionContext.DefaultConnection); }
 			}
+			else if (config.ReadConfig(_ProjectItems.ContainingProject))
+			{
+				IList<ConnectionInfo> connections = ConnectionContext.GetConnections();
+				cmbConnections.ItemsSource = connections;
+				cmbConnections.SelectedItem = ConnectionContext.DefaultConnection;
+				lstTables.IsEnabled = cmbConnections.IsEnabled = false;
+				if (_BackgroundWorker.IsBusy == false) { _BackgroundWorker.RunWorkerAsync(ConnectionContext.DefaultConnection); }
+			}
+
 		}
 
 		private void OnConnectionsSelectionChanged(object sender, SelectionChangedEventArgs e)

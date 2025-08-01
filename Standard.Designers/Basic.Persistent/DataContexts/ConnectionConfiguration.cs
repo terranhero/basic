@@ -6,6 +6,9 @@ using Basic.Exceptions;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using SC = System.Configuration;
+using MEC = Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
+using EnvDTE;
 
 namespace Basic.DataContexts
 {
@@ -19,6 +22,139 @@ namespace Basic.DataContexts
 		{
 			_Service = package;
 		}
+		internal bool ReadJson(EnvDTE.Project project)
+		{
+			try
+			{
+				FileInfo pf = new FileInfo(project.FullName);
+				if (pf.Directory.Exists)
+				{
+					MEC.IConfigurationBuilder configBuilder = new MEC.ConfigurationBuilder().SetBasePath(pf.Directory.FullName);
+					configBuilder.AddJsonFile("appsettings.Development.json").AddJsonFile("database.Development.json");
+					configBuilder.AddJsonFile("appsettings.json").AddJsonFile("database.json");
+					FileInfo[] files = pf.Directory.GetFiles("*.json");
+					foreach (FileInfo file in files)
+					{
+						if (string.Compare(file.Name, "appsettings.json", true) == 0) { configBuilder.AddJsonFile("appsettings.json"); }
+						else if (string.Compare(file.Name, "appsettings.Development.json", true) == 0) { configBuilder.AddJsonFile("appsettings.Development.json"); }
+						else if (string.Compare(file.Name, "database.json", true) == 0) { configBuilder.AddJsonFile("database.json"); }
+						else if (string.Compare(file.Name, "database.Development.json", true) == 0) { configBuilder.AddJsonFile("database.Development.json"); }
+					}
+					IConfigurationRoot root = configBuilder.Build();
+					IConfigurationSection dbConnections = root.GetSection("Connections");
+					ConnectionContext.InitializeConnection(dbConnections);
+					return true;
+				}
+				EnvDTE.DTE dteClass = project.DTE;
+				EnvDTE80.SolutionBuild2 solutionBuild2 = dteClass.Solution.SolutionBuild as EnvDTE80.SolutionBuild2;
+				foreach (string uniqueName in solutionBuild2.StartupProjects as Array)
+				{
+					_Service.GetProjectOfUniqueName(uniqueName, out IVsHierarchy hierarchy);
+					uint itemId = (uint)VSConstants.VSITEMID.Root;
+					if (hierarchy != null && hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_ExtObject, out object outProject) >= 0)
+					{
+						EnvDTE.Project solutionProject = (EnvDTE.Project)outProject;
+						FileInfo startProjectFile = new FileInfo(solutionProject.FullName);
+						if (startProjectFile.Directory.Exists)
+						{
+							MEC.IConfigurationBuilder configBuilder = new MEC.ConfigurationBuilder().SetBasePath(pf.Directory.FullName);
+							configBuilder.AddJsonFile("appsettings.Development.json").AddJsonFile("database.Development.json");
+							configBuilder.AddJsonFile("appsettings.json").AddJsonFile("database.json");
+							FileInfo[] files = pf.Directory.GetFiles("*.json");
+							foreach (FileInfo file in files)
+							{
+								if (string.Compare(file.Name, "appsettings.json", true) == 0) { configBuilder.AddJsonFile("appsettings.json"); }
+								else if (string.Compare(file.Name, "appsettings.Development.json", true) == 0) { configBuilder.AddJsonFile("appsettings.Development.json"); }
+								else if (string.Compare(file.Name, "database.json", true) == 0) { configBuilder.AddJsonFile("database.json"); }
+								else if (string.Compare(file.Name, "database.Development.json", true) == 0) { configBuilder.AddJsonFile("database.Development.json"); }
+							}
+							IConfigurationRoot root = configBuilder.Build();
+							IConfigurationSection dbConnections = root.GetSection("Connections");
+							ConnectionContext.InitializeConnection(dbConnections);
+							return true;
+						}
+					}
+				}
+				_Service.WriteToOutput("解决方案中无法获取配置文件");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				_Service.WriteToOutput(ex.Message);
+				_Service.WriteToOutput(ex.StackTrace);
+				_Service.WriteToOutput(ex.Source);
+				return false;
+			}
+
+		}
+
+		internal bool ReadJson(EnvDTE.ProjectItem item = null)
+		{
+			try
+			{
+				EnvDTE.Project project = item.ContainingProject;
+				FileInfo pf = new FileInfo(project.FullName);
+				if (pf.Directory.Exists)
+				{
+					MEC.IConfigurationBuilder configBuilder = new MEC.ConfigurationBuilder().SetBasePath(pf.Directory.FullName);
+					configBuilder.AddJsonFile("appsettings.Development.json").AddJsonFile("database.Development.json");
+					configBuilder.AddJsonFile("appsettings.json").AddJsonFile("database.json");
+					FileInfo[] files = pf.Directory.GetFiles("*.json");
+					foreach (FileInfo file in files)
+					{
+						if (string.Compare(file.Name, "appsettings.json", true) == 0) { configBuilder.AddJsonFile("appsettings.json"); }
+						else if (string.Compare(file.Name, "appsettings.Development.json", true) == 0) { configBuilder.AddJsonFile("appsettings.Development.json"); }
+						else if (string.Compare(file.Name, "database.json", true) == 0) { configBuilder.AddJsonFile("database.json"); }
+						else if (string.Compare(file.Name, "database.Development.json", true) == 0) { configBuilder.AddJsonFile("database.Development.json"); }
+					}
+					IConfigurationRoot root = configBuilder.Build();
+					IConfigurationSection dbConnections = root.GetSection("Connections");
+					ConnectionContext.InitializeConnection(dbConnections);
+					return true;
+				}
+				EnvDTE.DTE dteClass = project.DTE;
+				EnvDTE80.SolutionBuild2 solutionBuild2 = dteClass.Solution.SolutionBuild as EnvDTE80.SolutionBuild2;
+				foreach (string uniqueName in solutionBuild2.StartupProjects as Array)
+				{
+					_Service.GetProjectOfUniqueName(uniqueName, out IVsHierarchy hierarchy);
+					uint itemId = (uint)VSConstants.VSITEMID.Root;
+					if (hierarchy != null && hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_ExtObject, out object outProject) >= 0)
+					{
+						EnvDTE.Project solutionProject = (EnvDTE.Project)outProject;
+						FileInfo startProjectFile = new FileInfo(solutionProject.FullName);
+						if (startProjectFile.Directory.Exists)
+						{
+							MEC.IConfigurationBuilder configBuilder = new MEC.ConfigurationBuilder().SetBasePath(pf.Directory.FullName);
+							configBuilder.AddJsonFile("appsettings.Development.json").AddJsonFile("database.Development.json");
+							configBuilder.AddJsonFile("appsettings.json").AddJsonFile("database.json");
+							FileInfo[] files = pf.Directory.GetFiles("*.json");
+							foreach (FileInfo file in files)
+							{
+								if (string.Compare(file.Name, "appsettings.json", true) == 0) { configBuilder.AddJsonFile("appsettings.json"); }
+								else if (string.Compare(file.Name, "appsettings.Development.json", true) == 0) { configBuilder.AddJsonFile("appsettings.Development.json"); }
+								else if (string.Compare(file.Name, "database.json", true) == 0) { configBuilder.AddJsonFile("database.json"); }
+								else if (string.Compare(file.Name, "database.Development.json", true) == 0) { configBuilder.AddJsonFile("database.Development.json"); }
+							}
+							IConfigurationRoot root = configBuilder.Build();
+							IConfigurationSection dbConnections = root.GetSection("Connections");
+							ConnectionContext.InitializeConnection(dbConnections);
+							return true;
+						}
+					}
+				}
+				_Service.WriteToOutput("解决方案中无法获取配置文件");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				_Service.WriteToOutput(ex.Message);
+				_Service.WriteToOutput(ex.StackTrace);
+				_Service.WriteToOutput(ex.Source);
+				return false;
+			}
+
+		}
+
 
 		internal bool ReadConfig(EnvDTE.Project project)
 		{
@@ -89,7 +225,7 @@ namespace Basic.DataContexts
 
 			SC.ConfigurationFileMap fileMap = new SC.ConfigurationFileMap(fullName);
 			SC.Configuration config = SC.ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
-			ConfigurationSection section1 = config.GetSection("connections");
+			SC.ConfigurationSection section1 = config.GetSection("connections");
 			if (section1 != null && section1 is DefaultSection)
 			{
 				_Service.WriteToOutput("系统读取数据库连接异常，请在 \"{0}\" 文件中添加 配置项", fullName);
@@ -100,7 +236,7 @@ namespace Basic.DataContexts
 			{
 				ConnectionContext.InitializeConnection(connectionStrings); return true;
 			}
-			ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
+			SC.ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
 			if (section == null) { throw new ConfigurationFileException("Access_Configuration_GroupNotFound", fullName, sectionName); }
 			if (section is ConnectionsSection configurationSection)
 			{
