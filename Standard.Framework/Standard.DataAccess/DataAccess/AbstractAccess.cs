@@ -144,49 +144,49 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		#region 批量插入数据
-		/// <summary>
-		/// 使用 XXXBulkCopy 类执行数据插入命令
-		/// </summary>
-		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
-		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public virtual Task<Result> BatchCreateAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
-		{
-			return base.BatchExecuteAsync<TR>(table, timeout);
-		}
+		//#region 批量插入数据
+		///// <summary>
+		///// 使用 XXXBulkCopy 类执行数据插入命令
+		///// </summary>
+		///// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
+		///// <param name="timeout">超时之前操作完成所允许的秒数。</param>
+		///// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		//public virtual Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		//{
+		//	return base.BulkCopyAsync<TR>(table, timeout);
+		//}
 
-		/// <summary>
-		/// 使用 XXXBulkCopy 类执行数据插入命令
-		/// </summary>
-		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public virtual Task<Result> BatchCreateAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
-		{
-			return base.BatchExecuteAsync<TR>(table);
-		}
+		///// <summary>
+		///// 使用 XXXBulkCopy 类执行数据插入命令
+		///// </summary>
+		///// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
+		///// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		//public virtual Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		//{
+		//	return base.BulkCopyAsync<TR>(table);
+		//}
 
-		/// <summary>
-		/// 使用 XXXBulkCopy 类执行数据插入命令
-		/// </summary>
-		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
-		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public virtual Result BatchCreate<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
-		{
-			return base.BatchExecute<TR>(table, timeout);
-		}
+		///// <summary>
+		///// 使用 XXXBulkCopy 类执行数据插入命令
+		///// </summary>
+		///// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
+		///// <param name="timeout">超时之前操作完成所允许的秒数。</param>
+		///// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		//public virtual Result BulkCopy<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		//{
+		//	return base.BatchExecute<TR>(table, timeout);
+		//}
 
-		/// <summary>
-		/// 使用 XXXBulkCopy 类执行数据插入命令
-		/// </summary>
-		/// <param name="table">包含需要新增的数据表实例，此实例是 BaseTableType&lt;BaseTableRowType&gt; 类的子类。</param>
-		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
-		public virtual Result BatchCreate<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
-		{
-			return base.BatchExecute<TR>(table);
-		}
-		#endregion
+		///// <summary>
+		///// 使用 XXXBulkCopy 类执行数据插入命令
+		///// </summary>
+		///// <param name="table">包含需要新增的数据表实例，此实例是 BaseTableType&lt;BaseTableRowType&gt; 类的子类。</param>
+		///// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		//public virtual Result BulkCopy<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		//{
+		//	return base.BatchExecute<TR>(table);
+		//}
+		//#endregion
 
 		#region 新增数据
 		/// <summary>
@@ -272,6 +272,19 @@ namespace Basic.DataAccess
 		public virtual Task<Result> CreateAsync<T>(params T[] entities) where T : AbstractEntity
 		{
 			return base.ExecuteNonQueryAsync(CreateCommand, entities);
+		}
+
+		/// <summary>使用 BatchCommand 类批处理 INSERT 命令执行插入数据命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
+		/// <see  cref="StaticCommand.CheckCommands">CheckCommands</see> 和 
+		/// <see cref="StaticCommand.NewValues">NewValues</see> 中包含的命令
+		/// 所以在执行此命令前，需要将数据有效性验证和取值命令提前执行完成 </remarks>
+		/// <param name="entities">实体 <typeparamref name="TModel"/> 类数组，包含了需要执行参数的值。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		public async Task<Result> BatchCreateAsync<TModel>(IEnumerable<TModel> entities) where TModel : AbstractEntity
+		{
+			return await base.BatchAsync(CreateCommand, entities);
 		}
 		#endregion
 
@@ -378,6 +391,16 @@ namespace Basic.DataAccess
 			return base.ExecuteCoreAsync(DeleteCommand, row);
 		}
 
+		///// <summary>
+		///// 使用指定的命令新增数据实体
+		///// </summary>
+		///// <param name="entities">包含数据的键值对数组</param>
+		///// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		//public virtual Task<Result> DeleteAsync<T>(IEnumerable<T> entities) where T : AbstractEntity
+		//{
+		//	return base.ExecuteNonQueryAsync(DeleteCommand, entities);
+		//}
+
 		/// <summary>
 		/// 使用指定的命令新增数据实体
 		/// </summary>
@@ -428,9 +451,7 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 使用指定的命令删除数据实体
-		/// </summary>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
 		/// <param name="anonObject">匿名数据实体</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
 		protected Result Delete(object anonObject)
@@ -438,9 +459,7 @@ namespace Basic.DataAccess
 			return ExecuteNonQuery(DeleteCommand, anonObject);
 		}
 
-		/// <summary>
-		/// 更新数据实体
-		/// </summary>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
 		/// <param name="entity">数据实体</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
 		public virtual Result Delete<T>(T entity) where T : AbstractEntity
@@ -448,9 +467,7 @@ namespace Basic.DataAccess
 			return base.ExecuteNonQuery(DeleteCommand, entity);
 		}
 
-		/// <summary>
-		/// 更新数据实体
-		/// </summary>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
 		/// <param name="entities">数据实体</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
 		public virtual Result Delete<T>(T[] entities) where T : AbstractEntity
@@ -458,9 +475,7 @@ namespace Basic.DataAccess
 			return base.ExecuteNonQuery(DeleteCommand, entities);
 		}
 
-		/// <summary>
-		/// 删除数据实体
-		/// </summary>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
 		/// <param name="row">包含数据的键值对数组</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
 		public virtual Result DeleteCore<TR>(TR row) where TR : BaseTableRowType
@@ -468,9 +483,7 @@ namespace Basic.DataAccess
 			return base.ExecuteCore<TR>(DeleteCommand, row);
 		}
 
-		/// <summary>
-		/// 删除数据实体
-		/// </summary>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
 		/// <param name="table">包含需要新增的数据表实例，此实例是 BaseTableType&lt;BaseTableRowType&gt; 类的子类。</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
 		public virtual Result DeleteCore<TR>(BaseTableType<TR> table) where TR : BaseTableRowType

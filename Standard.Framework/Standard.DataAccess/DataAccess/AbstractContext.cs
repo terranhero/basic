@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Basic.EntityLayer;
 using Basic.Interfaces;
 using Basic.Tables;
+using ST = System.Transactions;
 
 namespace Basic.DataAccess
 {
@@ -35,11 +37,24 @@ namespace Basic.DataAccess
 		/// <returns>返回AbstractAccess子类的实例</returns>
 		protected abstract AbstractAccess CreateAccess(string connectionName, bool startTransaction);
 
+		/// <summary>使用指定的事物隔离级别，创建 AbstractAccess 子类实例</summary>
+		/// <param name="connection">基础框架配置的数据库连接名称</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <returns>返回 AbstractAccess 子类的实例</returns>
+		protected abstract AbstractAccess CreateAccess(string connection, ST.IsolationLevel isolationLevel);
+
+		/// <summary>创建 AbstractAccess 子类实例</summary>
+		/// <param name="connection">基础框架配置的数据库连接名称</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <param name="second">一个 int 类型的值，该值表示事务 <see cref="ST.CommittableTransaction"/> 的超时时间限制，单位秒。</param>
+		/// <returns>返回 AbstractAccess 子类的实例</returns>
+		protected abstract AbstractAccess CreateAccess(string connection, ST.IsolationLevel isolationLevel, int second);
+
 		#region 新增数据
-		/// <summary>
-		/// 新增数据实体
-		/// </summary>
-		/// <param name="entity">需要新增的实体类实例或继承于Basic.Entity.AbstractEntity类的实例</param>
+		/// <summary>执行 INSERT 命令，新增数据实体</summary>
+		/// <param name="entity">需要新增的 <typeparamref name="T"/> 类实例</param>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
 		public Result Create<T>(T entity) where T : AbstractEntity
 		{
@@ -49,10 +64,8 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 使用指定的命令新增数据实体
-		/// </summary>
-		/// <param name="entities">包含数据的键值对数组</param>
+		/// <summary>执行 INSERT 命令，新增数据实体</summary>
+		/// <param name="entities">需要新增的 <typeparamref name="T"/> 类实例数组</param>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
 		public Result Create<T>(T[] entities) where T : AbstractEntity
 		{
@@ -64,9 +77,38 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 新增数据实体
-		/// </summary>
+		/// <summary>使用指定事务隔离级别执行 INSERT 命令，新增数据实体</summary>
+		/// <param name="entities">需要新增的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		public Result Create<T>(T[] entities, ST.IsolationLevel isolationLevel) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel))
+			{
+				Result result = ac.Create<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别和超时时间执行 INSERT 命令，新增数据实体</summary>
+		/// <param name="entities">需要新增的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <param name="second">一个 int 类型的值，该值表示事务 <see cref="ST.CommittableTransaction"/> 的超时时间限制，单位秒。</param>
+		/// <returns>返回 AbstractAccess 子类的实例</returns>
+		public Result Create<T>(T[] entities, ST.IsolationLevel isolationLevel, int second) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel, second))
+			{
+				Result result = ac.Create<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>执行 INSERT 命令，新增数据实体</summary>
 		/// <param name="row">包含数据的键值对数组</param>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
 		public Result CreateCore(BaseTableRowType row)
@@ -79,10 +121,8 @@ namespace Basic.DataAccess
 		#endregion
 
 		#region 更新数据
-		/// <summary>
-		/// 更新数据
-		/// </summary>
-		/// <param name="entity">需要更新的Basic.Entity.AbstractEntity类实例数组</param>
+		/// <summary>执行 UPDATE 命令，更新数据实体</summary>
+		/// <param name="entity">需要更新的 <typeparamref name="T"/> 类实例</param>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
 		public Result Update<T>(T entity) where T : AbstractEntity
 		{
@@ -92,10 +132,8 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 更新数据
-		/// </summary>
-		/// <param name="entities">需要更新的Basic.Entity.AbstractEntity类实例数组</param>
+		/// <summary>执行 UPDATE 命令，更新数据实体</summary>
+		/// <param name="entities">需要更新的 <typeparamref name="T"/> 类实例数组</param>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
 		public Result Update<T>(T[] entities) where T : AbstractEntity
 		{
@@ -107,9 +145,38 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 更新数据
-		/// </summary>
+		/// <summary>使用指定事务隔离级别执行 UPDATE 命令，更新数据实体</summary>
+		/// <param name="entities">需要更新的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		public Result Update<T>(T[] entities, ST.IsolationLevel isolationLevel) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel))
+			{
+				Result result = ac.Update<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别和超时时间执行 UPDATE 命令，更新数据实体</summary>
+		/// <param name="entities">需要更新的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <param name="second">一个 int 类型的值，该值表示事务 <see cref="ST.CommittableTransaction"/> 的超时时间限制，单位秒。</param>
+		/// <returns>返回 AbstractAccess 子类的实例</returns>
+		public Result Update<T>(T[] entities, ST.IsolationLevel isolationLevel, int second) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel, second))
+			{
+				Result result = ac.Update<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>执行 UPDATE 命令，更新数据实体</summary>
 		/// <param name="objArray">包含数据的键值对数组</param>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
 		public Result UpdateCore(BaseTableRowType objArray)
@@ -122,10 +189,8 @@ namespace Basic.DataAccess
 		#endregion
 
 		#region 删除数据
-		/// <summary>
-		/// 删除数据
-		/// </summary>
-		/// <param name="entity">需要删除的GoldSoftEntity类实例或继承于GoldSoftEntity类的实例</param>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
+		/// <param name="entity">需要删除的 <typeparamref name="T"/> 类实例</param>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
 		public Result Delete<T>(T entity) where T : AbstractEntity
 		{
@@ -135,22 +200,63 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 删除数据
-		/// </summary>
-		/// <param name="entities">需要删除的Basic.Entity.AbstractEntity类实例数组</param>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
+		/// <param name="entities">需要删除的 <typeparamref name="T"/> 类实例数组</param>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
 		public Result Delete<T>(T[] entities) where T : AbstractEntity
 		{
 			using (AbstractAccess ac = CreateAccess(Connection, true))
 			{
 				Result result = ac.Delete(entities);
-				if (result.Successful)
-					ac.SetComplete();
-				return result;
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
 			}
 		}
 
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
+		/// <param name="entities">需要删除的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="startTransaction">是否启用事务</param>
+		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
+		public Result Delete<T>(T[] entities, bool startTransaction) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, startTransaction))
+			{
+				Result result = ac.Delete(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别执行 DELETE 命令，删除数据实体</summary>
+		/// <param name="entities">需要删除的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
+		public Result Delete<T>(T[] entities, ST.IsolationLevel isolationLevel) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel))
+			{
+				Result result = ac.Delete<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别和超时时间执行 DELETE 命令，更新数据实体</summary>
+		/// <param name="entities">需要删除的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <param name="second">一个 int 类型的值，该值表示事务 <see cref="ST.CommittableTransaction"/> 的超时时间限制，单位秒。</param>
+		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
+		public Result Delete<T>(T[] entities, ST.IsolationLevel isolationLevel, int second) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel, second))
+			{
+				Result result = ac.Delete<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
 
 		/// <summary>
 		/// 删除数据
@@ -167,17 +273,6 @@ namespace Basic.DataAccess
 		#endregion
 
 		#region 按关键字查询数据
-		///// <summary>按关键字查询记录</summary>
-		///// <param name="anonObject">需要查找的匿名主键对象</param>
-		///// <returns>返回查询到的数据表</returns>
-		//public virtual T GetEntityByKey<T>(object anonObject)
-		//{
-		//	using (AbstractAccess ac = CreateAccess(Connection))
-		//	{
-		//		return ac.SearchByKey(entity);
-		//	}
-		//}
-
 		/// <summary>
 		/// 按关键字查询记录
 		/// </summary>
@@ -295,9 +390,7 @@ namespace Basic.DataAccess
 
 		#region 新增数据(异步方法)
 
-		/// <summary>
-		/// 新增数据实体
-		/// </summary>
+		/// <summary>执行 INSERT 命令，新增数据实体</summary>
 		/// <param name="entity">需要新增的实体类实例或继承于Basic.Entity.AbstractEntity类的实例</param>
 		/// <example><![CDATA[Result result = await context.CreateAsync(entity);]]></example>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
@@ -309,9 +402,7 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 新增数据实体
-		/// </summary>
+		/// <summary>执行 INSERT 命令，新增数据实体</summary>
 		/// <param name="row">包含数据的键值对数组</param>
 		/// <example><![CDATA[Result result = await context.CreateAsync(entity);]]></example>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
@@ -323,13 +414,28 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 使用指定的命令新增数据实体
-		/// </summary>
+		///// <summary>
+		///// 使用指定的命令新增数据实体
+		///// </summary>
+		///// <param name="entities">包含数据的键值对数组</param>
+		///// <example><![CDATA[Result result = await context.CreateAsync(entities);]]></example>
+		///// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		//public async Task<Result> BatchCreateAsync<T>(T[] entities) where T : AbstractEntity
+		//{
+		//	using (AbstractAccess ac = CreateAccess(Connection, true))
+		//	{
+		//		Result result = await ac.CreateAsync(entities);
+		//		if (result.Failure) { return result; }
+		//		return ac.SetComplete();
+
+		//	}
+		//}
+
+		/// <summary>执行 INSERT 命令，新增数据实体</summary>
 		/// <param name="entities">包含数据的键值对数组</param>
 		/// <example><![CDATA[Result result = await context.CreateAsync(entities);]]></example>
 		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
-		public async Task<Result> CreateAsync(AbstractEntity[] entities)
+		public async Task<Result> CreateAsync<T>(T[] entities) where T : AbstractEntity
 		{
 			using (AbstractAccess ac = CreateAccess(Connection, true))
 			{
@@ -339,13 +445,41 @@ namespace Basic.DataAccess
 
 			}
 		}
+
+		/// <summary>使用指定事务隔离级别执行 INSERT 命令，新增数据实体</summary>
+		/// <param name="entities">需要新增的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		public async Task<Result> CreateAsync<T>(T[] entities, ST.IsolationLevel isolationLevel) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel))
+			{
+				Result result = await ac.CreateAsync<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别和超时时间执行 INSERT 命令，新增数据实体</summary>
+		/// <param name="entities">需要新增的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <param name="second">一个 int 类型的值，该值表示事务 <see cref="ST.CommittableTransaction"/> 的超时时间限制，单位秒。</param>
+		/// <returns>返回 AbstractAccess 子类的实例</returns>
+		public async Task<Result> CreateAsync<T>(T[] entities, ST.IsolationLevel isolationLevel, int second) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel, second))
+			{
+				Result result = await ac.CreateAsync<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
 		#endregion
 
 		#region 更新数据(异步方法)
-
-		/// <summary>
-		/// 更新数据
-		/// </summary>
+		/// <summary>执行 UPDATE 命令，更新数据实体</summary>
 		/// <param name="entities">需要更新的Basic.Entity.AbstractEntity类实例数组</param>
 		/// <example><![CDATA[Result result = await context.UpdateAsync(entitys);]]></example>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
@@ -359,9 +493,38 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 更新数据
-		/// </summary>
+		/// <summary>使用指定事务隔离级别执行 UPDATE 命令，更新数据实体</summary>
+		/// <param name="entities">需要更新的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		public async Task<Result> UpdateAsync<T>(T[] entities, ST.IsolationLevel isolationLevel) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel))
+			{
+				Result result = await ac.UpdateAsync<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别和超时时间执行 UPDATE 命令，更新数据实体</summary>
+		/// <param name="entities">需要更新的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <param name="second">一个 int 类型的值，该值表示事务 <see cref="ST.CommittableTransaction"/> 的超时时间限制，单位秒。</param>
+		/// <returns>返回 AbstractAccess 子类的实例</returns>
+		public async Task<Result> UpdateAsync<T>(T[] entities, ST.IsolationLevel isolationLevel, int second) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel, second))
+			{
+				Result result = await ac.UpdateAsync<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>执行 UPDATE 命令，更新数据实体</summary>
 		/// <param name="objArray">包含数据的键值对数组</param>
 		/// <example><![CDATA[Result result = await context.UpdateAsync(objArray);]]></example>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
@@ -376,9 +539,7 @@ namespace Basic.DataAccess
 
 		#region 删除数据(异步方法)
 
-		/// <summary>
-		/// 删除数据
-		/// </summary>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
 		/// <param name="entity">需要删除的GoldSoftEntity类实例或继承于GoldSoftEntity类的实例</param>
 		/// <example><![CDATA[Result result = await context.DeleteAsync(entity);]]></example>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
@@ -390,18 +551,62 @@ namespace Basic.DataAccess
 			}
 		}
 
-		/// <summary>
-		/// 删除数据
-		/// </summary>
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
 		/// <param name="entities">需要删除的Basic.Entity.AbstractEntity类实例数组</param>
 		/// <example><![CDATA[Result result = await context.DeleteAsync(entity);]]></example>
 		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
-		public async Task<Result> DeleteAsync(AbstractEntity[] entities)
+		public async Task<Result> DeleteAsync<T>(T[] entities) where T : AbstractEntity
 		{
 			TaskCompletionSource<Result> tcs = new TaskCompletionSource<Result>();
 			using (AbstractAccess ac = CreateAccess(Connection, true))
 			{
 				Result result = await ac.DeleteAsync(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+
+		/// <summary>执行 DELETE 命令，删除数据实体</summary>
+		/// <param name="entities">需要删除的 <typeparamref name="T"/> 类实例数组</param>
+		/// <param name="startTransaction">是否启用事务</param>
+		/// <returns>返回执行信息包含受影响行数，错误代码，如果有分页则有总页数。</returns>
+		public async Task<Result> DeleteAsync<T>(T[] entities, bool startTransaction) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, startTransaction))
+			{
+				Result result = await ac.DeleteAsync(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别执行 DELETE 命令，删除数据实体</summary>
+		/// <param name="entities">包含执行命令所需的 <typeparamref name="T"/> 数据.</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
+		public async Task<Result> DeleteAsync<T>(T[] entities, ST.IsolationLevel isolationLevel) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel))
+			{
+				Result result = await ac.DeleteAsync<T>(entities);
+				if (result.Failure) { return result; }
+				return ac.SetComplete();
+			}
+		}
+
+		/// <summary>使用指定事务隔离级别和超时时间执行 DELETE 命令，删除数据实体</summary>
+		/// <param name="entities">包含执行命令所需的 <typeparamref name="T"/> 数据.</param>
+		/// <param name="isolationLevel">一个 <see cref="ST.IsolationLevel"/> 枚举类型的值，
+		/// 该值表示事务 <see cref="ST.CommittableTransaction"/> 的隔离级别。</param>
+		/// <param name="second">一个 int 类型的值，该值表示事务 <see cref="ST.CommittableTransaction"/> 的超时时间限制，单位秒。</param>
+		/// <returns>返回 AbstractAccess 子类的实例</returns>
+		public async Task<Result> DeleteAsync<T>(T[] entities, ST.IsolationLevel isolationLevel, int second) where T : AbstractEntity
+		{
+			using (AbstractAccess ac = CreateAccess(Connection, isolationLevel, second))
+			{
+				Result result = await ac.DeleteAsync<T>(entities);
 				if (result.Failure) { return result; }
 				return ac.SetComplete();
 			}

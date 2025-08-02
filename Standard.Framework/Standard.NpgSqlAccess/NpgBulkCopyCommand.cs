@@ -45,7 +45,7 @@ namespace Basic.PostgreSql
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
+		internal protected override System.Threading.Tasks.Task ExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
 		{
 			return Task.CompletedTask;
 		}
@@ -60,7 +60,7 @@ namespace Basic.PostgreSql
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
+		internal protected override void Execute<TR>(BaseTableType<TR> table, int timeout)
 		{
 			//_DataAdapter.BatchSize = table.Count > 1000 ? 1000 : table.Count;
 			//_DataAdapter.BulkCopyTimeout = timeout;

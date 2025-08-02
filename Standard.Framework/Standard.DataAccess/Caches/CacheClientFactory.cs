@@ -21,7 +21,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="name">数据连接名称</param>
 		/// <returns>返回缓存 ICacheClient 接口的实例。</returns>
-		internal static ICacheClient GetClient(string name)
+		public static ICacheClient GetClient(string name)
 		{
 			if (_ClientFactory != null) { return _ClientFactory.CreateClient(name); }
 			_ClientFactory = new MemoryClientFactory();

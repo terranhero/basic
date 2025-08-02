@@ -40,9 +40,9 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected virtual void BatchExecute<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		internal protected virtual void Execute<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
-			this.BatchExecute<TR>(table, 30);
+			this.Execute<TR>(table, 30);
 		}
 
 		/// <summary>
@@ -52,16 +52,16 @@ namespace Basic.DataAccess
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected abstract void BatchExecute<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType;
+		internal protected abstract void Execute<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType;
 
 		/// <summary>
 		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
 		/// </summary>
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected virtual STT.Task BatchExecuteAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		internal protected virtual STT.Task ExecuteAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
-			return this.BatchExecuteAsync<TR>(table, 30);
+			return this.ExecuteAsync<TR>(table, 30);
 		}
 
 		/// <summary>
@@ -71,6 +71,6 @@ namespace Basic.DataAccess
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected abstract STT.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType;
+		internal protected abstract STT.Task ExecuteAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType;
 	}
 }

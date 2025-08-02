@@ -67,6 +67,15 @@ namespace Basic.DataAccess
 		/// <typeparam name="T">缓存值类型</typeparam>
 		/// <param name="key"> 要插入的缓存项的唯一标识符。</param>
 		/// <param name="values">该缓存项的数据列表。</param>
+		/// <returns>创建成功则为true，否则为false。</returns>
+		bool SetList<T>(string key, List<T> values);
+
+		/// <summary>
+		///  通过使用键、列标值和逐出设置，将某个缓存项插入缓存中。
+		/// </summary>
+		/// <typeparam name="T">缓存值类型</typeparam>
+		/// <param name="key"> 要插入的缓存项的唯一标识符。</param>
+		/// <param name="values">该缓存项的数据列表。</param>
 		/// <param name="expiresAt">指定键过期的时间点。</param>
 		/// <returns>创建成功则为true，否则为false。</returns>
 		bool SetList<T>(string key, List<T> values, DateTime expiresAt);
@@ -88,6 +97,14 @@ namespace Basic.DataAccess
 		/// <param name="key"> 要插入的缓存项的唯一标识符。</param>
 		/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 		List<T> GetList<T>(string key);
+
+		/// <summary>存储数据到哈希表</summary>
+		/// <typeparam name="T">缓存值类型</typeparam>
+		/// <param name="hashId">哈希表缓存键</param>
+		/// <param name="key">哈希表键</param>
+		/// <param name="value">哈希表值</param>
+		/// <returns>创建成功则为true，否则为false。</returns>
+		bool HashSet<T>(string hashId, string key, T value);
 
 		/// <summary>存储数据到哈希表</summary>
 		/// <typeparam name="T">缓存值类型</typeparam>

@@ -1,11 +1,4 @@
-﻿using Basic.DataAccess;
-using Basic.Collections;
-using Basic.Database;
-using Basic.DataEntities;
-using Basic.Designer;
-using Basic.EntityLayer;
-using Basic.Enums;
-using System;
+﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections;
@@ -15,10 +8,18 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Transactions;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Basic.Collections;
+using Basic.DataAccess;
+using Basic.Database;
+using Basic.DataEntities;
+using Basic.Designer;
+using Basic.EntityLayer;
+using Basic.Enums;
 using Basic.Interfaces;
 
 namespace Basic.Configuration
@@ -1203,6 +1204,49 @@ namespace Basic.Configuration
 				memberMethod6.Statements.Add(returnMethod6);
 				contextCode.Members.Add(memberMethod6);
 
+				CodeMemberMethod memberMethod7 = new CodeMemberMethod();
+				memberMethod7.Comments.Add(new CodeCommentStatement("<summary>", true));
+				memberMethod7.Comments.Add(new CodeCommentStatement(string.Format("使用指定的事物隔离级别，创建 {0} 类的实例。", AccessName), true));
+				memberMethod7.Comments.Add(new CodeCommentStatement("</summary>", true));
+				memberMethod7.Comments.Add(new CodeCommentStatement("<param name=\"connection\">基础框架配置的数据库连接名称</param>", true));
+				memberMethod7.Comments.Add(new CodeCommentStatement("<param name=\"isolationLevel\">一个 System.Transactions.IsolationLevel 枚举类型的值，该值表示事务 CommittableTransaction 的隔离级别。</param>", true));
+				memberMethod7.Comments.Add(new CodeCommentStatement(string.Format("<returns>返回 {0} 类的实例。</returns>", AccessName), true));
+				memberMethod7.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+				memberMethod7.Name = "CreateAccess";
+				memberMethod7.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string), "connection"));
+				memberMethod7.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IsolationLevel), "isolationLevel"));
+				memberMethod7.ReturnType = new CodeTypeReference("AbstractAccess");
+
+				CodeTypeReferenceExpression timeSpanReference = new CodeTypeReferenceExpression(typeof(TimeSpan));
+
+				CodeObjectCreateExpression objectCreate7 = new CodeObjectCreateExpression(accessTypereference);
+				objectCreate7.Parameters.Add(new CodeVariableReferenceExpression("connection"));
+				objectCreate7.Parameters.Add(new CodeVariableReferenceExpression("isolationLevel"));
+				objectCreate7.Parameters.Add(new CodeMethodInvokeExpression(timeSpanReference, "FromSeconds", new CodePrimitiveExpression(30)));
+				memberMethod7.Statements.Add(new CodeMethodReturnStatement() { Expression = objectCreate7 });
+				contextCode.Members.Add(memberMethod7);
+
+				CodeMemberMethod memberMethod8 = new CodeMemberMethod();
+				memberMethod8.Comments.Add(new CodeCommentStatement("<summary>", true));
+				memberMethod8.Comments.Add(new CodeCommentStatement(string.Format("使用指定的事物隔离级别和事务超时时间，创建 {0} 类的实例。", AccessName), true));
+				memberMethod8.Comments.Add(new CodeCommentStatement("</summary>", true));
+				memberMethod8.Comments.Add(new CodeCommentStatement("<param name=\"connection\">基础框架配置的数据库连接名称</param>", true));
+				memberMethod8.Comments.Add(new CodeCommentStatement("<param name=\"isolationLevel\">一个 System.Transactions.IsolationLevel 枚举类型的值，该值表示事务 CommittableTransaction 的隔离级别。</param>", true));
+				memberMethod8.Comments.Add(new CodeCommentStatement("<param name=\"second\">一个 int 类型的值，该值表示事务 <see cref=\"System.Transactions.CommittableTransaction\"/> 的超时时间限制，单位秒。</param>", true));
+				memberMethod8.Comments.Add(new CodeCommentStatement(string.Format("<returns>返回 {0} 类的实例。</returns>", AccessName), true));
+				memberMethod8.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+				memberMethod8.Name = "CreateAccess";
+				memberMethod8.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string), "connection"));
+				memberMethod8.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IsolationLevel), "isolationLevel"));
+				memberMethod8.Parameters.Add(new CodeParameterDeclarationExpression(typeof(int), "second"));
+				memberMethod8.ReturnType = new CodeTypeReference("AbstractAccess");
+
+				CodeObjectCreateExpression objectCreate8 = new CodeObjectCreateExpression(accessTypereference);
+				objectCreate8.Parameters.Add(new CodeVariableReferenceExpression("connection"));
+				objectCreate8.Parameters.Add(new CodeVariableReferenceExpression("isolationLevel"));
+				objectCreate8.Parameters.Add(new CodeMethodInvokeExpression(timeSpanReference, "FromSeconds", new CodeVariableReferenceExpression("second")));
+				memberMethod8.Statements.Add(new CodeMethodReturnStatement() { Expression = objectCreate8 });
+				contextCode.Members.Add(memberMethod8);
 				#endregion
 			}
 			codeNamespace.Types.Add(contextCode);
@@ -1291,7 +1335,7 @@ namespace Basic.Configuration
 			else if (_Generator.BaseAccess == typeof(AbstractAccess).Name)
 				accessCode.BaseTypes.Add(new CodeTypeReference(typeof(AbstractAccess), CodeTypeReferenceOptions.GlobalReference));
 			else
-				accessCode.BaseTypes.Add(new CodeTypeReference(_Generator.BaseAccess));
+				accessCode.BaseTypes.Add(new CodeTypeReference(_Generator.BaseAccess, CodeTypeReferenceOptions.GlobalReference));
 			accessCode.IsPartial = true;
 			accessCode.IsClass = true;
 			accessCode.TypeAttributes = TypeAttributes.Class | TypeAttributes.Sealed;

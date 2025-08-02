@@ -154,7 +154,7 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		#region 获取区域字符串资源
+		#region 返回 Result 实例的错误信息
 		/// <summary>
 		/// 返回指定的 System.String 资源的值。
 		/// </summary>

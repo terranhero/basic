@@ -73,7 +73,7 @@ namespace Basic.MySqlAccess
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected override System.Threading.Tasks.Task BatchExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
+		internal protected override System.Threading.Tasks.Task ExecuteAsync<TR>(BaseTableType<TR> table, int timeout)
 		{
 			_MySqlBulkLoader.Timeout = timeout;
 			_MySqlBulkLoader.LoadAsync(); // 执行批量导入
@@ -86,7 +86,7 @@ namespace Basic.MySqlAccess
 		/// <param name="table">实体类，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>受影响的行数。</returns>
-		protected internal override void BatchExecute<TR>(BaseTableType<TR> table, int timeout)
+		protected internal override void Execute<TR>(BaseTableType<TR> table, int timeout)
 		{
 			//_MySqlBulkLoader.TableName = "myTable"; // 目标表名
 			//_MySqlBulkLoader.Columns.AddRange(new[] { "Column1", "Column2" }); // 列名，顺序必须与DataTable中的列匹配

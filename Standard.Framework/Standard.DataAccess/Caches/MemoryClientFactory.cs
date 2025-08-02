@@ -14,6 +14,7 @@ namespace Basic.DataAccess
 		private static SortedList<string, ICacheClient> caches = new SortedList<string, ICacheClient>(5);
 		/// <summary>初始化 MemoryClientFactory 类实例</summary>
 		public MemoryClientFactory() { }
+	
 		/// <summary>
 		/// 返回实现 DbConnection 类的提供程序的类的一个新实例。
 		/// </summary>
@@ -122,6 +123,19 @@ namespace Basic.DataAccess
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="key"> 要插入的缓存项的唯一标识符。</param>
 			/// <param name="values">该缓存项的数据列表。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			public bool SetList<T>(string key, List<T> values)
+			{
+				base.Set(key, values, DateTimeOffset.MaxValue);
+				return true;
+			}
+
+			/// <summary>
+			///  通过使用键、列标值和逐出设置，将某个缓存项插入缓存中。
+			/// </summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key"> 要插入的缓存项的唯一标识符。</param>
+			/// <param name="values">该缓存项的数据列表。</param>
 			/// <param name="expiresIn">一个TimeSpan 类型的值，该值指示键过期的相对时间。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public bool SetList<T>(string key, List<T> values, System.TimeSpan expiresIn)
@@ -189,6 +203,30 @@ namespace Basic.DataAccess
 					return hash.Values;
 				}
 				return null;
+			}
+
+			/// <summary>存储数据到哈希表</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="hashId">哈希表缓存键</param>
+			/// <param name="key">哈希表键</param>
+			/// <param name="value">哈希表值</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			public bool HashSet<T>(string hashId, string key, T value)
+			{
+				if (Contains(hashId))
+				{
+					HashCacheItem<T> hash = Get(hashId) as HashCacheItem<T>;
+					if (hash.Contains(key)) { hash.Set(key, value); }
+					else { hash.Add(key, value); }
+					return true;
+				}
+				else
+				{
+					HashCacheItem<T> hash = new HashCacheItem<T>(hashId);
+					hash.Add(key, value);
+					base.Set(key, value, DateTimeOffset.MaxValue);
+					return true;
+				}
 			}
 
 			/// <summary>存储数据到哈希表</summary>

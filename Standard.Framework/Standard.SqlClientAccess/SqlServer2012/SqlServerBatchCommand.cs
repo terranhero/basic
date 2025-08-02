@@ -51,7 +51,7 @@ namespace Basic.SqlServer2012
 				return await batch.ExecuteNonQueryAsync();
 			}
 #else
-			return await Task.FromResult(0);
+			throw new System.NotImplementedException();
 #endif
 		}
 

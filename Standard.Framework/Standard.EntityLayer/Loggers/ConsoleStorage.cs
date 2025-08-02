@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Basic.Collections;
@@ -11,6 +12,7 @@ namespace Basic.Loggers
 	/// <summary>将日志写入本地文件中</summary>
 	internal sealed class ConsoleStorage : ILoggerStorage
 	{
+		private readonly TextWriter writer = Console.Out;
 		/// <summary>
 		/// ConsoleStorage
 		/// </summary>
@@ -65,28 +67,27 @@ namespace Basic.Loggers
 		/// <param name="message">操作消息</param>
 		/// <param name="logLevel">日志级别</param>
 		/// <param name="resultType">操作结果</param>
-		public Task WriteAsync(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName,
+		public async Task WriteAsync(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName,
 			string message, LogLevel logLevel, LogResult resultType)
 		{
 			if (logLevel == LogLevel.Information)
 			{
 				Console.ForegroundColor = ConsoleColor.DarkGreen;
-				Console.Write("info: "); Console.ResetColor();
+				await writer.WriteAsync("info: "); Console.ResetColor();
 			}
 			else if (logLevel == LogLevel.Error)
 			{
 				Console.ForegroundColor = ConsoleColor.DarkRed;
-				Console.Write("fail: "); Console.ResetColor();
+				await writer.WriteAsync("fail: "); Console.ResetColor();
 			}
 			else if (logLevel == LogLevel.Warning)
 			{
 				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.Write("warn: "); Console.ResetColor();
+				await writer.WriteAsync("warn: "); Console.ResetColor();
 			}
 			else if (logLevel == LogLevel.Debug) { Console.Write("dbug: "); }
-
 			Console.WriteLine("Controller: {0}, Action: {1}, Time: {2:yyyy-MM-dd HH:mm:ss.fff K}", controllerName, actionName, DateTimeOffset.Now);
-			return Task.CompletedTask;
+			await writer.WriteAsync("      "); await writer.WriteLineAsync(message);
 		}
 
 		/// <summary>
@@ -98,12 +99,13 @@ namespace Basic.Loggers
 		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作失败后的异常信息</param>
-		public Task ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
+		public async Task ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
 		{
 			Console.ForegroundColor = ConsoleColor.DarkRed;
 			Console.Write("fail: "); Console.ResetColor();
 			Console.WriteLine("Controller: {0}, Action: {1}, Time: {2:yyyy-MM-dd HH:mm:ss.fff K}", controllerName, actionName, DateTimeOffset.Now);
-			return Task.CompletedTask;
+			await writer.WriteAsync("      "); await writer.WriteLineAsync(ex.Message);
+			await writer.WriteLineAsync(ex.Source); await writer.WriteLineAsync(ex.StackTrace);
 		}
 
 		/// <summary>
@@ -138,6 +140,7 @@ namespace Basic.Loggers
 			else if (logLevel == LogLevel.Debug) { Console.Write("dbug: "); }
 
 			Console.WriteLine("Controller: {0}, Action: {1}, Time: {2:yyyy-MM-dd HH:mm:ss.fff K}", controllerName, actionName, DateTimeOffset.Now);
+			Console.WriteLine(message);
 		}
 
 		/// <summary>
@@ -154,6 +157,7 @@ namespace Basic.Loggers
 			Console.ForegroundColor = ConsoleColor.DarkRed;
 			Console.Write("fail: "); Console.ResetColor();
 			Console.WriteLine("Controller: {0}, Action: {1}, Time: {2:yyyy-MM-dd HH:mm:ss.fff K}", controllerName, actionName, DateTimeOffset.Now);
+			Console.WriteLine(ex.Message); Console.WriteLine(ex.Source); Console.WriteLine(ex.StackTrace);
 		}
 	}
 }
