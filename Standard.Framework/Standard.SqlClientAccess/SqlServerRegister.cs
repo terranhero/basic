@@ -20,7 +20,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		public static void RegisterSqlServer2012Access()
 		{
-			ConnectionFactoryBuilder.RegisterConnectionFactory(ConnectionType.SqlConnection, new SqlServer2012.SqlConnectionFactory());
+			ConnectionFactoryBuilder.RegisterConnectionFactory(ConnectionType.NewSqlConnection, new SqlServer2012.SqlConnectionFactory());
 		}
 	}
 }

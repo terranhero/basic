@@ -24,6 +24,7 @@ namespace Basic.DataAccess
 		{
 			_ConnectionFactorys = new SortedList<ConnectionType, ConnectionFactory>(8);
 			_ConnectionFactorys.Add(ConnectionType.SqlConnection, new DefaultConnectionFactory());
+			_ConnectionFactorys.Add(ConnectionType.NewSqlConnection, new DefaultConnectionFactory());
 		}
 
 		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
