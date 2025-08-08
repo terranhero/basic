@@ -122,8 +122,8 @@ namespace Basic.EasyLibrary
 		/// <returns></returns>
 		public void WriteJson(HttpResponse response)
 		{
-			response.WriteAsync("\"value\":"); response.WriteAsync(JsonSerializer.SerializeObject(Value));
-			response.WriteAsync(",\"text\":"); response.WriteAsync(JsonSerializer.SerializeObject(Text));
+			response.WriteAsync("\"value\":"); response.WriteAsync(JsonSerializer.Serialize(Value));
+			response.WriteAsync(",\"text\":"); response.WriteAsync(JsonSerializer.Serialize(Text));
 			//response.Write(string.Format("\"value\":{0}", ));
 			//response.Write(string.Format(",\"text\":{0}", JsonSerializer.SerializeObject(Text)));
 			if (Selected) { response.WriteAsync(",\"selected\":\"true\""); }

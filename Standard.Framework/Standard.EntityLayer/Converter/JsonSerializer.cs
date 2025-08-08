@@ -18,35 +18,13 @@ namespace Basic.EntityLayer
 	public static class JsonSerializer
 	{
 		/// <summary>
-		/// 序列化DataEntity子类实例
+		/// 将对象转换为 JSON 字符串。
 		/// </summary>
-		/// <param name="entity">需要序列化的DataEntity子类实例</param>
+		/// <param name="value">需要序列化的DataEntity子类实例</param>
 		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public static string SerializeEntity(AbstractEntity entity)
+		public static string Serialize<T>(T value)
 		{
-			return SerializeObject(entity, false);
-		}
-
-		/// <summary>
-		/// 序列化DataEntity子类实例
-		/// </summary>
-		/// <param name="entity">需要序列化的DataEntity子类实例</param>
-		/// <param name="includeBrace">是否需要包含Json对象的大括号</param>
-		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public static string SerializeEntity(AbstractEntity entity, bool includeBrace)
-		{
-			return SerializeObject(entity, includeBrace);
-		}
-
-		/// <summary>
-		/// 序列化DataEntity子类实例
-		/// </summary>
-		/// <param name="entities">需要序列化的DataEntity子类实例</param>
-		/// <param name="includeBrace">是否需要包含Json对象的大括号</param>
-		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public static string SerializeEntity(AbstractEntity[] entities, bool includeBrace)
-		{
-			return SerializeObject(entities, includeBrace);
+			return Serialize<T>(value, false);
 		}
 
 		/// <summary>
@@ -83,34 +61,6 @@ namespace Basic.EntityLayer
 				return resultBuilder.Replace("}", "", resultBuilder.Length - 1, 1).ToString();
 			}
 			return resultBuilder.ToString();
-		}
-
-		/// <summary>
-		/// 将对象转换为 JSON 字符串。
-		/// </summary>
-		/// <param name="value">需要序列化的DataEntity子类实例</param>
-		/// <param name="includeBrace">是否需要包含Json对象的大括号</param>
-		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public static string SerializeObject(object value, bool includeBrace)
-		{
-			StringBuilder resultBuilder = new StringBuilder(500);
-			SerializeValuePrivate(resultBuilder, value, 0, null);
-			if (!includeBrace)
-			{
-				resultBuilder.Replace("{", "", 0, 1);
-				return resultBuilder.Replace("}", "", resultBuilder.Length - 1, 1).ToString();
-			}
-			return resultBuilder.ToString();
-		}
-
-		/// <summary>
-		/// 将对象转换为 JSON 字符串。
-		/// </summary>
-		/// <param name="value">需要序列化的DataEntity子类实例</param>
-		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public static string SerializeObject(object value)
-		{
-			return SerializeObject(value, false);
 		}
 
 		private static void SerializeValuePrivate(StringBuilder sb, object value, int depth, string format)

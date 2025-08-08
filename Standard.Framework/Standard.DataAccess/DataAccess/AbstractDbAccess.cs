@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Transactions;
+using Basic.Caches;
 using Basic.Collections;
 using Basic.Configuration;
 using Basic.EntityLayer;

@@ -10,40 +10,43 @@ namespace Basic.Interfaces
 	/// <summary>日志写入接口</summary>
 	public interface ILoggerWriter
 	{
-		/// <summary>根据条件查询日志记录</summary>
-		/// <param name="condition">日志查询条件</param>
-		/// <returns>返回日志查询结果</returns>
-		Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition condition);
+		/// <summary>返回当前日志写入器对应的数据库存储库</summary>
+		IDataBaseStorage Storage { get; }
 
-		/// <summary>根据条件查询日志记录</summary>
-		/// <param name="batchNo">日志批次号</param>
-		/// <returns>返回日志查询结果</returns>
-		Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid batchNo);
+		///// <summary>根据条件查询日志记录</summary>
+		///// <param name="condition">日志查询条件</param>
+		///// <returns>返回日志查询结果</returns>
+		//Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition condition);
 
-		/// <summary>根据条件删除日志记录</summary>
-		/// <param name="keys">需要删除的日志主键</param>
-		/// <returns>返回日志查询结果</returns>
-		Task<Result> DeleteAsync(Guid[] keys);
+		///// <summary>根据条件查询日志记录</summary>
+		///// <param name="batchNo">日志批次号</param>
+		///// <returns>返回日志查询结果</returns>
+		//Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid batchNo);
 
-		/// <summary>根据条件删除日志记录</summary>
-		/// <param name="entities">需要删除的日志主键</param>
-		/// <returns>返回日志查询结果</returns>
-		Task<Result> DeleteAsync(LoggerDelEntity[] entities);
+		///// <summary>根据条件删除日志记录</summary>
+		///// <param name="keys">需要删除的日志主键</param>
+		///// <returns>返回日志查询结果</returns>
+		//Task<Result> DeleteAsync(Guid[] keys);
 
-		/// <summary>
-		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
-		/// </summary>
-		/// <returns>表示异步刷新操作的任务</returns>
-		Task FlushAsync();
+		///// <summary>根据条件删除日志记录</summary>
+		///// <param name="entities">需要删除的日志主键</param>
+		///// <returns>返回日志查询结果</returns>
+		//Task<Result> DeleteAsync(LoggerDelEntity[] entities);
 
-		/// <summary>
-		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
-		/// </summary>
-		/// <param name="cancellationToken">
-		/// 用于监视取消请求的 <see cref="System.Threading.CancellationToken">System.Threading.CancellationToken</see>
-		/// </param>
-		/// <returns>表示异步刷新操作的任务</returns>
-		Task FlushAsync(CancellationToken cancellationToken);
+		///// <summary>
+		///// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		///// </summary>
+		///// <returns>表示异步刷新操作的任务</returns>
+		//Task FlushAsync();
+
+		///// <summary>
+		///// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
+		///// </summary>
+		///// <param name="cancellationToken">
+		///// 用于监视取消请求的 <see cref="System.Threading.CancellationToken">System.Threading.CancellationToken</see>
+		///// </param>
+		///// <returns>表示异步刷新操作的任务</returns>
+		//Task FlushAsync(CancellationToken cancellationToken);
 
 		#region 消息日志事件 - 异步
 		/// <summary>记录操作成功的日志</summary>

@@ -424,7 +424,7 @@ namespace Basic.EasyLibrary
 			}
 			else if (result != null && result.GetType().IsClass)
 			{
-				return JsonSerializer.SerializeObject(result, true);
+				return JsonSerializer.Serialize(result, true);
 			}
 			return Convert.ToString(result, System.Globalization.CultureInfo.CurrentCulture);
 		}

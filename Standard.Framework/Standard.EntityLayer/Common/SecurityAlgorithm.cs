@@ -124,88 +124,50 @@ namespace Basic.EntityLayer
 		}
 		#endregion
 
-		#region SHA256ToBase64 算法
-		/// <summary>使用不对称加密算法加密字符串</summary>
+		#region SHA256ToStr 算法
+		/// <summary>SHA256 密码加密算法，计算输入数据的 SHA256 哈希值</summary>
+		/// <remarks>使用 SHA256 算法计算哈希值，并返回计算结果的 base64 单行编码</remarks>
 		/// <param name="original">原字符串</param>
-		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
+		/// <param name="key">源加密关键字</param>
+		/// <returns>加密后的字符串，用 base64 单行编码格式返回</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static string SHA256ToBase64(string original, Guid key)
+		public static string SHA256ToStr(string original, Guid key)
 		{
-			byte[] bytes = SHA256ToBytes(original, key);
-			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			return Convert.ToBase64String(SHA256ToBytes(obj, key), Base64FormattingOptions.None);
 		}
-		/// <summary>使用不对称加密算法加密字符串</summary>
+
+		/// <summary>SHA256 密码加密算法，计算输入数据的 SHA256 哈希值</summary>
+		/// <remarks>使用 SHA256 算法计算哈希值，并返回计算结果的 base64 单行编码</remarks>
 		/// <param name="original">原字符串</param>
-		/// <returns>加密字符串</returns>
+		/// <returns>加密后的字符串，用 base64 单行编码格式返回</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static string SHA256ToBase64(string original)
+		public static string SHA256ToStr(string original)
 		{
 			byte[] bytes = SHA256ToBytes(original);
 			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 		}
-		/// <summary>使用不对称加密算法加密字符串</summary>
+
+		/// <summary>SHA256 密码加密算法，计算输入数据的 SHA256 哈希值</summary>
+		/// <remarks>使用 SHA256 算法计算哈希值，并返回计算结果的 base64 单行编码</remarks>
 		/// <param name="original">原字符串</param>
 		/// <param name="key">源加密关键字</param>
-		/// <returns>加密字符串</returns>
+		/// <returns>加密后的字符串，用 base64 单行编码格式返回</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static string SHA256ToBase64(string original, int key)
+		public static string SHA256ToStr(string original, int key)
 		{
-			byte[] bytes = SHA256ToBytes(original, key);
-			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			return Convert.ToBase64String(SHA256ToBytes(obj, key), Base64FormattingOptions.None);
 		}
 		#endregion
 
 		#region SHA256 算法
 		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA256ToString(string original, int key)
-		{
-			byte[] bytes = SHA256ToBytes(original, key);
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA256ToString(string original, Guid key)
-		{
-			byte[] bytes = SHA256ToBytes(original, key);
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA256ToString(byte[] original, int key)
-		{
-			byte[] bytes = SHA256ToBytes(original, key);
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA256ToString(string original)
-		{
-			byte[] bytes = _sha256.ComputeHash(Encoding.Unicode.GetBytes(original));
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
 		/// <param name="original">源加密字节流</param>
 		/// <param name="key">源加密关键字</param>
 		/// <returns>加密字符串</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA256ToBytes(byte[] original, int key)
+		private static byte[] SHA256ToBytes(byte[] original, int key)
 		{
 			byte[] keyArray = BitConverter.GetBytes(key);
 			int length = keyArray.Length;
@@ -222,7 +184,7 @@ namespace Basic.EntityLayer
 		/// <param name="key">源加密关键字</param>
 		/// <returns>加密字符串</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA256ToBytes(byte[] original, Guid key)
+		private static byte[] SHA256ToBytes(byte[] original, Guid key)
 		{
 			byte[] keyArray = key.ToByteArray();
 			int length = keyArray.Length;
@@ -232,28 +194,6 @@ namespace Basic.EntityLayer
 			Array.Resize<byte>(ref keyArray, length + assemblyKey.Length);
 			Array.Copy(assemblyKey, 0, keyArray, length, assemblyKey.Length);
 			return _sha256.ComputeHash(keyArray);
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">源加密关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA256ToBytes(string original, int key)
-		{
-			byte[] obj = Encoding.Unicode.GetBytes(original);
-			return SHA256ToBytes(obj, key);
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">源加密关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA256ToBytes(string original, Guid key)
-		{
-			byte[] obj = Encoding.Unicode.GetBytes(original);
-			return SHA256ToBytes(obj, key);
 		}
 
 		/// <summary>使用不对称加密算法加密字符串</summary>
@@ -266,88 +206,64 @@ namespace Basic.EntityLayer
 		}
 		#endregion
 
-		#region SHA512 算法
-		/// <summary>使用不对称加密算法加密字符串</summary>
+		#region SHA256 算法
+		/// <summary>SHA256 密码加密算法，计算输入数据的 SHA256 哈希值</summary>
+		/// <remarks>使用 SHA256 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
 		/// <param name="original">原字符串</param>
 		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static string SHA512ToBase64(string original, Guid key)
+		public static string SHA256ToBits(string original, int key)
 		{
-			byte[] bytes = SHA512ToBytes(original, key);
-			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			byte[] bytes = SHA256ToBytes(obj, key);
+			return BitConverter.ToString(bytes).Replace("-", "");
 		}
-		/// <summary>使用不对称加密算法加密字符串</summary>
+
+		/// <summary>SHA256 密码加密算法，计算输入数据的 SHA256 哈希值</summary>
+		/// <remarks>使用 SHA256 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
 		/// <param name="original">原字符串</param>
-		/// <returns>加密字符串</returns>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static string SHA512ToBase64(string original)
+		public static string SHA256ToBits(string original, Guid key)
 		{
-			byte[] bytes = SHA512ToBytes(original);
-			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			byte[] bytes = SHA256ToBytes(obj, key);
+			return BitConverter.ToString(bytes).Replace("-", "");
 		}
-		/// <summary>使用不对称加密算法加密字符串</summary>
+
+		/// <summary>SHA256 密码加密算法，计算输入数据的 SHA256 哈希值</summary>
+		/// <remarks>使用 SHA256 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
 		/// <param name="original">原字符串</param>
-		/// <param name="key">源加密关键字</param>
-		/// <returns>加密字符串</returns>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static string SHA512ToBase64(string original, int key)
+		public static string SHA256ToBits(byte[] original, int key)
 		{
-			byte[] bytes = SHA512ToBytes(original, key);
-			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+			byte[] bytes = SHA256ToBytes(original, key);
+			return BitConverter.ToString(bytes).Replace("-", "");
+		}
+
+		/// <summary>SHA256 密码加密算法，计算输入数据的 SHA256 哈希值</summary>
+		/// <remarks>使用 SHA256 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
+		/// <param name="original">原字符串</param>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA256ToBits(string original)
+		{
+			byte[] bytes = _sha256.ComputeHash(Encoding.Unicode.GetBytes(original));
+			return BitConverter.ToString(bytes).Replace("-", "");
 		}
 		#endregion
 
-		#region SHA512 算法
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA512ToString(string original, int key)
-		{
-			byte[] bytes = SHA512ToBytes(original, key);
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA512ToString(string original, Guid key)
-		{
-			byte[] bytes = SHA512ToBytes(original, key);
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">加密额外关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA512ToString(byte[] original, int key)
-		{
-			byte[] bytes = SHA512ToBytes(original, key);
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static string SHA512ToString(string original)
-		{
-			byte[] bytes = _sha512.ComputeHash(Encoding.Unicode.GetBytes(original));
-			return BitConverter.ToString(bytes).Replace("-", "");
-		}
-
+		#region SHA512ToBytes 算法
 		/// <summary>使用不对称加密算法加密字符串</summary>
 		/// <param name="original">源加密字节流</param>
 		/// <param name="key">源加密关键字</param>
 		/// <returns>加密字符串</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA512ToBytes(byte[] original, int key)
+		private static byte[] SHA512ToBytes(byte[] original, int key)
 		{
 			byte[] keyArray = BitConverter.GetBytes(key);
 			int length = keyArray.Length;
@@ -364,7 +280,7 @@ namespace Basic.EntityLayer
 		/// <param name="key">源加密关键字</param>
 		/// <returns>加密字符串</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA512ToBytes(byte[] original, Guid key)
+		private static byte[] SHA512ToBytes(byte[] original, Guid key)
 		{
 			byte[] keyArray = key.ToByteArray();
 			int length = keyArray.Length;
@@ -378,33 +294,97 @@ namespace Basic.EntityLayer
 
 		/// <summary>使用不对称加密算法加密字符串</summary>
 		/// <param name="original">原字符串</param>
-		/// <param name="key">源加密关键字</param>
 		/// <returns>加密字符串</returns>
 		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA512ToBytes(string original, int key)
-		{
-			byte[] obj = Encoding.Unicode.GetBytes(original);
-			return SHA512ToBytes(obj, key);
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <param name="key">源加密关键字</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA512ToBytes(string original, Guid key)
-		{
-			byte[] obj = Encoding.Unicode.GetBytes(original);
-			return SHA512ToBytes(obj, key);
-		}
-
-		/// <summary>使用不对称加密算法加密字符串</summary>
-		/// <param name="original">原字符串</param>
-		/// <returns>加密字符串</returns>
-		[System.Security.SecuritySafeCritical()]
-		public static byte[] SHA512ToBytes(string original)
+		private static byte[] SHA512ToBytes(string original)
 		{
 			return _sha512.ComputeHash(Encoding.Unicode.GetBytes(original));
+		}
+		#endregion
+
+		#region SHA512ToStr 算法
+		/// <summary>SHA512 密码加密算法，计算输入数据的 SHA512 哈希值</summary>
+		/// <remarks>使用 SHA512 算法计算哈希值，并返回计算结果的 base64 单行编码</remarks>
+		/// <param name="original">原字符串</param>
+		/// <returns>加密后的字符串，用 base64 单行编码格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToStr(string original)
+		{
+			byte[] bytes = SHA512ToBytes(original);
+			return Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+		}
+
+		/// <summary>SHA512 密码加密算法，计算输入数据的 SHA512 哈希值</summary>
+		/// <remarks>使用 SHA512 算法计算哈希值，并返回计算结果的 base64 单行编码</remarks>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密后的字符串，用 base64 单行编码格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToStr(string original, Guid key)
+		{
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			return Convert.ToBase64String(SHA512ToBytes(obj, key), Base64FormattingOptions.None);
+		}
+
+		/// <summary>SHA512 密码加密算法，计算输入数据的 SHA512 哈希值</summary>
+		/// <remarks>使用 SHA512 算法计算哈希值，并返回计算结果的 base64 单行编码</remarks>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">源加密关键字</param>
+		/// <returns>加密后的字符串，用 base64 单行编码格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToStr(string original, int key)
+		{
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			return Convert.ToBase64String(SHA512ToBytes(obj, key), Base64FormattingOptions.None);
+		}
+		#endregion
+
+		#region SHA512 算法
+		/// <summary>SHA512 密码加密算法，计算输入数据的 SHA512 哈希值</summary>
+		/// <remarks>使用 SHA512 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToBits(string original, int key)
+		{
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			byte[] bytes = SHA512ToBytes(obj, key);
+			return BitConverter.ToString(bytes).Replace("-", "");
+		}
+
+		/// <summary>SHA512 密码加密算法，计算输入数据的 SHA512 哈希值</summary>
+		/// <remarks>使用 SHA512 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToBits(string original, Guid key)
+		{
+			byte[] obj = Encoding.Unicode.GetBytes(original);
+			return BitConverter.ToString(SHA512ToBytes(obj, key)).Replace("-", "");
+		}
+
+		/// <summary>SHA512 密码加密算法，计算输入数据的 SHA512 哈希值</summary>
+		/// <remarks>使用 SHA512 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
+		/// <param name="original">原字符串</param>
+		/// <param name="key">加密额外关键字</param>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToBits(byte[] original, int key)
+		{
+			return BitConverter.ToString(SHA512ToBytes(original, key)).Replace("-", "");
+		}
+
+		/// <summary>SHA512 密码加密算法，计算输入数据的 SHA512 哈希值</summary>
+		/// <remarks>使用 SHA512 算法计算哈希值，并返回计算结果的十六进制字符串</remarks>
+		/// <param name="original">原字符串</param>
+		/// <returns>加密后的字符串，用十六进制字符串格式返回</returns>
+		[System.Security.SecuritySafeCritical()]
+		public static string SHA512ToBits(string original)
+		{
+			byte[] bytes = _sha512.ComputeHash(Encoding.Unicode.GetBytes(original));
+			return BitConverter.ToString(bytes).Replace("-", "");
 		}
 		#endregion
 

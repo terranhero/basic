@@ -15,19 +15,6 @@ namespace Basic.Loggers
 	public abstract class LoggerWriter : ILoggerWriter
 	{
 		#region ILoggerWriter 对应数据库实例缓存
-		/// <summary>
-		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
-		/// </summary>
-		/// <returns>表示异步刷新操作的任务</returns>
-		public static Task FlushAllAsync()
-		{
-			foreach (ILoggerWriter write in writers.Values)
-			{
-				write.FlushAsync();
-			}
-			return Task.CompletedTask;
-		}
-
 		private static ILoggerWriter UpdateValue(string key, ILoggerWriter value) { return value; }
 
 		private static readonly ConcurrentDictionary<string, ILoggerWriter> writers = new ConcurrentDictionary<string, ILoggerWriter>();
@@ -92,90 +79,28 @@ namespace Basic.Loggers
 		public static bool HasActions { get { return _actions.Count > 0; } }
 		#endregion
 
-
-		///// <summary>日志配置信息</summary>
-		//internal readonly static EventLogsSection _EventLogs = EventLogsSection.DefaultSection;
-
 		/// <summary>日志配置信息</summary>
 		internal readonly static LoggerOptions options = LoggerOptions.Default;
 
-		internal readonly static LocalFileStorage _FileStorage = new LocalFileStorage(options.Mode);
+		/// <summary>文件型日志记录器</summary>
+		internal readonly static LocalFileStorage _fileStorage = new LocalFileStorage(options.Mode);
 
+		/// <summary>控制台型日志记录器</summary>
 		internal readonly static ConsoleStorage _console = new ConsoleStorage();
 
+		/// <summary>本机IP地址</summary>
 		internal readonly static string _host = GetComputerAddress();
 
-		internal readonly ILoggerStorage _storage;
+		/// <summary>数据库型日志记录器</summary>
+		internal readonly IDataBaseStorage _storage;
 		/// <summary>初始化 LoggerWriter 类实例</summary>
 		protected LoggerWriter(string connection) { _storage = new DataBaseStorage(connection, options); }
 
 		/// <summary>初始化 LoggerWriter 类实例</summary>
 		protected LoggerWriter(IUserContext ctx) { _storage = new DataBaseStorage(ctx, options); }
 
-		/// <summary>根据条件查询日志记录</summary>
-		/// <param name="batchNo">日志批次</param>
-		/// <param name="time1">日志记录时间开始</param>
-		/// <param name="time2">日志记录时间结束</param>
-		/// <param name="controller">控制器名称</param>
-		/// <param name="action">操作名称</param>
-		/// <param name="computer">操作电脑</param>
-		/// <param name="user">操作用户名</param>
-		/// <param name="msg">操作消息</param>
-		/// <param name="levels">日志级别</param>
-		/// <param name="results">操作结果</param>
-		/// <returns></returns>
-		public virtual Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid? batchNo, string controller, string action, string computer,
-			string user, string msg, DateTime time1, DateTime time2, LogLevel[] levels = null, LogResult[] results = null)
-		{
-			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
-		}
-
-		/// <summary>根据条件查询日志记录</summary>
-		/// <param name="condition">日志查询条件</param>
-		/// <returns>返回日志查询结果</returns>
-		public virtual Task<IPagination<LoggerEntity>> GetLoggingsAsync(LoggerCondition condition)
-		{
-			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
-		}
-
-		/// <summary>根据条件查询日志记录</summary>
-		/// <param name="batchNo">日志批次号</param>
-		/// <returns>返回日志查询结果</returns>
-		public virtual Task<IPagination<LoggerEntity>> GetLoggingsAsync(Guid batchNo)
-		{
-			return Task.FromResult<IPagination<LoggerEntity>>(new Pagination<LoggerEntity>());
-		}
-
-		/// <summary>根据条件删除日志记录</summary>
-		/// <param name="keys">需要删除的日志主键</param>
-		/// <returns>返回日志查询结果</returns>
-		public virtual Task<Result> DeleteAsync(Guid[] keys)
-		{
-			return Task.FromResult(Result.Success);
-		}
-
-		/// <summary>根据条件删除日志记录</summary>
-		/// <param name="entities">需要删除的日志主键</param>
-		/// <returns>返回日志查询结果</returns>
-		public virtual Task<Result> DeleteAsync(LoggerDelEntity[] entities)
-		{
-			return Task.FromResult(Result.Success);
-		}
-
-		/// <summary>
-		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
-		/// </summary>
-		/// <returns>表示异步刷新操作的任务</returns>
-		public abstract Task FlushAsync();
-
-		/// <summary>
-		/// 异步清除此流的所有缓冲区，并将任何缓冲数据写入底层设备
-		/// </summary>
-		/// <param name="cancellationToken">
-		/// 用于监视取消请求的 <see cref="System.Threading.CancellationToken">System.Threading.CancellationToken</see>
-		/// </param>
-		/// <returns>表示异步刷新操作的任务</returns>
-		public abstract Task FlushAsync(CancellationToken cancellationToken);
+		/// <summary>返回当前日志写入器对应的数据库存储库</summary>
+		public IDataBaseStorage Storage { get { return _storage; } }
 
 		/// <summary>获取Web程序客户端IP地址或Windows程序本机IP地址</summary>
 		/// <returns></returns>
@@ -244,7 +169,7 @@ namespace Basic.Loggers
 				{
 					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 					{
-						await _FileStorage.ErrorAsync(batchNo, controller, action, host, user, ex);
+						await _fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
 					else if (savetype == LogSaveType.DataBase && _storage != null)
 					{
@@ -260,7 +185,7 @@ namespace Basic.Loggers
 			}
 			catch (Exception ex1)
 			{
-				await _FileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1);
+				await _fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1);
 			}
 		}
 
@@ -303,7 +228,7 @@ namespace Basic.Loggers
 				{
 					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 					{
-						await _FileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
+						await _fileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
 					else if (savetype == LogSaveType.DataBase && _storage != null)
 					{
@@ -317,7 +242,7 @@ namespace Basic.Loggers
 			}
 			catch (Exception ex1)
 			{
-				await _FileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1);
+				await _fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1);
 			}
 		}
 
@@ -861,21 +786,21 @@ namespace Basic.Loggers
 				{
 					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 					{
-						_FileStorage.WriteLog(batchNo, controller, action, host, user, ex);
+						_fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
 					else if (savetype == LogSaveType.DataBase && _storage != null)
 					{
-						_storage.WriteLog(batchNo, controller, action, host, user, ex);
+						_storage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
 					else if (savetype == LogSaveType.Console)
 					{
-						_console.WriteLog(batchNo, controller, action, host, user, ex);
+						_console.ErrorAsync(batchNo, controller, action, host, user, ex).ConfigureAwait(false);
 					}
 				}
 			}
 			catch (Exception ex1)
 			{
-				_FileStorage.WriteLog(batchNo, controller, action, host, user, ex1);
+				_fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1);
 			}
 		}
 
@@ -897,21 +822,21 @@ namespace Basic.Loggers
 				{
 					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
 					{
-						_FileStorage.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
+						_fileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType).ConfigureAwait(false);
 					}
 					else if (savetype == LogSaveType.DataBase && _storage != null)
 					{
-						_storage.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
+						_storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType).ConfigureAwait(false);
 					}
 					else if (savetype == LogSaveType.Console)
 					{
-						_console.WriteLog(batchNo, controller, action, host, user, message, logLevel, resultType);
+						_console.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType).ConfigureAwait(false);
 					}
 				}
 			}
 			catch (Exception ex1)
 			{
-				_FileStorage.WriteLog(batchNo, controller, action, host, user, ex1);
+				_fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex1).ConfigureAwait(false);
 			}
 		}
 
@@ -931,19 +856,62 @@ namespace Basic.Loggers
 		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
 		///		"TableName": "SYS_EVENTLOGGER",
 		///		"Information": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Warning": {
-		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
+		///			"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Error": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Debug": {
-		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase,Console)
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None, LocalFile, DataBase, Console)
+		/// 		"Enabled": false //该级别日志配置信息是否有效
+		///		}
+		/// }
+		/// </code>
+		/// <code>
+		/// Program.cs 启动文件中代码如下：<br/>
+		/// services.ConfigLoggerOptions(opts =>
+		/// {
+		///		opts.Information.Enabled = true;
+		///		opts.Information.SaveType = LogSaveType.DataBase;
+		///		opts.Debug.Enabled = false;
+		///		opts.Debug.SaveType = LogSaveType.DataBase;
+		/// });</code>
+		/// </remarks>
+		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+		/// <param name="action">包含要使用的设置的 <see cref="IConfigurationRoot"/></param>
+		public static IServiceCollection ConfigLoggerOptions(this IServiceCollection services, Action<LoggerOptions> action)
+		{
+			if (action != null) { action(LoggerOptions.Default); }
+			return services;
+		}
+
+		/// <summary>使用默认配置节绑定日志配置参数（Loggers）</summary>
+		/// <remarks>
+		/// <code>	
+		/// json配置文件格式如下所示：<br/>
+		/// "Loggers": {
+		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
+		///		"TableName": "SYS_EVENTLOGGER",
+		///		"Information": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Warning": {
+		///			"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Error": {
+		/// 		"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
+		/// 		"Enabled": true //该级别日志配置信息是否有效
+		///		},
+		/// 	"Debug": {
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": false //该级别日志配置信息是否有效
 		///		}
 		/// }
@@ -977,19 +945,19 @@ namespace Basic.Loggers
 		///		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
 		///		"TableName": "SYS_EVENTLOGGER",
 		///		"Information": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Warning": {
-		///			"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
+		///			"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Error": {
-		/// 		"SaveType": "DataBase", //日志保存类型, (None,LocalFile,DataBase,Console)
+		/// 		"SaveType": "DataBase", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": true //该级别日志配置信息是否有效
 		///		},
 		/// 	"Debug": {
-		/// 		"SaveType": "LocalFile", //日志保存类型, (None,LocalFile,DataBase,Console)
+		/// 		"SaveType": "LocalFile", //日志保存类型, (None, LocalFile, DataBase, Console)
 		/// 		"Enabled": false //该级别日志配置信息是否有效
 		///		}
 		/// }

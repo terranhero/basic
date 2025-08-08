@@ -111,7 +111,7 @@ namespace Basic.EasyLibrary
 							if (obj == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
 							else if (obj.GetType().IsClass)
 							{
-								string resultValue = JsonSerializer.SerializeObject(obj, true);
+								string resultValue = JsonSerializer.Serialize(obj, true);
 								list.Add(string.Concat("\"", column.Field, "\":", resultValue));
 							}
 							else if (obj is bool val2)
@@ -252,7 +252,7 @@ namespace Basic.EasyLibrary
 							object obj = column.GetValue(model);
 							if (obj.GetType().IsClass)
 							{
-								string resultValue = JsonSerializer.SerializeObject(obj, true); ;
+								string resultValue = JsonSerializer.Serialize(obj, true); ;
 								if (resultValue == null) { list.Add(string.Concat("\"", column.Field, "\":null")); }
 								else { list.Add(string.Concat("\"", column.Field, "\":", HttpUtility.JavaScriptStringEncode(resultValue))); }
 							}

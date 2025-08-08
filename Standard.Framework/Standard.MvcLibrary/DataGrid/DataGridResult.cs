@@ -72,7 +72,7 @@ namespace Basic.EasyLibrary
 				{
 					if (rowIndex > 0) { response.WriteAsync(","); }
 					rowIndex++;
-					response.WriteAsync(JsonSerializer.SerializeObject(entity, true));
+					response.WriteAsync(JsonSerializer.Serialize(entity, true));
 				}
 			}
 			return response.WriteAsync("]}");

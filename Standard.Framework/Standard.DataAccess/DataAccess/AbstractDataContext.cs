@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Basic.Caches;
 using Basic.Collections;
 using Basic.Configuration;
 using Basic.EntityLayer;

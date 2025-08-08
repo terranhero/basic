@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Data.Common;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
+using Basic.Caches;
 using Basic.Collections;
 using Basic.DataAccess;
 using Basic.EntityLayer;
@@ -62,8 +64,9 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 		private static readonly ConcurrentDictionary<string, DynamicJoinCommand> _innerJoins = new ConcurrentDictionary<string, DynamicJoinCommand>();
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]
-		static void Main(string[] args)
+		static async Task Main(string[] args)
 		{
+			CacheClientFactory.SetClientFactory(new MemoryClientFactory1());
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Now));
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Today));
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER"));
@@ -81,6 +84,10 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
 
+			ICacheClient client = CacheClientFactory.GetClient("");
+			List<int> list = new List<int>() { 2, 4, 6, 7 };
+			await client.SetListAsync("test", list);
+			IEnumerable<KeyInfo> keys = client.GetKeyInfosAsync();
 			//Type type = typeof(ConsecutiveWorkEntity);
 			//if (_innerJoins.TryGetValue(type.FullName, out DynamicJoinCommand cmd))
 			//{

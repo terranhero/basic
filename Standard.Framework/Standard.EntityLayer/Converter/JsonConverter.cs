@@ -170,7 +170,7 @@ namespace Basic.EntityLayer
 			if (includeBrace == true) { sb.Append('{'); }
 			foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
 			{
-				if (!flag) { sb.Append(','); }
+				if (flag == false) { sb.Append(','); }
 				DataMemberAttribute dma = info.GetCustomAttribute<DataMemberAttribute>();
 				if (dma != null && dma.Name != null) { SerializeString(sb, dma.Name, null); }
 				else { SerializeString(sb, info.Name, null); }
@@ -193,13 +193,13 @@ namespace Basic.EntityLayer
 					object propValue = MethodInfoInvoke(getMethod, value, null);
 					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
 					{
-						if (dicValue == null || dicValue.Count == 0) { flag = true; continue; }
-						if (!flag) { sb.Append(','); }
+						if (dicValue == null || dicValue.Count == 0) { flag = false; continue; }
+						if (flag == false) { sb.Append(','); }
 						SerializeDictionaryNoBreak(sb, dicValue, depth);
 						flag = false; continue;
 					}
 
-					if (!flag) { sb.Append(','); }
+					if (flag == false) { sb.Append(','); }
 					DataMemberAttribute dma = info2.GetCustomAttribute<DataMemberAttribute>();
 					if (dma != null && dma.Name != null) { SerializeString(sb, dma.Name, null); }
 					else { SerializeString(sb, info2.Name, null); }
@@ -259,7 +259,7 @@ namespace Basic.EntityLayer
 				}
 				else
 				{
-					if (!flag) { sb.Append(','); }
+					if (flag == false) { sb.Append(','); }
 					SerializeDictionaryKeyValue(sb, key, entry.Value, depth);
 					flag = false;
 				}
