@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>annotations</Nullable>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Standard.Framework\Standard.EntityLayer\Standard.EntityLayer.csproj" />
-    <ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
