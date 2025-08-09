@@ -275,7 +275,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.InformationAsync(string url, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Information, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, url, _host, user, message, LogLevel.Information, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -285,7 +285,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.InformationAsync(string url, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, host, user, message, LogLevel.Information, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, url, host, user, message, LogLevel.Information, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -296,7 +296,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.InformationAsync(string controller, string action, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), controller, action, host, user, message, LogLevel.Information, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, controller, action, host, user, message, LogLevel.Information, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -340,7 +340,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.WarningAsync(string url, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Warning, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, url, _host, user, message, LogLevel.Warning, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -360,7 +360,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.WarningAsync(string url, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Warning, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, url, _host, user, message, LogLevel.Warning, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -382,7 +382,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.WarningAsync(string controller, string action, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), controller, action, _host, user, message, LogLevel.Warning, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, controller, action, _host, user, message, LogLevel.Warning, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -405,7 +405,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.ErrorAsync(string url, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Error, LogResult.Failed);
+			return LoggerAsync(Guid.Empty, url, _host, user, message, LogLevel.Error, LogResult.Failed);
 		}
 
 		/// <summary>记录系统异常的操作日志</summary>
@@ -415,7 +415,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.ErrorAsync(string url, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, host, user, message, LogLevel.Error, LogResult.Failed);
+			return LoggerAsync(Guid.Empty, url, host, user, message, LogLevel.Error, LogResult.Failed);
 		}
 
 		/// <summary>记录系统异常的操作日志</summary>
@@ -426,7 +426,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.ErrorAsync(string controller, string action, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), controller, action, host, user, message, LogLevel.Error, LogResult.Failed);
+			return LoggerAsync(Guid.Empty, controller, action, host, user, message, LogLevel.Error, LogResult.Failed);
 		}
 
 		/// <summary>记录系统异常的操作日志</summary>
@@ -468,7 +468,7 @@ namespace Basic.Loggers
 		/// <param name="ex">操作异常</param>
 		ValueTask ILoggerWriter.ErrorAsync(string url, string user, Exception ex)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, _host, user, ex);
+			return LoggerAsync(Guid.Empty, url, _host, user, ex);
 		}
 
 		/// <summary>记录系统异常的操作日志</summary>
@@ -478,7 +478,7 @@ namespace Basic.Loggers
 		/// <param name="ex">操作异常</param>
 		ValueTask ILoggerWriter.ErrorAsync(string url, string host, string user, Exception ex)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, host, user, ex);
+			return LoggerAsync(Guid.Empty, url, host, user, ex);
 		}
 
 		/// <summary>记录系统异常的操作日志</summary>
@@ -489,7 +489,7 @@ namespace Basic.Loggers
 		/// <param name="ex">操作异常</param>
 		ValueTask ILoggerWriter.ErrorAsync(string controller, string action, string host, string user, Exception ex)
 		{
-			return LoggerAsync(Guid.NewGuid(), controller, action, host, user, ex);
+			return LoggerAsync(Guid.Empty, controller, action, host, user, ex);
 		}
 
 		/// <summary>记录系统异常的操作日志</summary>
@@ -533,7 +533,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.DebugAsync(string url, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Debug, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, url, _host, user, message, LogLevel.Debug, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -553,7 +553,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.DebugAsync(string url, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), url, _host, user, message, LogLevel.Debug, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, url, _host, user, message, LogLevel.Debug, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -575,7 +575,7 @@ namespace Basic.Loggers
 		/// <param name="message">操作描述</param>
 		ValueTask ILoggerWriter.DebugAsync(string controller, string action, string host, string user, string message)
 		{
-			return LoggerAsync(Guid.NewGuid(), controller, action, _host, user, message, LogLevel.Debug, LogResult.Successful);
+			return LoggerAsync(Guid.Empty, controller, action, _host, user, message, LogLevel.Debug, LogResult.Successful);
 		}
 
 		/// <summary>记录操作成功的日志</summary>
@@ -595,7 +595,7 @@ namespace Basic.Loggers
 		#region 日志信息事件 - 同步
 		void ILoggerWriter.Information(string url, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, _host, user, message, LogLevel.Information, LogResult.Successful);
+			Logger(Guid.Empty, url, _host, user, message, LogLevel.Information, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Information(Guid batchNo, string url, string user, string message)
@@ -605,7 +605,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Information(string url, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, host, user, message, LogLevel.Information, LogResult.Successful);
+			Logger(Guid.Empty, url, host, user, message, LogLevel.Information, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Information(Guid batchNo, string url, string host, string user, string message)
@@ -615,7 +615,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Information(string controller, string action, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), controller, action, host, user, message, LogLevel.Information, LogResult.Successful);
+			Logger(Guid.Empty, controller, action, host, user, message, LogLevel.Information, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Information(Guid batchNo, string controller, string action, string host, string user, string message)
@@ -627,7 +627,7 @@ namespace Basic.Loggers
 		#region 日志警告事件 - 同步
 		void ILoggerWriter.Warning(string url, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, _host, user, message, LogLevel.Warning, LogResult.Successful);
+			Logger(Guid.Empty, url, _host, user, message, LogLevel.Warning, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Warning(Guid batchNo, string url, string user, string message)
@@ -637,7 +637,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Warning(string url, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, host, user, message, LogLevel.Warning, LogResult.Successful);
+			Logger(Guid.Empty, url, host, user, message, LogLevel.Warning, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Warning(Guid batchNo, string url, string host, string user, string message)
@@ -647,7 +647,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Warning(string controller, string action, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), controller, action, host, user, message, LogLevel.Warning, LogResult.Successful);
+			Logger(Guid.Empty, controller, action, host, user, message, LogLevel.Warning, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Warning(Guid batchNo, string controller, string action, string host, string user, string message)
@@ -659,7 +659,7 @@ namespace Basic.Loggers
 		#region 日志调试事件 - 同步
 		void ILoggerWriter.Debug(string url, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, _host, user, message, LogLevel.Debug, LogResult.Successful);
+			Logger(Guid.Empty, url, _host, user, message, LogLevel.Debug, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Debug(Guid batchNo, string url, string user, string message)
@@ -669,7 +669,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Debug(string url, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, host, user, message, LogLevel.Debug, LogResult.Successful);
+			Logger(Guid.Empty, url, host, user, message, LogLevel.Debug, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Debug(Guid batchNo, string url, string host, string user, string message)
@@ -679,7 +679,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Debug(string controller, string action, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), controller, action, host, user, message, LogLevel.Debug, LogResult.Successful);
+			Logger(Guid.Empty, controller, action, host, user, message, LogLevel.Debug, LogResult.Successful);
 		}
 
 		void ILoggerWriter.Debug(Guid batchNo, string controller, string action, string host, string user, string message)
@@ -691,7 +691,7 @@ namespace Basic.Loggers
 		#region 日志错误事件 - 同步
 		void ILoggerWriter.Error(string url, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, _host, user, message, LogLevel.Error, LogResult.Failed);
+			Logger(Guid.Empty, url, _host, user, message, LogLevel.Error, LogResult.Failed);
 		}
 
 		void ILoggerWriter.Error(Guid batchNo, string url, string user, string message)
@@ -701,7 +701,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Error(string url, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), url, host, user, message, LogLevel.Error, LogResult.Failed);
+			Logger(Guid.Empty, url, host, user, message, LogLevel.Error, LogResult.Failed);
 		}
 
 		void ILoggerWriter.Error(Guid batchNo, string url, string host, string user, string message)
@@ -711,7 +711,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Error(string controller, string action, string host, string user, string message)
 		{
-			Logger(Guid.NewGuid(), controller, action, host, user, message, LogLevel.Error, LogResult.Failed);
+			Logger(Guid.Empty, controller, action, host, user, message, LogLevel.Error, LogResult.Failed);
 		}
 
 		void ILoggerWriter.Error(Guid batchNo, string controller, string action, string host, string user, string message)
@@ -721,7 +721,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Error(string url, string user, Exception ex)
 		{
-			Logger(Guid.NewGuid(), url, _host, user, ex);
+			Logger(Guid.Empty, url, _host, user, ex);
 		}
 
 		void ILoggerWriter.Error(Guid batchNo, string url, string user, Exception ex)
@@ -731,7 +731,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Error(string url, string host, string user, Exception ex)
 		{
-			Logger(Guid.NewGuid(), url, host, user, ex);
+			Logger(Guid.Empty, url, host, user, ex);
 		}
 
 		void ILoggerWriter.Error(Guid batchNo, string url, string host, string user, Exception ex)
@@ -741,7 +741,7 @@ namespace Basic.Loggers
 
 		void ILoggerWriter.Error(string controller, string action, string host, string user, Exception ex)
 		{
-			Logger(Guid.NewGuid(), controller, action, host, user, ex);
+			Logger(Guid.Empty, controller, action, host, user, ex);
 		}
 
 		void ILoggerWriter.Error(Guid batchNo, string controller, string action, string host, string user, Exception ex)
