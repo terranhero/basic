@@ -851,7 +851,7 @@ namespace Basic.DataAccess
 		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
 		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, params TModel[] entities) where TModel : AbstractEntity
+		internal protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, params TModel[] entities) where TModel : AbstractEntity
 		{
 			using (dataCommand = await BeginExecuteAsync(dataCommand))
 			{
@@ -888,7 +888,7 @@ namespace Basic.DataAccess
 		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
 		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities) where TModel : AbstractEntity
+		internal protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities) where TModel : AbstractEntity
 		{
 			using (dataCommand = await BeginExecuteAsync(dataCommand))
 			{
@@ -922,7 +922,7 @@ namespace Basic.DataAccess
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public async Task<Result> BulkCopyAsync<TR>(BulkCopyCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		internal protected async Task<Result> BulkCopyAsync<TR>(BulkCopyCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			using (batchCommand)
 			{
@@ -944,7 +944,7 @@ namespace Basic.DataAccess
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		internal protected async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return await BulkCopyAsync(batchCommand, table, timeout);
@@ -955,7 +955,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		internal protected async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return await BulkCopyAsync(batchCommand, table, 30);
@@ -969,7 +969,7 @@ namespace Basic.DataAccess
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		protected Result BulkCopy<TR>(BulkCopyCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		internal protected Result BulkCopy<TR>(BulkCopyCommand batchCommand, BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			using (batchCommand)
 			{
@@ -982,7 +982,7 @@ namespace Basic.DataAccess
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public Result BulkCopy<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		internal protected Result BulkCopy<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BulkCopy(batchCommand, table, timeout);
@@ -993,7 +993,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public Result BulkCopy<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		internal protected Result BulkCopy<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BulkCopy(batchCommand, table, 30);
@@ -1034,7 +1034,7 @@ namespace Basic.DataAccess
 		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程命令结构。</param>
 		/// <param name="row"><![CDATA[类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。]]></param>
 		/// <returns>执行ransact-SQL语句的返回值</returns>
-		protected Task<Result> ExecuteCoreAsync(StaticCommand dataCommand, BaseTableRowType row)
+		internal protected Task<Result> ExecuteCoreAsync(StaticCommand dataCommand, BaseTableRowType row)
 		{
 			TaskCompletionSource<Result> source = new TaskCompletionSource<Result>();
 			using (dataCommand = BeginStaticExecute(dataCommand))
@@ -1318,14 +1318,13 @@ namespace Basic.DataAccess
 			}
 		}
 
-
 		/// <summary>
 		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
 		/// </summary>
 		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
 		/// <param name="entity">实体类，包含了需要执行参数的值。</param>
 		/// <returns>返回查询结果，如果为空则返回空引用</returns>
-		protected internal object ExecuteScalar(StaticCommand dataCommand, AbstractEntity entity)
+		internal protected object ExecuteScalar(StaticCommand dataCommand, AbstractEntity entity)
 		{
 			using (dataCommand = BeginStaticExecute(dataCommand))
 			{

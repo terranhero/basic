@@ -21,8 +21,7 @@ namespace Basic.Loggers
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:使用简单的 \"using\" 语句", Justification = "<挂起>")]
 	internal sealed class LocalFileStorage : ILoggerStorage
 	{
-		private const string _SplitLine = @"==================================================================================================================";
-		private const string _SplitChar = "=";
+		private const string _SplitLine = @"===========================================================================================================================================";
 		private readonly string _RootDirectory;
 		private readonly string _LogDirectory;
 		private readonly CycleMode cycleMode;
@@ -83,13 +82,18 @@ namespace Basic.Loggers
 				using (StreamWriter writer = new StreamWriter(logFileName, true, Encoding.Unicode) { AutoFlush = true })
 #endif
 				{
-					while (_loggers.TryDequeue(out LoggerEntity model) && model != null)
+					while (_loggers.TryDequeue(out LoggerEntity log) && log != null)
 					{
+						string logLevel = "info";
+						if (log.LogLevel == LogLevel.Information) { logLevel = "info"; }
+						else if (log.LogLevel == LogLevel.Error) { logLevel = "fail"; }
+						else if (log.LogLevel == LogLevel.Warning) { logLevel = "warn"; }
+						else if (log.LogLevel == LogLevel.Debug) { logLevel = "dbug"; }
 						string info = string.Format("[Time: {0:yyyy-MM-dd HH:mm:ss.fff K}], [Level: {1}], [Controller: {2}], [Action: {3}], [Computer: {4}], [User: {5}]",
-							DateTimeOffset.Now, model.LogLevel.ToString("G"), model.Controller, model.Action, model.Computer, model.UserName);
+							log.OperationTime, logLevel, log.Controller, log.Action, log.Computer, log.UserName);
 						await writer.WriteLineAsync(info);
-						await writer.WriteLineAsync(string.Format("Message:{0}", model.Message));
-						await writer.WriteLineAsync(_SplitChar.PadRight(info.Length - 1, '='));
+						await writer.WriteLineAsync(string.Format("Message:{0}", log.Message));
+						await writer.WriteLineAsync(_SplitLine);
 					}
 				}
 			}
@@ -102,19 +106,88 @@ namespace Basic.Loggers
 				using (StreamWriter writer = new StreamWriter(logFileName, true, Encoding.Unicode) { AutoFlush = true })
 #endif
 				{
-					while (_loggers.TryDequeue(out LoggerEntity model) && model != null)
-					{
-						string info = string.Format("[Time: {0:yyyy-MM-dd HH:mm:ss.fff K}], [Level: {1}], [Controller: {2}], [Action: {3}], [Computer: {4}], [User: {5}]",
-							DateTimeOffset.Now, model.LogLevel.ToString("G"), model.Controller, model.Action, model.Computer, model.UserName);
-						await writer.WriteLineAsync(info);
-						await writer.WriteLineAsync(string.Format("Message:{0}", ex.Message));
-						await writer.WriteLineAsync(_SplitChar.PadRight(info.Length - 1, '='));
-					}
+					string info = string.Format("[Time: {0:yyyy-MM-dd HH:mm:ss.fff K}], [Level: fail], [Controller: BackgroundWorker], [Action: DoWork], [Computer: localhost], [User: Worker]",
+						DateTimeOffset.Now);
+					await writer.WriteLineAsync(info);
+					await writer.WriteLineAsync(string.Format("Message:{0}", ex.Message));
+					await writer.WriteLineAsync(_SplitLine);
 				}
 			}
 		}
 		#endregion
+#if NET6_0_OR_GREATER
+		/// <summary>记录日志信息</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="actionName">当前操作名称</param>
+		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作消息</param>
+		/// <param name="logLevel">日志级别</param>
+		/// <param name="resultType">操作结果</param>
+		public ValueTask WriteAsync(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName,
+			string message, LogLevel logLevel, LogResult resultType)
+		{
+			_loggers.Enqueue(new LoggerEntity(Guid.Empty)
+			{
+				BatchNo = batchNo,
+				Controller = controllerName,
+				Action = actionName,
+				Computer = computerName,
+				UserName = userName,
+				Message = message == null ? null : WebUtility.HtmlEncode(message),
+				LogLevel = logLevel,
+				ResultType = resultType,
+				OperationTime = DateTimeConverter.Now
+			});
+			if (_worker.IsBusy == false) { _worker.RunWorkerAsync(); }
+			return ValueTask.CompletedTask;
+		}
 
+		/// <summary>记录日志信息</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="actionName">当前操作名称</param>
+		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作失败后的异常信息</param>
+		public ValueTask ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
+		{
+			string message = string.Concat(ex.Message, Environment.NewLine, ex.Source, Environment.NewLine, ex.StackTrace);
+			_loggers.Enqueue(new LoggerEntity(Guid.Empty)
+			{
+				BatchNo = batchNo,
+				Controller = controllerName,
+				Action = actionName,
+				Computer = computerName,
+				UserName = userName,
+				Message = message == null ? null : WebUtility.HtmlEncode(message),
+				LogLevel = LogLevel.Error,
+				ResultType = LogResult.Failed,
+				OperationTime = DateTimeConverter.Now
+			});
+			if (ex.InnerException != null)
+			{
+				message = string.Concat(ex.InnerException.Message, Environment.NewLine,
+					ex.InnerException.Source, Environment.NewLine, ex.InnerException.StackTrace);
+
+				_loggers.Enqueue(new LoggerEntity(Guid.Empty)
+				{
+					BatchNo = batchNo,
+					Controller = controllerName,
+					Action = actionName,
+					Computer = computerName,
+					UserName = userName,
+					Message = message == null ? null : WebUtility.HtmlEncode(message),
+					LogLevel = LogLevel.Error,
+					ResultType = LogResult.Failed,
+					OperationTime = DateTimeConverter.Now
+				});
+			}
+			if (_worker.IsBusy == false) { _worker.RunWorkerAsync(); }
+			return ValueTask.CompletedTask;
+		}
+#else
 		/// <summary>记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>
 		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
@@ -186,6 +259,7 @@ namespace Basic.Loggers
 			if (_worker.IsBusy == false) { _worker.RunWorkerAsync(); }
 			return Task.CompletedTask;
 		}
+#endif
 
 		/// <summary>
 		/// 记录日志信息

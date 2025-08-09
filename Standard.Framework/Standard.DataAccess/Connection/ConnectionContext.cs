@@ -82,7 +82,7 @@ namespace Basic.Configuration
 
 		/// <summary>初始化数据库连接参数</summary>
 		/// <param name="connections">表示数据库连接配置</param>
-		public static void InitializeConnection(IConfigurationSection connections)
+		public static void InitializeConnections(IConfigurationSection connections)
 		{
 			Clear(); _DefaultName = connections.GetValue<string>("DefaultName");
 			IConfigurationSection dbConnections = connections.GetRequiredSection("Connections");
@@ -313,7 +313,7 @@ namespace Basic.Configuration
 		public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationRoot root)
 		{
 			IConfigurationSection connections = root.GetSection("Connections");
-			ConnectionContext.InitializeConnection(connections);
+			ConnectionContext.InitializeConnections(connections);
 			return services;
 		}
 
@@ -343,7 +343,7 @@ namespace Basic.Configuration
 		/// <param name="connections">包含要使用的设置的 <see cref="IConfigurationSection"/></param>
 		public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationSection connections)
 		{
-			ConnectionContext.InitializeConnection(connections);
+			ConnectionContext.InitializeConnections(connections);
 			return services;
 		}
 	}

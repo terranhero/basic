@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basic.Configuration;
 using Basic.DataAccess;
+using Microsoft.Extensions.Configuration;
 
 namespace Standard.EntityLayer.Test
 {
@@ -21,7 +22,12 @@ namespace Standard.EntityLayer.Test
 		[AssemblyInitialize]
 		public static void AssemblyInitialize(TestContext context)
 		{
-			ConnectionContext.InitializeConfiguration(@"D:\BASIC\PD_04_Gitee Code\database.Test.config");
+			string path = @"D:\BASIC\PD_04_Gitee Code\Standard.Test\Standard.DataAccess.Test";
+			IConfigurationBuilder configBuilder = new ConfigurationBuilder().SetBasePath(path);
+			IConfigurationRoot root = configBuilder.AddJsonFile("confirugations.json", true, true).Build();
+			IConfigurationSection connections = root.GetSection("Connections");
+			ConnectionContext.InitializeConnections(connections);
+			SqlServerRegister.RegisterSqlServerAccess();
 			SqlServerRegister.RegisterSqlServer2012Access();
 			Assert.IsTrue(true, "AssemblyInitialize 初始化");
 			// Access TestContext properties and methods here. The properties related to the test run are not available.

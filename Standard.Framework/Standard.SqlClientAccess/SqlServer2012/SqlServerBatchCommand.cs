@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,10 +41,17 @@ namespace Basic.SqlServer2012
 					foreach (SqlParameter parameter in command.Parameters)
 					{
 						SqlParameter param = batchCommand.Parameters.Add(parameter.ParameterName, parameter.SqlDbType, parameter.Size);
+						param.SourceColumn = parameter.SourceColumn;
 						param.Precision = parameter.Precision;
 						param.Scale = parameter.Scale;
-						staticCommand.ResetParameterValue(param, null);
+						if (param.Direction == ParameterDirection.Output) { continue; }
+						if (entity.TryGetDbProperty(param.SourceColumn, out EntityPropertyMeta propertyInfo))
+						{
+							object value = propertyInfo.GetValue(entity);
+							staticCommand.ResetParameterValue(param, value);
+						}
 					}
+
 					batchCommand.CommandType = staticCommand.CommandType;
 					//batchCommand.Parameters.Add(new SqlParameter(parameterName, i));
 					batch.BatchCommands.Add(batchCommand);

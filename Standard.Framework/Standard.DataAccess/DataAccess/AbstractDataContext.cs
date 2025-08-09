@@ -47,7 +47,7 @@ namespace Basic.DataAccess
 		internal protected string Connection { get { return _User.Connection; } }
 
 		/// <summary>获取用户上下文信息</summary>
-		internal protected IUserContext Context { get { return _User; } }
+		internal protected IUserContext Identity { get { return _User; } }
 
 		#region 获取区域字符串资源
 		/// <summary>使用 Lambda 表达式获取布尔类型属性值。</summary>

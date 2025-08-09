@@ -1,0 +1,46 @@
+{
+	"AllowedHosts": "*",
+	"Logging": {
+		"LogLevel": {
+			"Default": "Information",
+			"Microsoft": "Warning",
+			"Microsoft.Hosting.Lifetime": "Information"
+		}
+	},
+	"Connections": {
+		"DefaultName": "LOCAL",
+		"Connections": {
+			"LOCAL": {
+				"ConnectionType": "NewSqlConnection",
+				"Version": 12,
+				"Application Name": "HRMS-TEST",
+				"Initial Catalog": "HRMS-V5",
+				"Data Source": "(local)",
+				"User ID": "sa",
+				"Password": "C/1Shp55C14b0TtEhs87bg==",
+				"TrustServerCertificate": "True",
+				"Persist Security Info": "True",
+				"Max Pool Size": "2000"
+			}
+		}
+	},
+	"Loggers": {
+		"Mode": "Monthly", //表示日志文件记录级别分(Daily / Weekly / Monthly)
+		"Information": {
+			"SaveType": "DataBase", //日志保存类型, (None, Console, LocalFile, DataBase)
+			"Enabled": true //该级别日志配置信息是否有效
+		},
+		"Warning": {
+			"SaveType": "DataBase", //日志保存类型, (None, Console, LocalFile, DataBase)
+			"Enabled": true //该级别日志配置信息是否有效
+		},
+		"Error": {
+			"SaveType": "LocalFile", //日志保存类型, (None, Console, LocalFile, DataBase)
+			"Enabled": true //该级别日志配置信息是否有效
+		},
+		"Debug": {
+			"SaveType": "Console", //日志保存类型, (None, Console, LocalFile, DataBase)
+			"Enabled": false //该级别日志配置信息是否有效
+		}
+	}
+}

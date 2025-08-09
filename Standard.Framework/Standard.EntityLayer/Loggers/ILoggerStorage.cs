@@ -33,7 +33,28 @@ namespace Basic.Interfaces
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作失败后的异常信息</param>
 		void Error(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex);
+#if NET6_0_OR_GREATER
+		/// <summary>采用异步方式记录日志信息</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="actionName">当前操作名称</param>
+		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作消息</param>
+		/// <param name="logLevel">日志级别</param>
+		/// <param name="resultType">操作结果</param>
+		ValueTask WriteAsync(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName,
+		  string message, LogLevel logLevel, LogResult resultType);
 
+		/// <summary>采用异步方式记录日志信息</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="actionName">当前操作名称</param>
+		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作失败后的异常信息</param>
+		ValueTask ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex);
+#else
 		/// <summary>采用异步方式记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>
 		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
@@ -54,6 +75,7 @@ namespace Basic.Interfaces
 		/// <param name="userName">当前操作用户</param>
 		/// <param name="ex">操作失败后的异常信息</param>
 		Task ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex);
+#endif
 	}
 
 	/// <summary>将日志写入数据库中</summary>

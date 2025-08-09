@@ -52,17 +52,20 @@ namespace Basic.Loggers
 						Console.ForegroundColor = ConsoleColor.Yellow;
 						await writer.WriteAsync("warn: "); Console.ResetColor();
 					}
-					else if (model.LogLevel == LogLevel.Debug) { Console.Write("dbug: "); }
+					else if (model.LogLevel == LogLevel.Debug)
+					{
+						await writer.WriteAsync("dbug: ");
+					}
 
-					Console.WriteLine("Controller: {0}, Action: {1}, Time: {2:yyyy-MM-dd HH:mm:ss.fff K}", model.Controller, model.Action, model.OperationTime);
+					await writer.WriteLineAsync(string.Format("Controller: {0}, Action: {1}, Time: {2:yyyy-MM-dd HH:mm:ss.fff K}", model.Controller, model.Action, model.OperationTime));
 					await writer.WriteAsync("      "); await writer.WriteLineAsync(model.Message);
 				}
 			}
 			catch (Exception ex)
 			{
 				Console.ForegroundColor = ConsoleColor.DarkRed;
-				Console.Write("fail: "); Console.ResetColor();
-				Console.WriteLine("Controller: BackgroundWorker, Action: DoWork, Time: {0:yyyy-MM-dd HH:mm:ss.fff K}", DateTimeOffset.Now);
+				await writer.WriteAsync("fail: "); Console.ResetColor();
+				await writer.WriteLineAsync(string.Format("Controller: BackgroundWorker, Action: DoWork, Time: {0:yyyy-MM-dd HH:mm:ss.fff K}", DateTimeOffset.Now));
 				await writer.WriteAsync("      "); await writer.WriteLineAsync(ex.Message);
 				await writer.WriteAsync("      "); await writer.WriteLineAsync(ex.Source);
 				await writer.WriteAsync("      "); await writer.WriteLineAsync(ex.StackTrace);
@@ -70,6 +73,79 @@ namespace Basic.Loggers
 		}
 		#endregion
 
+#if NET6_0_OR_GREATER
+		/// <summary>记录日志信息</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="actionName">当前操作名称</param>
+		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="message">操作消息</param>
+		/// <param name="logLevel">日志级别</param>
+		/// <param name="resultType">操作结果</param>
+		public ValueTask WriteAsync(System.Guid batchNo, string controllerName, string actionName, string computerName, string userName,
+			string message, LogLevel logLevel, LogResult resultType)
+		{
+			_loggers.Enqueue(new LoggerEntity(Guid.Empty)
+			{
+				BatchNo = batchNo,
+				Controller = controllerName,
+				Action = actionName,
+				Computer = computerName,
+				UserName = userName,
+				Message = message == null ? null : WebUtility.HtmlEncode(message),
+				LogLevel = logLevel,
+				ResultType = resultType,
+				OperationTime = DateTimeConverter.Now
+			});
+			if (_worker.IsBusy == false) { _worker.RunWorkerAsync(); }
+			return ValueTask.CompletedTask;
+		}
+
+		/// <summary>记录日志信息</summary>
+		/// <param name="batchNo">日志批次</param>
+		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
+		/// <param name="actionName">当前操作名称</param>
+		/// <param name="computerName">操作计算机名称或操作计算机地址</param>
+		/// <param name="userName">当前操作用户</param>
+		/// <param name="ex">操作失败后的异常信息</param>
+		public ValueTask ErrorAsync(Guid batchNo, string controllerName, string actionName, string computerName, string userName, System.Exception ex)
+		{
+			string message = string.Concat(ex.Message, Environment.NewLine, ex.Source, Environment.NewLine, ex.StackTrace);
+			_loggers.Enqueue(new LoggerEntity(Guid.Empty)
+			{
+				BatchNo = batchNo,
+				Controller = controllerName,
+				Action = actionName,
+				Computer = computerName,
+				UserName = userName,
+				Message = message == null ? null : WebUtility.HtmlEncode(message),
+				LogLevel = LogLevel.Error,
+				ResultType = LogResult.Failed,
+				OperationTime = DateTimeConverter.Now
+			});
+			if (ex.InnerException != null)
+			{
+				message = string.Concat(ex.InnerException.Message, Environment.NewLine,
+					ex.InnerException.Source, Environment.NewLine, ex.InnerException.StackTrace);
+
+				_loggers.Enqueue(new LoggerEntity(Guid.Empty)
+				{
+					BatchNo = batchNo,
+					Controller = controllerName,
+					Action = actionName,
+					Computer = computerName,
+					UserName = userName,
+					Message = message == null ? null : WebUtility.HtmlEncode(message),
+					LogLevel = LogLevel.Error,
+					ResultType = LogResult.Failed,
+					OperationTime = DateTimeConverter.Now
+				});
+			}
+			if (_worker.IsBusy == false) { _worker.RunWorkerAsync(); }
+			return ValueTask.CompletedTask;
+		}
+#else
 		/// <summary>记录日志信息</summary>
 		/// <param name="batchNo">日志批次</param>
 		/// <param name="controllerName">当前操作所属控制器、页面、窗体名称</param>
@@ -143,7 +219,7 @@ namespace Basic.Loggers
 			if (_worker.IsBusy == false) { _worker.RunWorkerAsync(); }
 			return Task.CompletedTask;
 		}
-
+#endif
 		/// <summary>
 		/// 记录日志信息
 		/// </summary>

@@ -66,7 +66,7 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]
 		static async Task Main(string[] args)
 		{
-			CacheClientFactory.SetClientFactory(new MemoryClientFactory1());
+			CacheClientFactory.SetClientFactory(new MemoryClientFactory());
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Now));
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Today));
 			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER"));
