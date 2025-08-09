@@ -78,7 +78,7 @@ namespace Basic.Loggers
 		private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 		private bool _isProcessing = false; // 标记是否正在处理队列
 		/// <summary>处理日志队列的异步方法</summary>
-		private async Task ProcessQueueAsync()
+		private async Task ProcessQueueAsync(CancellationToken cancellationToken = default)
 		{
 			// 确保同时只有一个处理任务在运行
 			if (!await _semaphore.WaitAsync(0)) { return; }
@@ -123,6 +123,7 @@ namespace Basic.Loggers
 			// 如果还有剩余日志，继续处理
 			if (_loggers.Count > 0)
 			{
+				await Task.Delay(50, cancellationToken);
 				await ProcessQueueAsync();
 			}
 		}
