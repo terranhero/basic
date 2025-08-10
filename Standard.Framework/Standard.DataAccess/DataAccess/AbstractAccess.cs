@@ -144,50 +144,6 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		//#region 批量插入数据
-		///// <summary>
-		///// 使用 XXXBulkCopy 类执行数据插入命令
-		///// </summary>
-		///// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		///// <param name="timeout">超时之前操作完成所允许的秒数。</param>
-		///// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		//public virtual Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
-		//{
-		//	return base.BulkCopyAsync<TR>(table, timeout);
-		//}
-
-		///// <summary>
-		///// 使用 XXXBulkCopy 类执行数据插入命令
-		///// </summary>
-		///// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		///// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		//public virtual Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
-		//{
-		//	return base.BulkCopyAsync<TR>(table);
-		//}
-
-		///// <summary>
-		///// 使用 XXXBulkCopy 类执行数据插入命令
-		///// </summary>
-		///// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
-		///// <param name="timeout">超时之前操作完成所允许的秒数。</param>
-		///// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		//public virtual Result BulkCopy<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
-		//{
-		//	return base.BatchExecute<TR>(table, timeout);
-		//}
-
-		///// <summary>
-		///// 使用 XXXBulkCopy 类执行数据插入命令
-		///// </summary>
-		///// <param name="table">包含需要新增的数据表实例，此实例是 BaseTableType&lt;BaseTableRowType&gt; 类的子类。</param>
-		///// <returns>如果执行成功返回0，执行失败则返回错误代码。</returns>
-		//public virtual Result BulkCopy<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
-		//{
-		//	return base.BatchExecute<TR>(table);
-		//}
-		//#endregion
-
 		#region 新增数据
 		/// <summary>
 		/// 新增数据实体

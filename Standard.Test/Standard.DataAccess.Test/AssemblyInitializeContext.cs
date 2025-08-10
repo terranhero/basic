@@ -24,7 +24,7 @@ namespace Standard.EntityLayer.Test
 		{
 			string path = @"D:\BASIC\PD_04_Gitee Code\Standard.Test\Standard.DataAccess.Test";
 			IConfigurationBuilder configBuilder = new ConfigurationBuilder().SetBasePath(path);
-			IConfigurationRoot root = configBuilder.AddJsonFile("confirugations.json", true, true).Build();
+			IConfigurationRoot root = configBuilder.AddJsonFile("databases.json", true, true).Build();
 			IConfigurationSection connections = root.GetSection("Connections");
 			ConnectionContext.InitializeConnections(connections);
 			SqlServerRegister.RegisterSqlServerAccess();

@@ -944,7 +944,7 @@ namespace Basic.DataAccess
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		public async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return await BulkCopyAsync(batchCommand, table, timeout);
@@ -955,7 +955,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		public async Task<Result> BulkCopyAsync<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return await BulkCopyAsync(batchCommand, table, 30);
@@ -982,7 +982,7 @@ namespace Basic.DataAccess
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected Result BulkCopy<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
+		public Result BulkCopy<TR>(BaseTableType<TR> table, int timeout) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BulkCopy(batchCommand, table, timeout);
@@ -993,7 +993,7 @@ namespace Basic.DataAccess
 		/// </summary>
 		/// <param name="table">类型 BaseTableType&lt;BaseTableRowType&gt; 子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected Result BulkCopy<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
+		public Result BulkCopy<TR>(BaseTableType<TR> table) where TR : BaseTableRowType
 		{
 			BulkCopyCommand batchCommand = CreateBulkCopy();
 			return BulkCopy(batchCommand, table, 30);
