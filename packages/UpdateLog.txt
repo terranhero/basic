@@ -1,3 +1,6 @@
+版本：6.0.5844
+修复 JsonConverter 序列化 Json 字符串方法 ，遇到 PropertyCollectionAttribute标记的键值对数组时数组为空，标点符号输出错误。
+
 版本：6.0.5843
 添加 ILoggerWriter 接口netstandard2.0版本异步方法。
 

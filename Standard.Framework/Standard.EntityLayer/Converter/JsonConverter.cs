@@ -47,8 +47,8 @@ namespace Basic.EntityLayer
 		/// <returns>DataEntity子类实例序列化的结果</returns>
 		public string Serialize<T>(T value, bool includeBrace)
 		{
-			StringBuilder resultBuilder = new StringBuilder(500);
-			SerializeValuePrivate(resultBuilder, value, true, 0, null);
+			StringBuilder resultBuilder = new StringBuilder(2000);
+			SerializeValuePrivate(resultBuilder, value, true, 0, null, _CultureInfo);
 
 			if (includeBrace == false)
 			{
@@ -64,8 +64,8 @@ namespace Basic.EntityLayer
 		/// <returns>DataEntity子类实例序列化的结果</returns>
 		public string Serialize<T>(IEnumerable<T> value, bool includeBrace)
 		{
-			StringBuilder resultBuilder = new StringBuilder(500);
-			SerializeValuePrivate(resultBuilder, value, true, 0, null);
+			StringBuilder resultBuilder = new StringBuilder(2000);
+			SerializeValuePrivate(resultBuilder, value, true, 0, null, _CultureInfo);
 			if (includeBrace == false)
 			{
 				resultBuilder.Replace("[", "", 0, 1);
@@ -74,7 +74,7 @@ namespace Basic.EntityLayer
 			return resultBuilder.ToString();
 		}
 
-		private void SerializeValuePrivate(StringBuilder sb, object value, bool includeBrace, int depth, string format)
+		private void SerializeValuePrivate(StringBuilder sb, object value, bool includeBrace, int depth, string format, CultureInfo ci)
 		{
 			if (value == null || DBNull.Value == value)
 			{
@@ -146,17 +146,17 @@ namespace Basic.EntityLayer
 						{
 							if (value is IDictionary)
 							{
-								SerializeDictionary(sb, value as IDictionary, depth);
+								SerializeDictionary(sb, value as IDictionary, depth, ci);
 							}
 							else
 							{
 								if (value is IEnumerable enumerable)
 								{
-									SerializeEnumerable(sb, enumerable, depth);
+									SerializeEnumerable(sb, enumerable, depth, ci);
 								}
 								else
 								{
-									SerializeCustomObject(sb, value, depth, includeBrace);
+									SerializeCustomObject(sb, value, depth, includeBrace, ci);
 								}
 							}
 						}
@@ -164,19 +164,19 @@ namespace Basic.EntityLayer
 				}
 			}
 		}
-		private void SerializeCustomObject(StringBuilder sb, object value, int depth, bool includeBrace)
+		private void SerializeCustomObject(StringBuilder sb, object value, int depth, bool includeBrace, CultureInfo ci)
 		{
-			Type type = value.GetType(); bool flag = true;
+			Type type = value.GetType(); bool comma = false;/*true:表示需要追加逗号(,)，false表示不需要追加逗号(,)*/
 			if (includeBrace == true) { sb.Append('{'); }
 			foreach (FieldInfo info in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
 			{
-				if (flag == false) { sb.Append(','); }
+				if (comma == true) { sb.Append(','); }
 				DataMemberAttribute dma = info.GetCustomAttribute<DataMemberAttribute>();
 				if (dma != null && dma.Name != null) { SerializeString(sb, dma.Name, null); }
 				else { SerializeString(sb, info.Name, null); }
 				sb.Append(':');
-				SerializeValuePrivate(sb, FieldInfoGetValue(info, value), true, depth, null);
-				flag = false;
+				SerializeValuePrivate(sb, FieldInfoGetValue(info, value), true, depth, null, ci);
+				comma = true;
 			}
 			foreach (PropertyInfo info2 in type.GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
 			{
@@ -193,58 +193,56 @@ namespace Basic.EntityLayer
 					object propValue = MethodInfoInvoke(getMethod, value, null);
 					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
 					{
-						if (dicValue == null || dicValue.Count == 0) { flag = false; continue; }
-						if (flag == false) { sb.Append(','); }
-						SerializeDictionaryNoBreak(sb, dicValue, depth);
-						flag = false; continue;
+						if (dicValue == null || dicValue.Count == 0) { continue; }
+						if (comma == true) { sb.Append(','); }
+						SerializeDictionaryNoBreak(sb, dicValue, depth, ci);
+						comma = true; continue;
 					}
 
-					if (flag == false) { sb.Append(','); }
+					if (comma == true) { sb.Append(','); }
 					DataMemberAttribute dma = info2.GetCustomAttribute<DataMemberAttribute>();
 					if (dma != null && dma.Name != null) { SerializeString(sb, dma.Name, null); }
 					else { SerializeString(sb, info2.Name, null); }
 					sb.Append(':');
-					if (dfa != null) { SerializeValuePrivate(sb, propValue, true, depth, dfa.DataFormatString); }
-					else { SerializeValuePrivate(sb, propValue, true, depth, null); }
+					if (dfa != null) { SerializeValuePrivate(sb, propValue, true, depth, dfa.DataFormatString, ci); }
+					else { SerializeValuePrivate(sb, propValue, true, depth, null, ci); }
 
 					if (info2.PropertyType == typeof(bool) && wdAttr != null)
 					{
 						sb.Append(',');
 						SerializeString(sb, info2.Name + "Text", null);
 						sb.Append(':');
-						SerializeBoolean(sb, wdAttr, (bool)propValue);
+						SerializeBoolean(sb, wdAttr, (bool)propValue, ci);
 					}
 					else if (info2.PropertyType == typeof(Nullable<bool>) && propValue != null && wdAttr != null)
 					{
 						sb.Append(',');
 						SerializeString(sb, info2.Name + "Text", null);
 						sb.Append(':');
-						SerializeBoolean(sb, wdAttr, (bool)propValue);
+						SerializeBoolean(sb, wdAttr, (bool)propValue, ci);
 					}
 					else if (info2.PropertyType.IsEnum && wdAttr != null)
 					{
 						sb.Append(','); SerializeString(sb, info2.Name + "Text", null); sb.Append(':');
-						SerializeEnumValue(sb, info2, wdAttr, propValue);
+						SerializeEnumValue(sb, info2, wdAttr, propValue, ci);
 					}
 					else if (info2.PropertyType == typeof(Nullable<>) && info2.PropertyType.DeclaringType.IsEnum && propValue != null && wdAttr != null)
 					{
 						sb.Append(','); SerializeString(sb, info2.Name + "Text", null); sb.Append(':');
-						SerializeEnumValue(sb, info2, wdAttr, propValue);
+						SerializeEnumValue(sb, info2, wdAttr, propValue, ci);
 					}
-					flag = false;
+					comma = true;
 				}
 			}
 			if (includeBrace == true) { sb.Append('}'); }
 		}
-		private void SerializeDictionaryNoBreak(StringBuilder sb, IDictionary value, int depth)
+		private void SerializeDictionaryNoBreak(StringBuilder sb, IDictionary value, int depth, CultureInfo ci)
 		{
-			bool flag = true;
-			bool flag2 = false;
+			bool flag = true; bool flag2 = false;
 			if (value.Contains("__type"))
 			{
-				flag = false;
-				flag2 = true;
-				SerializeDictionaryKeyValue(sb, "__type", value["__type"], depth);
+				flag = false; flag2 = true;
+				SerializeDictionaryKeyValue(sb, "__type", value["__type"], depth, ci);
 			}
 			foreach (DictionaryEntry entry in value)
 			{
@@ -260,25 +258,25 @@ namespace Basic.EntityLayer
 				else
 				{
 					if (flag == false) { sb.Append(','); }
-					SerializeDictionaryKeyValue(sb, key, entry.Value, depth);
+					SerializeDictionaryKeyValue(sb, key, entry.Value, depth, ci);
 					flag = false;
 				}
 			}
 		}
 
-		private void SerializeDictionary(StringBuilder sb, IDictionary value, int depth)
+		private void SerializeDictionary(StringBuilder sb, IDictionary value, int depth, CultureInfo ci)
 		{
 			sb.Append('{');
-			SerializeDictionaryNoBreak(sb, value, depth);
+			SerializeDictionaryNoBreak(sb, value, depth, ci);
 			sb.Append('}');
 		}
-		private void SerializeDictionaryKeyValue(StringBuilder sb, string key, object value, int depth)
+		private void SerializeDictionaryKeyValue(StringBuilder sb, string key, object value, int depth, CultureInfo ci)
 		{
 			SerializeString(sb, key, null);
 			sb.Append(':');
-			SerializeValuePrivate(sb, value, true, depth, null);
+			SerializeValuePrivate(sb, value, true, depth, null, ci);
 		}
-		private void SerializeEnumerable(StringBuilder sb, IEnumerable enumerable, int depth)
+		private void SerializeEnumerable(StringBuilder sb, IEnumerable enumerable, int depth, CultureInfo ci)
 		{
 			sb.Append('['); bool flag = false;
 			Type eleType = enumerable.GetType().GetElementType();
@@ -287,7 +285,7 @@ namespace Basic.EntityLayer
 			{
 				if (flag) { sb.Append(','); }
 				if (eleType != null && eleType != typeof(string) && (eleType.IsClass || eleType.IsInterface)) { sb.AppendLine(); }
-				SerializeValuePrivate(sb, obj2, true, depth, null);
+				SerializeValuePrivate(sb, obj2, true, depth, null, ci);
 				flag = true;
 			}
 			sb.Append(']');
@@ -330,7 +328,7 @@ namespace Basic.EntityLayer
 			else
 				sb.AppendFormat("\"{0:HH:mm}\"", value);
 		}
-		private void SerializeEnumValue(StringBuilder sb, PropertyInfo info2, WebDisplayAttribute wdAttr, object propValue)
+		private void SerializeEnumValue(StringBuilder sb, PropertyInfo info2, WebDisplayAttribute wdAttr, object propValue, CultureInfo ci)
 		{
 			string value = Enum.Format(info2.PropertyType, propValue, "F");
 			Type eType = info2.PropertyType; string converterName = null;
@@ -344,7 +342,7 @@ namespace Basic.EntityLayer
 				foreach (string item in value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
 				{
 					string itemName = string.Concat(enumName, "_", item.Trim());
-					names.Add(GetResourceString(converterName, itemName));
+					names.Add(GetResourceString(converterName, itemName, ci));
 				}
 				SerializeString(sb, string.Join(", ", names.ToArray()), null);
 			}
@@ -354,14 +352,14 @@ namespace Basic.EntityLayer
 				else
 				{
 					string itemName = string.Concat(enumName, "_", value);
-					SerializeString(sb, GetResourceString(converterName, itemName), null);
+					SerializeString(sb, GetResourceString(converterName, itemName, ci), null);
 				}
 			}
 		}
-		private void SerializeBoolean(StringBuilder sb, WebDisplayAttribute wdAttr, bool value)
+		private void SerializeBoolean(StringBuilder sb, WebDisplayAttribute wdAttr, bool value, CultureInfo ci)
 		{
 			string source = string.Concat(wdAttr.DisplayName, value ? "_TrueText" : "_FalseText");
-			SerializeString(sb, GetResourceString(wdAttr.ConverterName, source), null);
+			SerializeString(sb, GetResourceString(wdAttr.ConverterName, source, ci), null);
 		}
 		private void SerializeBoolean(StringBuilder sb, bool value)
 		{
@@ -377,12 +375,17 @@ namespace Basic.EntityLayer
 		}
 
 		/// <summary>获取资源文件中的字符串资源</summary>
-		/// <param name="converter"></param>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		private string GetResourceString(string converter, string name)
+		/// <param name="converter">需要指定的转换器名称。</param>
+		/// <param name="name">要获取的资源名。</param>
+		/// <param name="ci">
+		/// System.Globalization.CultureInfo 对象，它表示资源被本地化为的区域性。请注意，如果尚未为此区域性本地化该资源，则查找将使用当前线程的
+		/// System.Globalization.CultureInfo.Parent 属性回退，并在非特定语言区域性中查找后停止。如果此值为 null，则使用当前线程的
+		/// System.Globalization.CultureInfo.CurrentUICulture 属性获取 System.Globalization.CultureInfo。
+		/// </param>
+		/// <returns>为指定区域性本地化的资源的值。如果不可能有最佳匹配，则返回 null。</returns>
+		private string GetResourceString(string converter, string name, CultureInfo ci)
 		{
-			return MessageContext.GetString(converter, name, _CultureInfo);
+			return MessageContext.GetString(converter, name, ci);
 		}
 
 		#region 类型安全检测
