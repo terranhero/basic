@@ -499,7 +499,7 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		#region 执行数据库方法(ExecuteNonQueryAsync)
+		#region 执行数据库方法 ( ExecuteNonQueryAsync)
 		/// <summary>
 		/// 执行Transact-SQL命令
 		/// </summary>
@@ -684,7 +684,7 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		#region 执行数据库方法(ExecuteNonQuery)
+		#region 执行数据库方法 ( ExecuteNonQuery)
 		/// <summary>
 		/// 执行Transact-SQL命令
 		/// </summary>
@@ -827,6 +827,7 @@ namespace Basic.DataAccess
 		#endregion
 
 		#region 异步执行批处理命令 ( BatchAsync )
+#if NET6_0_OR_GREATER
 		/// <summary>使用 BatchCommand 类执行数据命令</summary>
 		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
 		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
@@ -851,7 +852,7 @@ namespace Basic.DataAccess
 		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
 		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, params TModel[] entities) where TModel : AbstractEntity
+		public async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, params TModel[] entities) where TModel : AbstractEntity
 		{
 			using (dataCommand = await BeginExecuteAsync(dataCommand))
 			{
@@ -888,7 +889,7 @@ namespace Basic.DataAccess
 		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
 		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities) where TModel : AbstractEntity
+		public async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities) where TModel : AbstractEntity
 		{
 			using (dataCommand = await BeginExecuteAsync(dataCommand))
 			{
@@ -900,6 +901,30 @@ namespace Basic.DataAccess
 				});
 			}
 		}
+
+		/// <summary>使用 BatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
+		/// <see  cref="StaticCommand.CheckCommands">CheckCommands</see> 和 
+		/// <see cref="StaticCommand.NewValues">NewValues</see> 中包含的命令
+		/// 所以在执行此命令前，需要将数据有效性验证和取值命令提前执行完成/// </remarks>
+		/// <param name="dataCommand">表示要对数据源执行的 SQL 语句或存储过程。</param>
+		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
+		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		public async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities, Action<DbParameter, TModel> paramSettings) where TModel : AbstractEntity
+		{
+			using (dataCommand = await BeginExecuteAsync(dataCommand))
+			{
+				return await dataCommand.BatchAsync(entities, paramSettings).ContinueWith(tt =>
+				{
+					if (tt.IsFaulted) { _Result.AddError(tt.Exception.Message); }
+					else { _Result.AffectedRows = tt.Result; }
+					return _Result;
+				});
+			}
+		}
+#endif
 		#endregion
 
 		#region 异步执行数据库方法(XXXBulkCopy，BatchExecuteAsync)
@@ -1000,7 +1025,7 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		#region 执行数据库方法(ExecuteCore)
+		#region 执行数据库方法 ( ExecuteCore)
 		/// <summary>
 		/// 执行Transact-SQL命令
 		/// </summary>
@@ -1129,7 +1154,7 @@ namespace Basic.DataAccess
 		}
 		#endregion
 
-		#region 执行数据库方法(ExecuteScalarAsync)
+		#region 执行数据库方法 ( ExecuteScalarAsync)
 		/// <summary>
 		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
 		/// </summary>
@@ -1240,7 +1265,7 @@ namespace Basic.DataAccess
 
 		#endregion
 
-		#region 执行数据库方法(ExecuteScalar)
+		#region 执行数据库方法 ( ExecuteScalar)
 		/// <summary>
 		/// 执行查询，并返回查询所返回的结果集中第一行的第一列。忽略额外的列或行.
 		/// </summary>
@@ -1350,7 +1375,7 @@ namespace Basic.DataAccess
 
 		#endregion
 
-		#region 执行数据库方法(ExecuteReader)
+		#region 执行数据库方法 ( ExecuteReader)
 
 		/// <summary>
 		/// 获取数据库的只读流

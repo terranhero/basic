@@ -777,6 +777,8 @@ namespace Basic.DataAccess
 		#endregion
 
 		#region 异步执行批处理命令
+#if NET6_0_OR_GREATER
+
 		/// <summary>创建批处理命令</summary>
 		/// <returns>返回 BatchCommand 的实例</returns>
 		internal protected abstract BatchCommand CreateBatchCommand();
@@ -792,6 +794,20 @@ namespace Basic.DataAccess
 				return batch.ExecuteAsync<TModel>(entities, CommandTimeout);
 			}
 		}
+
+		/// <summary>使用 BatchCommand 类执行数据插入命令</summary>
+		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
+		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
+		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
+		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
+		internal protected virtual Task<int> BatchAsync<TModel>(IEnumerable<TModel> entities, Action<DbParameter, TModel> paramSettings) where TModel : AbstractEntity
+		{
+			using (BatchCommand batch = CreateBatchCommand())
+			{
+				return batch.ExecuteAsync<TModel>(entities, paramSettings, CommandTimeout);
+			}
+		}
+#endif
 		#endregion
 
 		#region 实现接口 IXmlSerializable

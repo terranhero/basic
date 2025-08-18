@@ -230,6 +230,7 @@ namespace Basic.DataAccess
 			return base.ExecuteNonQueryAsync(CreateCommand, entities);
 		}
 
+#if NET6_0_OR_GREATER
 		/// <summary>使用 BatchCommand 类批处理 INSERT 命令执行插入数据命令</summary>
 		/// <typeparam name="TModel">表示 <see cref="AbstractEntity"/> 类型实例</typeparam>
 		/// <remarks>使用此命令执行时，不在执行<see cref="StaticCommand"/>中 
@@ -242,6 +243,7 @@ namespace Basic.DataAccess
 		{
 			return await base.BatchAsync(CreateCommand, entities);
 		}
+#endif
 		#endregion
 
 		#region 更新数据
