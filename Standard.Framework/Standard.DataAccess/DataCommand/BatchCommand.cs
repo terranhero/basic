@@ -49,7 +49,7 @@ namespace Basic.DataAccess
 		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
 		/// <param name="entities">类型 <typeparamref name='TModel'/>子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected virtual STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, System.Action<DbParameter, TModel> paramSettings) where TModel : AbstractEntity
+		internal protected virtual STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, System.Action<DbParameter, TModel> paramSettings)
 		{
 			return this.ExecuteAsync<TModel>(entities, paramSettings, 30);
 		}
@@ -60,7 +60,7 @@ namespace Basic.DataAccess
 		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
 		/// <param name="entities">类型 <typeparamref name='TModel'/>子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>受影响的行数。</returns>
-		internal protected abstract STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, System.Action<DbParameter, TModel> paramSettings, int timeout) where TModel : AbstractEntity;
+		internal protected abstract STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, System.Action<DbParameter, TModel> paramSettings, int timeout);
 #endif
 	}
 }

@@ -912,7 +912,7 @@ namespace Basic.DataAccess
 		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
 		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		public async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities, Action<DbParameter, TModel> paramSettings) where TModel : AbstractEntity
+		public async Task<Result> BatchAsync<TModel>(StaticCommand dataCommand, IEnumerable<TModel> entities, Action<DbParameter, TModel> paramSettings)
 		{
 			using (dataCommand = await BeginExecuteAsync(dataCommand))
 			{
@@ -2641,15 +2641,6 @@ namespace Basic.DataAccess
 		/// <summary>
 		/// 创建执行数据库的结构
 		/// </summary>
-		/// <returns>返回StaticCommand结构信息</returns>
-		protected StaticCommand CreateStaticCommand()
-		{
-			return _ConnectionFactory.CreateStaticCommand();
-		}
-
-		/// <summary>
-		/// 创建执行数据库的结构
-		/// </summary>
 		/// <param name="CommandName">命令名称</param>
 		/// <returns>返回 StaticCommand 结构信息</returns>
 		internal StaticCommand CreateStaticCommandOrNull(string CommandName)
@@ -2689,6 +2680,15 @@ namespace Basic.DataAccess
 		}
 
 		/// <summary>
+		/// 创建当前数据库对应的 StaticCommand 结构命令
+		/// </summary>
+		/// <returns>返回StaticCommand结构信息</returns>
+		public StaticCommand CreateStaticCommand()
+		{
+			return _ConnectionFactory.CreateStaticCommand();
+		}
+
+		/// <summary>
 		/// 创建自定义动态命令
 		/// </summary>
 		/// <param name="selectText">要对数据源执行的 Transact-SQL 语句中 SELECT 数据库字段部分。</param>
@@ -2696,7 +2696,7 @@ namespace Basic.DataAccess
 		/// <param name="whereText">要对数据源执行的 Transact-SQL 语句中 WHERE 条件部分。</param>
 		/// <param name="orderText">要对数据源执行的 Transact-SQL 语句中 ORDER BY 条件部分。</param>
 		/// <returns>返回创建成功的动态命令 DynamicCommand 子类实例(特定于某种数据库命令的实例)。</returns>
-		internal protected DynamicCommand CreateDynamicCommand(string selectText, string fromText, string whereText, string orderText)
+		public DynamicCommand CreateDynamicCommand(string selectText, string fromText, string whereText, string orderText)
 		{
 			DynamicCommand dynamicCommand = _ConnectionFactory.CreateDynamicCommand();
 			dynamicCommand.SelectText = selectText;
@@ -2716,7 +2716,7 @@ namespace Basic.DataAccess
 		/// <param name="groupText">要对数据源执行的 Transact-SQL 语句中 GROUP 部分</param>
 		/// <param name="havingText">要对数据源执行的 Transact-SQL 语句中 HANVING 条件部分</param>
 		/// <returns>返回创建成功的动态命令 DynamicCommand 子类实例(特定于某种数据库命令的实例)。</returns>
-		internal protected DynamicCommand CreateDynamicCommand(string selectText, string fromText, string whereText, string orderText, string groupText, string havingText)
+		public DynamicCommand CreateDynamicCommand(string selectText, string fromText, string whereText, string orderText, string groupText, string havingText)
 		{
 			DynamicCommand dynamicCommand = CreateDynamicCommand(selectText, fromText, whereText, orderText);
 			dynamicCommand.GroupText = groupText;

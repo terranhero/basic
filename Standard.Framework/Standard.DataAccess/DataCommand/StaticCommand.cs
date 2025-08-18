@@ -800,7 +800,7 @@ namespace Basic.DataAccess
 		/// <param name="entities">实体类数组，包含了需要执行参数的值。</param>
 		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
 		/// <returns>执行Transact-SQL语句或存储过程后的返回结果。</returns>
-		internal protected virtual Task<int> BatchAsync<TModel>(IEnumerable<TModel> entities, Action<DbParameter, TModel> paramSettings) where TModel : AbstractEntity
+		internal protected virtual Task<int> BatchAsync<TModel>(IEnumerable<TModel> entities, Action<DbParameter, TModel> paramSettings)
 		{
 			using (BatchCommand batch = CreateBatchCommand())
 			{
