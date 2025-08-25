@@ -131,7 +131,8 @@ namespace Basic.Loggers
 		/// <summary>记录日志信息（支持异步环境）</summary>
 		private void PushAsync(Guid batchNo, string controller, string action, string computer, string user, string message, LogLevel level, LogResult resultType)
 		{
-			Guid key = OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER");
+			// "SYS_EVENTLOGGER"的哈希值 = 6066941974602195857;
+			Guid key = GuidGenerator.NewGuid(6066941974602195857L);
 			_loggers.Enqueue(new LoggerEntity(key)
 			{
 				BatchNo = batchNo == Guid.Empty ? key : batchNo,

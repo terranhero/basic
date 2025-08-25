@@ -45,6 +45,7 @@ namespace Basic.SqlServer
 					foreach (SqlParameter parameter in command.Parameters)
 					{
 						SqlParameter param = ((ICloneable)parameter).Clone() as SqlParameter;
+						batchCommand.Parameters.Add(param); 
 						if (paramSettings != null) { paramSettings(param, entity); }
 					}
 
@@ -73,6 +74,7 @@ namespace Basic.SqlServer
 					foreach (SqlParameter parameter in command.Parameters)
 					{
 						SqlParameter param = ((ICloneable)parameter).Clone() as SqlParameter;
+						batchCommand.Parameters.Add(param);
 						if (param.Direction == ParameterDirection.Output) { continue; }
 						if (entity.TryGetDbProperty(param.SourceColumn, out EntityPropertyMeta propertyInfo))
 						{

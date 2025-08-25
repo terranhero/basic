@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Basic.EntityLayer
 {
 	/// <summary>有序 Guid 生成器</summary>
-	public static class OrderedGuidGenerator
+	public static class GuidGenerator
 	{
 		private static readonly byte[] keys = new byte[] { 0x84, 0x73, 0xE5, 0x59, 0x51, 0x6F, 0x11, 0xF0, 0x99, 0x25, 0x8A, 0x78, 0xAD, 0x61, 0x4D, 0xC9 };
+		/// <summary>表示一天中的刻度数， 此字段为常数。</summary>
 		private static readonly long ticksPerDay = TimeSpan.TicksPerDay;
 
-		private static int Fnv1a32Hash(string input)
+		/// <summary>计算指定字符串的 int 哈希值</summary>
+		/// <param name="input">需要哈希的字符串</param>
+		/// <returns>一个 int 类型的数组，表示输入字符串的哈希值</returns>
+		public static int Fnv1a32Hash(string input)
 		{
 			const uint fnv32Offset = 2166136261;
 			const uint fnv32Prime = 16777619;
@@ -33,10 +30,10 @@ namespace Basic.EntityLayer
 			return (int)hash;
 		}
 
-		/// <summary></summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		private static long Fnv1a64Hash(string input)
+		/// <summary>计算指定字符串的 long 哈希值</summary>
+		/// <param name="input">需要哈希的字符串</param>
+		/// <returns>一个 long 类型的数组，表示输入字符串的哈希值</returns>
+		public static long Fnv1a64Hash(string input)
 		{
 			const ulong FnvOffsetBasis = 14695981039346656037UL;
 			const ulong FnvPrime = 1099511628211UL;
@@ -99,6 +96,34 @@ namespace Basic.EntityLayer
 		{
 			int days = (int)(date.Ticks / ticksPerDay);
 			return NewGuid(Fnv1a32Hash(highString), (short)(days & 0xFFFF), (short)((days >> 16) & 0xFFFF), lows);
+		}
+
+		/// <summary>
+		/// 使用指定的字符串哈希值(Int32)和日期部分, 再使用时间戳字节数组, 初始化 Guid 类的新实例<br/>
+		/// 字符串一般使用数据库表名称，这样能够保证每次单表保存时大概率产生唯一值<br/>
+		/// 日期部分则表示表中日期字段方便索引查询
+		/// </summary>
+		/// <param name="highA">GUID 的前 4 个字节</param>
+		/// <param name="date">GUID 中5,6,7,8四个直接的值，仅适用日期部分，时间部分舍弃</param>
+		/// <returns>返回生成新的GUID值</returns>
+		public static Guid NewGuid(int highA, DateTime date)
+		{
+			return NewGuid(highA, date, DateTimeOffset.UtcNow.UtcTicks);
+		}
+
+		/// <summary>
+		/// 使用指定的字符串哈希值(Int32)和日期部分, 再使用时间戳字节数组, 初始化 Guid 类的新实例<br/>
+		/// 字符串一般使用数据库表名称，这样能够保证每次单表保存时大概率产生唯一值<br/>
+		/// 日期部分则表示表中日期字段方便索引查询
+		/// </summary>
+		/// <param name="highA">GUID 的前 4 个字节</param>
+		/// <param name="date">GUID 中5,6,7,8四个直接的值，仅适用日期部分，时间部分舍弃</param>
+		/// <param name="lows">GUID 的后 8 个字节</param>
+		/// <returns>返回生成新的GUID值</returns>
+		public static Guid NewGuid(int highA, DateTime date, long lows)
+		{
+			int days = (int)(date.Ticks / ticksPerDay);
+			return NewGuid(highA, (short)(days & 0xFFFF), (short)((days >> 16) & 0xFFFF), lows);
 		}
 
 		/// <summary>
