@@ -10,12 +10,14 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Basic.Caches
 {
-	/// <summary>mRedis缓存工厂类</summary>
+	/// <summary>_connection缓存工厂类</summary>
 	public sealed class RedisClientFactory : CacheClientFactory
 	{
+		private static ConcurrentDictionary<string, ICacheClient> caches = new ConcurrentDictionary<string, ICacheClient>(-1, 5);
 		private readonly string _configuration = "127.0.0.1:7015,password=GoldSoft@1220";//,abortConnect=false
+		private readonly int database = 0;//,abortConnect=false
 		/// <summary>初始化 RedisClientFactory 类实例</summary>
-		public RedisClientFactory(string configuration) { _configuration = configuration; }
+		public RedisClientFactory(string configuration, int db) { _configuration = configuration; database = db; }
 
 		/// <summary>初始化 RedisClientFactory 类实例</summary>
 		public RedisClientFactory() { }
@@ -25,28 +27,32 @@ namespace Basic.Caches
 		/// <returns>返回缓存 ICacheClient 接口的实例。</returns>
 		public override ICacheClient CreateClient(string name)
 		{
-			return new RedisCacheClient(_configuration, 0);
+			if (caches.TryGetValue(name, out ICacheClient client) == true) { return client; }
+
+			client = new RedisCacheClient(_configuration, database);
+			caches.TryAdd(name, client);
+			return client;
 		}
 
 		/// <summary>定义实现内存中缓存的类型。</summary>
 		private class RedisCacheClient : ICacheClient
 		{
-			private readonly ConfigurationOptions options;
-			private readonly int dbIndex = 0;
+			//private readonly ConfigurationOptions options;
 			private readonly System.Net.EndPoint mEndPoint;
-			private readonly ConnectionMultiplexer mRedis;
+			private readonly ConnectionMultiplexer _connection;
+			private readonly IDatabase _database;
 			public RedisCacheClient(string configuration, int db)
 			{
-				dbIndex = db;
-				options = ConfigurationOptions.Parse(configuration);
+				ConfigurationOptions options = ConfigurationOptions.Parse(configuration);
 				mEndPoint = options.EndPoints.First();
-				mRedis = ConnectionMultiplexer.Connect(options);
+				_connection = ConnectionMultiplexer.Connect(options);
+				_database = _connection.GetDatabase(db);
 			}
 
 			/// <summary>释放由 System.Runtime.Caching.MemoryCache 类的当前实例占用的所有资源。</summary>
-			public void Dispose() { mRedis.Dispose(); }
+			public void Dispose() { _connection.Dispose(); }
 
-			#region   序列化操作
+			#region 缓存序列化方法 -  序列化和反序列化操作
 			private static RedisValue SerializeValue<T>(T value)
 			{
 				using (MemoryStream stream = new MemoryStream())
@@ -78,16 +84,16 @@ namespace Basic.Caches
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
 			public IEnumerable<KeyInfo> GetKeyInfos()
 			{
-				IServer server = mRedis.GetServer(mEndPoint);
-				return server.Keys(dbIndex).Select(m => new KeyInfo(m)).ToList();
+				IServer server = _connection.GetServer(mEndPoint);
+				return server.Keys(_database.Database).Select(m => new KeyInfo(m)).ToList();
 			}
 
 			/// <summary>获取所有缓存的键</summary>
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
 			public IEnumerable<KeyInfo> GetKeyInfosAsync()
 			{
-				IServer server = mRedis.GetServer(mEndPoint);
-				return server.Keys(dbIndex).Select(m => new KeyInfo(m)).ToList();
+				IServer server = _connection.GetServer(mEndPoint);
+				return server.Keys(_database.Database).Select(m => new KeyInfo(m)).ToList();
 			}
 			#endregion
 
@@ -97,9 +103,8 @@ namespace Basic.Caches
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
 			public IEnumerable<string> GetKeys()
 			{
-				IServer server = mRedis.GetServer(mEndPoint);
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return server.Keys().Select(m => m.ToString()).ToList();
+				IServer server = _connection.GetServer(mEndPoint);
+				return server.Keys(_database.Database).Select(m => m.ToString()).ToList();
 			}
 			#endregion
 
@@ -110,8 +115,7 @@ namespace Basic.Caches
 			/// <returns>移除成功则返回true，否则返回false。</returns>
 			public bool KeyDelete(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.KeyDelete(key);
+				return _database.KeyDelete(key);
 			}
 
 			/// <summary>从缓存中移除指定键的缓存项</summary>
@@ -120,8 +124,7 @@ namespace Basic.Caches
 			public void KeyDelete(string[] keys)
 			{
 				if (keys == null || keys.Length == 0) { return; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				db.KeyDelete(keys.Select(m => new RedisKey(m)).ToArray());
+				_database.KeyDelete(keys.Select(m => new RedisKey(m)).ToArray());
 			}
 			#endregion
 
@@ -132,8 +135,7 @@ namespace Basic.Caches
 			public async Task<bool> KeyDeleteAsync(string key)
 			{
 				if (key == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.KeyDeleteAsync(key);
+				return await _database.KeyDeleteAsync(key);
 			}
 
 			/// <summary>从缓存中移除指定键的缓存项</summary>
@@ -142,9 +144,8 @@ namespace Basic.Caches
 			public async Task KeyDeleteAsync(string[] keys)
 			{
 				if (keys == null) { return; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 
-				await db.KeyDeleteAsync(keys.Select(m => new RedisKey(m)).ToArray());
+				await _database.KeyDeleteAsync(keys.Select(m => new RedisKey(m)).ToArray());
 			}
 			#endregion
 
@@ -155,9 +156,8 @@ namespace Basic.Caches
 			public async Task<bool> KeyExistsAsync(string key)
 			{
 				if (key == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 
-				return await db.KeyExistsAsync(key);
+				return await _database.KeyExistsAsync(key);
 			}
 			#endregion
 
@@ -168,9 +168,8 @@ namespace Basic.Caches
 			public bool KeyExists(string key)
 			{
 				if (key == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 
-				return db.KeyExists(key);
+				return _database.KeyExists(key);
 			}
 			#endregion
 
@@ -182,8 +181,7 @@ namespace Basic.Caches
 			public async Task<bool> KeyExpireAsync(string key, TimeSpan expiry)
 			{
 				if (key == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.KeyExpireAsync(key, expiry);
+				return await _database.KeyExpireAsync(key, expiry);
 			}
 
 			/// <summary>设置键绝对过期策略</summary>
@@ -193,8 +191,7 @@ namespace Basic.Caches
 			public async Task<bool> KeyExpireAsync(string key, DateTime expiry)
 			{
 				if (key == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.KeyExpireAsync(key, expiry);
+				return await _database.KeyExpireAsync(key, expiry);
 			}
 			#endregion
 
@@ -206,8 +203,7 @@ namespace Basic.Caches
 			public bool KeyExpire(string key, DateTime expiry)
 			{
 				if (key == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.KeyExpire(key, expiry);
+				return _database.KeyExpire(key, expiry);
 			}
 
 			/// <summary>设置键滑动过期策略</summary>
@@ -217,8 +213,7 @@ namespace Basic.Caches
 			public bool KeyExpire(string key, TimeSpan expiry)
 			{
 				if (key == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.KeyExpire(key, expiry);
+				return _database.KeyExpire(key, expiry);
 			}
 			#endregion
 
@@ -231,9 +226,8 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public T Get<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				if (db.KeyExists(key) == false) { return default(T); }
-				string value = db.StringGet(key);
+				if (_database.KeyExists(key) == false) { return default(T); }
+				string value = _database.StringGet(key);
 				if (value == null) { return default(T); }
 				return Deserialize<T>(value);
 			}
@@ -248,10 +242,9 @@ namespace Basic.Caches
 			{
 				if (keys == null || keys.Length == 0) { return null; }
 				Dictionary<string, T> values = new Dictionary<string, T>(keys.Length);
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				foreach (string key in keys)
 				{
-					string value = db.StringGet(key);
+					string value = _database.StringGet(key);
 					if (value == null) { continue; }
 					values[key] = Deserialize<T>(key);
 				}
@@ -268,9 +261,8 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public bool Set<T>(string key, T value, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string value1 = Serialize<T>(value);
-				return db.StringSet(key, value1, expiresAt - DateTime.Now);
+				return _database.StringSet(key, value1, expiresAt - DateTime.Now);
 			}
 
 			/// <summary>
@@ -283,9 +275,8 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public bool Set<T>(string key, T value, TimeSpan expiresIn)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string value1 = Serialize<T>(value);
-				return db.StringSet(key, value1, expiresIn);
+				return _database.StringSet(key, value1, expiresIn);
 			}
 
 			#endregion
@@ -301,9 +292,8 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public async Task<bool> SetAsync<T>(string key, T value, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string value1 = Serialize<T>(value);
-				return await db.StringSetAsync(key, value1, expiresAt - DateTime.Now);
+				return await _database.StringSetAsync(key, value1, expiresAt - DateTime.Now);
 			}
 
 			/// <summary>
@@ -314,9 +304,8 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public async Task<T> GetAsync<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				if (db.KeyExists(key) == false) { return default(T); }
-				string value = await db.StringGetAsync(key);
+				if (_database.KeyExists(key) == false) { return default(T); }
+				string value = await _database.StringGetAsync(key);
 				if (value == null) { return default(T); }
 				return Deserialize<T>(value);
 			}
@@ -331,10 +320,9 @@ namespace Basic.Caches
 			{
 				if (keys == null || keys.Length == 0) { return null; }
 				Dictionary<string, T> values = new Dictionary<string, T>(keys.Length);
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				foreach (string key in keys)
 				{
-					string value = await db.StringGetAsync(key);
+					string value = await _database.StringGetAsync(key);
 					if (value == null) { continue; }
 					values[key] = Deserialize<T>(key);
 				}
@@ -351,8 +339,8 @@ namespace Basic.Caches
 			public async Task<bool> ListPushAsync<T>(string key, T item)
 			{
 				if (item == null) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long length = await db.ListRightPushAsync(key, new RedisValue(Serialize(item)));
+
+				long length = await _database.ListRightPushAsync(key, new RedisValue(Serialize(item)));
 				return length > 0;
 			}
 
@@ -364,9 +352,8 @@ namespace Basic.Caches
 			public async Task<bool> ListAsync<T>(string key, IList<T> values)
 			{
 				if (values == null || values.Count == 0) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				RedisValue[] list = values.Select(m => SerializeValue(m)).ToArray();
-				long length = await db.ListRightPushAsync(key, list);
+				long length = await _database.ListRightPushAsync(key, list);
 				return length > 0;
 			}
 
@@ -381,11 +368,10 @@ namespace Basic.Caches
 			public async Task<bool> ListAsync<T>(string key, IList<T> values, DateTime expiresAt)
 			{
 				if (values == null || values.Count == 0) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				RedisValue[] list = values.Select(m => SerializeValue(m)).ToArray();
-				long length = await db.ListRightPushAsync(key, list);
+				long length = await _database.ListRightPushAsync(key, list);
 
-				if (db.KeyExists(key) == true) { return await db.KeyExpireAsync(key, expiresAt); }
+				if (_database.KeyExists(key) == true) { return await _database.KeyExpireAsync(key, expiresAt); }
 				return length > 0;
 			}
 
@@ -400,12 +386,19 @@ namespace Basic.Caches
 			public async Task<bool> ListAsync<T>(string key, IList<T> values, TimeSpan expiresIn)
 			{
 				if (values == null || values.Count == 0) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 
-				long length = await db.ListRightPushAsync(key, values.Select(m => SerializeValue(m)).ToArray());
+				long length = await _database.ListRightPushAsync(key, values.Select(m => SerializeValue(m)).ToArray());
 
-				if (db.KeyExists(key) == true) { return await db.KeyExpireAsync(key, expiresIn); }
+				if (_database.KeyExists(key) == true) { return await _database.KeyExpireAsync(key, expiresIn); }
 				return length > 0;
+			}
+
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			async Task<long> ICacheClient.ListLengthAsync<T>(string key)
+			{
+				return await _database.ListLengthAsync(key);
 			}
 
 			/// <summary>
@@ -416,9 +409,8 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public async Task<IList<T>> ListAsync<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				if (await db.KeyExistsAsync(key) == false) { return null; }
-				return await db.ListRangeAsync(key).ContinueWith(results =>
+				if (await _database.KeyExistsAsync(key) == false) { return null; }
+				return await _database.ListRangeAsync(key).ContinueWith(results =>
 				{
 					return results.Result.Select(m => Deserialize<T>(m)).ToList();
 				});
@@ -434,9 +426,16 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public IList<T> List<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				if (db.KeyExists(key) == false) { return null; }
-				return db.ListRange(key).Select(m => Deserialize<T>(m)).ToList();
+				if (_database.KeyExists(key) == false) { return null; }
+				return _database.ListRange(key).Select(m => Deserialize<T>(m)).ToList();
+			}
+
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			long ICacheClient.ListLength<T>(string key)
+			{
+				return _database.ListLength(key);
 			}
 
 			/// <summary>
@@ -450,8 +449,7 @@ namespace Basic.Caches
 			public bool List<T>(string key, IList<T> values)
 			{
 				if (values == null || values.Count == 0) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				foreach (T item in values) { db.ListRightPush(key, Serialize(item)); }
+				foreach (T item in values) { _database.ListRightPush(key, Serialize(item)); }
 				return true;
 			}
 
@@ -466,12 +464,11 @@ namespace Basic.Caches
 			public bool List<T>(string key, IList<T> values, DateTime expiresAt)
 			{
 				if (values == null || values.Count == 0) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				foreach (T item in values)
 				{
-					db.ListRightPush(key, Serialize(item));
+					_database.ListRightPush(key, Serialize(item));
 				}
-				if (db.KeyExists(key) == true) { return db.KeyExpire(key, expiresAt); }
+				if (_database.KeyExists(key) == true) { return _database.KeyExpire(key, expiresAt); }
 				return false;
 			}
 
@@ -486,13 +483,12 @@ namespace Basic.Caches
 			public bool List<T>(string key, IList<T> values, TimeSpan expiresIn)
 			{
 				if (values == null || values.Count == 0) { return false; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				foreach (T item in values)
 				{
 					string value = Serialize(item);
-					db.ListRightPush(key, value);
+					_database.ListRightPush(key, value);
 				}
-				if (db.KeyExists(key) == true) { return db.KeyExpire(key, expiresIn); }
+				if (_database.KeyExists(key) == true) { return _database.KeyExpire(key, expiresIn); }
 				return false;
 			}
 			#endregion
@@ -504,8 +500,15 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			async Task<bool> ICacheClient.HashDeleteAsync(string hashId, string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.HashDeleteAsync(hashId, key);
+				return await _database.HashDeleteAsync(hashId, key);
+			}
+
+			/// <summary>返回存储在key处的哈希中包含的字段数</summary>
+			/// <param name="hashId">哈希表缓存键</param>
+			/// <returns>哈希中的字段数，当键不存在时为 0</returns>
+			async Task<long> ICacheClient.HashLengthAsync<T>(string hashId)
+			{
+				return await _database.HashLengthAsync(hashId);
 			}
 
 			/// <summary>确定哈希表中是否存在某个缓存项。</summary>
@@ -514,8 +517,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			public async Task<bool> HashExistsAsync(string hashId, string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.HashExistsAsync(hashId, key);
+				return await _database.HashExistsAsync(hashId, key);
 			}
 
 			/// <summary>从哈希表获取数据。</summary>
@@ -524,8 +526,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			public async Task<T> HashGetAsync<T>(string hashId, string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				RedisValue value = await db.HashGetAsync(hashId, key);
+				RedisValue value = await _database.HashGetAsync(hashId, key);
 				if (value.HasValue == false) { return default; }
 				return Deserialize<T>(value);
 			}
@@ -536,8 +537,7 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public async Task<IList<T>> HashGetAllAsync<T>(string hashId)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.HashGetAllAsync(hashId).ContinueWith(res =>
+				return await _database.HashGetAllAsync(hashId).ContinueWith(res =>
 				{
 					return res.Result.Where(m => m.Value.HasValue).Select(m => Deserialize<T>(m.Value)).ToList();
 				});
@@ -551,9 +551,8 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			public async Task<bool> HashSetAsync<T>(string hashId, string key, T value)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string item = Serialize(value);
-				return await db.HashSetAsync(hashId, key, item);
+				return await _database.HashSetAsync(hashId, key, item);
 			}
 
 			/// <summary>存储数据到哈希表</summary>
@@ -565,12 +564,11 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public async Task<bool> HashSetAsync<T>(string hashId, string key, T value, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string item = Serialize(value);
-				bool result = await db.HashSetAsync(hashId, key, item);
+				bool result = await _database.HashSetAsync(hashId, key, item);
 				if (result == false) { return result; }
 
-				return await db.KeyExpireAsync(hashId, expiresAt);
+				return await _database.KeyExpireAsync(hashId, expiresAt);
 			}
 
 			/// <summary>存储数据到哈希表</summary>
@@ -582,11 +580,10 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public async Task<bool> HashSetAsync<T>(string hashId, string key, T value, TimeSpan expiresIn)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string item = Serialize(value);
-				bool result = await db.HashSetAsync(hashId, key, item);
+				bool result = await _database.HashSetAsync(hashId, key, item);
 				if (result == false) { return result; }
-				return await db.KeyExpireAsync(hashId, expiresIn);
+				return await _database.KeyExpireAsync(hashId, expiresIn);
 			}
 			#endregion
 
@@ -597,8 +594,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			public bool HashExists(string hashId, string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.HashExists(hashId, key);
+				return _database.HashExists(hashId, key);
 			}
 
 			/// <summary>从哈希表获取数据</summary>
@@ -608,10 +604,17 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public T HashGet<T>(string hashId, string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				RedisValue value = db.HashGet(hashId, key);
+				RedisValue value = _database.HashGet(hashId, key);
 				if (value.HasValue == false) { return default; }
 				return Deserialize<T>(value);
+			}
+
+			/// <summary>返回存储在key处的哈希中包含的字段数</summary>
+			/// <param name="hashId">哈希表缓存键</param>
+			/// <returns>哈希中的字段数，当键不存在时为 0</returns>
+			long ICacheClient.HashLength<T>(string hashId)
+			{
+				return _database.HashLength(hashId);
 			}
 
 			/// <summary>获取整个哈希表的数据</summary>
@@ -620,8 +623,7 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public List<T> HashGetAll<T>(string hashId)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.HashGetAll(hashId).Where(m => m.Value.HasValue).Select(m => Deserialize<T>(m.Value)).ToList();
+				return _database.HashGetAll(hashId).Where(m => m.Value.HasValue).Select(m => Deserialize<T>(m.Value)).ToList();
 			}
 
 			/// <summary>移除哈希表中的某值</summary>
@@ -630,8 +632,7 @@ namespace Basic.Caches
 			/// <returns>移除成功则返回true，否则返回false。</returns>
 			public bool HashDelete(string hashId, string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.HashDelete(hashId, key);
+				return _database.HashDelete(hashId, key);
 			}
 
 			/// <summary>存储数据到哈希表</summary>
@@ -642,9 +643,8 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public bool HashSet<T>(string hashId, string key, T value)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string item = Serialize(value);
-				return db.HashSet(hashId, key, item);
+				return _database.HashSet(hashId, key, item);
 			}
 
 			/// <summary>存储数据到哈希表</summary>
@@ -656,9 +656,8 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			private bool HashSet(string hashId, string key, string value, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				bool result = db.HashSet(hashId, key, value);
-				if (result) { db.HashFieldExpire(hashId, new RedisValue[] { key }, expiresAt); }
+				bool result = _database.HashSet(hashId, key, value);
+				if (result) { _database.HashFieldExpire(hashId, new RedisValue[] { key }, expiresAt); }
 				return result;
 			}
 
@@ -671,10 +670,9 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public bool HashSet<T>(string hashId, string key, T value, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string item = Serialize(value);
-				bool result = db.HashSet(hashId, key, item);
-				if (result) { db.KeyExpire(hashId, expiresAt); }
+				bool result = _database.HashSet(hashId, key, item);
+				if (result) { _database.KeyExpire(hashId, expiresAt); }
 				return result;
 			}
 
@@ -687,15 +685,14 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			public bool HashSet<T>(string hashId, string key, T value, TimeSpan expiresIn)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				string item = Serialize(value);
-				bool result = db.HashSet(hashId, key, item);
-				if (result) { db.KeyExpire(hashId, expiresIn); }
+				bool result = _database.HashSet(hashId, key, item);
+				if (result) { _database.KeyExpire(hashId, expiresIn); }
 				return result;
 			}
 			#endregion
 
-			#region 缓存异步方法 - 集合和有序集合操作
+			#region 缓存同步方法 - 集合和有序集合操作
 			/// <summary>存储数据到集合。</summary>
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="key">哈希表键</param>
@@ -703,8 +700,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			bool ICacheClient.SetAdd<T>(string key, T value)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.SetAdd(key, SerializeValue(value));
+				return _database.SetAdd(key, SerializeValue(value));
 			}
 
 			/// <summary>存储数据到有序集合</summary>
@@ -715,10 +711,9 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			bool ICacheClient.SetAdd<T>(string key, T value, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				bool result = db.SetAdd(key, SerializeValue(value));
+				bool result = _database.SetAdd(key, SerializeValue(value));
 
-				if (result) { db.KeyExpire(key, expiresAt); }
+				if (result) { _database.KeyExpire(key, expiresAt); }
 				return result;
 			}
 
@@ -730,8 +725,7 @@ namespace Basic.Caches
 			long ICacheClient.SetAdd<T>(string key, IEnumerable<T> items)
 			{
 				if (items == null || items.Any() == false) { return 0; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.SetAdd(key, items.Select(m => SerializeValue(m)).ToArray());
+				return _database.SetAdd(key, items.Select(m => SerializeValue(m)).ToArray());
 			}
 
 			/// <summary>存储数据到集合。</summary>
@@ -743,10 +737,17 @@ namespace Basic.Caches
 			long ICacheClient.SetAdd<T>(string key, IEnumerable<T> items, DateTime expiresAt)
 			{
 				if (items == null || items.Any() == false) { return 0; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long count = db.SetAdd(key, items.Select(m => SerializeValue(m)).ToArray());
-				if (count > 0) { db.KeyExpire(key, expiresAt); }
+				long count = _database.SetAdd(key, items.Select(m => SerializeValue(m)).ToArray());
+				if (count > 0) { _database.KeyExpire(key, expiresAt); }
 				return count;
+			}
+
+			/// <summary>返回存储在key处的集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			long ICacheClient.SetLength<T>(string key)
+			{
+				return _database.SetLength(key);
 			}
 
 			/// <summary>获取集合中所有成员</summary>
@@ -755,8 +756,8 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			ICollection<T> ICacheClient.SetMembers<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				RedisValue[] values = db.SetMembers(key);
+				RedisValue[] values = _database.SetMembers(key);
+				if (values == null) { return null; }
 				return values.Select(m => Deserialize<T>(m)).ToList();
 			}
 
@@ -768,8 +769,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			bool ICacheClient.ZSetAdd<T>(string key, T value, double score)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.SortedSetAdd(key, SerializeValue(value), score);
+				return _database.SortedSetAdd(key, SerializeValue(value), score);
 			}
 
 			/// <summary>存储数据到有序集合</summary>
@@ -781,10 +781,9 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			bool ICacheClient.ZSetAdd<T>(string key, T value, double score, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				bool result = db.SortedSetAdd(key, SerializeValue(value), score);
+				bool result = _database.SortedSetAdd(key, SerializeValue(value), score);
 
-				if (result) { db.KeyExpire(key, expiresAt); }
+				if (result) { _database.KeyExpire(key, expiresAt); }
 				return result;
 			}
 
@@ -797,10 +796,9 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			bool ICacheClient.ZSetAdd<T>(string key, T value, double score, TimeSpan expiresIn)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				bool result = db.SortedSetAdd(key, SerializeValue(value), score);
+				bool result = _database.SortedSetAdd(key, SerializeValue(value), score);
 
-				if (result) { db.KeyExpire(key, expiresIn); }
+				if (result) { _database.KeyExpire(key, expiresIn); }
 				return result;
 			}
 
@@ -813,8 +811,7 @@ namespace Basic.Caches
 			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return db.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
+				return _database.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
 			}
 
 			/// <summary>存储数据到有序集合</summary>
@@ -827,9 +824,8 @@ namespace Basic.Caches
 			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long result = db.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
-				db.KeyExpire(key, expiresAt);
+				long result = _database.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
+				_database.KeyExpire(key, expiresAt);
 				return result;
 			}
 
@@ -843,10 +839,17 @@ namespace Basic.Caches
 			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long result = db.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
-				db.KeyExpire(key, expiresIn);
+				long result = _database.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
+				_database.KeyExpire(key, expiresIn);
 				return result;
+			}
+
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			long ICacheClient.ZSetLength<T>(string key)
+			{
+				return _database.SortedSetLength(key);
 			}
 
 			/// <summary>从有序集合中读取所有数据。</summary>
@@ -854,8 +857,8 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			ICollection<T> ICacheClient.ZSetMembers<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				RedisValue[] values = db.SetMembers(key);
+				RedisValue[] values = _database.SortedSetRangeByRank(key);
+				if (values == null) { return null; }
 				return values.Select(m => Deserialize<T>(m)).ToList();
 			}
 			#endregion
@@ -868,8 +871,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			async Task<bool> ICacheClient.SetAddAsync<T>(string key, T value)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.SetAddAsync(key, SerializeValue(value));
+				return await _database.SetAddAsync(key, SerializeValue(value));
 			}
 
 			/// <summary>存储数据到有序集合</summary>
@@ -880,10 +882,9 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			async Task<bool> ICacheClient.SetAddAsync<T>(string key, T value, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				bool result = await db.SetAddAsync(key, SerializeValue(value));
+				bool result = await _database.SetAddAsync(key, SerializeValue(value));
 
-				if (result) { db.KeyExpire(key, expiresAt); }
+				if (result) { _database.KeyExpire(key, expiresAt); }
 				return await Task.FromResult(result);
 			}
 
@@ -895,8 +896,7 @@ namespace Basic.Caches
 			async Task<long> ICacheClient.SetAddAsync<T>(string key, IEnumerable<T> items)
 			{
 				if (items == null || items.Any() == false) { return 0; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.SetAddAsync(key, items.Select(m => SerializeValue(m)).ToArray());
+				return await _database.SetAddAsync(key, items.Select(m => SerializeValue(m)).ToArray());
 			}
 
 			/// <summary>存储数据到集合。</summary>
@@ -908,10 +908,17 @@ namespace Basic.Caches
 			async Task<long> ICacheClient.SetAddAsync<T>(string key, IEnumerable<T> items, DateTime expiresAt)
 			{
 				if (items == null || items.Any() == false) { return 0; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long count = await db.SetAddAsync(key, items.Select(m => SerializeValue(m)).ToArray());
-				if (count > 0) { await db.KeyExpireAsync(key, expiresAt); }
+				long count = await _database.SetAddAsync(key, items.Select(m => SerializeValue(m)).ToArray());
+				if (count > 0) { await _database.KeyExpireAsync(key, expiresAt); }
 				return count;
+			}
+
+			/// <summary>返回存储在key处的集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			async Task<long> ICacheClient.SetLengthAsync<T>(string key)
+			{
+				return await _database.SetLengthAsync(key);
 			}
 
 			/// <summary>获取集合中所有成员</summary>
@@ -920,8 +927,7 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			async Task<ICollection<T>> ICacheClient.SetMembersAsync<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				RedisValue[] values = await db.SetMembersAsync(key);
+				RedisValue[] values = await _database.SetMembersAsync(key);
 				return values.Select(m => DeserializeValue<T>(m)).ToList();
 			}
 
@@ -933,8 +939,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			async Task<bool> ICacheClient.ZSetAddAsync<T>(string key, T value, double score)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				return await db.SortedSetAddAsync(key, SerializeValue(value), score);
+				return await _database.SortedSetAddAsync(key, SerializeValue(value), score);
 			}
 
 			/// <summary>存储数据到有序集合</summary>
@@ -946,10 +951,9 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			async Task<bool> ICacheClient.ZSetAddAsync<T>(string key, T value, double score, DateTime expiresAt)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				bool result = await db.SortedSetAddAsync(key, SerializeValue(value), score);
+				bool result = await _database.SortedSetAddAsync(key, SerializeValue(value), score);
 
-				if (result) { await db.KeyExpireAsync(key, expiresAt); }
+				if (result) { await _database.KeyExpireAsync(key, expiresAt); }
 				return result;
 			}
 
@@ -962,10 +966,9 @@ namespace Basic.Caches
 			/// <returns>创建成功则为true，否则为false。</returns>
 			async Task<bool> ICacheClient.ZSetAddAsync<T>(string key, T value, double score, TimeSpan expiresIn)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				bool result = await db.SortedSetAddAsync(key, SerializeValue(value), score);
+				bool result = await _database.SortedSetAddAsync(key, SerializeValue(value), score);
 
-				if (result) { await db.KeyExpireAsync(key, expiresIn); }
+				if (result) { await _database.KeyExpireAsync(key, expiresIn); }
 				return result;
 			}
 
@@ -978,9 +981,8 @@ namespace Basic.Caches
 			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				SortedSetEntry[] items = values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray();
-				return await db.SortedSetAddAsync(key, items);
+				return await _database.SortedSetAddAsync(key, items);
 			}
 
 			/// <summary>存储数据到有序集合</summary>
@@ -993,11 +995,10 @@ namespace Basic.Caches
 			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				SortedSetEntry[] items = values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray();
-				long result = await db.SortedSetAddAsync(key, items);
+				long result = await _database.SortedSetAddAsync(key, items);
 
-				await db.KeyExpireAsync(key, expiresAt);
+				await _database.KeyExpireAsync(key, expiresAt);
 				return result;
 
 			}
@@ -1012,12 +1013,19 @@ namespace Basic.Caches
 			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
 				SortedSetEntry[] items = values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray();
-				long result = await db.SortedSetAddAsync(key, items);
+				long result = await _database.SortedSetAddAsync(key, items);
 
-				await db.KeyExpireAsync(key, expiresIn);
+				await _database.KeyExpireAsync(key, expiresIn);
 				return result;
+			}
+
+			/// <summary>返回存储在key处的集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			async Task<long> ICacheClient.ZSetLengthAsync<T>(string key)
+			{
+				return await _database.SortedSetLengthAsync(key);
 			}
 
 			/// <summary>从有序集合中读取所有数据。</summary>
@@ -1025,8 +1033,7 @@ namespace Basic.Caches
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 			async Task<ICollection<T>> ICacheClient.ZSetMembersAsync<T>(string key)
 			{
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				RedisValue[] values = await db.SetMembersAsync(key);
+				RedisValue[] values = await _database.SetMembersAsync(key);
 				return values.Select(m => DeserializeValue<T>(m)).ToList();
 			}
 			#endregion

@@ -368,6 +368,15 @@ namespace Basic.Caches
 				return Task.FromResult(true);
 			}
 
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			Task<long> ICacheClient.ListLengthAsync<T>(string key)
+			{
+				IList<T> list = memory.Get<IList<T>>(key);
+				return Task.FromResult<long>(list.Count);
+			}
+
 			/// <summary>
 			///  通过使用键、值和逐出设置，将某个缓存项插入缓存中。
 			/// </summary>
@@ -390,6 +399,15 @@ namespace Basic.Caches
 			public IList<T> List<T>(string key)
 			{
 				return memory.Get<IList<T>>(key);
+			}
+
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			long ICacheClient.ListLength<T>(string key)
+			{
+				IList<T> list = memory.Get<IList<T>>(key);
+				return list.Count;
 			}
 
 			/// <summary>
@@ -473,6 +491,19 @@ namespace Basic.Caches
 				}
 				return Task.FromResult(default(T));
 			}
+
+			/// <summary>返回存储在key处的哈希中包含的字段数</summary>
+			/// <param name="hashId">哈希表缓存键</param>
+			/// <returns>哈希中的字段数，当键不存在时为 0</returns>
+			Task<long> ICacheClient.HashLengthAsync<T>(string hashId)
+			{
+				if (memory.TryGetValue(hashId, out IDictionary<string, T> hash))
+				{
+					return Task.FromResult<long>(hash.Count);
+				}
+				return Task.FromResult<long>(0);
+			}
+
 
 			/// <summary>获取整个哈希表的数据</summary>
 			/// <typeparam name="T">缓存值类型</typeparam>
@@ -579,6 +610,18 @@ namespace Basic.Caches
 					if (hash.TryGetValue(key, out T value)) { return value; }
 				}
 				return default(T);
+			}
+
+			/// <summary>返回存储在key处的哈希中包含的字段数</summary>
+			/// <param name="hashId">哈希表缓存键</param>
+			/// <returns>哈希中的字段数，当键不存在时为 0</returns>
+			long ICacheClient.HashLength<T>(string hashId)
+			{
+				if (memory.TryGetValue(hashId, out IDictionary<string, T> hash))
+				{
+					return (hash.Count);
+				}
+				return 0L;
 			}
 
 			/// <summary>获取整个哈希表的数据</summary>
@@ -707,7 +750,7 @@ namespace Basic.Caches
 
 			#endregion
 
-			#region 缓存异步方法 - 集合和有序集合操作
+			#region 缓存同步方法 - 集合和有序集合操作
 			/// <summary>存储数据到集合。</summary>
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="key">哈希表键</param>
@@ -766,6 +809,15 @@ namespace Basic.Caches
 				lock (list) { foreach (T item in items) { list.Add(item); } }
 				memory.Set<ISet<T>>(key, list, expiresAt);
 				return (items.LongCount());
+			}
+
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			long ICacheClient.SetLength<T>(string key)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				return list.Count;
 			}
 
 			/// <summary>获取集合中所有成员</summary>
@@ -879,6 +931,15 @@ namespace Basic.Caches
 				return values.LongCount();
 			}
 
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			long ICacheClient.ZSetLength<T>(string key)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				return list.Count;
+			}
+
 			/// <summary>从有序集合中读取所有数据。</summary>
 			/// <param name="key">哈希表键</param>
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
@@ -951,6 +1012,15 @@ namespace Basic.Caches
 				lock (list) { foreach (T item in items) { list.Add(item); } }
 				memory.Set<ISet<T>>(key, list, expiresAt);
 				return Task.FromResult(items.LongCount());
+			}
+
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			Task<long> ICacheClient.SetLengthAsync<T>(string key)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				return Task.FromResult<long>(list.Count);
 			}
 
 			/// <summary>获取集合中所有成员</summary>
@@ -1064,6 +1134,15 @@ namespace Basic.Caches
 				lock (list) { list.UnionWith(values); }
 				memory.Set<ISet<T>>(key, list, expiresIn);
 				return Task.FromResult(values.LongCount());
+			}
+
+			/// <summary>返回存储在key处的有序集合的集合基数（元素数）</summary>
+			/// <param name="key">集合的键</param>
+			/// <returns>集合的基数（元素数），如果键不存在，则为0。</returns>
+			Task<long> ICacheClient.ZSetLengthAsync<T>(string key)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				return Task.FromResult<long>(list.Count);
 			}
 
 			/// <summary>从有序集合中读取所有数据。</summary>
