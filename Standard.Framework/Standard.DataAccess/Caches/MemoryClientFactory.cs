@@ -4,9 +4,10 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 #if NET8_0_OR_GREATER
 using Microsoft.Extensions.Caching.Memory;
+#elif NETSTANDARD || NET5_0 || NET6_0 || NET7_0
+using System.Runtime.Caching;
 #endif
 
 namespace Basic.Caches
@@ -16,7 +17,6 @@ namespace Basic.Caches
 	/// </summary>
 	public sealed partial class MemoryClientFactory : CacheClientFactory
 	{
-#if NET8_0_OR_GREATER
 		private static ConcurrentDictionary<string, ICacheClient> caches = new ConcurrentDictionary<string, ICacheClient>(-1, 5);
 		/// <summary>初始化 MemoryClientFactory 类实例</summary>
 		public MemoryClientFactory() { }
@@ -38,14 +38,22 @@ namespace Basic.Caches
 		/// <summary>定义实现内存中缓存的类型。</summary>
 		private sealed class MemoryCacheClient : ICacheClient
 		{
+#if NET8_0_OR_GREATER
 			private readonly MemoryCacheOptions options = new MemoryCacheOptions() { };
 			private readonly MemoryCache memory;
+#else
+			private readonly MemoryCache memory;
 
+#endif
 			/// <summary>初始化 MemoryCacheClient 类实例。</summary>
 			/// <param name="name"></param>
 			public MemoryCacheClient(string name)
 			{
+#if NET8_0_OR_GREATER
 				memory = new MemoryCache(options);
+#else
+				memory = new MemoryCache(name);
+#endif
 			}
 
 			/// <summary>Disposes the cache and clears all entries</summary>
@@ -57,21 +65,36 @@ namespace Basic.Caches
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
 			public IEnumerable<KeyInfo> GetKeyInfos()
 			{
+#if NET8_0_OR_GREATER
 				return memory.Keys.Select(m => new KeyInfo((string)m) { });
+#else
+				return memory.Select(m => new KeyInfo(m.Key) { });
+#endif
 			}
 
 			/// <summary>获取所有缓存的键</summary>
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
 			public IEnumerable<KeyInfo> GetKeyInfosAsync()
 			{
+#if NET8_0_OR_GREATER
 				return memory.Keys.Select(m => new KeyInfo((string)m) { });
+#else
+				return memory.Select(m => new KeyInfo(m.Key) { });
+#endif
 			}
 			#endregion
 
 			#region 缓存同步方法 - 获取所有缓存的键
 			/// <summary>获取所有缓存的键</summary>
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
-			public List<string> GetKeys() { return memory.Keys.Cast<string>().ToList(); }
+			public IEnumerable<string> GetKeys()
+			{
+#if NET8_0_OR_GREATER
+				return memory.Keys.Cast<string>();
+#else
+				return memory.Select(m => m.Key);
+#endif
+			}
 			#endregion
 
 			#region 缓存同步方法 - 移除缓存键及其数据
@@ -120,14 +143,28 @@ namespace Basic.Caches
 			/// <summary>使用异步方法判断键是否存在</summary>
 			/// <param name="key">需要检查的缓存键.</param>
 			/// <returns><see langword="true"/>如果键存在. <see langword="false"/> 如果键不存在.</returns>
-			public Task<bool> KeyExistsAsync(string key) { return Task.FromResult(memory.TryGetValue(key, out _)); }
+			public Task<bool> KeyExistsAsync(string key)
+			{
+#if NET8_0_OR_GREATER
+				return Task.FromResult(memory.Keys.Contains(key));
+#else
+				return Task.FromResult(memory.Any(m => m.Key == key));
+#endif
+			}
 			#endregion
 
 			#region 缓存同步方法 - 判断键是否存在
 			/// <summary>判断键是否存在</summary>
 			/// <param name="key">需要检查的缓存键.</param>
 			/// <returns><see langword="true"/> 如果键存在. <see langword="false"/> 如果键不存在.</returns>
-			public bool KeyExists(string key) { return memory.TryGetValue(key, out _); }
+			public bool KeyExists(string key)
+			{
+#if NET8_0_OR_GREATER
+				return memory.Keys.Contains(key);
+#else
+				return memory.Any(m => m.Key == key);
+#endif
+			}
 			#endregion
 
 			#region 缓存异步方法 - 设置键过期策略
@@ -165,9 +202,14 @@ namespace Basic.Caches
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="key"> 要获取的缓存项的唯一标识符。</param>
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
-			public T GetValue<T>(string key)
+			public T Get<T>(string key)
 			{
+#if NET8_0_OR_GREATER
 				return memory.Get<T>(key);
+#else
+				return (T)memory.Get(key);
+#endif
+
 			}
 			/// <summary>
 			///  通过使用键、值和逐出设置，将某个缓存项插入缓存中。
@@ -175,15 +217,19 @@ namespace Basic.Caches
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="keys"> 要返回的缓存项的一组唯一标识符。</param>
 			/// <returns>与指定的键对应的一组缓存项。</returns>
-			public IDictionary<string, T> GetValues<T>(params string[] keys)
+			public IDictionary<string, T> Get<T>(params string[] keys)
 			{
 				if (keys == null || keys.Length == 0) { return null; }
+#if NET8_0_OR_GREATER
 				IDictionary<string, T> values = new Dictionary<string, T>();
 				foreach (string key in keys)
 				{
 					if (memory.TryGetValue<T>(key, out T value)) { values[key] = value; }
 				}
 				return values;
+#else
+				return (IDictionary<string, T>)memory.GetValues(keys);
+#endif
 			}
 
 			/// <summary>
@@ -238,7 +284,11 @@ namespace Basic.Caches
 			/// <returns>如果该项存在，则为对 key 标识的缓存项的引用；否则为 null。</returns>
 			public Task<T> GetAsync<T>(string key)
 			{
+#if NET8_0_OR_GREATER
 				return Task.FromResult(memory.Get<T>(key));
+#else
+				return Task.FromResult((T)memory.Get(key));
+#endif
 			}
 
 			/// <summary>
@@ -250,12 +300,17 @@ namespace Basic.Caches
 			public Task<IDictionary<string, T>> GetAsync<T>(string[] keys)
 			{
 				if (keys == null || keys.Length == 0) { return Task.FromResult<IDictionary<string, T>>(null); }
+#if NET8_0_OR_GREATER
 				IDictionary<string, T> values = new Dictionary<string, T>();
 				foreach (string key in keys)
 				{
 					if (memory.TryGetValue<T>(key, out T value)) { values[key] = value; }
 				}
 				return Task.FromResult(values);
+#else
+				return Task.FromResult((IDictionary<string, T>)memory.GetValues(keys));
+#endif
+
 			}
 			#endregion
 
@@ -442,14 +497,25 @@ namespace Basic.Caches
 			{
 				if (memory.TryGetValue<IDictionary<string, T>>(hashId, out IDictionary<string, T> hash))
 				{
-					if (hash.ContainsKey(key)) { return Task.FromResult(hash.TryAdd(key, value)); }
+#if NET8_0_OR_GREATER
+					if (hash.ContainsKey(key)) { hash[key] = value; return Task.FromResult(true); }
 					else { return Task.FromResult(hash.TryAdd(key, value)); }
+#else
+					if (hash.ContainsKey(key)) { hash[key] = value; }
+					else { hash.Add(key, value); }
+					return Task.FromResult(true);
+#endif
 				}
 				else
 				{
 					hash = new ConcurrentDictionary<string, T>(-1, 5);
 					memory.Set(hashId, hash);
+#if NET8_0_OR_GREATER
 					return Task.FromResult(hash.TryAdd(key, value));
+#else
+					hash.Add(key, value);
+					return Task.FromResult(true);
+#endif
 				}
 			}
 
@@ -464,14 +530,25 @@ namespace Basic.Caches
 			{
 				if (memory.TryGetValue<IDictionary<string, T>>(hashId, out IDictionary<string, T> hash))
 				{
-					if (hash.ContainsKey(key)) { return Task.FromResult(hash.TryAdd(key, value)); }
+#if NET8_0_OR_GREATER
+					if (hash.ContainsKey(key)) { hash[key] = value; return Task.FromResult(true); }
 					else { return Task.FromResult(hash.TryAdd(key, value)); }
+#else
+					if (hash.ContainsKey(key)) { hash[key] = value; }
+					else { hash.Add(key, value); }
+					return Task.FromResult(true);
+#endif
 				}
 				else
 				{
 					hash = new ConcurrentDictionary<string, T>(-1, 5);
 					memory.Set(hashId, hash, new DateTimeOffset(expiresAt));
+#if NET8_0_OR_GREATER
 					return Task.FromResult(hash.TryAdd(key, value));
+#else
+					hash.Add(key, value);
+					return Task.FromResult(true);
+#endif
 				}
 			}
 			#endregion
@@ -527,14 +604,25 @@ namespace Basic.Caches
 			{
 				if (memory.TryGetValue<IDictionary<string, T>>(hashId, out IDictionary<string, T> hash))
 				{
-					if (hash.ContainsKey(key)) { return hash.TryAdd(key, value); }
+#if NET8_0_OR_GREATER
+					if (hash.ContainsKey(key)) { hash[key] = value; return true; }
 					else { return hash.TryAdd(key, value); }
+#else
+					if (hash.ContainsKey(key)) { hash[key] = value; }
+					else { hash.Add(key, value); }
+					return true;
+#endif
 				}
 				else
 				{
 					hash = new ConcurrentDictionary<string, T>(-1, 5);
 					memory.Set(hashId, hash);
+#if NET8_0_OR_GREATER
 					return hash.TryAdd(key, value);
+#else
+					hash.Add(key, value);
+					return true;
+#endif
 				}
 			}
 
@@ -549,14 +637,25 @@ namespace Basic.Caches
 			{
 				if (memory.TryGetValue<IDictionary<string, T>>(hashId, out IDictionary<string, T> hash))
 				{
-					if (hash.ContainsKey(key)) { return hash.TryAdd(key, value); }
+#if NET8_0_OR_GREATER
+					if (hash.ContainsKey(key)) { hash[key] = value; return true; }
 					else { return hash.TryAdd(key, value); }
+#else
+					if (hash.ContainsKey(key)) { hash[key] = value; }
+					else { hash.Add(key, value); }
+					return true;
+#endif
 				}
 				else
 				{
 					hash = new ConcurrentDictionary<string, T>(-1, 5);
 					memory.Set(hashId, hash, expiresAt);
+#if NET8_0_OR_GREATER
 					return hash.TryAdd(key, value);
+#else
+					hash.Add(key, value);
+					return true;
+#endif
 				}
 			}
 
@@ -571,14 +670,25 @@ namespace Basic.Caches
 			{
 				if (memory.TryGetValue<IDictionary<string, T>>(hashId, out IDictionary<string, T> hash))
 				{
-					if (hash.ContainsKey(key)) { return hash.TryAdd(key, value); }
+#if NET8_0_OR_GREATER
+					if (hash.ContainsKey(key)) { hash[key] = value; return true; }
 					else { return hash.TryAdd(key, value); }
+#else
+					if (hash.ContainsKey(key)) { hash[key] = value; }
+					else { hash.Add(key, value); }
+					return true;
+#endif
 				}
 				else
 				{
 					hash = new ConcurrentDictionary<string, T>(-1, 5);
 					memory.Set(hashId, hash, expiresIn);
+#if NET8_0_OR_GREATER
 					return hash.TryAdd(key, value);
+#else
+					hash.Add(key, value);
+					return true;
+#endif
 				}
 			}
 
@@ -597,7 +707,242 @@ namespace Basic.Caches
 
 			#endregion
 
-			#region 缓存异步方法 - 集合操作
+			#region 缓存异步方法 - 集合和有序集合操作
+			/// <summary>存储数据到集合。</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">哈希表键</param>
+			/// <param name="value">哈希表值</param>
+			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
+			bool ICacheClient.SetAdd<T>(string key, T value)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new HashSet<T>(); }
+				lock (list) { list.Add(value); }
+				memory.Set<ISet<T>>(key, list);
+				return true;
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">哈希表键</param>
+			/// <param name="value">哈希表值</param>
+			/// <param name="expiresAt">指定键过期的时间点。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			bool ICacheClient.SetAdd<T>(string key, T value, DateTime expiresAt)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new HashSet<T>(); }
+				lock (list) { list.Add(value); }
+				memory.Set<ISet<T>>(key, list, expiresAt);
+				return true;
+			}
+
+			/// <summary>存储数据到集合。</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="items">需要添加到集合的项目列表</param>
+			/// <returns>返回添加成功的集合项数量。</returns>
+			long ICacheClient.SetAdd<T>(string key, IEnumerable<T> items)
+			{
+				if (items == null || items.Any() == false) { return (0L); }
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new HashSet<T>(); }
+				lock (list) { foreach (T item in items) { list.Add(item); } }
+				memory.Set<ISet<T>>(key, list);
+				return (items.LongCount());
+			}
+
+			/// <summary>存储数据到集合。</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="items">需要添加到集合的项目列表</param>
+			/// <param name="expiresAt">指定键过期的时间点。</param>
+			/// <returns>返回添加成功的集合项数量。</returns>
+			long ICacheClient.SetAdd<T>(string key, IEnumerable<T> items, DateTime expiresAt)
+			{
+				if (items == null || items.Any() == false) { return (0L); }
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new HashSet<T>(); }
+				lock (list) { foreach (T item in items) { list.Add(item); } }
+				memory.Set<ISet<T>>(key, list, expiresAt);
+				return (items.LongCount());
+			}
+
+			/// <summary>获取集合中所有成员</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			ICollection<T> ICacheClient.SetMembers<T>(string key)
+			{
+				if (memory.TryGetValue(key, out ISet<T> value))
+				{
+					return value;
+				}
+				return null;
+			}
+
+			/// <summary>存储数据到有序集合。</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="value">哈希表值</param>
+			/// <param name="score">与元素关联的分数，用于排序。</param>
+			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
+			bool ICacheClient.ZSetAdd<T>(string key, T value, double score)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.Add(value); }
+				memory.Set<ISet<T>>(key, list);
+				return true;
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="value">哈希表值</param>
+			/// <param name="score">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresAt">指定键过期的时间点。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			bool ICacheClient.ZSetAdd<T>(string key, T value, double score, DateTime expiresAt)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.Add(value); }
+				memory.Set<ISet<T>>(key, list, expiresAt);
+				return true;
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="value">哈希表值</param>
+			/// <param name="score">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			bool ICacheClient.ZSetAdd<T>(string key, T value, double score, TimeSpan expiresIn)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.Add(value); }
+				memory.Set<ISet<T>>(key, list, expiresIn);
+				return true;
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc)
+			{
+				if (values == null || values.Any() == false) { return (0L); }
+
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list);
+				return values.LongCount();
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt)
+			{
+				if (values == null || values.Any() == false) { return (0L); }
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresAt);
+				return values.LongCount();
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn)
+			{
+				if (values == null || values.Any() == false) { return (0L); }
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresIn);
+				return values.LongCount();
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc)
+			{
+				if (values == null || values.Any() == false) { return (0L); }
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list);
+				return values.LongCount();
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt)
+			{
+				if (values == null || values.Any() == false) { return (0L); }
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresAt);
+				return values.LongCount();
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn)
+			{
+				if (values == null || values.Any() == false) { return (0L); }
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresIn);
+				return values.LongCount();
+			}
+
+			/// <summary>从有序集合中读取所有数据。</summary>
+			/// <param name="key">哈希表键</param>
+			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
+			ICollection<T> ICacheClient.ZSetMembers<T>(string key)
+			{
+				if (memory.TryGetValue(key, out ISet<T> value))
+				{
+					return (value);
+				}
+				return null;
+			}
+			#endregion
+
+			#region 缓存异步方法 - 集合和有序集合操作
 			/// <summary>存储数据到集合。</summary>
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="key">哈希表键</param>
@@ -702,6 +1047,128 @@ namespace Basic.Caches
 				return Task.FromResult(true);
 			}
 
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="value">哈希表值</param>
+			/// <param name="score">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			Task<bool> ICacheClient.ZSetAddAsync<T>(string key, T value, double score, TimeSpan expiresIn)
+			{
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.Add(value); }
+				memory.Set<ISet<T>>(key, list, expiresIn);
+				return Task.FromResult(true);
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc)
+			{
+				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
+
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list);
+				return Task.FromResult(values.LongCount());
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt)
+			{
+				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
+
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresAt);
+				return Task.FromResult(values.LongCount());
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn)
+			{
+				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
+
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresIn);
+				return Task.FromResult(values.LongCount());
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc)
+			{
+				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
+
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list);
+				return Task.FromResult(values.LongCount());
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt)
+			{
+				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
+
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresAt);
+				return Task.FromResult(values.LongCount());
+			}
+
+			/// <summary>存储数据到有序集合</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="key">集合键名</param>
+			/// <param name="values">哈希表值</param>
+			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
+			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn)
+			{
+				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
+
+				ISet<T> list = memory.Get<ISet<T>>(key);
+				if (list == null) { list = new SortedSet<T>(); }
+				lock (list) { list.UnionWith(values); }
+				memory.Set<ISet<T>>(key, list, expiresIn);
+				return Task.FromResult(values.LongCount());
+			}
+
 			/// <summary>从有序集合中读取所有数据。</summary>
 			/// <param name="key">哈希表键</param>
 			/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
@@ -715,6 +1182,91 @@ namespace Basic.Caches
 			}
 			#endregion
 		}
-#endif
 	}
+
+#if NETSTANDARD || NET6_0
+	internal static class MemoryCacheExtension
+	{
+		/// <summary>
+		/// Tries to get the value associated with the given key.
+		/// </summary>
+		/// <typeparam name="TItem">The type of the object to get.</typeparam>
+		/// <param name="cache">The <see cref="MemoryCache"/> instance this method extends.</param>
+		/// <param name="key">The key of the value to get.</param>
+		/// <param name="value">The value associated with the given key.</param>
+		/// <returns><c>true</c> if the key was found; <c>false</c> otherwise.</returns>
+		public static bool TryGetValue<TItem>(this MemoryCache cache, string key, out TItem value)
+		{
+			value = (TItem)cache.Get(key);
+			return value != null;
+		}
+
+		/// <summary>
+		/// Gets the value associated with this key if present.
+		/// </summary>
+		/// <typeparam name="TItem">The type of the object to get.</typeparam>
+		/// <param name="cache">The <see cref="MemoryCache"/> instance this method extends.</param>
+		/// <param name="key">The key of the value to get.</param>
+		/// <returns>The value associated with this key, or <c>default(TItem)</c> if the key is not present.</returns>
+		public static TItem Get<TItem>(this MemoryCache cache, string key)
+		{
+			return (TItem)(cache.Get(key) ?? default(TItem));
+		}
+
+		/// <summary>
+		/// Associate a value with a key in the <see cref="MemoryCache"/>.
+		/// </summary>
+		/// <typeparam name="TItem">The type of the object to set.</typeparam>
+		/// <param name="cache">The <see cref="MemoryCache"/> instance this method extends.</param>
+		/// <param name="key">The key of the entry to set.</param>
+		/// <param name="value">The value to associate with the key.</param>
+		/// <returns>The value that was set.</returns>
+		public static void Set<TItem>(this MemoryCache cache, string key, TItem value)
+		{
+			cache.Set(key, value, DateTimeOffset.MaxValue);
+		}
+
+		/// <summary>
+		/// Associate a value with a key in the <see cref="MemoryCache"/>.
+		/// </summary>
+		/// <typeparam name="TItem">The type of the object to set.</typeparam>
+		/// <param name="cache">The <see cref="MemoryCache"/> instance this method extends.</param>
+		/// <param name="key">The key of the entry to set.</param>
+		/// <param name="value">The value to associate with the key.</param>
+		/// <param name="absoluteExpiration">The value to associate with the key.</param>
+		/// <returns>The value that was set.</returns>
+		public static void Set<TItem>(this MemoryCache cache, string key, TItem value, DateTimeOffset absoluteExpiration)
+		{
+			cache.Set(key, value, absoluteExpiration);
+		}
+
+		/// <summary>
+		/// Associate a value with a key in the <see cref="MemoryCache"/>.
+		/// </summary>
+		/// <typeparam name="TItem">The type of the object to set.</typeparam>
+		/// <param name="cache">The <see cref="MemoryCache"/> instance this method extends.</param>
+		/// <param name="key">The key of the entry to set.</param>
+		/// <param name="value">The value to associate with the key.</param>
+		/// <param name="expiresAt">The value to associate with the key.</param>
+		/// <returns>The value that was set.</returns>
+		public static void Set<TItem>(this MemoryCache cache, string key, TItem value, DateTime expiresAt)
+		{
+			cache.Set(key, value, new DateTimeOffset(expiresAt));
+		}
+
+		/// <summary>
+		/// Associate a value with a key in the <see cref="MemoryCache"/>.
+		/// </summary>
+		/// <typeparam name="TItem">The type of the object to set.</typeparam>
+		/// <param name="cache">The <see cref="MemoryCache"/> instance this method extends.</param>
+		/// <param name="key">The key of the entry to set.</param>
+		/// <param name="value">The value to associate with the key.</param>
+		/// <param name="expiresIn">The value to associate with the key.</param>
+		/// <returns>The value that was set.</returns>
+		public static void Set<TItem>(this MemoryCache cache, string key, TItem value, TimeSpan expiresIn)
+		{
+			cache.Set(key, value, DateTimeOffset.Now.Add(expiresIn));
+		}
+	}
+#endif
 }

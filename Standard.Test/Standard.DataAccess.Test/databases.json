@@ -8,13 +8,25 @@
 		}
 	},
 	"Connections": {
-		"DefaultName": "LOCAL",
+		"DefaultName": "SJEC",
 		"Connections": {
 			"LOCAL": {
 				"ConnectionType": "NewSqlConnection",
 				"Version": 12,
 				"Application Name": "HRMS-TEST",
 				"Initial Catalog": "HRMS-V5",
+				"Data Source": "(local)",
+				"User ID": "sa",
+				"Password": "C/1Shp55C14b0TtEhs87bg==",
+				"TrustServerCertificate": "True",
+				"Persist Security Info": "True",
+				"Max Pool Size": "2000"
+			},
+			"SJEC": {
+				"ConnectionType": "NewSqlConnection",
+				"Version": 12,
+				"Application Name": "SJEC-HRMS",
+				"Initial Catalog": "SJEC-EHR-0728",
 				"Data Source": "(local)",
 				"User ID": "sa",
 				"Password": "C/1Shp55C14b0TtEhs87bg==",
