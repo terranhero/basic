@@ -810,7 +810,7 @@ namespace Basic.Caches
 			/// <param name="values">哈希表值</param>
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc)
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
 				IDatabase db = mRedis.GetDatabase(dbIndex);
@@ -824,7 +824,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt)
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
 				IDatabase db = mRedis.GetDatabase(dbIndex);
@@ -840,53 +840,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn)
-			{
-				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long result = db.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
-				db.KeyExpire(key, expiresIn);
-				return result;
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc)
-			{
-				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long result = db.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
-				return result;
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt)
-			{
-				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				long result = db.SortedSetAdd(key, values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray());
-				db.KeyExpire(key, expiresAt);
-				return result;
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn)
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
 				IDatabase db = mRedis.GetDatabase(dbIndex);
@@ -1021,7 +975,7 @@ namespace Basic.Caches
 			/// <param name="values">哈希表值</param>
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc)
+			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
 				IDatabase db = mRedis.GetDatabase(dbIndex);
@@ -1036,7 +990,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt)
+			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
 				IDatabase db = mRedis.GetDatabase(dbIndex);
@@ -1055,58 +1009,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn)
-			{
-				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				SortedSetEntry[] items = values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray();
-				long result = await db.SortedSetAddAsync(key, items);
-
-				await db.KeyExpireAsync(key, expiresIn);
-				return result;
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc)
-			{
-				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				SortedSetEntry[] items = values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray();
-				long result = await db.SortedSetAddAsync(key, items);
-				return result;
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt)
-			{
-				if (values == null || values.Any() == false) { return 0L; }
-				IDatabase db = mRedis.GetDatabase(dbIndex);
-				SortedSetEntry[] items = values.Select(m => new SortedSetEntry(SerializeValue(m), scoreFunc(m))).ToArray();
-				long result = await db.SortedSetAddAsync(key, items);
-
-				await db.KeyExpireAsync(key, expiresAt);
-				return result;
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn)
+			async Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn)
 			{
 				if (values == null || values.Any() == false) { return 0L; }
 				IDatabase db = mRedis.GetDatabase(dbIndex);

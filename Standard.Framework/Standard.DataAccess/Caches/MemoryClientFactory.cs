@@ -834,7 +834,7 @@ namespace Basic.Caches
 			/// <param name="values">哈希表值</param>
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc)
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc)
 			{
 				if (values == null || values.Any() == false) { return (0L); }
 
@@ -852,7 +852,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt)
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt)
 			{
 				if (values == null || values.Any() == false) { return (0L); }
 				ISet<T> list = memory.Get<ISet<T>>(key);
@@ -869,57 +869,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn)
-			{
-				if (values == null || values.Any() == false) { return (0L); }
-				ISet<T> list = memory.Get<ISet<T>>(key);
-				if (list == null) { list = new SortedSet<T>(); }
-				lock (list) { list.UnionWith(values); }
-				memory.Set<ISet<T>>(key, list, expiresIn);
-				return values.LongCount();
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc)
-			{
-				if (values == null || values.Any() == false) { return (0L); }
-				ISet<T> list = memory.Get<ISet<T>>(key);
-				if (list == null) { list = new SortedSet<T>(); }
-				lock (list) { list.UnionWith(values); }
-				memory.Set<ISet<T>>(key, list);
-				return values.LongCount();
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt)
-			{
-				if (values == null || values.Any() == false) { return (0L); }
-				ISet<T> list = memory.Get<ISet<T>>(key);
-				if (list == null) { list = new SortedSet<T>(); }
-				lock (list) { list.UnionWith(values); }
-				memory.Set<ISet<T>>(key, list, expiresAt);
-				return values.LongCount();
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn)
+			long ICacheClient.ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn)
 			{
 				if (values == null || values.Any() == false) { return (0L); }
 				ISet<T> list = memory.Get<ISet<T>>(key);
@@ -1069,7 +1019,7 @@ namespace Basic.Caches
 			/// <param name="values">哈希表值</param>
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc)
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc)
 			{
 				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
 
@@ -1087,7 +1037,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt)
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt)
 			{
 				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
 
@@ -1105,60 +1055,7 @@ namespace Basic.Caches
 			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 			/// <returns>创建成功则为true，否则为false。</returns>
-			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn)
-			{
-				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
-
-				ISet<T> list = memory.Get<ISet<T>>(key);
-				if (list == null) { list = new SortedSet<T>(); }
-				lock (list) { list.UnionWith(values); }
-				memory.Set<ISet<T>>(key, list, expiresIn);
-				return Task.FromResult(values.LongCount());
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc)
-			{
-				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
-
-				ISet<T> list = memory.Get<ISet<T>>(key);
-				if (list == null) { list = new SortedSet<T>(); }
-				lock (list) { list.UnionWith(values); }
-				memory.Set<ISet<T>>(key, list);
-				return Task.FromResult(values.LongCount());
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt)
-			{
-				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
-
-				ISet<T> list = memory.Get<ISet<T>>(key);
-				if (list == null) { list = new SortedSet<T>(); }
-				lock (list) { list.UnionWith(values); }
-				memory.Set<ISet<T>>(key, list, expiresAt);
-				return Task.FromResult(values.LongCount());
-			}
-
-			/// <summary>存储数据到有序集合</summary>
-			/// <typeparam name="T">缓存值类型</typeparam>
-			/// <param name="key">集合键名</param>
-			/// <param name="values">哈希表值</param>
-			/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-			/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-			/// <returns>创建成功则为true，否则为false。</returns>
-			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn)
+			Task<long> ICacheClient.ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn)
 			{
 				if (values == null || values.Any() == false) { return Task.FromResult(0L); }
 

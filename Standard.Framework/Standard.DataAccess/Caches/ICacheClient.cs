@@ -314,7 +314,7 @@ namespace Basic.Caches
 		/// <param name="values">哈希表值</param>
 		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 		/// <returns>创建成功则为true，否则为false。</returns>
-		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc);
+		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc);
 
 		/// <summary>存储数据到有序集合</summary>
 		/// <typeparam name="T">缓存值类型</typeparam>
@@ -323,7 +323,7 @@ namespace Basic.Caches
 		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 		/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 		/// <returns>创建成功则为true，否则为false。</returns>
-		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt);
+		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt);
 
 		/// <summary>存储数据到有序集合</summary>
 		/// <typeparam name="T">缓存值类型</typeparam>
@@ -332,33 +332,7 @@ namespace Basic.Caches
 		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 		/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 		/// <returns>创建成功则为true，否则为false。</returns>
-		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn);
-
-		/// <summary>存储数据到有序集合</summary>
-		/// <typeparam name="T">缓存值类型</typeparam>
-		/// <param name="key">集合键名</param>
-		/// <param name="values">哈希表值</param>
-		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-		/// <returns>创建成功则为true，否则为false。</returns>
-		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc);
-
-		/// <summary>存储数据到有序集合</summary>
-		/// <typeparam name="T">缓存值类型</typeparam>
-		/// <param name="key">集合键名</param>
-		/// <param name="values">哈希表值</param>
-		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-		/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-		/// <returns>创建成功则为true，否则为false。</returns>
-		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt);
-
-		/// <summary>存储数据到有序集合</summary>
-		/// <typeparam name="T">缓存值类型</typeparam>
-		/// <param name="key">集合键名</param>
-		/// <param name="values">哈希表值</param>
-		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-		/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-		/// <returns>创建成功则为true，否则为false。</returns>
-		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn);
+		long ZSetAdd<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn);
 
 		/// <summary>从有序集合中读取所有数据。</summary>
 		/// <param name="key">哈希表键</param>
@@ -435,7 +409,7 @@ namespace Basic.Caches
 		/// <param name="values">哈希表值</param>
 		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 		/// <returns>创建成功则为true，否则为false。</returns>
-		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc);
+		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc);
 
 		/// <summary>存储数据到有序集合</summary>
 		/// <typeparam name="T">缓存值类型</typeparam>
@@ -444,7 +418,7 @@ namespace Basic.Caches
 		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 		/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 		/// <returns>创建成功则为true，否则为false。</returns>
-		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, DateTime expiresAt);
+		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, DateTime expiresAt);
 
 		/// <summary>存储数据到有序集合</summary>
 		/// <typeparam name="T">缓存值类型</typeparam>
@@ -453,33 +427,7 @@ namespace Basic.Caches
 		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
 		/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
 		/// <returns>创建成功则为true，否则为false。</returns>
-		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, long> scoreFunc, TimeSpan expiresIn);
-
-		/// <summary>存储数据到有序集合</summary>
-		/// <typeparam name="T">缓存值类型</typeparam>
-		/// <param name="key">集合键名</param>
-		/// <param name="values">哈希表值</param>
-		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-		/// <returns>创建成功则为true，否则为false。</returns>
-		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc);
-
-		/// <summary>存储数据到有序集合</summary>
-		/// <typeparam name="T">缓存值类型</typeparam>
-		/// <param name="key">集合键名</param>
-		/// <param name="values">哈希表值</param>
-		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-		/// <param name="expiresAt">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-		/// <returns>创建成功则为true，否则为false。</returns>
-		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, DateTime expiresAt);
-
-		/// <summary>存储数据到有序集合</summary>
-		/// <typeparam name="T">缓存值类型</typeparam>
-		/// <param name="key">集合键名</param>
-		/// <param name="values">哈希表值</param>
-		/// <param name="scoreFunc">与元素关联的分数，用于排序。</param>
-		/// <param name="expiresIn">指定键从现在开始过期的时间，如果键已经存在则此参数忽略。</param>
-		/// <returns>创建成功则为true，否则为false。</returns>
-		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, int> scoreFunc, TimeSpan expiresIn);
+		Task<long> ZSetAddAsync<T>(string key, IEnumerable<T> values, Func<T, double> scoreFunc, TimeSpan expiresIn);
 
 		/// <summary>从有序集合中读取所有数据。</summary>
 		/// <param name="key">哈希表键</param>
