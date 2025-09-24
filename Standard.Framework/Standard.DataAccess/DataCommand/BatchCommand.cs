@@ -25,6 +25,7 @@ namespace Basic.DataAccess
 		/// <param name="cmd">表示 <see cref="StaticCommand"/> 实例。</param>
 		protected BatchCommand(StaticCommand cmd) { staticCommand = cmd; }
 
+#if NET6_0_OR_GREATER
 		/// <summary>
 		/// 针对 .NET Framework 数据提供程序的 Connection 对象执行 SQL 语句，并返回受影响的行数。
 		/// </summary>
@@ -42,5 +43,24 @@ namespace Basic.DataAccess
 		/// <param name="entities">类型 <typeparamref name='TModel'/>子类类实例，包含了需要执行参数的值。</param>
 		/// <returns>受影响的行数。</returns>
 		internal protected abstract STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, int timeout) where TModel : AbstractEntity;
+
+		/// <summary>使用 BatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 AbstractEntity 子类类型</typeparam>
+		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
+		/// <param name="entities">类型 <typeparamref name='TModel'/>子类类实例，包含了需要执行参数的值。</param>
+		/// <returns>受影响的行数。</returns>
+		internal protected virtual STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, System.Action<DbParameter, TModel> paramSettings)
+		{
+			return this.ExecuteAsync<TModel>(entities, paramSettings, 30);
+		}
+
+		/// <summary>使用 BatchCommand 类执行数据命令</summary>
+		/// <typeparam name="TModel">表示 AbstractEntity 子类类型</typeparam>
+		/// <param name="timeout">超时之前操作完成所允许的秒数。</param>
+		/// <param name="paramSettings">表示执行命令前，自定义初始化参数值的方法。</param>
+		/// <param name="entities">类型 <typeparamref name='TModel'/>子类类实例，包含了需要执行参数的值。</param>
+		/// <returns>受影响的行数。</returns>
+		internal protected abstract STT.Task<int> ExecuteAsync<TModel>(IEnumerable<TModel> entities, System.Action<DbParameter, TModel> paramSettings, int timeout);
+#endif
 	}
 }

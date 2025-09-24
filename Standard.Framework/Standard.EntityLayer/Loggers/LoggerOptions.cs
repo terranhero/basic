@@ -38,6 +38,10 @@ namespace Basic.Loggers
 		/// <summary>调试日志保存方式</summary>
 		public LogLeveOption Debug { get { return _debug; } }
 		private LogLeveOption _debug = new LogLeveOption(LogLevel.Debug, LogSaveType.LocalFile, false);
+
+		/// <summary>日志批处理大小，默认值200</summary>
+		public int BatchSize { get; set; } = 200;
+
 	}
 
 	/// <summary>特定日志级别存储方式</summary>

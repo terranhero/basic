@@ -64,10 +64,11 @@ namespace Basic.SqlServer
 		/// </summary>
 		internal SqlConnection Connection { get { return sqlCommand.Connection; } }
 
+#if NET6_0_OR_GREATER
 		/// <summary>创建批处理命令</summary>
 		/// <returns>返回 SqlServerBatchCommand 的实例</returns>
 		protected internal override BatchCommand CreateBatchCommand() { return new SqlServerBatchCommand(this); }
-
+#endif
 		/// <summary>
 		/// 重置数据库连接
 		/// </summary>

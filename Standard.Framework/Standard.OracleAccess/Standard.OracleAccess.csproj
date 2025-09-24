@@ -11,18 +11,17 @@
 		<PackageTags>ORM Linq Access Oracle</PackageTags>
 		<Description>ORM 框架数据库持久实现（Oracle）特定数据库实现。</Description>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
+	<!--<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
-		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.8.0" />
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
+	</ItemGroup>-->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
-		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
-		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.8.0" />
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />

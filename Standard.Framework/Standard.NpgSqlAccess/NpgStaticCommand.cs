@@ -32,9 +32,11 @@ namespace Basic.PostgreSql
 		/// <summary>当前命令的数据库类型</summary>
 		public override ConnectionType ConnectionType { get { return ConnectionType.NpgSqlConnection; } }
 
+#if NET6_0_OR_GREATER
 		/// <summary>创建批处理命令</summary>
 		/// <returns>返回 SqlServerBatchCommand 的实例</returns>
 		protected internal override BatchCommand CreateBatchCommand() { return new NpgBatchCommand(this); }
+#endif
 
 		private NpgCheckCommandCollection _CheckCommands = null;
 		/// <summary>

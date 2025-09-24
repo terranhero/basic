@@ -37,6 +37,57 @@ namespace Standard.EntityLayer.Test
 		}
 
 		[TestMethod]
+		public void SerializeDailySummaryEntityEmpty()
+		{
+			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
+			List<DailySummaryEntity> list = new List<DailySummaryEntity>(5);
+			DailySummaryEntity item = new DailySummaryEntity()
+			{
+				ShiftDate = new DateTime(2025, 08, 07),
+				CalendarType = CalendarTypes.AllDay,
+				ClassType = ClassTypes.TimingClass,
+				PeopleCount = 7,
+				ClassKey = 203,
+				ShortName = "D",
+				ClassName = "夜班",
+				CreatedTime = DateTime.Parse("2025-08-11 09:26:59"),
+				ModifiedTime = DateTime.Parse("2025-08-11 09:42:58.603")
+				//WorkHour = 8,
+			};
+			list.Add(item);
+			string result = converter.Serialize(list, true);
+			Console.WriteLine(result);
+			List<DailySummaryEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailySummaryEntity>>(result);
+			Assert.IsFalse(list1.Count == 0, result);
+		}
+
+		[TestMethod]
+		public void SerializeDailySummaryEntityFull()
+		{
+			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
+			List<DailySummaryEntity> list = new List<DailySummaryEntity>(5);
+			DailySummaryEntity item = new DailySummaryEntity()
+			{
+				ShiftDate = new DateTime(2025, 08, 07),
+				CalendarType = CalendarTypes.AllDay,
+				ClassType = ClassTypes.TimingClass,
+				PeopleCount = 7,
+				ClassKey = 203,
+				ShortName = "D",
+				ClassName = "夜班",
+				CreatedTime = DateTime.Parse("2025-08-11 09:26:59"),
+				ModifiedTime = DateTime.Parse("2025-08-11 09:42:58.603")
+				//WorkHour = 8,
+			};
+			item.Items["CM1"] = 23M;
+			list.Add(item);
+			string result = converter.Serialize(list, true);
+			Console.WriteLine(result);
+			List<DailySummaryEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailySummaryEntity>>(result);
+			Assert.IsFalse(list1.Count == 0, result);
+		}
+
+		[TestMethod]
 		public void SerializeCollectionPropertiesEmpty()
 		{
 			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
@@ -139,6 +190,484 @@ namespace Standard.EntityLayer.Test
 		}
 	}
 
+
+	#region DailySummaryEntity Declaration
+	[DefaultValue(1)]
+	public enum ClassTypes
+	{
+		//
+		// 摘要:
+		//     休息班别
+		RestClass = 1,
+		//
+		// 摘要:
+		//     定时班别
+		TimingClass,
+		//
+		// 摘要:
+		//     不定时班别
+		TimeToTime
+	}
+	/// <summary>
+	/// 每日汇总数据
+	/// </summary>
+	[global::System.SerializableAttribute()]
+	[global::System.ComponentModel.ToolboxItemAttribute(false)]
+	[global::System.Runtime.InteropServices.GuidAttribute("770AA627-D1E4-489E-AB02-5E3E34BD61DA")]
+	[global::Basic.EntityLayer.TableMappingAttribute("PSM_DAILYSUMMARY")]
+	[global::Basic.EntityLayer.GroupNameAttribute("DailySummary", "SalaryStrings")]
+	public partial class DailySummaryEntity : global::Basic.EntityLayer.AbstractEntity
+	{
+
+		/// <summary></summary>
+		[Basic.EntityLayer.PropertyCollection]
+		public Dictionary<string, decimal> Items { get { return _Workloads; } }
+
+		private Dictionary<string, decimal> _Workloads = new Dictionary<string, decimal>(100);
+		/// <summary></summary>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public void SetValue(string name, decimal value)
+		{
+			if (_Workloads.ContainsKey(name)) { _Workloads[name] = value; }
+			else { _Workloads.Add(name, value); }
+		}
+
+		private System.DateTime m_ShiftDate;
+
+		private int m_ClassKey;
+
+		private ClassTypes m_ClassType;
+
+		private string m_ClassCode;
+
+		private string m_ShortName;
+
+		private string m_ClassName;
+
+		private CalendarTypes m_CalendarType;
+
+		private decimal m_TotalTonne;
+
+		private decimal m_TotalTimes;
+
+		private decimal m_TotalNumber;
+
+		private decimal m_PeopleCount;
+
+		private decimal m_CostSubtotal;
+
+		private decimal m_CostAverage;
+
+		private string m_UserName;
+
+		private System.DateTime m_CreatedTime;
+
+		private System.DateTime m_ModifiedTime;
+
+		/// <summary>
+		/// 初始化类实例。
+		/// </summary>
+		partial void InitializationClass();
+
+
+		/// <summary>
+		/// 初始化 DailySummaryEntity 类的实例。
+		/// </summary>
+		public DailySummaryEntity() :
+				base()
+		{
+			this.InitializationClass();
+		}
+
+		/// <summary>
+		/// 使用关键字初始化 DailySummaryEntity 类的实例。
+		/// </summary>
+		/// <param name="pShiftDate">排班日期</param>
+		/// <param name="pClassKey">出勤班别</param>
+		public DailySummaryEntity(System.DateTime pShiftDate, int pClassKey) :
+				base()
+		{
+			this.m_ShiftDate = pShiftDate;
+			this.m_ClassKey = pClassKey;
+			this.InitializationClass();
+		}
+
+		/// <summary>
+		/// 排班日期
+		/// </summary>
+		/// <value>排班日期</value>
+		[global::Basic.EntityLayer.PrimaryKeyAttribute()]
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "SHIFTDATE", DbTypeEnum.Date, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ShiftDate", "SalaryStrings")]
+		[global::System.ComponentModel.DataAnnotations.DisplayFormatAttribute(DataFormatString = "{0:yyyy-MM-dd}")]
+		public System.DateTime ShiftDate
+		{
+			get
+			{
+				return m_ShiftDate;
+			}
+			set
+			{
+				if ((m_ShiftDate != value))
+				{
+					base.OnPropertyChanging("ShiftDate");
+					m_ShiftDate = value;
+					base.OnPropertyChanged("ShiftDate");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 出勤班别
+		/// </summary>
+		/// <value>出勤班别</value>
+		[global::Basic.EntityLayer.PrimaryKeyAttribute()]
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "CLASSKEY", DbTypeEnum.Int32, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ClassKey", "SalaryStrings")]
+		public int ClassKey
+		{
+			get
+			{
+				return m_ClassKey;
+			}
+			set
+			{
+				if ((m_ClassKey != value))
+				{
+					base.OnPropertyChanging("ClassKey");
+					m_ClassKey = value;
+					base.OnPropertyChanged("ClassKey");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 班别类型1:休息,2:定时,3:不定时
+		/// </summary>
+		/// <value>班别类型1:休息,2:定时,3:不定时</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T2", "CLASSTYPE", DbTypeEnum.Int16, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ClassType", "SalaryStrings")]
+		public ClassTypes ClassType
+		{
+			get
+			{
+				return m_ClassType;
+			}
+			set
+			{
+				if ((m_ClassType != value))
+				{
+					base.OnPropertyChanging("ClassType");
+					m_ClassType = value;
+					base.OnPropertyChanged("ClassType");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 班别代码
+		/// </summary>
+		/// <value>班别代码</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T2", "CLASSCODE", DbTypeEnum.NVarChar, 50, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ClassCode", "SalaryStrings")]
+		public string ClassCode
+		{
+			get
+			{
+				return m_ClassCode;
+			}
+			set
+			{
+				if ((m_ClassCode != value))
+				{
+					base.OnPropertyChanging("ClassCode");
+					m_ClassCode = value;
+					base.OnPropertyChanged("ClassCode");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Property: ShortName
+		/// </summary>
+		/// <value>属性 ShortName 的值</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T2", "SHORTNAME", DbTypeEnum.NVarChar, 10, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ShortName", "SalaryStrings")]
+		public string ShortName
+		{
+			get
+			{
+				return m_ShortName;
+			}
+			set
+			{
+				if ((m_ShortName != value))
+				{
+					base.OnPropertyChanging("ShortName");
+					m_ShortName = value;
+					base.OnPropertyChanged("ShortName");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 班别名称
+		/// </summary>
+		/// <value>班别名称</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T2", "CLASSNAME", DbTypeEnum.NVarChar, 50, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ClassName", "SalaryStrings")]
+		public string ClassName
+		{
+			get
+			{
+				return m_ClassName;
+			}
+			set
+			{
+				if ((m_ClassName != value))
+				{
+					base.OnPropertyChanging("ClassName");
+					m_ClassName = value;
+					base.OnPropertyChanged("ClassName");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 行事历类型
+		/// </summary>
+		/// <value>行事历类型</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "CALENDARTYPE", DbTypeEnum.Int32, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("EmployeeSchedule_CalendarType", "SalaryStrings")]
+		public CalendarTypes CalendarType
+		{
+			get
+			{
+				return m_CalendarType;
+			}
+			set
+			{
+				if ((m_CalendarType != value))
+				{
+					base.OnPropertyChanging("CalendarType");
+					m_CalendarType = value;
+					base.OnPropertyChanged("CalendarType");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 总吨位
+		/// </summary>
+		/// <value>总吨位</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute(null, "TOTALTONNE", DbTypeEnum.Decimal, 18, 4, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_TotalTonne", "SalaryStrings")]
+		public decimal TotalTonne
+		{
+			get
+			{
+				return m_TotalTonne;
+			}
+			set
+			{
+				if ((m_TotalTonne != value))
+				{
+					base.OnPropertyChanging("TotalTonne");
+					m_TotalTonne = value;
+					base.OnPropertyChanged("TotalTonne");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 总次数
+		/// </summary>
+		/// <value>总次数</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute(null, "TOTALTIMES", DbTypeEnum.Decimal, 18, 4, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_TotalTimes", "SalaryStrings")]
+		public decimal TotalTimes
+		{
+			get
+			{
+				return m_TotalTimes;
+			}
+			set
+			{
+				if ((m_TotalTimes != value))
+				{
+					base.OnPropertyChanging("TotalTimes");
+					m_TotalTimes = value;
+					base.OnPropertyChanged("TotalTimes");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 总只数
+		/// </summary>
+		/// <value>总只数</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "TOTALNUMBER", DbTypeEnum.Decimal, 18, 4, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_TotalNumber", "SalaryStrings")]
+		public decimal TotalNumber
+		{
+			get
+			{
+				return m_TotalNumber;
+			}
+			set
+			{
+				if ((m_TotalNumber != value))
+				{
+					base.OnPropertyChanging("TotalNumber");
+					m_TotalNumber = value;
+					base.OnPropertyChanged("TotalNumber");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 出勤人数
+		/// </summary>
+		/// <value>出勤人数</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "PEOPLECOUNT", DbTypeEnum.Decimal, 9, 2, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_PeopleCount", "SalaryStrings")]
+		public decimal PeopleCount
+		{
+			get
+			{
+				return m_PeopleCount;
+			}
+			set
+			{
+				if ((m_PeopleCount != value))
+				{
+					base.OnPropertyChanging("PeopleCount");
+					m_PeopleCount = value;
+					base.OnPropertyChanged("PeopleCount");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 金额小计
+		/// </summary>
+		/// <value>金额小计</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "COSTSUBTOTAL", DbTypeEnum.Decimal, 18, 4, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_CostSubtotal", "SalaryStrings")]
+		public decimal CostSubtotal
+		{
+			get
+			{
+				return m_CostSubtotal;
+			}
+			set
+			{
+				if ((m_CostSubtotal != value))
+				{
+					base.OnPropertyChanging("CostSubtotal");
+					m_CostSubtotal = value;
+					base.OnPropertyChanged("CostSubtotal");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 人均金额
+		/// </summary>
+		/// <value>人均金额</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "COSTAVERAGE", DbTypeEnum.Decimal, 18, 4, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_CostAverage", "SalaryStrings")]
+		public decimal CostAverage
+		{
+			get
+			{
+				return m_CostAverage;
+			}
+			set
+			{
+				if ((m_CostAverage != value))
+				{
+					base.OnPropertyChanging("CostAverage");
+					m_CostAverage = value;
+					base.OnPropertyChanged("CostAverage");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 操作用户
+		/// </summary>
+		/// <value>操作用户</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "USERNAME", DbTypeEnum.NVarChar, 50, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("Payroll_UserName", "SalaryStrings")]
+		public string UserName
+		{
+			get
+			{
+				return m_UserName;
+			}
+			set
+			{
+				if ((m_UserName != value))
+				{
+					base.OnPropertyChanging("UserName");
+					m_UserName = value;
+					base.OnPropertyChanged("UserName");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 创建时间
+		/// </summary>
+		/// <value>创建时间</value>
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "CREATEDTIME", DbTypeEnum.DateTime, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("Payroll_CreatedTime", "SalaryStrings")]
+		[global::System.ComponentModel.DataAnnotations.DisplayFormatAttribute(DataFormatString = "{0:yyyy-MM-ddTHH:mm:ss}")]
+		public System.DateTime CreatedTime
+		{
+			get
+			{
+				return m_CreatedTime;
+			}
+			set
+			{
+				if ((m_CreatedTime != value))
+				{
+					base.OnPropertyChanging("CreatedTime");
+					m_CreatedTime = value;
+					base.OnPropertyChanged("CreatedTime");
+				}
+			}
+		}
+
+		/// <summary>
+		/// 修改时间
+		/// </summary>
+		/// <value>修改时间</value>
+		[global::System.ComponentModel.DataAnnotations.TimestampAttribute()]
+		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "MODIFIEDTIME", DbTypeEnum.Timestamp, false)]
+		[global::Basic.EntityLayer.WebDisplayAttribute("Payroll_ModifiedTime", "SalaryStrings")]
+		[global::System.ComponentModel.DataAnnotations.DisplayFormatAttribute(DataFormatString = "{0:yyyy-MM-ddTHH:mm:ss.fff}")]
+		public System.DateTime ModifiedTime
+		{
+			get
+			{
+				return m_ModifiedTime;
+			}
+			set
+			{
+				if ((m_ModifiedTime != value))
+				{
+					base.OnPropertyChanging("ModifiedTime");
+					m_ModifiedTime = value;
+					base.OnPropertyChanged("ModifiedTime");
+				}
+			}
+		}
+	}
+	#endregion
 
 	//
 	// 摘要:

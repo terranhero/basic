@@ -34,7 +34,13 @@ basic ORM 于2012 年发布、2023 年正式开源，该组件已在数百个成
 ```c#
 using(xxxAccess access = new xxxAccess(connectionstring))
 {
-   access.Create(entity); or await access.CreateAsync(entity);
+   access.Create(entity); 
+
+   await access.CreateAsync(entity);
+
+   await access.BatchAsync(entity);
+
+   await access.BulkCopyAsync(DataTable);
 }
 
 //使用 Lambda 表达式查询数据

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Threading.Tasks;
@@ -15,12 +16,24 @@ namespace Basic.PostgreSql
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never), System.Serializable()]
 	internal sealed class NpgBulkCopyCommand : BulkCopyCommand, IDisposable
 	{
+		//private readonly npgsql _BulkCopy;
+		//private readonly List<string> _DestinationColumns = new List<string>(100);
+		//private readonly TableConfiguration _TableInfo;
 		/// <summary>初始化 NpgBulkCopyCommand 类的新实例。 </summary>
 		/// <param name="connection">将用于执行批量复制操作的已经打开的 System.Data.SqlClient.SqlConnection 实例。</param>
 		///<param name="configInfo">表示当前数据库表配置信息</param>
 		public NpgBulkCopyCommand(NpgsqlConnection connection, TableConfiguration configInfo)
 			: base(new NpgsqlCommand(), configInfo)
 		{
+			//_BulkCopy = new NpgBulkCopyCommand(connection);
+			//_TableInfo = configInfo;
+
+			//foreach (ColumnInfo column in _TableInfo.Columns)
+			//{
+			//	_BulkCopy.ColumnMappings.Add(column.Name, column.Name);
+			//	_DestinationColumns.Add(column.Name);
+			//}
+			//_BulkCopy.DestinationTableName = _TableInfo.TableName;
 		}
 
 		/// <summary>

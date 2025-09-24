@@ -85,9 +85,11 @@ namespace Basic.MySqlAccess
 		/// </summary>
 		internal MySqlConnection Connection { get { return _MySqlCommand.Connection; } }
 
+#if NET6_0_OR_GREATER
 		/// <summary>创建批处理命令</summary>
 		/// <returns>返回 MySqlBatchCommand 的实例</returns>
 		protected internal override BatchCommand CreateBatchCommand() { return new MySqlBatchCommand(this); }
+#endif
 
 		/// <summary>
 		/// 获取 MySqlCommand 类实例。
