@@ -58,6 +58,7 @@
     <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+    <CopyVsixExtensionLocation>D:\BASIC\PD_08_Product Release\</CopyVsixExtensionLocation>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Builders\AbstractMvcViewBuilder.cs" />
