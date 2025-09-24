@@ -42,7 +42,7 @@ namespace Basic.DataContexts
 					}
 					IConfigurationRoot root = configBuilder.Build();
 					IConfigurationSection dbConnections = root.GetSection("Connections");
-					ConnectionContext.InitializeConnection(dbConnections);
+					ConnectionContext.InitializeConnections(dbConnections);
 					return true;
 				}
 				EnvDTE.DTE dteClass = project.DTE;
@@ -70,7 +70,7 @@ namespace Basic.DataContexts
 							}
 							IConfigurationRoot root = configBuilder.Build();
 							IConfigurationSection dbConnections = root.GetSection("Connections");
-							ConnectionContext.InitializeConnection(dbConnections);
+							ConnectionContext.InitializeConnections(dbConnections);
 							return true;
 						}
 					}
@@ -109,7 +109,7 @@ namespace Basic.DataContexts
 					}
 					IConfigurationRoot root = configBuilder.Build();
 					IConfigurationSection dbConnections = root.GetSection("Connections");
-					ConnectionContext.InitializeConnection(dbConnections);
+					ConnectionContext.InitializeConnections(dbConnections);
 					return true;
 				}
 				EnvDTE.DTE dteClass = project.DTE;
@@ -137,7 +137,7 @@ namespace Basic.DataContexts
 							}
 							IConfigurationRoot root = configBuilder.Build();
 							IConfigurationSection dbConnections = root.GetSection("Connections");
-							ConnectionContext.InitializeConnection(dbConnections);
+							ConnectionContext.InitializeConnections(dbConnections);
 							return true;
 						}
 					}
