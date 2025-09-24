@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard.SqlClientAccess", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic.MvcLibrary", "Standard.Framework\Basic.MvcLibrary\Basic.MvcLibrary.csproj", "{E4781B60-0238-42C3-AACA-45060B2FE66A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic.Persistent", "Standard.Designers\Basic.Persistent\Basic.Persistent.csproj", "{AA38AF92-E5CA-4F24-ABC4-D516A890B803}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic.Persistent-2022", "Standard.Designers\Basic.Persistent\Basic.Persistent-2022.csproj", "{AA38AF92-E5CA-4F24-ABC4-D516A890B803}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic.Localizations", "Standard.Designers\Basic.Localizations\Basic.Localizations.csproj", "{A94521F3-AB2C-4BFC-9D89-8CF1238AB92E}"
 EndProject
