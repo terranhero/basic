@@ -5,8 +5,8 @@
 		<!--<TargetFramework>netstandard2.0</TargetFramework>-->
 		<AssemblyVersion>6.0.0.0</AssemblyVersion>
 		<Version>6.0.0.0</Version>
-		<FileVersion>6.0.$(BuildVersion)</FileVersion>
-		<PackageVersion>6.0.$(BuildVersion)</PackageVersion>
+		<!--<FileVersion>6.0.$(BuildVersion)</FileVersion>
+		<PackageVersion>6.0.$(BuildVersion)</PackageVersion>-->
 		<Copyright>@SIP GoldSoft Technology Limited. All Rights Reserved.</Copyright>
 		<Trademark></Trademark>
 		<Company>SIP GoldSoft Technology Limited</Company>
@@ -15,10 +15,27 @@
 		<SignAssembly>true</SignAssembly>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="obj\**" />
 		<EmbeddedResource Remove="obj\**" />
 		<None Remove="obj\**" />
 	</ItemGroup>
+
+	<Target Name="SetVersionFromGitVersion" BeforeTargets="CoreCompile">
+		<Exec Command="dotnet gitversion /output buildserver /showvariable SemVer" ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="Version" />
+		</Exec>
+		<Exec Command="dotnet gitversion /output buildserver /showvariable AssemblySemVer" ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="AssemblyVersion" />
+		</Exec>
+		<Exec Command="dotnet gitversion /output buildserver /showvariable FileSemVer" ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="FileVersion" />
+		</Exec>
+		<PropertyGroup>
+			<FileVersion>6.0.$(BuildVersion)</FileVersion>
+			<PackageVersion>6.0.$(BuildVersion)</PackageVersion>
+		</PropertyGroup>
+	</Target>
 </Project>
