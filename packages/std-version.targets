@@ -2,11 +2,10 @@
 	<PropertyGroup>
 		<BuildVersion>5851</BuildVersion>
 		<TargetFrameworks>net8.0;net6.0;netstandard2.0;</TargetFrameworks>
-		<!--<TargetFramework>netstandard2.0</TargetFramework>-->
 		<AssemblyVersion>6.0.0.0</AssemblyVersion>
 		<Version>6.0.0.0</Version>
-		<!--<FileVersion>6.0.$(BuildVersion)</FileVersion>
-		<PackageVersion>6.0.$(BuildVersion)</PackageVersion>-->
+		<FileVersion>6.0.$(BuildVersion)</FileVersion>
+		<PackageVersion>6.0.$(BuildVersion)</PackageVersion>
 		<Copyright>@SIP GoldSoft Technology Limited. All Rights Reserved.</Copyright>
 		<Trademark></Trademark>
 		<Company>SIP GoldSoft Technology Limited</Company>
@@ -23,7 +22,7 @@
 		<None Remove="obj\**" />
 	</ItemGroup>
 
-	<Target Name="SetVersionFromGitVersion" BeforeTargets="CoreCompile">
+	<!--<Target Name="SetVersionFromGitVersion" BeforeTargets="CoreCompile">
 		<Exec Command="dotnet gitversion /output buildserver /showvariable SemVer" ConsoleToMSBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="Version" />
 		</Exec>
@@ -37,5 +36,5 @@
 			<FileVersion>6.0.$(BuildVersion)</FileVersion>
 			<PackageVersion>6.0.$(BuildVersion)</PackageVersion>
 		</PropertyGroup>
-	</Target>
+	</Target>-->
 </Project>

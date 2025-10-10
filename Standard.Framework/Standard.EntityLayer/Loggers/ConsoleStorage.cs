@@ -39,32 +39,40 @@ namespace Basic.Loggers
 				{
 					if (model.LogLevel == LogLevel.Information)
 					{
+						//\x1B[32minfo\x1B[0m表示控制台转义符号，输出深绿色
+						//如果控制台不支持 ANSI 转义码，会直接显示转义字符（如 [34m），因此兼容性不如 Console.ForegroundColor 方法。
+						//writer.WriteLine(string.Format("\x1B[32minfo\x1B[0m: {0} - {1} - {2:yyyy-MM-dd HH:mm:ss.fff K}", "考勤协议", "上传信息/初始化", DateTimeOffset.UtcNow));
+						//writer.Write("      "); Console.WriteLine($"Socket Now Listening On {ipAddress ?? "[::]"}:{port}");
+
 						Console.ForegroundColor = ConsoleColor.DarkGreen;
-						await writer.WriteAsync("info: "); Console.ResetColor();
+						await writer.WriteAsync("info"); Console.ResetColor();
 					}
 					else if (model.LogLevel == LogLevel.Error)
 					{
 						Console.ForegroundColor = ConsoleColor.DarkRed;
-						await writer.WriteAsync("fail: "); Console.ResetColor();
+						await writer.WriteAsync("fail"); Console.ResetColor();
 					}
 					else if (model.LogLevel == LogLevel.Warning)
 					{
 						Console.ForegroundColor = ConsoleColor.Yellow;
-						await writer.WriteAsync("warn: "); Console.ResetColor();
+						await writer.WriteAsync("warn"); Console.ResetColor();
 					}
 					else if (model.LogLevel == LogLevel.Debug)
 					{
-						await writer.WriteAsync("dbug: ");
+						await writer.WriteAsync("dbug");
 					}
 
-					await writer.WriteLineAsync(string.Format("Controller: {0}, Action: {1}, Time: {2:yyyy-MM-dd HH:mm:ss.fff K}", model.Controller, model.Action, model.OperationTime));
-					await writer.WriteAsync("      "); await writer.WriteLineAsync(model.Message);
+					await writer.WriteLineAsync($": {model.Controller} - {model.Action} - {model.OperationTime:yyyy-MM-dd HH:mm:ss.fff K}");
+					await writer.WriteLineAsync($"      {model.Message}");
+
+					//await writer.WriteLineAsync($": Controller: {model.Controller}, Action: {model.Action}, Time: {model.OperationTime:yyyy-MM-dd HH:mm:ss.fff K}");
+					//await writer.WriteAsync("      "); await writer.WriteLineAsync(model.Message);
 				}
 			}
 			catch (Exception ex)
 			{
 				Console.ForegroundColor = ConsoleColor.DarkRed;
-				await writer.WriteAsync("fail: "); Console.ResetColor();
+				await writer.WriteAsync("errs: "); Console.ResetColor();
 				await writer.WriteLineAsync(string.Format("Controller: BackgroundWorker, Action: DoWork, Time: {0:yyyy-MM-dd HH:mm:ss.fff K}", DateTimeOffset.Now));
 				await writer.WriteAsync("      "); await writer.WriteLineAsync(ex.Message);
 				await writer.WriteAsync("      "); await writer.WriteLineAsync(ex.Source);

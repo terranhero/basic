@@ -67,26 +67,26 @@ ORDER BY T1.EMPKEY,T1.EMPLOYEECODE
 		static async Task Main(string[] args)
 		{
 			CacheClientFactory.SetClientFactory(new MemoryClientFactory());
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Now));
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Today));
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER"));
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGER"));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Now));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOGGER", DateTime.Today));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOGGER"));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOGGER"));
 
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGES"));
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOGGES"));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOGGES"));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOGGES"));
 
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOG"));
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("SYS_EVENTLOG"));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOG"));
+			Console.WriteLine(GuidGenerator.NewGuid("SYS_EVENTLOG"));
 
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_LEAVERECORD"));
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_LEAVERECORD"));
+			Console.WriteLine(GuidGenerator.NewGuid("EAM_LEAVERECORD"));
+			Console.WriteLine(GuidGenerator.NewGuid("EAM_LEAVERECORD"));
 
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
-			Console.WriteLine(OrderedGuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
+			Console.WriteLine(GuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
+			Console.WriteLine(GuidGenerator.NewGuid("EAM_OVERTIMEFORM"));
 
 			ICacheClient client = CacheClientFactory.GetClient("");
 			List<int> list = new List<int>() { 2, 4, 6, 7 };
-			await client.SetListAsync("test", list);
+			await client.ListAsync("test", list);
 			IEnumerable<KeyInfo> keys = client.GetKeyInfosAsync();
 			//Type type = typeof(ConsecutiveWorkEntity);
 			//if (_innerJoins.TryGetValue(type.FullName, out DynamicJoinCommand cmd))
