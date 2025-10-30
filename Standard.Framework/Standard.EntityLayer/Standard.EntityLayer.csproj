@@ -17,35 +17,35 @@
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net6.0'">
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="Configuration\**" />
-	  <Compile Remove="Loggers\Configuration\**" />
-	  <EmbeddedResource Remove="Configuration\**" />
-	  <EmbeddedResource Remove="Loggers\Configuration\**" />
-	  <None Remove="Configuration\**" />
-	  <None Remove="Loggers\Configuration\**" />
+		<Compile Remove="Configuration\**" />
+		<Compile Remove="Loggers\Configuration\**" />
+		<EmbeddedResource Remove="Configuration\**" />
+		<EmbeddedResource Remove="Loggers\Configuration\**" />
+		<None Remove="Configuration\**" />
+		<None Remove="Loggers\Configuration\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="Interfaces\IRequestContext.cs" />
 		<Compile Remove="Interfaces\IResponseContext.cs" />
-	</ItemGroup>	
-	<ItemGroup>
-	  <Compile Update="Properties\Strings.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Strings.resx</DependentUpon>
-	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Strings.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<Compile Update="Properties\Strings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
-	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Strings.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 </Project>
