@@ -1,971 +1,973 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
-		<VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-	</PropertyGroup>
-	<PropertyGroup>
-		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-	</PropertyGroup>
-	<PropertyGroup>
-		<ApplicationIcon>goldsoft.ico</ApplicationIcon>
-	</PropertyGroup>
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-		<ProjectGuid>{AA38AF92-E5CA-4F24-ABC4-D516A890B803}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Basic</RootNamespace>
-		<AssemblyName>Basic.Persistent</AssemblyName>
-		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-		<GeneratePkgDefFile>true</GeneratePkgDefFile>
-		<UseCodebase>true</UseCodebase>
-		<IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
-		<IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
-		<IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
-		<CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
-		<CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
-		<StartAction>Program</StartAction>
-		<StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
-		<StartArguments>/rootsuffix Exp</StartArguments>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug\</OutputPath>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<PlatformTarget>x64</PlatformTarget>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release\</OutputPath>
-		<DefineConstants>TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
-		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-		<CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
-		<CopyVsixExtensionLocation>D:\BASIC\PD_08_Product Release\</CopyVsixExtensionLocation>
-	</PropertyGroup>
-	<Target Name="BeforeBuild">
-		<Message Text="Setting FileVersion to $(FileVersion)" Importance="normal"/>
-	</Target>
-	<Import Project="..\..\packages\tool-version.targets" />
-	<ItemGroup>
-		<Compile Include="Builders\AbstractMvcViewBuilder.cs" />
-		<Compile Include="Builders\AbstractPropertyChanged.cs" />
-		<Compile Include="Builders\AbstractViewBuilder.cs" />
-		<Compile Include="Builders\ClassicViewBuilder.cs" />
-		<Compile Include="Builders\DropDownFile.cs" />
-		<Compile Include="Builders\Views\AbstractView.cs" />
-		<Compile Include="Builders\Views\MvcDetailView.cs" />
-		<Compile Include="Builders\Views\MvcEditView.cs" />
-		<Compile Include="Builders\Views\MvcGridView.cs" />
-		<Compile Include="Builders\Views\MvcIndexView.cs" />
-		<Compile Include="Builders\Views\MvcScriptView.cs" />
-		<Compile Include="Builders\Views\MvcView.cs" />
-		<Compile Include="Builders\ViewTypeEnum.cs" />
-		<Compile Include="Builders\WpfFormBuilder.cs" />
-		<Compile Include="CodeGenerator\AccessGenerator.cs" />
-		<Compile Include="Collections\AbstractCollection.cs" />
-		<Compile Include="Collections\SortedPropertyDescriptorCollection.cs" />
-		<Compile Include="Commands\BasicCommands.cs" />
-		<Compile Include="Commands\BasicCommands.Order.cs" />
-		<Compile Include="Commands\BasicCommands.Resource.cs" />
-		<Compile Include="Commands\BasicCommands.Table.cs" />
-		<Compile Include="Commands\SelectionChangedHandler.cs" />
-		<Compile Include="Commands\ShowPropertyCommand.cs" />
-		<Compile Include="Converters\AbstractConverterCommand.cs" />
-		<Compile Include="Converters\ConverterCheckCommand.cs" />
-		<Compile Include="Converters\ConverterCheckCommandCollection.cs" />
-		<Compile Include="Converters\ConverterConfiguration.cs" />
-		<Compile Include="Converters\ConverterDataCommand.cs" />
-		<Compile Include="Converters\ConverterDataCommandCollection.cs" />
-		<Compile Include="Converters\ConverterDynamicCommand.cs" />
-		<Compile Include="Converters\ConverterNewCommand.cs" />
-		<Compile Include="Converters\ConverterNewCommandCollection.cs" />
-		<Compile Include="Converters\ConverterParameter.cs" />
-		<Compile Include="Converters\ConverterParameterCollection.cs" />
-		<Compile Include="Converters\ConverterStaticCommand.cs" />
-		<Compile Include="Database\Collections\CheckedColumnCollection.cs" />
-		<Compile Include="Database\Collections\ColumnDesignerCollection.cs" />
-		<Compile Include="Database\Collections\FunctionParameterCollection.cs" />
-		<Compile Include="Database\Collections\RelationColumnCollection.cs" />
-		<Compile Include="Database\Collections\RelationDesignerCollection.cs" />
-		<Compile Include="Database\Collections\DesignColumnCollection.cs" />
-		<Compile Include="Database\Collections\TableDesignerCollection.cs" />
-		<Compile Include="Database\Collections\TableUniqueConstraintCollection.cs" />
-		<Compile Include="Database\Collections\TransactColumnCollection.cs" />
-		<Compile Include="Database\Collections\TransactParameterCollection.cs" />
-		<Compile Include="Database\Collections\TransactTableCollection.cs" />
-		<Compile Include="Database\ColumnDesignerExtension.cs" />
-		<Compile Include="Database\DbBuilderHelper.cs" />
-		<Compile Include="Database\Descriptor\ColumnTypeConverter.cs" />
-		<Compile Include="Database\Descriptor\TableColumnDescriptor.cs" />
-		<Compile Include="Database\Descriptor\TableInfoConverter.cs" />
-		<Compile Include="Database\DesignColumnInfo.cs" />
-		<Compile Include="Database\Designer\ColumnChangedHandler.cs" />
-		<Compile Include="Database\Designer\ColumnCheckedHandler.cs" />
-		<Compile Include="Database\Designer\ColumnDesignerInfo.cs" />
-		<Compile Include="Database\Designer\ColumnIsWhereHandler.cs" />
-		<Compile Include="Database\Designer\ColumnUseDefaultHandler.cs" />
-		<Compile Include="Database\Designer\FunctionParameterInfo.cs" />
-		<Compile Include="Database\Designer\RelationChangedHandler.cs" />
-		<Compile Include="Database\Designer\RelationColumnInfo.cs" />
-		<Compile Include="Database\Designer\RelationDesignerInfo.cs" />
-		<Compile Include="Database\Designer\TableDesignerInfo.cs" />
-		<Compile Include="Database\Designer\TableFunctionInfo.cs" />
-		<Compile Include="Database\DesignTableInfo.cs" />
-		<Compile Include="Database\ProcedureParameter.cs" />
-		<Compile Include="Database\StoreProcedure.cs" />
-		<Compile Include="Database\StoreProcedureExtension.cs" />
-		<Compile Include="Database\TableColumnExtension.cs" />
-		<Compile Include="Database\TableDesignerExtension.cs" />
-		<Compile Include="Database\TableInfoExtension.cs" />
-		<Compile Include="Database\TableUniqueConstraint.cs" />
-		<Compile Include="Database\TransactTablesExtension.cs" />
-		<Compile Include="Database\Transact\TransactColumnInfo.cs" />
-		<Compile Include="Database\Transact\TransactParameterInfo.cs" />
-		<Compile Include="Database\Transact\TransactTableInfo.cs" />
-		<Compile Include="Database\Windows\ColumnsWindow.xaml.cs">
-			<DependentUpon>ColumnsWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="DataCommand\AbstractCommandElement.cs" />
-		<Compile Include="DataCommand\CheckedCommandElement.cs" />
-		<Compile Include="DataCommand\Collections\CheckedCommandCollection.cs" />
-		<Compile Include="DataCommand\Collections\CommandParameterCollection.cs" />
-		<Compile Include="DataCommand\Collections\DataCommandCollection.cs" />
-		<Compile Include="DataCommand\Collections\NewCommandCollection.cs" />
-		<Compile Include="DataCommand\CommandParameter.cs" />
-		<Compile Include="DataCommand\DataCommandElement.cs" />
-		<Compile Include="DataCommand\Designer\CheckCommandsEditor.cs" />
-		<Compile Include="DataCommand\Designer\ColumnNameConverter.cs" />
-		<Compile Include="DataCommand\Designer\CommandParameterConverter.cs" />
-		<Compile Include="DataCommand\Designer\CommandParametersEditor.cs" />
-		<Compile Include="DataCommand\Designer\CommandTextEditor.cs" />
-		<Compile Include="DataCommand\Designer\CommandTextWindow.xaml.cs">
-			<DependentUpon>CommandTextWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="DataCommand\Designer\DataConditionPropertyEditor.cs" />
-		<Compile Include="DataCommand\Designer\DynamicCommandEditor.cs" />
-		<Compile Include="DataCommand\Designer\DynamicCommandWindow.xaml.cs">
-			<DependentUpon>DynamicCommandWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="DataCommand\Designer\DynamicTextConverter.cs" />
-		<Compile Include="DataCommand\Designer\ErrorCodeConveter.cs" />
-		<Compile Include="DataCommand\Designer\NewCommandsEditor.cs" />
-		<Compile Include="DataCommand\Designer\ParameterDescriptor.cs" />
-		<Compile Include="DataCommand\Designer\PropertyNameConverter.cs" />
-		<Compile Include="DataCommand\Designer\WithClauseEditor.cs" />
-		<Compile Include="DataCommand\Designer\WithClausesEditor.cs" />
-		<Compile Include="DataCommand\Designer\WithClauseWindow.xaml.cs">
-			<DependentUpon>WithClauseWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="DataCommand\DynamicCommandElement.cs" />
-		<Compile Include="DataCommand\NewCommandElement.cs" />
-		<Compile Include="DataCommand\PropertyDescriptor\CommandParameterDescriptor.cs" />
-		<Compile Include="DataCommand\PropertyDescriptor\CommandPropertyDescriptor.cs" />
-		<Compile Include="DataCommand\PropertyDescriptor\DynamicCommandDescriptor.cs" />
-		<Compile Include="DataCommand\PropertyDescriptor\StaticCommandDescriptor.cs" />
-		<Compile Include="DataCommand\PropertyDescriptor\WithClauseConverter.cs" />
-		<Compile Include="DataCommand\PropertyDescriptor\WithClauseDescriptor.cs" />
-		<Compile Include="DataCommand\StaticCommandElement.cs" />
-		<Compile Include="DataCommand\WithClause.cs" />
-		<Compile Include="DataCommand\WithClauseCollection.cs" />
-		<Compile Include="DataContexts\ConnectionConfiguration.cs" />
-		<Compile Include="DataContexts\DataContextFactory.cs" />
-		<Compile Include="DataContexts\DbConnectionContext.cs" />
-		<Compile Include="DataContexts\IDataContext.cs" />
-		<Compile Include="DataContexts\MySqlDataContext.cs" />
-		<Compile Include="DataContexts\OracleDataContext.cs" />
-		<Compile Include="DataContexts\SqlServerDataContext.cs" />
-		<Compile Include="DataEntities\AbstractEntityElement.cs" />
-		<Compile Include="DataEntities\AbstractPropertyElement.Column.cs" />
-		<Compile Include="DataEntities\AbstractPropertyElement.cs" />
-		<Compile Include="DataEntities\Collections\AbstractEntityColllection.cs" />
-		<Compile Include="DataEntities\Collections\DataConditionPropertyCollection.cs" />
-		<Compile Include="DataEntities\Collections\DataEntityElementCollection.cs" />
-		<Compile Include="DataEntities\Collections\DataEntityPropertyCollection.cs" />
-		<Compile Include="DataEntities\Collections\NamespaceCollection.cs" />
-		<Compile Include="DataEntities\DataConditionElement.cs" />
-		<Compile Include="DataEntities\DataConditionGenerator.cs" />
-		<Compile Include="DataEntities\DataConditionPropertyElement.cs" />
-		<Compile Include="DataEntities\DataContractElement.cs" />
-		<Compile Include="DataEntities\DataEntityElement.cs" />
-		<Compile Include="DataEntities\DataEntityGenerator.cs" />
-		<Compile Include="DataEntities\DataEntityPropertyElement.cs" />
-		<Compile Include="DataEntities\DesignerInfoElement.cs" />
-		<Compile Include="DataEntities\Designer\BaseAccessSelector.cs" />
-		<Compile Include="DataEntities\Designer\BaseClassSelector.cs" />
-		<Compile Include="DataEntities\Designer\BaseConditionSelector.cs" />
-		<Compile Include="DataEntities\Designer\ConditionTypeConverter.cs" />
-		<Compile Include="DataEntities\Designer\DataContractConverter.cs" />
-		<Compile Include="DataEntities\Designer\DisplayNameConverter.cs" />
-		<Compile Include="DataEntities\Designer\DisplayPromptConveter.cs" />
-		<Compile Include="DataEntities\Designer\DisplaySourceConveter.cs" />
-		<Compile Include="DataEntities\Designer\EntityPropertyDescriptor.cs" />
-		<Compile Include="DataEntities\Designer\EntityTypeConverter.cs" />
-		<Compile Include="DataEntities\Designer\GuidTypeEditor.cs" />
-		<Compile Include="DataEntities\Designer\NamespacesConverter.cs" />
-		<Compile Include="DataEntities\Designer\PropertyTypeEditor.cs" />
-		<Compile Include="DataEntities\Designer\ReflectedTypeEditor.cs" />
-		<Compile Include="DataEntities\Designer\SupportDatabasesEditor.cs" />
-		<Compile Include="DataEntities\DisplayNameElement.cs" />
-		<Compile Include="DataEntities\Enums\DisplayTypeEnum.cs" />
-		<Compile Include="DataEntities\Enums\NamingRules.cs" />
-		<Compile Include="DataEntities\Enums\ResxModeEnum.cs" />
-		<Compile Include="DataEntities\GeneratorElement.cs" />
-		<Compile Include="DataEntities\PersistentGeneratorElement.cs" />
-		<Compile Include="Designer\AbstractCustomTypeDescriptor.cs" />
-		<Compile Include="Designer\AbstractNotifyChangedDescriptor.cs" />
-		<Compile Include="Designer\ClipboardFormat.cs" />
-		<Compile Include="Designer\CommandChengedHandler.cs" />
-		<Compile Include="Designer\CreateCommandHanlder.cs" />
-		<Compile Include="Designer\GroupNameConverter.cs" />
-		<Compile Include="Designer\IConnectorLine.cs" />
-		<Compile Include="Designer\ICustomDescriptor.cs" />
-		<Compile Include="Designer\IPropertySelectionContainer.cs" />
-		<Compile Include="Designer\IWindowUICommand.cs" />
-		<Compile Include="Designer\MessageFileConverter.cs" />
-		<Compile Include="Designer\MessageInfo.cs" />
-		<Compile Include="Designer\MessageTypeConverter.cs" />
-		<Compile Include="Designer\ObjectDescriptor.cs" />
-		<Compile Include="Designer\PackageCategoryAttribute.cs" />
-		<Compile Include="Designer\PackageDescriptionAttribute.cs" />
-		<Compile Include="Designer\PersistentCategoryAttribute.cs" />
-		<Compile Include="Designer\PersistentDescriptionAttribute.cs" />
-		<Compile Include="Designer\PersistentDescriptor.cs" />
-		<Compile Include="Designer\PersistentDisplayAttribute.cs" />
-		<Compile Include="Designer\ProjectFolderEditor.cs" />
-		<Compile Include="Designer\ProjectInfo.cs" />
-		<Compile Include="Designer\ProjectInfoConverter.cs" />
-		<Compile Include="Designer\ProjectSelectorEditor.cs" />
-		<Compile Include="Designer\PropertyOrderAttribute.cs" />
-		<Compile Include="Designer\StringHelper.cs" />
-		<Compile Include="Designer\SupportDatabasesConverter.cs" />
-		<Compile Include="Designer\TableColumnConverter.cs" />
-		<Compile Include="Designer\TransactSqlResolver.cs" />
-		<Compile Include="Designer\XmlSchemaEventArgs.cs" />
-		<Compile Include="Enums\ArgumentsTypeEnum.cs" />
-		<Compile Include="Enums\BaseAccessEnum.cs" />
-		<Compile Include="Enums\ClassModifierEnum.cs" />
-		<Compile Include="Enums\ConnectionTypeEnum.cs" />
-		<Compile Include="Enums\ExecutableMethodEnum.cs" />
-		<Compile Include="Enums\GenerateActionEnum.cs" />
-		<Compile Include="Enums\GeneratorModeEnum.cs" />
-		<Compile Include="Enums\MethodModifierEnum.cs" />
-		<Compile Include="Enums\ObjectTypeEnum.cs" />
-		<Compile Include="Enums\OrderEnum.cs" />
-		<Compile Include="Enums\ProjectTypeEnum.cs" />
-		<Compile Include="Enums\SelectedTypeEnum.cs" />
-		<Compile Include="Functions\AbstractExecutableMethod.cs" />
-		<Compile Include="Functions\ExecuteCoreMethod.cs" />
-		<Compile Include="Functions\ExecuteNonQueryMethod.cs" />
-		<Compile Include="Functions\ExecuteReaderMethod.cs" />
-		<Compile Include="Functions\ExecuteScalarMethod.cs" />
-		<Compile Include="Functions\FillAbstractEntity.cs" />
-		<Compile Include="Functions\FillDataSetMethod.cs" />
-		<Compile Include="Functions\FillDataTableMethod.cs" />
-		<Compile Include="Functions\GetEntitiesMethod.cs" />
-		<Compile Include="Functions\GetPaginationMethod.cs" />
-		<Compile Include="Functions\TypeListBox.cs">
-			<SubType>Component</SubType>
-		</Compile>
-		<Compile Include="CodeGenerator\ResourceGenerator.cs" />
-		<Compile Include="GlobalSuppressions.cs" />
-		<Compile Include="Localizations\CustomCultureInfo.cs" />
-		<Compile Include="Localizations\LocalizationCollection.cs" />
-		<Compile Include="Localizations\LocalizationDescriptor.cs" />
-		<Compile Include="Localizations\LocalizationItem.cs" />
-		<Compile Include="Localizations\ObjectDescriptor.cs" />
-		<Compile Include="Localizations\ResourceCategoryAttribute.cs" />
-		<Compile Include="Localizations\ResourceConverter.cs" />
-		<Compile Include="Localizations\ResourceDescriptionAttribute.cs" />
-		<Compile Include="Localizations\Strings.Designer.cs">
-			<DependentUpon>Strings.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Localizations\CreateLocalizationDialog.xaml.cs">
-			<DependentUpon>CreateLocalizationDialog.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Options\AClassesControl.cs">
-			<SubType>UserControl</SubType>
-		</Compile>
-		<Compile Include="Options\AClassesOptions.cs">
-			<SubType>Component</SubType>
-		</Compile>
-		<Compile Include="Options\IClassesOptions.cs" />
-		<Compile Include="ResourcePackage\Consts.cs" />
-		<Compile Include="ResourcePackage\LocalizationFactory.cs" />
-		<Compile Include="ResourcePackage\LocalizationPackage.cs" />
-		<Compile Include="ResourcePackage\LocalizationPane.cs" />
-		<Compile Include="ResourcePackage\LocalizationService.cs" />
-		<Compile Include="ResourcePackage\LocalizationService.ctmenu.cs" />
-		<Compile Include="ResourcePackage\PackageExtensions.cs" />
-		<Compile Include="ResourcePackage\ResourceEditor.xaml.cs">
-			<DependentUpon>ResourceEditor.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Persistents\CodeDomExtensions.cs" />
-		<Compile Include="Persistents\ConfirugationConsts.cs" />
-		<Compile Include="Persistents\DbConnectionBuilder.cs" />
-		<Compile Include="Persistents\PersistentConfiguration.cs" />
-		<Compile Include="Persistents\PersistentFactory.cs" />
-		<Compile Include="Persistents\PersistentPackage.cs" />
-		<Compile Include="Persistents\PersistentPane.cs" />
-		<Compile Include="Persistents\PersistentService.context.cs" />
-		<Compile Include="Persistents\PersistentService.cs" />
-		<Compile Include="Persistents\PersistentService.ctmenu.cs" />
-		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="Properties\DesignerStrings.Designer.cs">
-			<DependentUpon>DesignerStrings.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Properties\ImageSourceList.cs" />
-		<Compile Include="Properties\PackageConsts.cs" />
-		<Compile Include="Properties\StringUtils.cs" />
-		<Compile Include="Resources\Resources.Designer.cs">
-			<DependentUpon>Resources.resx</DependentUpon>
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-		</Compile>
-		<Compile Include="Templates\BuilderParameterData.cs" />
-		<Compile Include="Templates\ControllerBuilder.cs" />
-		<Compile Include="Templates\ControllerBuilderData.cs" />
-		<Compile Include="Templates\ControllerTemplateHost.cs" />
-		<Compile Include="Templates\MvcViewBuilder.cs" />
-		<Compile Include="Templates\MvcViewWindow.xaml.cs">
-			<DependentUpon>MvcViewWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Validation\Collections\AbstractValidationCollection.cs" />
-		<Compile Include="Validation\Designer\AttributePropertyDescriptor.cs" />
-		<Compile Include="Validation\Designer\CompareValueConverter.cs" />
-		<Compile Include="Validation\Designer\DiaplayFormatConverter.cs" />
-		<Compile Include="Validation\Designer\OtherPropertyEditor.cs" />
-		<Compile Include="Validation\Designer\ValidationAttributesEditor.cs" />
-		<Compile Include="Validation\Designer\ValidationTypeConverter.cs" />
-		<Compile Include="Validation\Designer\ValueConverter.cs" />
-		<Compile Include="Validation\Validation\AbstractAttribute.cs" />
-		<Compile Include="Validation\Validation\BoolRequiredValidation.cs" />
-		<Compile Include="Validation\Validation\CompareValidation.cs" />
-		<Compile Include="Validation\Validation\CustomValidationAttribute.cs" />
-		<Compile Include="Validation\Validation\DisplayFormat.cs" />
-		<Compile Include="Validation\Validation\ICompareProperty.cs" />
-		<Compile Include="Validation\Validation\ImportPorpertyAttribute.cs" />
-		<Compile Include="Validation\Validation\MaxLengthValidation.cs" />
-		<Compile Include="Validation\Validation\RangeValidation.cs" />
-		<Compile Include="Validation\Validation\RegularExpressionValidation.cs" />
-		<Compile Include="Validation\Validation\RequiredValidation.cs" />
-		<Compile Include="Validation\Validation\StringLengthValidation.cs" />
-		<Compile Include="Windows\ColumnBox.cs" />
-		<Compile Include="Windows\ColumnBoxList.xaml.cs">
-			<DependentUpon>ColumnBoxList.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\CommandNode.cs" />
-		<Compile Include="Windows\CommandsWindow.xaml.cs">
-			<DependentUpon>CommandsWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\CreateClassicView.xaml.cs">
-			<DependentUpon>CreateClassicView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\CreateController.xaml.cs">
-			<DependentUpon>CreateController.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\CreatePersistentForm.xaml.cs">
-			<DependentUpon>CreatePersistentForm.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Localizations\CreateEnumResource.xaml.cs">
-			<DependentUpon>CreateEnumResource.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\CreateResWindow.xaml.cs">
-			<DependentUpon>CreateResWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\CreateWpfView.xaml.cs">
-			<DependentUpon>CreateWpfView.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\DesignerCanvas.cs" />
-		<Compile Include="Windows\DesignerEntitiesCanvas.xaml.cs">
-			<DependentUpon>DesignerEntitiesCanvas.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\DesignerEntity.xaml.cs">
-			<DependentUpon>DesignerEntity.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\DesignerLine.xaml.cs">
-			<DependentUpon>DesignerLine.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\DesignerMenuItem.cs" />
-		<Compile Include="Windows\DesignerTable.xaml.cs">
-			<DependentUpon>DesignerTable.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\DesignerTablesCanvas.xaml.cs">
-			<DependentUpon>DesignerTablesCanvas.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\DragThumb.cs" />
-		<Compile Include="Windows\ExpandButton.xaml.cs">
-			<DependentUpon>ExpandButton.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\IDesignerItem.cs" />
-		<Compile Include="Windows\ImageCheckBox.cs" />
-		<Compile Include="Windows\ImagesEnum.cs" />
-		<Compile Include="Windows\InitializationWindow.xaml.cs">
-			<DependentUpon>InitializationWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\MessageInfo.cs" />
-		<Compile Include="Windows\OfficeImage.cs" />
-		<Compile Include="Windows\PropertyNode.cs" />
-		<Compile Include="Windows\ResizeAdorner.cs" />
-		<Compile Include="Windows\ResizeThumb.xaml.cs">
-			<DependentUpon>ResizeThumb.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\SelectedSharp.xaml.cs">
-			<DependentUpon>SelectedSharp.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\SelectTabItem.xaml.cs">
-			<DependentUpon>SelectTabItem.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Windows\VisualChildrenChanged.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="BasicConfigurationCatalog.xml">
-			<InstallRoot>Schemas</InstallRoot>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="goldsoft.ico">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<VSTemplate Include="ItemTemplape\Localization.vstemplate">
-		</VSTemplate>
-		<Content Include="license.txt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<VSCTCompile Include="ResourcePackage\Resources.vsct">
-			<ResourceName>ResourcesMenus.ctmenu</ResourceName>
-			<SubType>Designer</SubType>
-		</VSCTCompile>
-		<None Include="Resources\goldsoft.ico" />
-		<Content Include="Templates\Element\Grid.tt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="Templates\Element\Index.tt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="UpdateLog.txt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<None Include="app.config" />
-		<Content Include="BasicConfigurationSchema-5.0.xsd">
-			<SubType>Designer</SubType>
-			<InstallRoot>Schemas</InstallRoot>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="BasicDataPersistentSchema-5.0.xsd">
-			<SubType>Designer</SubType>
-			<InstallRoot>Schemas</InstallRoot>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="BasicPersistentSchema-5.0.xsd">
-			<SubType>Designer</SubType>
-			<InstallRoot>Schemas</InstallRoot>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<None Include="DataCommand\DataCommand.cd" />
-		<None Include="ItemTemplape\Localization.localresx" />
-		<None Include="Persistent.pfx" />
-		<None Include="source.extension.vsixmanifest">
-			<SubType>Designer</SubType>
-		</None>
-		<Content Include="Templates\CSharp\Edit.cshtml.razor">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="Templates\CSharp\GridView.cshtml.razor">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="Templates\CSharp\TreeView.cshtml.razor">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Reference Include="Microsoft.Data.ConnectionUI" />
-		<Reference Include="Microsoft.Data.ConnectionUI.Dialog" />
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
-		<Reference Include="System" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Design" />
-		<Reference Include="System.Drawing" />
-		<Reference Include="System.Runtime.Serialization" />
-		<Reference Include="System.Windows.Forms" />
-		<Reference Include="System.Xaml" />
-		<Reference Include="System.Xml" />
-		<Reference Include="WindowsBase" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="FontAwesome.WPF">
-			<Version>4.7.0.9</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Configuration">
-			<Version>9.0.10</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions">
-			<Version>9.0.10</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json">
-			<Version>9.0.10</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom">
-			<Version>170.128.0</Version>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.4.33103.184" ExcludeAssets="runtime">
-			<IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.7.2196">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="MySql.Data">
-			<Version>9.5.0</Version>
-		</PackageReference>
-		<PackageReference Include="Oracle.ManagedDataAccess">
-			<Version>23.26.0</Version>
-		</PackageReference>
-		<PackageReference Include="System.ComponentModel.Annotations">
-			<Version>5.0.0</Version>
-		</PackageReference>
-		<PackageReference Include="System.Text.Encoding.CodePages">
-			<Version>9.0.10</Version>
-		</PackageReference>
-	</ItemGroup>
-	<ItemGroup>
-		<Page Include="Database\Windows\ColumnsWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="DataCommand\Designer\CommandTextWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="DataCommand\Designer\DynamicCommandWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="DataCommand\Designer\WithClauseWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Localizations\CreateLocalizationDialog.xaml">
-			<SubType>Designer</SubType>
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Include="ResourcePackage\ResourceEditor.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Templates\MvcViewWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Themes\Generic.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Themes\GenericStyle.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Themes\Shared.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Themes\ToolBar.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\ColumnBoxList.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\CommandsWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\CreateClassicView.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Templates\CreateController.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\CreatePersistentForm.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Localizations\CreateEnumResource.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\CreateResWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\CreateWpfView.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\DesignerEntitiesCanvas.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\DesignerEntity.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\DesignerLine.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\DesignerTable.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\DesignerTablesCanvas.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\ExpandButton.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\InitializationWindow.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\ResizeThumb.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\SelectedSharp.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Include="Windows\SelectTabItem.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Designer\OfficeImages.resx" />
-		<EmbeddedResource Include="Localizations\Strings.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Options\AClassesControl.resx">
-			<DependentUpon>AClassesControl.cs</DependentUpon>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Properties\Designer.resx" />
-		<EmbeddedResource Include="Properties\DesignerStrings.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>DesignerStrings.Designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Resources\Resources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Include="VSPackage.resx">
-			<SubType>Designer</SubType>
-		</EmbeddedResource>
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\AggregateFunction.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\BringForward.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\BringToFront.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\CheckConstraint.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Chevron_down.bmp" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Chevron_up.bmp" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\ClusteredIndex.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Code.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Column.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Component.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\ComputedColumn.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Connection.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Copy.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Cut.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_AggregateFunction.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_CheckConstraint.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_ClusteredIndex.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Column.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Component.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_ComputedColumn.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Connection.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_DataType.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Diagram.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Extended.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_File.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Folder.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_ForeignKey.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Index.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_InputParameter.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_OutputParameter.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_PrimaryKey.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_ReturnValue.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_ScalarFunction.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_StoredProcedure.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Table.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_TabularFunction.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_Trigger.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_UniqueKey.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_UserDefinedType.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Database_View.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\DataType.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Delete.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Diagram.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\dpdl.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Execute.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Extended.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\File.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Filter.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Folder.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\ForeignKey.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Index.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\InputParameter.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Move.cur" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\OutputParameter.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Paste.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\PrimaryKey.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Properties.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Property.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Remove.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\ReturnValue.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\ScalarFunction.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\SendBackward.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\SendToBack.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Setting.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\StoredProcedure.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Table.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\TabularFunction.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Trigger.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\UniqueKey.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\UserDefinedType.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\View.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Width.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\Zoom100Button.bmp" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\ZoomInButton.bmp" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Images\ZoomOutButton.bmp" />
-	</ItemGroup>
-	<ItemGroup>
-		<VSCTCompile Include="Persistents\Persistent.vsct">
-			<ResourceName>PersistentMenus.ctmenu</ResourceName>
-			<SubType>Designer</SubType>
-		</VSCTCompile>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Persistents\ProjectType.html" />
-		<Content Include="Resources\fileicon.oraf.ico" />
-		<Content Include="Resources\fileicon.sqlf.ico" />
-		<Content Include="Templates\Classic\Grid.tt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="Templates\Classic\Index.tt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-		<Content Include="Templates\Controller.cs.tt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-			<IncludeInVSIX>true</IncludeInVSIX>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\..\Standard.Framework\Standard.DataAccess\Standard.DataAccess.csproj">
-			<Project>{0a213752-7c72-4f29-822d-b3c02e5fa103}</Project>
-			<Name>Standard.DataAccess</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\..\Standard.Framework\Standard.EntityLayer\Standard.EntityLayer.csproj">
-			<Project>{35a1f94f-10c1-4638-8b5d-8bc4df798eff}</Project>
-			<Name>Standard.EntityLayer</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\RazorEngine.Core\RazorEngine.Core.csproj">
-			<Project>{a08f55a8-d41b-4251-a7c9-5d6e175b1c00}</Project>
-			<Name>RazorEngine.Core</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\Standard.Registers\Standard.Registers.csproj">
-			<Project>{ef421ae5-a518-4ef2-b511-d1801c88bd27}</Project>
-			<Name>Standard.Registers</Name>
-			<IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-			<IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-		</ProjectReference>
-	</ItemGroup>
-	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-	<Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
-
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>goldsoft.ico</ApplicationIcon>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{AA38AF92-E5CA-4F24-ABC4-D516A890B803}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Basic</RootNamespace>
+    <AssemblyName>Basic.Persistent</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <UseCodebase>true</UseCodebase>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+    <CopyVsixExtensionLocation>D:\BASIC\PD_08_Product Release\</CopyVsixExtensionLocation>
+  </PropertyGroup>
+  <Target Name="BeforeBuild">
+    <Message Text="Setting FileVersion to $(FileVersion)" Importance="normal" />
+  </Target>
+  <Import Project="..\..\packages\tool-version.targets" />
+  <ItemGroup>
+    <Compile Include="Builders\AbstractMvcViewBuilder.cs" />
+    <Compile Include="Builders\AbstractPropertyChanged.cs" />
+    <Compile Include="Builders\AbstractViewBuilder.cs" />
+    <Compile Include="Builders\ClassicViewBuilder.cs" />
+    <Compile Include="Builders\DropDownFile.cs" />
+    <Compile Include="Builders\Views\AbstractView.cs" />
+    <Compile Include="Builders\Views\MvcDetailView.cs" />
+    <Compile Include="Builders\Views\MvcEditView.cs" />
+    <Compile Include="Builders\Views\MvcGridView.cs" />
+    <Compile Include="Builders\Views\MvcIndexView.cs" />
+    <Compile Include="Builders\Views\MvcScriptView.cs" />
+    <Compile Include="Builders\Views\MvcView.cs" />
+    <Compile Include="Builders\ViewTypeEnum.cs" />
+    <Compile Include="Builders\WpfFormBuilder.cs" />
+    <Compile Include="CodeGenerator\AccessGenerator.cs" />
+    <Compile Include="Collections\AbstractCollection.cs" />
+    <Compile Include="Collections\SortedPropertyDescriptorCollection.cs" />
+    <Compile Include="Commands\BasicCommands.cs" />
+    <Compile Include="Commands\BasicCommands.Order.cs" />
+    <Compile Include="Commands\BasicCommands.Resource.cs" />
+    <Compile Include="Commands\BasicCommands.Table.cs" />
+    <Compile Include="Commands\SelectionChangedHandler.cs" />
+    <Compile Include="Commands\ShowPropertyCommand.cs" />
+    <Compile Include="Converters\AbstractConverterCommand.cs" />
+    <Compile Include="Converters\ConverterCheckCommand.cs" />
+    <Compile Include="Converters\ConverterCheckCommandCollection.cs" />
+    <Compile Include="Converters\ConverterConfiguration.cs" />
+    <Compile Include="Converters\ConverterDataCommand.cs" />
+    <Compile Include="Converters\ConverterDataCommandCollection.cs" />
+    <Compile Include="Converters\ConverterDynamicCommand.cs" />
+    <Compile Include="Converters\ConverterNewCommand.cs" />
+    <Compile Include="Converters\ConverterNewCommandCollection.cs" />
+    <Compile Include="Converters\ConverterParameter.cs" />
+    <Compile Include="Converters\ConverterParameterCollection.cs" />
+    <Compile Include="Converters\ConverterStaticCommand.cs" />
+    <Compile Include="Database\Collections\CheckedColumnCollection.cs" />
+    <Compile Include="Database\Collections\ColumnDesignerCollection.cs" />
+    <Compile Include="Database\Collections\FunctionParameterCollection.cs" />
+    <Compile Include="Database\Collections\RelationColumnCollection.cs" />
+    <Compile Include="Database\Collections\RelationDesignerCollection.cs" />
+    <Compile Include="Database\Collections\DesignColumnCollection.cs" />
+    <Compile Include="Database\Collections\TableDesignerCollection.cs" />
+    <Compile Include="Database\Collections\TableUniqueConstraintCollection.cs" />
+    <Compile Include="Database\Collections\TransactColumnCollection.cs" />
+    <Compile Include="Database\Collections\TransactParameterCollection.cs" />
+    <Compile Include="Database\Collections\TransactTableCollection.cs" />
+    <Compile Include="Database\ColumnDesignerExtension.cs" />
+    <Compile Include="Database\DbBuilderHelper.cs" />
+    <Compile Include="Database\Descriptor\ColumnTypeConverter.cs" />
+    <Compile Include="Database\Descriptor\TableColumnDescriptor.cs" />
+    <Compile Include="Database\Descriptor\TableInfoConverter.cs" />
+    <Compile Include="Database\DesignColumnInfo.cs" />
+    <Compile Include="Database\Designer\ColumnChangedHandler.cs" />
+    <Compile Include="Database\Designer\ColumnCheckedHandler.cs" />
+    <Compile Include="Database\Designer\ColumnDesignerInfo.cs" />
+    <Compile Include="Database\Designer\ColumnIsWhereHandler.cs" />
+    <Compile Include="Database\Designer\ColumnUseDefaultHandler.cs" />
+    <Compile Include="Database\Designer\FunctionParameterInfo.cs" />
+    <Compile Include="Database\Designer\RelationChangedHandler.cs" />
+    <Compile Include="Database\Designer\RelationColumnInfo.cs" />
+    <Compile Include="Database\Designer\RelationDesignerInfo.cs" />
+    <Compile Include="Database\Designer\TableDesignerInfo.cs" />
+    <Compile Include="Database\Designer\TableFunctionInfo.cs" />
+    <Compile Include="Database\DesignTableInfo.cs" />
+    <Compile Include="Database\ProcedureParameter.cs" />
+    <Compile Include="Database\StoreProcedure.cs" />
+    <Compile Include="Database\StoreProcedureExtension.cs" />
+    <Compile Include="Database\TableColumnExtension.cs" />
+    <Compile Include="Database\TableDesignerExtension.cs" />
+    <Compile Include="Database\TableInfoExtension.cs" />
+    <Compile Include="Database\TableUniqueConstraint.cs" />
+    <Compile Include="Database\TransactTablesExtension.cs" />
+    <Compile Include="Database\Transact\TransactColumnInfo.cs" />
+    <Compile Include="Database\Transact\TransactParameterInfo.cs" />
+    <Compile Include="Database\Transact\TransactTableInfo.cs" />
+    <Compile Include="Database\Windows\ColumnsWindow.xaml.cs">
+      <DependentUpon>ColumnsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataCommand\AbstractCommandElement.cs" />
+    <Compile Include="DataCommand\CheckedCommandElement.cs" />
+    <Compile Include="DataCommand\Collections\CheckedCommandCollection.cs" />
+    <Compile Include="DataCommand\Collections\CommandParameterCollection.cs" />
+    <Compile Include="DataCommand\Collections\DataCommandCollection.cs" />
+    <Compile Include="DataCommand\Collections\NewCommandCollection.cs" />
+    <Compile Include="DataCommand\CommandParameter.cs" />
+    <Compile Include="DataCommand\DataCommandElement.cs" />
+    <Compile Include="DataCommand\Designer\CheckCommandsEditor.cs" />
+    <Compile Include="DataCommand\Designer\ColumnNameConverter.cs" />
+    <Compile Include="DataCommand\Designer\CommandParameterConverter.cs" />
+    <Compile Include="DataCommand\Designer\CommandParametersEditor.cs" />
+    <Compile Include="DataCommand\Designer\CommandTextEditor.cs" />
+    <Compile Include="DataCommand\Designer\CommandTextWindow.xaml.cs">
+      <DependentUpon>CommandTextWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataCommand\Designer\DataConditionPropertyEditor.cs" />
+    <Compile Include="DataCommand\Designer\DynamicCommandEditor.cs" />
+    <Compile Include="DataCommand\Designer\DynamicCommandWindow.xaml.cs">
+      <DependentUpon>DynamicCommandWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataCommand\Designer\DynamicTextConverter.cs" />
+    <Compile Include="DataCommand\Designer\ErrorCodeConveter.cs" />
+    <Compile Include="DataCommand\Designer\NewCommandsEditor.cs" />
+    <Compile Include="DataCommand\Designer\ParameterDescriptor.cs" />
+    <Compile Include="DataCommand\Designer\PropertyNameConverter.cs" />
+    <Compile Include="DataCommand\Designer\WithClauseEditor.cs" />
+    <Compile Include="DataCommand\Designer\WithClausesEditor.cs" />
+    <Compile Include="DataCommand\Designer\WithClauseWindow.xaml.cs">
+      <DependentUpon>WithClauseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataCommand\DynamicCommandElement.cs" />
+    <Compile Include="DataCommand\NewCommandElement.cs" />
+    <Compile Include="DataCommand\PropertyDescriptor\CommandParameterDescriptor.cs" />
+    <Compile Include="DataCommand\PropertyDescriptor\CommandPropertyDescriptor.cs" />
+    <Compile Include="DataCommand\PropertyDescriptor\DynamicCommandDescriptor.cs" />
+    <Compile Include="DataCommand\PropertyDescriptor\StaticCommandDescriptor.cs" />
+    <Compile Include="DataCommand\PropertyDescriptor\WithClauseConverter.cs" />
+    <Compile Include="DataCommand\PropertyDescriptor\WithClauseDescriptor.cs" />
+    <Compile Include="DataCommand\StaticCommandElement.cs" />
+    <Compile Include="DataCommand\WithClause.cs" />
+    <Compile Include="DataCommand\WithClauseCollection.cs" />
+    <Compile Include="DataContexts\ConnectionConfiguration.cs" />
+    <Compile Include="DataContexts\DataContextFactory.cs" />
+    <Compile Include="DataContexts\DbConnectionContext.cs" />
+    <Compile Include="DataContexts\IDataContext.cs" />
+    <Compile Include="DataContexts\MySqlDataContext.cs" />
+    <Compile Include="DataContexts\OracleDataContext.cs" />
+    <Compile Include="DataContexts\SqlServerDataContext.cs" />
+    <Compile Include="DataEntities\AbstractEntityElement.cs" />
+    <Compile Include="DataEntities\AbstractPropertyElement.Column.cs" />
+    <Compile Include="DataEntities\AbstractPropertyElement.cs" />
+    <Compile Include="DataEntities\Collections\AbstractEntityColllection.cs" />
+    <Compile Include="DataEntities\Collections\DataConditionPropertyCollection.cs" />
+    <Compile Include="DataEntities\Collections\DataEntityElementCollection.cs" />
+    <Compile Include="DataEntities\Collections\DataEntityPropertyCollection.cs" />
+    <Compile Include="DataEntities\Collections\NamespaceCollection.cs" />
+    <Compile Include="DataEntities\DataConditionElement.cs" />
+    <Compile Include="DataEntities\DataConditionGenerator.cs" />
+    <Compile Include="DataEntities\DataConditionPropertyElement.cs" />
+    <Compile Include="DataEntities\DataContractElement.cs" />
+    <Compile Include="DataEntities\DataEntityElement.cs" />
+    <Compile Include="DataEntities\DataEntityGenerator.cs" />
+    <Compile Include="DataEntities\DataEntityPropertyElement.cs" />
+    <Compile Include="DataEntities\DesignerInfoElement.cs" />
+    <Compile Include="DataEntities\Designer\BaseAccessSelector.cs" />
+    <Compile Include="DataEntities\Designer\BaseClassSelector.cs" />
+    <Compile Include="DataEntities\Designer\BaseConditionSelector.cs" />
+    <Compile Include="DataEntities\Designer\ConditionTypeConverter.cs" />
+    <Compile Include="DataEntities\Designer\DataContractConverter.cs" />
+    <Compile Include="DataEntities\Designer\DisplayNameConverter.cs" />
+    <Compile Include="DataEntities\Designer\DisplayPromptConveter.cs" />
+    <Compile Include="DataEntities\Designer\DisplaySourceConveter.cs" />
+    <Compile Include="DataEntities\Designer\EntityPropertyDescriptor.cs" />
+    <Compile Include="DataEntities\Designer\EntityTypeConverter.cs" />
+    <Compile Include="DataEntities\Designer\GuidTypeEditor.cs" />
+    <Compile Include="DataEntities\Designer\NamespacesConverter.cs" />
+    <Compile Include="DataEntities\Designer\PropertyTypeEditor.cs" />
+    <Compile Include="DataEntities\Designer\ReflectedTypeEditor.cs" />
+    <Compile Include="DataEntities\Designer\SupportDatabasesEditor.cs" />
+    <Compile Include="DataEntities\DisplayNameElement.cs" />
+    <Compile Include="DataEntities\Enums\DisplayTypeEnum.cs" />
+    <Compile Include="DataEntities\Enums\NamingRules.cs" />
+    <Compile Include="DataEntities\Enums\ResxModeEnum.cs" />
+    <Compile Include="DataEntities\GeneratorElement.cs" />
+    <Compile Include="DataEntities\PersistentGeneratorElement.cs" />
+    <Compile Include="Designer\AbstractCustomTypeDescriptor.cs" />
+    <Compile Include="Designer\AbstractNotifyChangedDescriptor.cs" />
+    <Compile Include="Designer\ClipboardFormat.cs" />
+    <Compile Include="Designer\CommandChengedHandler.cs" />
+    <Compile Include="Designer\CreateCommandHanlder.cs" />
+    <Compile Include="Designer\GroupNameConverter.cs" />
+    <Compile Include="Designer\IConnectorLine.cs" />
+    <Compile Include="Designer\ICustomDescriptor.cs" />
+    <Compile Include="Designer\IPropertySelectionContainer.cs" />
+    <Compile Include="Designer\IWindowUICommand.cs" />
+    <Compile Include="Designer\MessageFileConverter.cs" />
+    <Compile Include="Designer\MessageInfo.cs" />
+    <Compile Include="Designer\MessageTypeConverter.cs" />
+    <Compile Include="Designer\ObjectDescriptor.cs" />
+    <Compile Include="Designer\PackageCategoryAttribute.cs" />
+    <Compile Include="Designer\PackageDescriptionAttribute.cs" />
+    <Compile Include="Designer\PersistentCategoryAttribute.cs" />
+    <Compile Include="Designer\PersistentDescriptionAttribute.cs" />
+    <Compile Include="Designer\PersistentDescriptor.cs" />
+    <Compile Include="Designer\PersistentDisplayAttribute.cs" />
+    <Compile Include="Designer\ProjectFolderEditor.cs" />
+    <Compile Include="Designer\ProjectInfo.cs" />
+    <Compile Include="Designer\ProjectInfoConverter.cs" />
+    <Compile Include="Designer\ProjectSelectorEditor.cs" />
+    <Compile Include="Designer\PropertyOrderAttribute.cs" />
+    <Compile Include="Designer\StringHelper.cs" />
+    <Compile Include="Designer\SupportDatabasesConverter.cs" />
+    <Compile Include="Designer\TableColumnConverter.cs" />
+    <Compile Include="Designer\TransactSqlResolver.cs" />
+    <Compile Include="Designer\XmlSchemaEventArgs.cs" />
+    <Compile Include="Enums\ArgumentsTypeEnum.cs" />
+    <Compile Include="Enums\BaseAccessEnum.cs" />
+    <Compile Include="Enums\ClassModifierEnum.cs" />
+    <Compile Include="Enums\ConnectionTypeEnum.cs" />
+    <Compile Include="Enums\ExecutableMethodEnum.cs" />
+    <Compile Include="Enums\GenerateActionEnum.cs" />
+    <Compile Include="Enums\GeneratorModeEnum.cs" />
+    <Compile Include="Enums\MethodModifierEnum.cs" />
+    <Compile Include="Enums\ObjectTypeEnum.cs" />
+    <Compile Include="Enums\OrderEnum.cs" />
+    <Compile Include="Enums\ProjectTypeEnum.cs" />
+    <Compile Include="Enums\SelectedTypeEnum.cs" />
+    <Compile Include="Functions\AbstractExecutableMethod.cs" />
+    <Compile Include="Functions\ExecuteCoreMethod.cs" />
+    <Compile Include="Functions\ExecuteNonQueryMethod.cs" />
+    <Compile Include="Functions\ExecuteReaderMethod.cs" />
+    <Compile Include="Functions\ExecuteScalarMethod.cs" />
+    <Compile Include="Functions\FillAbstractEntity.cs" />
+    <Compile Include="Functions\FillDataSetMethod.cs" />
+    <Compile Include="Functions\FillDataTableMethod.cs" />
+    <Compile Include="Functions\GetEntitiesMethod.cs" />
+    <Compile Include="Functions\GetPaginationMethod.cs" />
+    <Compile Include="Functions\TypeListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CodeGenerator\ResourceGenerator.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Localizations\CustomCultureInfo.cs" />
+    <Compile Include="Localizations\LocalizationCollection.cs" />
+    <Compile Include="Localizations\LocalizationDescriptor.cs" />
+    <Compile Include="Localizations\LocalizationItem.cs" />
+    <Compile Include="Localizations\ObjectDescriptor.cs" />
+    <Compile Include="Localizations\ResourceCategoryAttribute.cs" />
+    <Compile Include="Localizations\ResourceConverter.cs" />
+    <Compile Include="Localizations\ResourceDescriptionAttribute.cs" />
+    <Compile Include="Localizations\Strings.Designer.cs">
+      <DependentUpon>Strings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localizations\CreateLocalizationDialog.xaml.cs">
+      <DependentUpon>CreateLocalizationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Options\AClassesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Options\AClassesOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Options\IClassesOptions.cs" />
+    <Compile Include="ResourcePackage\Consts.cs" />
+    <Compile Include="ResourcePackage\LocalizationFactory.cs" />
+    <Compile Include="ResourcePackage\LocalizationPackage.cs" />
+    <Compile Include="ResourcePackage\LocalizationPane.cs" />
+    <Compile Include="ResourcePackage\LocalizationService.cs" />
+    <Compile Include="ResourcePackage\LocalizationService.ctmenu.cs" />
+    <Compile Include="ResourcePackage\PackageExtensions.cs" />
+    <Compile Include="ResourcePackage\ResourceEditor.xaml.cs">
+      <DependentUpon>ResourceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Persistents\CodeDomExtensions.cs" />
+    <Compile Include="Persistents\ConfirugationConsts.cs" />
+    <Compile Include="Persistents\DbConnectionBuilder.cs" />
+    <Compile Include="Persistents\PersistentConfiguration.cs" />
+    <Compile Include="Persistents\PersistentFactory.cs" />
+    <Compile Include="Persistents\PersistentPackage.cs" />
+    <Compile Include="Persistents\PersistentPane.cs" />
+    <Compile Include="Persistents\PersistentService.context.cs" />
+    <Compile Include="Persistents\PersistentService.cs" />
+    <Compile Include="Persistents\PersistentService.ctmenu.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\DesignerStrings.Designer.cs">
+      <DependentUpon>DesignerStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\ImageSourceList.cs" />
+    <Compile Include="Properties\PackageConsts.cs" />
+    <Compile Include="Properties\StringUtils.cs" />
+    <Compile Include="Resources\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\BuilderParameterData.cs" />
+    <Compile Include="Templates\ControllerBuilder.cs" />
+    <Compile Include="Templates\ControllerBuilderData.cs" />
+    <Compile Include="Templates\ControllerTemplateHost.cs" />
+    <Compile Include="Templates\MvcViewBuilder.cs" />
+    <Compile Include="Templates\MvcViewWindow.xaml.cs">
+      <DependentUpon>MvcViewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Validation\Collections\AbstractValidationCollection.cs" />
+    <Compile Include="Validation\Designer\AttributePropertyDescriptor.cs" />
+    <Compile Include="Validation\Designer\CompareValueConverter.cs" />
+    <Compile Include="Validation\Designer\DiaplayFormatConverter.cs" />
+    <Compile Include="Validation\Designer\OtherPropertyEditor.cs" />
+    <Compile Include="Validation\Designer\ValidationAttributesEditor.cs" />
+    <Compile Include="Validation\Designer\ValidationTypeConverter.cs" />
+    <Compile Include="Validation\Designer\ValueConverter.cs" />
+    <Compile Include="Validation\Validation\AbstractAttribute.cs" />
+    <Compile Include="Validation\Validation\BoolRequiredValidation.cs" />
+    <Compile Include="Validation\Validation\CompareValidation.cs" />
+    <Compile Include="Validation\Validation\CustomValidationAttribute.cs" />
+    <Compile Include="Validation\Validation\DisplayFormat.cs" />
+    <Compile Include="Validation\Validation\ICompareProperty.cs" />
+    <Compile Include="Validation\Validation\ImportPorpertyAttribute.cs" />
+    <Compile Include="Validation\Validation\MaxLengthValidation.cs" />
+    <Compile Include="Validation\Validation\RangeValidation.cs" />
+    <Compile Include="Validation\Validation\RegularExpressionValidation.cs" />
+    <Compile Include="Validation\Validation\RequiredValidation.cs" />
+    <Compile Include="Validation\Validation\StringLengthValidation.cs" />
+    <Compile Include="Windows\ColumnBox.cs" />
+    <Compile Include="Windows\ColumnBoxList.xaml.cs">
+      <DependentUpon>ColumnBoxList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CommandNode.cs" />
+    <Compile Include="Windows\CommandsWindow.xaml.cs">
+      <DependentUpon>CommandsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CreateClassicView.xaml.cs">
+      <DependentUpon>CreateClassicView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\CreateController.xaml.cs">
+      <DependentUpon>CreateController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CreatePersistentForm.xaml.cs">
+      <DependentUpon>CreatePersistentForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Localizations\CreateEnumResource.xaml.cs">
+      <DependentUpon>CreateEnumResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CreateResWindow.xaml.cs">
+      <DependentUpon>CreateResWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CreateWpfView.xaml.cs">
+      <DependentUpon>CreateWpfView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DesignerCanvas.cs" />
+    <Compile Include="Windows\DesignerEntitiesCanvas.xaml.cs">
+      <DependentUpon>DesignerEntitiesCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DesignerEntity.xaml.cs">
+      <DependentUpon>DesignerEntity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DesignerLine.xaml.cs">
+      <DependentUpon>DesignerLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DesignerMenuItem.cs" />
+    <Compile Include="Windows\DesignerTable.xaml.cs">
+      <DependentUpon>DesignerTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DesignerTablesCanvas.xaml.cs">
+      <DependentUpon>DesignerTablesCanvas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DragThumb.cs" />
+    <Compile Include="Windows\ExpandButton.xaml.cs">
+      <DependentUpon>ExpandButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\IDesignerItem.cs" />
+    <Compile Include="Windows\ImageCheckBox.cs" />
+    <Compile Include="Windows\ImagesEnum.cs" />
+    <Compile Include="Windows\InitializationWindow.xaml.cs">
+      <DependentUpon>InitializationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MessageInfo.cs" />
+    <Compile Include="Windows\OfficeImage.cs" />
+    <Compile Include="Windows\PropertyNode.cs" />
+    <Compile Include="Windows\ResizeAdorner.cs" />
+    <Compile Include="Windows\ResizeThumb.xaml.cs">
+      <DependentUpon>ResizeThumb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectedSharp.xaml.cs">
+      <DependentUpon>SelectedSharp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectTabItem.xaml.cs">
+      <DependentUpon>SelectTabItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\VisualChildrenChanged.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BasicConfigurationCatalog.xml">
+      <InstallRoot>Schemas</InstallRoot>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="goldsoft.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <VSTemplate Include="ItemTemplape\Localization.vstemplate">
+    </VSTemplate>
+    <Content Include="license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <VSCTCompile Include="ResourcePackage\Resources.vsct">
+      <ResourceName>ResourcesMenus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+    <None Include="Resources\goldsoft.ico" />
+    <Content Include="Templates\Element\Grid.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Element\Index.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="UpdateLog.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <None Include="app.config" />
+    <Content Include="BasicConfigurationSchema-5.0.xsd">
+      <SubType>Designer</SubType>
+      <InstallRoot>Schemas</InstallRoot>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="BasicDataPersistentSchema-5.0.xsd">
+      <SubType>Designer</SubType>
+      <InstallRoot>Schemas</InstallRoot>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="BasicPersistentSchema-5.0.xsd">
+      <SubType>Designer</SubType>
+      <InstallRoot>Schemas</InstallRoot>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <None Include="DataCommand\DataCommand.cd" />
+    <None Include="ItemTemplape\Localization.localresx" />
+    <None Include="Persistent.pfx" />
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Templates\CSharp\Edit.cshtml.razor">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\CSharp\GridView.cshtml.razor">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\CSharp\TreeView.cshtml.razor">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Data.ConnectionUI" />
+    <Reference Include="Microsoft.Data.ConnectionUI.Dialog" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.WPF">
+      <Version>4.7.0.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration">
+      <Version>9.0.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <Version>9.0.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json">
+      <Version>9.0.10</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom">
+      <Version>170.128.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.TextTemplating">
+      <Version>17.10.40170</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.14.2120">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.Data">
+      <Version>9.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="Oracle.ManagedDataAccess">
+      <Version>23.26.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations">
+      <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.Encoding.CodePages">
+      <Version>9.0.10</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Database\Windows\ColumnsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DataCommand\Designer\CommandTextWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DataCommand\Designer\DynamicCommandWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DataCommand\Designer\WithClauseWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Localizations\CreateLocalizationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourcePackage\ResourceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Templates\MvcViewWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\GenericStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Shared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ToolBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\ColumnBoxList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CommandsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CreateClassicView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Templates\CreateController.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CreatePersistentForm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Localizations\CreateEnumResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CreateResWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CreateWpfView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\DesignerEntitiesCanvas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\DesignerEntity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\DesignerLine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\DesignerTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\DesignerTablesCanvas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\ExpandButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\InitializationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\ResizeThumb.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SelectedSharp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SelectTabItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Designer\OfficeImages.resx" />
+    <EmbeddedResource Include="Localizations\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Options\AClassesControl.resx">
+      <DependentUpon>AClassesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Designer.resx" />
+    <EmbeddedResource Include="Properties\DesignerStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DesignerStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AggregateFunction.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\BringForward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\BringToFront.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CheckConstraint.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Chevron_down.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Chevron_up.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ClusteredIndex.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Code.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Column.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Component.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ComputedColumn.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Connection.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_AggregateFunction.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_CheckConstraint.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_ClusteredIndex.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Column.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Component.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_ComputedColumn.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Connection.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_DataType.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Diagram.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Extended.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_File.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Folder.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_ForeignKey.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Index.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_InputParameter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_OutputParameter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_PrimaryKey.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_ReturnValue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_ScalarFunction.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_StoredProcedure.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Table.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_TabularFunction.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_Trigger.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_UniqueKey.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_UserDefinedType.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Database_View.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DataType.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Diagram.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dpdl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Execute.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Extended.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\File.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Filter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Folder.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ForeignKey.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Index.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\InputParameter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Move.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\OutputParameter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PrimaryKey.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Properties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Property.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Remove.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReturnValue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ScalarFunction.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SendBackward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SendToBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Setting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StoredProcedure.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Table.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TabularFunction.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Trigger.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UniqueKey.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UserDefinedType.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\View.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Width.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Zoom100Button.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ZoomInButton.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ZoomOutButton.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSCTCompile Include="Persistents\Persistent.vsct">
+      <ResourceName>PersistentMenus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Persistents\ProjectType.html" />
+    <Content Include="Resources\fileicon.oraf.ico" />
+    <Content Include="Resources\fileicon.sqlf.ico" />
+    <Content Include="Templates\Classic\Grid.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Classic\Index.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Controller.cs.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Standard.Framework\Standard.DataAccess\Standard.DataAccess.csproj">
+      <Project>{0a213752-7c72-4f29-822d-b3c02e5fa103}</Project>
+      <Name>Standard.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Standard.Framework\Standard.EntityLayer\Standard.EntityLayer.csproj">
+      <Project>{35a1f94f-10c1-4638-8b5d-8bc4df798eff}</Project>
+      <Name>Standard.EntityLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RazorEngine.Core\RazorEngine.Core.csproj">
+      <Project>{a08f55a8-d41b-4251-a7c9-5d6e175b1c00}</Project>
+      <Name>RazorEngine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Standard.Registers\Standard.Registers.csproj">
+      <Project>{ef421ae5-a518-4ef2-b511-d1801c88bd27}</Project>
+      <Name>Standard.Registers</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
