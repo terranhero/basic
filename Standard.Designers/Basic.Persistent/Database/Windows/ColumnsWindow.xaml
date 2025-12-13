@@ -4,10 +4,7 @@
 				 xmlns:enums="clr-namespace:Basic.Enums;assembly=Basic.EntityLayer"
                  xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
                  Title="数据库列集合" ShowInTaskbar="False" 
-	Width="800" Height="400" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Loaded="DialogWindow_Loaded">
-	<!--<ui:DialogWindow.CommandBindings>
-		<CommandBinding Command="Save" Executed="OnSaveExecuted"/>
-	</ui:DialogWindow.CommandBindings>-->
+	WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Loaded="DialogWindow_Loaded" Width="800" Height="400">
 	<ui:DialogWindow.Resources>
 		<ObjectDataProvider x:Key="DbTypes" MethodName="GetValues" ObjectType="{x:Type enums:DbTypeEnum}">
 			<ObjectDataProvider.MethodParameters>
@@ -15,41 +12,30 @@
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
 	</ui:DialogWindow.Resources>
-	<Grid Margin="15,15,10,15">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto"/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+	<Grid Margin="10">
 		<DataGrid  x:Name="dgColumns" RowHeaderWidth="0" Height="Auto">
 			<DataGrid.Style>
 				<Style TargetType="{x:Type DataGrid}">
-					<Setter Property="CanUserAddRows" Value="False"/>
-					<Setter Property="CanUserDeleteRows" Value="False"/>
+					<Setter Property="CanUserAddRows" Value="True"/>
+					<Setter Property="CanUserDeleteRows" Value="True"/>
 					<Setter Property="CanUserResizeRows" Value="False"/>
-					<Setter Property="SelectionUnit" Value="Cell"/>
-					<Setter Property="SelectionMode" Value="Single"/>
+					<Setter Property="SelectionUnit" Value="CellOrRowHeader"/>
+					<Setter Property="SelectionMode" Value="Extended"/>
 					<Setter Property="AutoGenerateColumns" Value="False"/>
+					<Setter Property="RowHeaderWidth" Value="45"/>
 					<Setter Property="VerticalContentAlignment" Value="Center"/>
 					<Setter Property="BorderThickness" Value="1"/>
 					<Setter Property="VerticalGridLinesBrush" Value="#FF688CAF"/>
 					<Setter Property="HorizontalGridLinesBrush" Value="#FF688CAF"/>
 					<Setter Property="Background" Value="Transparent"/>
 					<Setter Property="BorderBrush" Value="#FF688CAF"/>
-					<Setter Property="RowDetailsVisibilityMode" Value="Collapsed"/>
-					<Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+					<Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
 				</Style>
 			</DataGrid.Style>
 			<DataGrid.ColumnHeaderStyle>
 				<Style TargetType="{x:Type DataGridColumnHeader}">
 					<Setter Property="HorizontalContentAlignment" Value="Center"/>
+					<Setter Property="MinHeight" Value="30"/>
 					<Setter Property="Height" Value="35"/>
 					<Setter Property="FontWeight" Value="Bold"/>
 					<Setter Property="FontSize" Value="13"/>
@@ -82,12 +68,13 @@
 			</DataGrid.CellStyle>
 			<DataGrid.Columns>
 				<DataGridCheckBoxColumn Binding="{Binding PrimaryKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-							 Header="主键" Width="60" MinWidth="60" CanUserSort="False">
+							 Header="主键" Width="60" MinWidth="60" CanUserSort="False" IsReadOnly="True">
 					<DataGridCheckBoxColumn.ElementStyle>
 						<Style TargetType="{x:Type CheckBox}">
 							<Setter Property="VerticalAlignment"  Value="Center" />
 							<Setter Property="HorizontalAlignment"  Value="Center" />
 							<Setter Property="Padding" Value="6"/>
+							<Setter Property="IsEnabled" Value="False"/>
 						</Style>
 					</DataGridCheckBoxColumn.ElementStyle>
 				</DataGridCheckBoxColumn>
