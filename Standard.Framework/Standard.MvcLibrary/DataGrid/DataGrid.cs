@@ -279,6 +279,30 @@ namespace Basic.EasyLibrary
 			mColumns.Append(column);
 			return column;
 		}
+		/// <summary>
+		/// 设置行号列
+		/// </summary>
+		/// <param name="row">表示创建的列追加的行</param>
+		/// <param name="startNumber">表示行号起始值</param>
+		/// <returns>返回当前列对象。</returns>
+		public NumberColumn<T> RowNumberFor(DataGridRow<T> row, int startNumber)
+		{
+			NumberColumn<T> column = new NumberColumn<T>(mBasic, startNumber);
+			mColumns.Append(row, column);
+			return column;
+		}
+
+		/// <summary>
+		/// 设置行号列
+		/// </summary>
+		/// <param name="row">表示创建的列追加的行</param>
+		/// <returns>返回当前列对象。</returns>
+		public NumberColumn<T> RowNumberFor(DataGridRow<T> row)
+		{
+			NumberColumn<T> column = new NumberColumn<T>(mBasic, 1);
+			mColumns.Append(row, column);
+			return column;
+		}
 		#endregion
 
 		#region 输出选择列信息
