@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Basic.Localizations;
 using Basic.Options;
 using Microsoft;
 using Microsoft.VisualStudio;
@@ -25,8 +26,8 @@ namespace Basic.Configuration
 	/// </summary>
 	[ProvideService(typeof(IClassesOptions), IsCacheable = true)]
 	[PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-	[ProvideLoadKey("Standard", "4.0.0.0", "PersistentPackage", "SIP GoldSoft Technology Limited", 1)]
-	[InstalledProductRegistration("#210", "#221", "4.0.0.0", IconResourceID = 510)]
+	[ProvideLoadKey("Standard", Consts.ProductVersion, "PersistentPackage", "SIP GoldSoft Technology Limited", 1)]
+	[InstalledProductRegistration("#210", "#221", Consts.ProductVersion, IconResourceID = 510)]
 	[ProvideEditorExtension(typeof(PersistentFactory), ".dpdl", 50, ProjectGuid = "{A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3}",
 		TemplateDir = "Templates", NameResourceID = 210, DefaultName = "ASP.NET MVC Data Persistent")]
 	[ProvideKeyBindingTable(ConfirugationConsts.guidFactoryString, 210)]

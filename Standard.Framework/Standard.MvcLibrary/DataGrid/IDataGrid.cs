@@ -128,6 +128,17 @@ namespace Basic.EasyLibrary
 		NumberColumn<T> RowNumberFor(int startNumber);
 
 		/// <summary>设置行号列</summary>
+		/// <param name="row">表示创建的列追加的行</param>
+		/// <returns>返回行号列对象。</returns>
+		NumberColumn<T> RowNumberFor(DataGridRow<T> row);
+
+		/// <summary>设置行号列</summary>
+		/// <param name="row">表示创建的列追加的行</param>
+		/// <param name="startNumber">表示行号起始值</param>
+		/// <returns>返回行号列对象。</returns>
+		NumberColumn<T> RowNumberFor(DataGridRow<T> row, int startNumber);
+
+		/// <summary>设置行号列</summary>
 		/// <returns>返回行号列对象。</returns>
 		ButtonColumn<T> ButtonsFor(Func<T, string> expression);
 

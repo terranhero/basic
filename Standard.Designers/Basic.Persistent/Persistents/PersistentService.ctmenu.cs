@@ -91,13 +91,13 @@ namespace Basic.Configuration
 		/// <summary>数据持久类异步代码编辑命令ID</summary>
 		public static readonly CommandID EditCodeAsyncID = new CommandID(VsMenus.guidStandardCommandSet97, 0x2063);
 
-		/// <summary>数据持久类快捷菜单更新静态/动态命令ID</summary>
+		/// <summary>数据持久类快捷菜单复制代码</summary>
 		public static readonly CommandID CopyCodeID = new CommandID(VsMenus.guidStandardCommandSet97, 0x2062);
 
-		/// <summary>数据持久类快捷菜单更新静态/动态命令ID</summary>
+		/// <summary>数据持久类快捷菜单复制数据库命令</summary>
 		public static readonly CommandID CopySqlID = new CommandID(VsMenus.guidStandardCommandSet97, 0x2064);
 
-		/// <summary>数据持久类快捷菜单更新静态/动态命令ID</summary>
+		/// <summary>数据持久类快捷菜单查看数据库表信息</summary>
 		public static readonly CommandID tableColumnsID = new CommandID(VsMenus.guidStandardCommandSet97, 0x2067);
 
 		/// <summary>数据持久类快捷菜单更新静态/动态命令ID</summary>

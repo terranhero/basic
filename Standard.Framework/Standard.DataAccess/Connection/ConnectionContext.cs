@@ -121,7 +121,7 @@ namespace Basic.Configuration
 
 			SC.ConfigurationFileMap fileMap = new SC.ConfigurationFileMap(fullName);
 			SC.Configuration config = SC.ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
-			ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
+			SC.ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
 			if (section == null)        //读取配置文件异常，配置文件"{0}"中，不存在自定义配置组"'。
 				throw new ConfigurationFileException("Access_Configuration_GroupNotFound", fullName, sectionName);
 			if (section is ConnectionsSection configurationSection) { InitializeConnection(configurationSection); }
@@ -182,7 +182,7 @@ namespace Basic.Configuration
 		public static ConnectionInfo Create(string name, ConnectionType type, string conString, string display)
 		{
 			if (_Connections.ContainsKey(name))
-				throw new System.ArgumentException("已经存在相同名称的连接", "name");
+				throw new System.ArgumentException("已经存在相同名称的连接", name);
 			ConnectionInfo info = new ConnectionInfo(name, type, conString, display);
 			_Connections.Add(info.Name, info);
 			return info;
@@ -198,7 +198,7 @@ namespace Basic.Configuration
 		public static ConnectionInfo Create(ConnectionInfo info)
 		{
 			if (_Connections.ContainsKey(info.Name))
-				throw new System.ArgumentException("已经存在相同名称的连接", "info.Name");
+				throw new System.ArgumentException("已经存在相同名称的连接", info.Name);
 			_Connections.Add(info.Name, info);
 			return info;
 		}

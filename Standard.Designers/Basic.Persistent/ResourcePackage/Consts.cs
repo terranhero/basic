@@ -23,7 +23,7 @@ namespace Basic.Localizations
         /// <summary>
         /// 产品版本号
         /// </summary>
-        public const string ProductVersion = "4.0.0.0";
+        public const string ProductVersion = "4.8.5812";
 
         /// <summary>
         /// 表示 Package 类 Guid 常量值。

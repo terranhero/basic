@@ -146,23 +146,23 @@ namespace Basic.Caches
 			public Task<bool> KeyExistsAsync(string key)
 			{
 #if NET8_0_OR_GREATER
-				return Task.FromResult(memory.Keys.Contains(key));
+				return Task.FromResult(memory.TryGetValue(key, out _));
 #else
-				return Task.FromResult(memory.Any(m => m.Key == key));
+				return Task.FromResult(memory.Contains(key));
 #endif
 			}
 			#endregion
 
-			#region 缓存同步方法 - 判断键是否存在
+			#region 缓存同步方法 - 判断缓存键是否存在
 			/// <summary>判断键是否存在</summary>
 			/// <param name="key">需要检查的缓存键.</param>
 			/// <returns><see langword="true"/> 如果键存在. <see langword="false"/> 如果键不存在.</returns>
 			public bool KeyExists(string key)
 			{
 #if NET8_0_OR_GREATER
-				return memory.Keys.Contains(key);
+				return memory.TryGetValue(key, out _);
 #else
-				return memory.Any(m => m.Key == key);
+				return memory.Contains(key);
 #endif
 			}
 			#endregion

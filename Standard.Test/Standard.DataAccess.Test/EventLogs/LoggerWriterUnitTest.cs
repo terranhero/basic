@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Basic.Configuration;
 using Basic.Interfaces;
 using Basic.Loggers;
 
@@ -26,12 +27,15 @@ namespace Standard.DataAccess.Test
 		}
 
 		[TestMethod("GetLoggers")]
-		public async Task GetLoggers()
+		public void GetLoggers()
 		{
-			ILoggerWriter writer = LoggerWriter.GetWriter("LOCAL");
-			IPagination<LoggerEntity> logs = await writer.Storage.GetLoggingsAsync(new Guid("EE7F553B-3541-4354-A451-D2E74D9C64CC"));
-			string text = System.Text.Json.JsonSerializer.Serialize(logs);
-			Console.WriteLine(text);
+			string ddd = ConfigurationAlgorithm.Encryption("sqyBUYx1j1BSkdGPK7RYdNgFAB7Ph2bzevoc4thohpo=");
+			Console.Write(ddd);
+
+			//ILoggerWriter writer = LoggerWriter.GetWriter("LOCAL");
+			//IPagination<LoggerEntity> logs = await writer.Storage.GetLoggingsAsync(new Guid("EE7F553B-3541-4354-A451-D2E74D9C64CC"));
+			//string text = System.Text.Json.JsonSerializer.Serialize(logs);
+			//Console.WriteLine(text);
 		}
 
 		[TestMethod("TestInformationAsync")]
