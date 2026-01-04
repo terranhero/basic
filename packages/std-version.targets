@@ -1,7 +1,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<BuildVersion>5852</BuildVersion>
-		<TargetFrameworks>net8.0;net6.0;netstandard2.0;</TargetFrameworks>
+		<BuildVersion>5853</BuildVersion>
+		<TargetFrameworks>net10.0;net8.0;net6.0;netstandard2.0;</TargetFrameworks>
 		<AssemblyVersion>6.0.0.0</AssemblyVersion>
 		<Version>6.0.0.0</Version>
 		<FileVersion>6.0.$(BuildVersion)</FileVersion>

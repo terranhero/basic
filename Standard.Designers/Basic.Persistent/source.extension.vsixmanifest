@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="D4E32AFF-92E4-4E4D-9585-C4423FA06A5A" Publisher="JACKY" Version="4.8.5813" Language="zh-Hans" />
         <DisplayName>ASP.NET MVC 资源和数据持久设计器 2022</DisplayName>
-        <Description xml:space="preserve">ASP.NET MVC 资源和数据持久设计器 For Visual Studio 2022, 支持 Microsoft SQL Server, ORACLE , MySQL等数据库</Description>
+        <Description xml:space="preserve">ASP.NET MVC 资源和数据持久设计器 For Visual Studio 2022 and Visual Studio 2026, 支持 Microsoft SQL Server, ORACLE , MySQL等数据库</Description>
         <MoreInfo>https://gitee.com/terran-hero/basic</MoreInfo>
         <License>license.txt</License>
         <GettingStartedGuide>license.txt</GettingStartedGuide>
@@ -13,13 +13,13 @@
         <Tags>MVC Basic GoldSoft</Tags>
     </Metadata>
     <Installation AllUsers="true">
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 20.0)">
             <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
-        <InstallationTarget Version="[17.0, 18.0)" Id="Microsoft.VisualStudio.Enterprise">
+        <InstallationTarget Version="[17.0, 20.0)" Id="Microsoft.VisualStudio.Enterprise">
             <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
-        <InstallationTarget Version="[17.0, 18.0)" Id="Microsoft.VisualStudio.Pro">
+        <InstallationTarget Version="[17.0, 20.0)" Id="Microsoft.VisualStudio.Pro">
             <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
     </Installation>
