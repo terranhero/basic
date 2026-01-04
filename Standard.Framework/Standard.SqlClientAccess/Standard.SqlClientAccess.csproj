@@ -25,6 +25,9 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.3" />
 	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.3" />
+	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
 		<ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
