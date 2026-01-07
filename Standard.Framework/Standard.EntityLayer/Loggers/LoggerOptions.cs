@@ -24,20 +24,20 @@ namespace Basic.Loggers
 		public CycleMode Mode { get; set; } = CycleMode.Weekly;
 
 		/// <summary>消息日志保存方式</summary>
-		public LogLeveOption Information { get { return _information; } }
-		private LogLeveOption _information = new LogLeveOption(LogLevel.Information, LogSaveType.DataBase, true);
+		public LogLevelOption Information { get { return _information; } }
+		private LogLevelOption _information = new LogLevelOption(LogLevel.Information, LogSaveType.DataBase, true);
 
 		/// <summary>警告日志保存方式</summary>
-		public LogLeveOption Warning { get { return _warning; } }
-		private LogLeveOption _warning = new LogLeveOption(LogLevel.Warning, LogSaveType.DataBase, true);
+		public LogLevelOption Warning { get { return _warning; } }
+		private LogLevelOption _warning = new LogLevelOption(LogLevel.Warning, LogSaveType.DataBase, true);
 
 		/// <summary>错误日志保存方式</summary>
-		public LogLeveOption Error { get { return _error; } }
-		private LogLeveOption _error = new LogLeveOption(LogLevel.Error, LogSaveType.DataBase, true);
+		public LogLevelOption Error { get { return _error; } }
+		private LogLevelOption _error = new LogLevelOption(LogLevel.Error, LogSaveType.DataBase, true);
 
 		/// <summary>调试日志保存方式</summary>
-		public LogLeveOption Debug { get { return _debug; } }
-		private LogLeveOption _debug = new LogLeveOption(LogLevel.Debug, LogSaveType.LocalFile, false);
+		public LogLevelOption Debug { get { return _debug; } }
+		private LogLevelOption _debug = new LogLevelOption(LogLevel.Debug, LogSaveType.LocalFile, false);
 
 		/// <summary>日志批处理大小，默认值200</summary>
 		public int BatchSize { get; set; } = 200;
@@ -45,20 +45,21 @@ namespace Basic.Loggers
 	}
 
 	/// <summary>特定日志级别存储方式</summary>
-	public sealed class LogLeveOption
+	[System.Diagnostics.DebuggerDisplay("SaveType = {SaveType}, Enabled = {Enabled}")]
+	public sealed class LogLevelOption
 	{
 		/// <summary>
-		/// 初始化 LogLeveOption 类实例。
+		/// 初始化 LogLevelOption 类实例。
 		/// </summary>
-		public LogLeveOption(LogLevel logLevel) : this(logLevel, LogSaveType.None, false) { }
+		public LogLevelOption(LogLevel logLevel) : this(logLevel, LogSaveType.None, false) { }
 
 		/// <summary>
-		/// 使用指定参数初始化 LogLeveOption 类实例。 
+		/// 使用指定参数初始化 LogLevelOption 类实例。 
 		/// </summary>
 		/// <param name="logLevel">日志级别</param>
 		/// <param name="saveType">日志保存类型</param>
 		/// <param name="enabled">是否有效</param>
-		public LogLeveOption(LogLevel logLevel, LogSaveType saveType, bool enabled)
+		public LogLevelOption(LogLevel logLevel, LogSaveType saveType, bool enabled)
 		{
 			this.LogLevel = logLevel;
 			this.SaveType = saveType;

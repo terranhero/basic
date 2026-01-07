@@ -124,7 +124,7 @@ namespace Basic.Loggers
 		/// <returns>返回当前级别日志是否需要记录</returns>
 		private static bool GetSectionInfo(LogLevel logLevel, out LogSaveType saveType)
 		{
-			LogLeveOption opts = options.Information;
+			LogLevelOption opts = options.Information;
 			if (logLevel == LogLevel.Information) { opts = options.Information; }
 			else if (logLevel == LogLevel.Warning) { opts = options.Warning; }
 			else if (logLevel == LogLevel.Error) { opts = options.Error; }
@@ -1367,7 +1367,6 @@ namespace Basic.Loggers
 		public static IServiceCollection AddLoggerOptions(this IServiceCollection services, IConfigurationRoot root)
 		{
 			IConfigurationSection logger = root.GetSection("Loggers");
-			if (logger.Value == null) { return services; }
 			return services.AddLoggerOptions(logger, opts =>
 			{
 				opts.BindNonPublicProperties = false;
