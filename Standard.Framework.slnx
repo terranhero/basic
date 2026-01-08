@@ -1,0 +1,36 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/ReferenceAssembly/">
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="packages/Assembly.Tools.cs" />
+    <File Path="packages/basic.snk" />
+    <File Path="packages/net-version.targets" />
+    <File Path="packages/std-props.targets" />
+    <File Path="packages/std-version.targets" />
+    <File Path="packages/UpdateLog.txt" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Standard.Framework/">
+    <Project Path="Standard.Framework/Standard.DataAccess/Standard.DataAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.Db2Access/Standard.DB2Access.csproj" />
+    <Project Path="Standard.Framework/Standard.EntityLayer/Standard.EntityLayer.csproj" />
+    <Project Path="Standard.Framework/Standard.MvcLibrary/Standard.MvcLibrary.csproj" />
+    <Project Path="Standard.Framework/Standard.MySqlAccess/Standard.MySqlAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.NpgSqlAccess/Standard.PostgreAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.OracleAccess/Standard.OracleAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.SqlClientAccess/Standard.SqlClientAccess.csproj" />
+  </Folder>
+  <Folder Name="/Standard.Test/">
+    <Project Path="Standard.Designers/Basic.TestSqlParser/Basic.TestSqlParser.csproj" />
+    <Project Path="Standard.Test/Standard.DataAccess.Test/Standard.DataAccess.Test.csproj" />
+    <Project Path="Standard.Test/Standard.EntityLayer.Test/Standard.EntityLayer.Test.csproj" />
+  </Folder>
+  <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
+    <Property Name="CategoryFile" Value="Basic.Solution.vsmdi" />
+  </Properties>
+</Solution>

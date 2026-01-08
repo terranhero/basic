@@ -1,0 +1,44 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/ReferenceAssembly/">
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="packages/Assembly.Tools.cs" />
+    <File Path="packages/basic.snk" />
+    <File Path="packages/net-version.targets" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Standard.Designers/">
+    <File Path="packages/tool-version.targets" />
+    <File Path="packages/UpdateLog.txt" />
+    <Project Path="Standard.Designers/Basic.Localizations/Basic.Localizations.csproj" Id="a94521f3-ab2c-4bfc-9d89-8cf1238ab92e">
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Standard.Designers/Basic.Persistent/Basic.Persistent-2022.csproj" Id="aa38af92-e5ca-4f24-abc4-d516a890b803">
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Standard.Designers/Basic.TestSqlParser/Basic.TestSqlParser.csproj" />
+    <Project Path="Standard.Designers/RazorEngine.Core/RazorEngine.Core.csproj" />
+    <Project Path="Standard.Designers/Standard.Localizations/Standard.Localizations.csproj" Id="5d9aef5a-9bf4-4275-b263-b6ea13961337" />
+    <Project Path="Standard.Designers/Standard.Registers/Standard.Registers.csproj" Id="ef421ae5-a518-4ef2-b511-d1801c88bd27" />
+  </Folder>
+  <Folder Name="/Standard.Framework/">
+    <File Path="packages/std-props.targets" />
+    <File Path="packages/std-version.targets" />
+    <Project Path="Standard.Framework/Standard.DataAccess/Standard.DataAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.Db2Access/Standard.DB2Access.csproj" />
+    <Project Path="Standard.Framework/Standard.EntityLayer/Standard.EntityLayer.csproj" />
+    <Project Path="Standard.Framework/Standard.MvcLibrary/Standard.MvcLibrary.csproj" />
+    <Project Path="Standard.Framework/Standard.MySqlAccess/Standard.MySqlAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.NpgSqlAccess/Standard.PostgreAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.OracleAccess/Standard.OracleAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.SqlClientAccess/Standard.SqlClientAccess.csproj" />
+  </Folder>
+  <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
+    <Property Name="CategoryFile" Value="Basic.Solution.vsmdi" />
+  </Properties>
+</Solution>
