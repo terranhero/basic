@@ -27,8 +27,9 @@
   </Folder>
   <Folder Name="/Standard.Test/">
     <Project Path="Standard.Designers/Basic.TestSqlParser/Basic.TestSqlParser.csproj" />
-    <Project Path="Standard.Test/Standard.DataAccess.Test/Standard.DataAccess.Test.csproj" />
-    <Project Path="Standard.Test/Standard.EntityLayer.Test/Standard.EntityLayer.Test.csproj" />
+    <Project Path="Standard.Test/StandardTest.DataAccess/StandardTest.DataAccess.csproj" />
+    <Project Path="Standard.Test/StandardTest.EntityLayer/StandardTest.EntityLayer.csproj" />
+    <Project Path="Standard.Test/StandardTest.MvcLibrary/StandardTest.MvcLibrary.csproj" Id="139d26ad-7e61-492b-8c5f-39a20c563421" />
   </Folder>
   <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
     <Property Name="CategoryFile" Value="Basic.Solution.vsmdi" />
