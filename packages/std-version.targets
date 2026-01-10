@@ -1,6 +1,6 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<BuildVersion>5854</BuildVersion>
+		<BuildVersion>5855</BuildVersion>
 		<TargetFrameworks>net10.0;net8.0;net6.0;netstandard2.0;</TargetFrameworks>
 		<AssemblyVersion>6.0.0.0</AssemblyVersion>
 		<Version>6.0.0.0</Version>
@@ -15,6 +15,15 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+		<!-- 启用 Source Link 支持 --><!--
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		--><!-- 生成版本号设置 --><!--
+		<IncludeSourceRevisionInInformationalVersion>true</IncludeSourceRevisionInInformationalVersion>-->
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="obj\**" />
