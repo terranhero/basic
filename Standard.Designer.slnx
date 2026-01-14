@@ -23,6 +23,7 @@
     </Project>
     <Project Path="Standard.Designers/Basic.TestSqlParser/Basic.TestSqlParser.csproj" />
     <Project Path="Standard.Designers/RazorEngine.Core/RazorEngine.Core.csproj" />
+    <Project Path="Standard.Designers/Standard.Extensions/Standard.Extensions.csproj" Id="c234c5c3-cc79-4324-b0ea-e7f28883f20c" />
     <Project Path="Standard.Designers/Standard.Localizations/Standard.Localizations.csproj" Id="5d9aef5a-9bf4-4275-b263-b6ea13961337" />
     <Project Path="Standard.Designers/Standard.Registers/Standard.Registers.csproj" Id="ef421ae5-a518-4ef2-b511-d1801c88bd27" />
   </Folder>
@@ -37,6 +38,9 @@
     <Project Path="Standard.Framework/Standard.NpgSqlAccess/Standard.PostgreAccess.csproj" />
     <Project Path="Standard.Framework/Standard.OracleAccess/Standard.OracleAccess.csproj" />
     <Project Path="Standard.Framework/Standard.SqlClientAccess/Standard.SqlClientAccess.csproj" />
+  </Folder>
+  <Folder Name="/Standard.UnitTest/">
+    <Project Path="Standard.Test/StandardTest.BasicPersistent/StandardTest.BasicPersistent.csproj" Id="844dc60f-c4e5-4109-9fd7-0f9546300a07" />
   </Folder>
   <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
     <Property Name="CategoryFile" Value="Basic.Solution.vsmdi" />

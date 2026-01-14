@@ -84,6 +84,8 @@
     <Compile Include="Commands\BasicCommands.Table.cs" />
     <Compile Include="Commands\SelectionChangedHandler.cs" />
     <Compile Include="Commands\ShowPropertyCommand.cs" />
+    <Compile Include="Connection\JsonConnectionSection.cs" />
+    <Compile Include="Connection\JsonConnectionsSection.cs" />
     <Compile Include="Converters\AbstractConverterCommand.cs" />
     <Compile Include="Converters\ConverterCheckCommand.cs" />
     <Compile Include="Converters\ConverterCheckCommandCollection.cs" />
@@ -305,6 +307,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Options\IClassesOptions.cs" />
+    <Compile Include="Persistents\PersistentService.database.cs" />
+    <Compile Include="Persistents\PersistentService.extension.cs" />
     <Compile Include="ResourcePackage\Consts.cs" />
     <Compile Include="ResourcePackage\LocalizationFactory.cs" />
     <Compile Include="ResourcePackage\LocalizationPackage.cs" />

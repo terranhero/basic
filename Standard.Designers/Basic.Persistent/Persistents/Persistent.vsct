@@ -45,6 +45,7 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
+					<CanonicalName>金软配置文件</CanonicalName>
 					<CommandName>金软配置文件</CommandName>
 					<MenuText>金软配置文件</MenuText>
 					<ButtonText>金软配置文件</ButtonText>
@@ -490,6 +491,7 @@
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
+					<CanonicalName>标准控制器(C&amp;)...</CanonicalName>
 					<ButtonText>标准控制器(C&amp;)...</ButtonText>
 					<MenuText>标准控制器(C&amp;)...</MenuText>
 					<CommandName>标准控制器(MVC)</CommandName>
@@ -503,6 +505,7 @@
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
+					<CanonicalName>WPF 标准视图(S&amp;)...</CanonicalName>
 					<ButtonText>WPF 标准视图(S&amp;)...</ButtonText>
 					<MenuText>WPF 标准视图(S&amp;)...</MenuText>
 					<CommandName>WPF 标准视图</CommandName>
@@ -516,10 +519,11 @@
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
-					<ButtonText>WPF窗体(S&amp;)...</ButtonText>
-					<MenuText>WPF窗体(S&amp;)...</MenuText>
-					<CommandName>WPF窗体(S&amp;)...</CommandName>
-					<ToolTipText>WPF窗体(S&amp;)...</ToolTipText>
+					<CanonicalName>WPF 窗体(S&amp;)...</CanonicalName>
+					<ButtonText>WPF 窗体(S&amp;)...</ButtonText>
+					<MenuText>WPF 窗体(S&amp;)...</MenuText>
+					<CommandName>WPF 窗体(S&amp;)...</CommandName>
+					<ToolTipText>WPF 窗体(S&amp;)...</ToolTipText>
 				</Strings>
 			</Button>
 			<Button guid="GUID_PERSISTENTMENU" id="IDC_PERSISTENT" priority="0x0412" type="Button">
@@ -529,6 +533,7 @@
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
+					<CanonicalName>数据持久类(C&amp;)...</CanonicalName>
 					<ButtonText>数据持久类(C&amp;)...</ButtonText>
 					<MenuText>数据持久类(C&amp;)...</MenuText>
 					<CommandName>CreatePersistent</CommandName>
@@ -542,10 +547,24 @@
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
+					<CanonicalName>本地化资源(L&amp;)...</CanonicalName>
 					<ButtonText>本地化资源(L&amp;)...</ButtonText>
 					<MenuText>本地化资源(L&amp;)...</MenuText>
 					<CommandName>CreateLocalizations</CommandName>
 					<ToolTipText>添加添加本地化资源文件文件(L&amp;)...</ToolTipText>
+				</Strings>
+			</Button>
+			<Button guid="GUID_PERSISTENTMENU"  id="IDC_REGISTER_FILE_EXTENSION" priority="0x0101" type="Button">
+				<Parent guid="GUID_PERSISTENTMENU" id="IDG_SOLUTION_CONFIG"/>
+				<Icon guid="guidSHLMainMenu" id="1"/>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<Strings>
+					<CanonicalName>注册文件图标</CanonicalName>
+					<CommandName>注册文件图标</CommandName>
+					<MenuText>注册文件图标</MenuText>
+					<ButtonText>注册文件图标</ButtonText>
+					<LocCanonicalName>注册文件图标</LocCanonicalName>
 				</Strings>
 			</Button>
 			<Button guid="GUID_PERSISTENTMENU" id="IDC_ADDCONNECTION" priority="0x0411" type="Button">
@@ -555,6 +574,7 @@
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
+					<CanonicalName>添加数据库配置...</CanonicalName>
 					<ButtonText>添加数据库配置...</ButtonText>
 					<MenuText>添加数据库配置...</MenuText>
 					<CommandName>添加数据库配置...</CommandName>
@@ -568,6 +588,7 @@
 				<CommandFlag>DefaultDisabled</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
+					<CanonicalName>重置连接信息...</CanonicalName>
 					<ButtonText>重置连接信息...</ButtonText>
 					<MenuText>重置连接信息...</MenuText>
 					<CommandName>重置连接信息...</CommandName>
@@ -660,6 +681,7 @@
 			<IDSymbol name="IDG_CONFIGURATION" value="0x0510"/>
 			<IDSymbol name="IDC_ADDCONNECTION" value="0x0511"/>
 			<IDSymbol name="IDC_RESETCONNECTION" value="0x0512"/>
+			<IDSymbol name="IDC_REGISTER_FILE_EXTENSION" value="0x0520"/>
 
 			<IDSymbol name="IDG_SOLUTION_GROUP" value="0x0600"/>
 			<IDSymbol name="ID_SOLUTION_SHOWCONTEXTCODE" value="0x0601"/>

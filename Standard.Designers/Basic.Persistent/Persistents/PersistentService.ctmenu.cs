@@ -2,10 +2,8 @@
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,11 +17,7 @@ using Basic.DataEntities;
 using Basic.Designer;
 using Basic.Enums;
 using Basic.Windows;
-using EnvDTE;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Window = System.Windows.Window;
 
 //VSLangProj.prjKindVBProject for VB.NET projects.
 //VSLangProj.prjKindCSharpProject for C# projects.
