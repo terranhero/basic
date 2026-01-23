@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks;
 using Basic.Collections;
@@ -185,17 +186,17 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				if (GetSectionInfo(LogLevel.Error, out LogSaveType savetype))
+				if (GetSectionInfo(LogLevel.Error, out LogSaveType saveType) && saveType != LogSaveType.None)
 				{
-					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					if (saveType == LogSaveType.LocalFile || saveType == LogSaveType.Windows)
 					{
 						return _fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
-					else if (savetype == LogSaveType.DataBase && _storage != null)
+					else if (saveType == LogSaveType.DataBase && _storage != null)
 					{
 						return _storage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
-					else if (savetype == LogSaveType.Console && _console != null)
+					else if (saveType == LogSaveType.Console && _console != null)
 					{
 						return _console.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
@@ -244,17 +245,17 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				if (GetSectionInfo(logLevel, out LogSaveType savetype))
+				if (GetSectionInfo(logLevel, out LogSaveType saveType) && saveType != LogSaveType.None)
 				{
-					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					if (saveType == LogSaveType.LocalFile || saveType == LogSaveType.Windows)
 					{
 						return _fileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
-					else if (savetype == LogSaveType.DataBase && _storage != null)
+					else if (saveType == LogSaveType.DataBase && _storage != null)
 					{
 						return _storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
-					else if (savetype == LogSaveType.Console)
+					else if (saveType == LogSaveType.Console)
 					{
 						return _console.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
@@ -623,17 +624,17 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				if (GetSectionInfo(LogLevel.Error, out LogSaveType savetype))
+				if (GetSectionInfo(LogLevel.Error, out LogSaveType saveType) && saveType != LogSaveType.None)
 				{
-					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					if (saveType == LogSaveType.LocalFile || saveType == LogSaveType.Windows)
 					{
 						return _fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
-					else if (savetype == LogSaveType.DataBase && _storage != null)
+					else if (saveType == LogSaveType.DataBase && _storage != null)
 					{
 						return _storage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
-					else if (savetype == LogSaveType.Console && _console != null)
+					else if (saveType == LogSaveType.Console && _console != null)
 					{
 						return _console.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
@@ -681,17 +682,17 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				if (GetSectionInfo(logLevel, out LogSaveType savetype))
+				if (GetSectionInfo(logLevel, out LogSaveType saveType) && saveType != LogSaveType.None)
 				{
-					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					if (saveType == LogSaveType.LocalFile || saveType == LogSaveType.Windows)
 					{
 						return _fileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
-					else if (savetype == LogSaveType.DataBase && _storage != null)
+					else if (saveType == LogSaveType.DataBase && _storage != null)
 					{
 						return _storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
-					else if (savetype == LogSaveType.Console)
+					else if (saveType == LogSaveType.Console)
 					{
 						return _console.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType);
 					}
@@ -1240,17 +1241,17 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				if (GetSectionInfo(LogLevel.Error, out LogSaveType savetype))
+				if (GetSectionInfo(LogLevel.Error, out LogSaveType saveType) && saveType != LogSaveType.None)
 				{
-					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					if (saveType == LogSaveType.LocalFile || saveType == LogSaveType.Windows)
 					{
 						_fileStorage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
-					else if (savetype == LogSaveType.DataBase && _storage != null)
+					else if (saveType == LogSaveType.DataBase && _storage != null)
 					{
 						_storage.ErrorAsync(batchNo, controller, action, host, user, ex);
 					}
-					else if (savetype == LogSaveType.Console)
+					else if (saveType == LogSaveType.Console)
 					{
 						_console.ErrorAsync(batchNo, controller, action, host, user, ex).ConfigureAwait(false);
 					}
@@ -1276,17 +1277,17 @@ namespace Basic.Loggers
 			try
 			{
 				if (string.IsNullOrWhiteSpace(host) == true) { host = GetComputerAddress(); }
-				if (GetSectionInfo(logLevel, out LogSaveType savetype))
+				if (GetSectionInfo(logLevel, out LogSaveType saveType) && saveType != LogSaveType.None)
 				{
-					if (savetype == LogSaveType.LocalFile || savetype == LogSaveType.Windows)
+					if (saveType == LogSaveType.LocalFile || saveType == LogSaveType.Windows)
 					{
 						_fileStorage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType).ConfigureAwait(false);
 					}
-					else if (savetype == LogSaveType.DataBase && _storage != null)
+					else if (saveType == LogSaveType.DataBase && _storage != null)
 					{
 						_storage.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType).ConfigureAwait(false);
 					}
-					else if (savetype == LogSaveType.Console)
+					else if (saveType == LogSaveType.Console)
 					{
 						_console.WriteAsync(batchNo, controller, action, host, user, message, logLevel, resultType).ConfigureAwait(false);
 					}
