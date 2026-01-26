@@ -9,6 +9,8 @@
     <File Path="LICENSE" />
     <File Path="packages/Assembly.Tools.cs" />
     <File Path="packages/basic.snk" />
+    <File Path="packages/build-version.targets" />
+    <File Path="packages/net-lts.targets" />
     <File Path="packages/net-version.targets" />
     <File Path="packages/std-props.targets" />
     <File Path="packages/std-version.targets" />
@@ -19,6 +21,7 @@
     <Project Path="Standard.Framework/Standard.DataAccess/Standard.DataAccess.csproj" />
     <Project Path="Standard.Framework/Standard.Db2Access/Standard.DB2Access.csproj" />
     <Project Path="Standard.Framework/Standard.EntityLayer/Standard.EntityLayer.csproj" />
+    <Project Path="Standard.Framework/Standard.GarnetClient/Standard.GarnetClient.csproj" />
     <Project Path="Standard.Framework/Standard.MvcLibrary/Standard.MvcLibrary.csproj" />
     <Project Path="Standard.Framework/Standard.MySqlAccess/Standard.MySqlAccess.csproj" />
     <Project Path="Standard.Framework/Standard.NpgSqlAccess/Standard.PostgreAccess.csproj" />

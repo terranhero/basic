@@ -1,0 +1,24 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Project="build-version.targets" />
+	<PropertyGroup>
+		<TargetFrameworks>net10.0;net8.0;</TargetFrameworks>
+		<AssemblyVersion>6.0.0.0</AssemblyVersion>
+		<Version>6.0.0.0</Version>
+		<FileVersion>6.0.$(BuildVersion)</FileVersion>
+		<PackageVersion>6.0.$(BuildVersion)</PackageVersion>
+		<Copyright>@SIP GoldSoft Technology Limited. All Rights Reserved.</Copyright>
+		<Trademark></Trademark>
+		<Company>SIP GoldSoft Technology Limited</Company>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<SignAssembly>true</SignAssembly>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<AssemblyOriginatorKeyFile>$(ProjectDir)..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="obj\**" />
+		<EmbeddedResource Remove="obj\**" />
+		<None Remove="obj\**" />
+	</ItemGroup>
+</Project>

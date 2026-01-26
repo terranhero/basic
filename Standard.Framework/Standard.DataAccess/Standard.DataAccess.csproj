@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFrameworks>net8.0</TargetFrameworks>
-	</PropertyGroup>
 	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
 	<PropertyGroup>
 		<AssemblyName>Basic.DataAccess</AssemblyName>

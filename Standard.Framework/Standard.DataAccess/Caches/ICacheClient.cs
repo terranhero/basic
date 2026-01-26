@@ -353,6 +353,15 @@ namespace Basic.Caches
 		/// <returns>创建成功则为true，否则为false。</returns>
 		Task<bool> HashSetAsync<T>(string hashId, string key, T value, DateTime expiresAt);
 
+		/// <summary>存储数据到哈希表</summary>
+		/// <typeparam name="T">缓存值类型</typeparam>
+		/// <param name="hashId">哈希表缓存键</param>
+		/// <param name="key">哈希表键</param>
+		/// <param name="value">哈希表值</param>
+		/// <param name="expiresIn">一个TimeSpan 类型的值，该值指示键过期的相对时间。</param>
+		/// <returns>创建成功则为true，否则为false。</returns>
+		Task<bool> HashSetAsync<T>(string hashId, string key, T value, TimeSpan expiresIn);
+
 		/// <summary>从哈希表获取数据。</summary>
 		/// <param name="hashId">哈希表缓存键</param>
 		/// <param name="key">哈希表键</param>
