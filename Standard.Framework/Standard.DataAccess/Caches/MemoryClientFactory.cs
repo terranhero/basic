@@ -74,12 +74,12 @@ namespace Basic.Caches
 
 			/// <summary>获取所有缓存的键</summary>
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
-			public IEnumerable<KeyInfo> GetKeyInfosAsync()
+			public Task<IEnumerable<KeyInfo>> GetKeyInfosAsync()
 			{
 #if NET8_0_OR_GREATER
-				return memory.Keys.Select(m => new KeyInfo((string)m) { });
+				return Task.FromResult(memory.Keys.Select(m => new KeyInfo((string)m) { }));
 #else
-				return memory.Select(m => new KeyInfo(m.Key) { });
+				return Task.FromResult(memory.Select(m => new KeyInfo(m.Key) { }));
 #endif
 			}
 			#endregion

@@ -19,7 +19,7 @@ namespace Basic.Caches
 
 		/// <summary>获取所有缓存的键</summary>
 		/// <returns>如果存在则返回键列表，否则返回 null。</returns>
-		IEnumerable<KeyInfo> GetKeyInfosAsync();
+		Task<IEnumerable<KeyInfo>> GetKeyInfosAsync();
 
 		/// <summary>获取所有缓存的键</summary>
 		/// <returns>如果存在则返回键列表，否则返回 null。</returns>
