@@ -90,10 +90,44 @@ namespace Basic.Caches
 
 			/// <summary>获取所有缓存的键</summary>
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
-			public IEnumerable<KeyInfo> GetKeyInfosAsync()
+			public async Task<IEnumerable<KeyInfo>> GetKeyInfosAsync()
 			{
 				IServer server = _connection.GetServer(mEndPoint);
-				return server.Keys(_database.Database).Select(m => new KeyInfo(m)).ToList();
+				List<KeyInfo> keys = new List<KeyInfo>();
+				await foreach (RedisKey key in server.KeysAsync(_database.Database))
+				{
+					var type = await _database.KeyTypeAsync(key);
+					TimeSpan? timeToLive = await _database.KeyTimeToLiveAsync(key);
+
+					DateTime? expireTime = await _database.KeyExpireTimeAsync(key);
+					var size = await server.ExecuteAsync("MEMORY", "USAGE", key);
+
+					keys.Add(new KeyInfo(key)
+					{
+						KeyType = GetKeyType(type),
+						Size = (long)size,
+						Expiration = GetKeyExpiration(expireTime, timeToLive),
+					});
+				}
+				return keys.OrderBy(m => m.KeyName);
+			}
+
+			private DateTimeOffset GetKeyExpiration(DateTime? expireTime, TimeSpan? timeToLive)
+			{
+				if (expireTime.HasValue) { return expireTime.Value; }
+				else if (timeToLive.HasValue) { return DateTimeOffset.UtcNow.Add(timeToLive.Value); }
+				return DateTimeOffset.MinValue;
+			}
+			private KeyTypes GetKeyType(RedisType type)
+			{
+				switch (type)
+				{
+					case RedisType.Hash: return KeyTypes.Hash;
+					case RedisType.List: return KeyTypes.List;
+					case RedisType.Set: return KeyTypes.Set;
+					case RedisType.SortedSet: return KeyTypes.SortedSet;
+					default: return KeyTypes.Unknown;
+				}
 			}
 			#endregion
 

@@ -22,7 +22,7 @@ namespace Standard.EntityLayer.Test
 		[AssemblyInitialize]
 		public static void AssemblyInitialize(TestContext context)
 		{
-			string path = @"D:\BASIC\PD_04_Gitee Code\Standard.Test\Standard.DataAccess.Test";
+			string path = @"D:\BASIC\PD_04_Gitee Code\Standard.Test\StandardTest.DataAccess";
 			IConfigurationBuilder configBuilder = new ConfigurationBuilder().SetBasePath(path);
 			IConfigurationRoot root = configBuilder.AddJsonFile("databases.json", true, true).Build();
 			IConfigurationSection connections = root.GetSection("Connections");

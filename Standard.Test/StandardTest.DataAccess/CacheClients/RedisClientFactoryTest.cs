@@ -6,7 +6,7 @@ namespace Standard.CacheClients;
 [TestClass()]
 public class RedisClientFactoryTest
 {
-	private readonly RedisClientFactory factory = new RedisClientFactory("127.0.0.1:7016,password=GoldSoft@1220", 0);
+	private readonly RedisClientFactory factory = new RedisClientFactory("127.0.0.1:6890,password=GoldSoft@6897", 0);
 	private readonly ICacheClient cache;
 	public RedisClientFactoryTest() { cache = factory.CreateClient("HRMS"); }
 
@@ -27,6 +27,15 @@ public class RedisClientFactoryTest
 		EmployeeAccountInfo users = await cache.HashGetAsync<EmployeeAccountInfo>("HASH_SYS_LOGINUSER_USERKEY", userKey);
 		Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(users));
 		Assert.IsNotNull(users);
+
+	}
+
+	[TestMethod()]
+	public async Task TestGetKeysAsync()
+	{
+		var keys = await cache.GetKeyInfosAsync();
+		Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(keys));
+		Assert.IsNotNull(keys);
 
 	}
 }

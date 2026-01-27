@@ -33,9 +33,41 @@ namespace Basic.Caches
 		public DateTimeOffset Expiration { get; set; }
 
 		/// <summary>
+		/// 缓存键对应的过期时间
+		/// </summary>
+		public string TTL
+		{
+			get
+			{
+				if (Expiration == DateTimeOffset.MinValue) { return "No limit"; }
+				else
+				{
+					TimeSpan span = Expiration - DateTimeOffset.Now;
+					if (span.TotalMinutes > 0) { return string.Concat(Math.Ceiling(span.TotalMinutes), " min"); }
+					else { return string.Concat(Math.Ceiling(span.TotalSeconds), " sec"); }
+				}
+			}
+		}
+
+		/// <summary>
 		/// 缓存键存储数据的大小，字节
 		/// </summary>
-		public int Size { get; set; }
+		public long Size { get; set; }
+
+		/// <summary>缓存键存储数据的大小
+		/// 显示文本，例如：1KB，1MB</summary>
+		public string SizeText
+		{
+			get
+			{
+				if (Size >= 1073741824) { return string.Concat(Math.Floor(Size / 1073741824M), " GB"); }
+				else if (Size >= 1048576) { return string.Concat(Math.Floor(Size / 1048576M), " MB"); }
+				else if (Size >= 1024) { return string.Concat(Math.Floor(Size / 1024M), " KB"); }
+				else if (Size >= 512) { string.Concat(Math.Floor(Size / 1024M), " KB"); }
+				else if (Size == 0) { return "0 KB"; }
+				return string.Concat(Size, " B");
+			}
+		}
 	}
 
 	/// <summary>
