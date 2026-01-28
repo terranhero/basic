@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basic.EntityLayer;
 
-namespace Standard.EntityLayer.Test
+namespace StandardTest.EntityLayer
 {
 	[TestClass]
 	public class SecurityAlgorithmTest

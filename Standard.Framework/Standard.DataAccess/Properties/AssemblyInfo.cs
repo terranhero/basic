@@ -17,3 +17,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:不需要赋值", Justification = "<挂起>")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:使用模式匹配", Justification = "<挂起>")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0090:使用 \"new(...)\"", Justification = "<挂起>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0290: 使用构造函数 ", Justification = "<挂起>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0021: 使用构造函数的块主体", Justification = "<挂起>")]

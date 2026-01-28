@@ -10,15 +10,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="coverlet.collector" Version="6.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+		<PackageReference Include="coverlet.collector" Version="6.0.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="StackExchange.Redis" Version="2.9.11" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.1" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+		<PackageReference Include="xunit.v3" Version="3.2.2" />
+		<PackageReference Include="Xunit.v3.Priority" Version="1.1.18" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -26,9 +33,8 @@
 		<ProjectReference Include="..\..\Standard.Framework\Standard.EntityLayer\Standard.EntityLayer.csproj" />
 		<ProjectReference Include="..\..\Standard.Framework\Standard.SqlClientAccess\Standard.SqlClientAccess.csproj" />
 	</ItemGroup>
-
 	<ItemGroup>
-		<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+		<Using Include="Xunit" />
 	</ItemGroup>
 
 </Project>

@@ -1,31 +1,35 @@
-﻿
-
-using System;
+﻿using System;
 
 namespace Basic.Caches
 {
-
 	/// <summary>缓存键信息</summary>
 	public sealed class KeyInfo
 	{
 		/// <summary>
-		/// 
+		/// 初始化 KeyInfo 累实例
 		/// </summary>
 		/// <param name="key"></param>
-		public KeyInfo(string key)
-		{
-			KeyName = key;
-		}
+		public KeyInfo(string key) => KeyName = key;
 
-		/// <summary>
-		/// 缓存键名称
-		/// </summary>
+		/// <summary>缓存键名称</summary>
 		public string KeyName { get; private set; }
 
-		/// <summary>
-		/// 缓存键类型
-		/// </summary>
+		/// <summary>缓存键类型</summary>
 		public KeyTypes KeyType { get; set; }
+
+		/// <summary>缓存键类型,文本</summary>
+		public string KeyTypeText
+		{
+			get
+			{
+				switch (KeyType)
+				{
+					case KeyTypes.SortedSet: return "ZSET";
+					default: return KeyType.ToString().ToUpper();
+				}
+
+			}
+		}
 
 		/// <summary>
 		/// 缓存键对应的过期时间
@@ -76,91 +80,53 @@ namespace Basic.Caches
 	public enum KeyTypes
 	{
 		/// <summary>
-		/// 无类型
+		/// 客户端库无法识别该数据类型
 		/// </summary>
-		Unknown,
+		Unknown = 0,
 
 		/// <summary>
-		/// 
+		/// 字符串是缓存中最基本的数据类型。
+		/// 字符串是二进制安全的，这意味着一个字符串可以包含任何类型的数据，
+		/// 例如JPEG图像或序列化的Ruby对象。字符串值的最大长度可达512兆字节。
 		/// </summary>
+		/// <remarks><seealso href="https://redis.io/commands#string"/></remarks>
 		String,
 
 		/// <summary>
-		/// 
+		/// 列表只是按插入顺序排序的字符串列表。
+		/// 可以向列表添加元素，将新元素推送到列表的头部（左侧）或尾部（右侧）
 		/// </summary>
+		/// <remarks><seealso href="https://redis.io/commands#list"/></remarks>
 		List,
 
 		/// <summary>
-		/// 
+		/// 哈希（Hash）是字符串类型的字段（field）与字符串类型的值（value）之间的映射表，因此它是表示对象的理想数据类型
+		/// （例如：一个用户对象可以包含多个字段，如姓名、姓氏、年龄等等）。
 		/// </summary>
 		Hash,
 
 		/// <summary>
-		/// 
+		/// 集合（Set）是字符串（String）类型的无序集合。可以在 O(1) 时间复杂度内完成成员的添加、删除
+		/// 以及存在性检测（该常量时间复杂度不受集合中包含的元素数量影响）。
+		/// Redis 集合具备一个实用特性：不允许存在重复成员。
+		/// 对同一个元素进行多次添加，最终集合中只会保留该元素的一份副本。
+		/// 从实际应用角度来说，这意味着添加成员时，无需先执行「存在性检测」再执行「添加」的操作流程。
 		/// </summary>
 		Set,
 
 		/// <summary>
-		/// 
+		/// 有序集合（Sorted Set）与集合（Set）类似，同样是字符串类型的不重复集合。
+		/// 两者的区别在于，有序集合中的每个成员都会关联一个分数（score），该分数被用于
+		/// 对有序集合进行排序，排序规则为按照分数从低到高排列。
+		/// 需要注意的是，有序集合的成员具有唯一性，但分数可以重复。
 		/// </summary>
 		SortedSet,
 
-		/*
-			/// <summary>
-	/// Strings are the most basic kind of Redis value. Redis Strings are binary safe, this means that
-	/// a Redis string can contain any kind of data, for instance a JPEG image or a serialized Ruby object.
-	/// A String value can be at max 512 Megabytes in length.
-	/// </summary>
-	/// <remarks><seealso href="https://redis.io/commands#string"/></remarks>
-	String,
-
-	/// <summary>
-	/// Redis Lists are simply lists of strings, sorted by insertion order.
-	/// It is possible to add elements to a Redis List pushing new elements on the head (on the left) or
-	/// on the tail (on the right) of the list.
-	/// </summary>
-	/// <remarks><seealso href="https://redis.io/commands#list"/></remarks>
-	List,
-
-	/// <summary>
-	/// Redis Sets are an unordered collection of Strings. It is possible to add, remove, and test for
-	/// existence of members in O(1) (constant time regardless of the number of elements contained inside the Set).
-	/// Redis Sets have the desirable property of not allowing repeated members.
-	/// Adding the same element multiple times will result in a set having a single copy of this element.
-	/// Practically speaking this means that adding a member does not require a check if exists then add operation.
-	/// </summary>
-	/// <remarks><seealso href="https://redis.io/commands#set"/></remarks>
-	Set,
-
-	/// <summary>
-	/// Redis Sorted Sets are, similarly to Redis Sets, non repeating collections of Strings.
-	/// The difference is that every member of a Sorted Set is associated with score, that is used
-	/// in order to take the sorted set ordered, from the smallest to the greatest score.
-	/// While members are unique, scores may be repeated.
-	/// </summary>
-	/// <remarks><seealso href="https://redis.io/commands#sorted_set"/></remarks>
-	SortedSet,
-
-	/// <summary>
-	/// Redis Hashes are maps between string fields and string values, so they are the perfect data type
-	/// to represent objects (e.g. A User with a number of fields like name, surname, age, and so forth).
-	/// </summary>
-	/// <remarks><seealso href="https://redis.io/commands#hash"/></remarks>
-	Hash,
-
-	/// <summary>
-	/// A Redis Stream is a data structure which models the behavior of an append only log but it has more
-	/// advanced features for manipulating the data contained within the stream. Each entry in a
-	/// stream contains a unique message ID and a list of name/value pairs containing the entry's data.
-	/// </summary>
-	/// <remarks><seealso href="https://redis.io/commands#stream"/></remarks>
-	Stream,
-
-	/// <summary>
-	/// The data-type was not recognised by the client library.
-	/// </summary>
-	Unknown,
-		 */
+		/// <summary>
+		/// 流（Stream）是一种数据结构，其设计模仿了**仅追加日志（append only log）**的行为模式，同时还具备更丰富的高级特性，可用于对存储在流中的数据进行操作。
+		/// 流中的每一条记录都包含一个唯一的消息 ID，以及一个存储该记录数据的键值对列表。
+		/// </summary>
+		Stream
 	}
 
 }

@@ -1,16 +1,16 @@
-using System.Threading.Tasks;
 using Basic.Caches;
 
 namespace Standard.CacheClients;
 
-[TestClass()]
+[Collection("AssemblyInitializeCollection")]
 public class RedisClientFactoryTest
 {
 	private readonly RedisClientFactory factory = new RedisClientFactory("127.0.0.1:6890,password=GoldSoft@6897", 0);
 	private readonly ICacheClient cache;
-	public RedisClientFactoryTest() { cache = factory.CreateClient("HRMS"); }
+	private readonly ITestOutputHelper _output;
+	public RedisClientFactoryTest(ITestOutputHelper output) { _output = output; cache = factory.CreateClient("HRMS"); }
 
-	[TestMethod()]
+	[Fact()]
 	public async Task TestHashGetAllAsync()
 	{
 		IList<EmployeeAccountInfo> users = await cache.HashGetAllAsync<EmployeeAccountInfo>("HASH_SYS_LOGINUSER_USERKEY");
@@ -18,24 +18,24 @@ public class RedisClientFactoryTest
 		{
 			Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(user));
 		}
-		Assert.IsNotNull(users);
+		Assert.NotNull(users);
 	}
 
-	[TestMethod(), DataRow("D951B9A9-C300-458E-8047-813F36C91206")]
+	[Theory(), InlineData("D951B9A9-C300-458E-8047-813F36C91206")]
 	public async Task TestHashGetAsync(string userKey)
 	{
 		EmployeeAccountInfo users = await cache.HashGetAsync<EmployeeAccountInfo>("HASH_SYS_LOGINUSER_USERKEY", userKey);
 		Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(users));
-		Assert.IsNotNull(users);
+		Assert.NotNull(users);
 
 	}
 
-	[TestMethod()]
+	[Fact()]
 	public async Task TestGetKeysAsync()
 	{
 		var keys = await cache.GetKeyInfosAsync();
-		Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(keys));
-		Assert.IsNotNull(keys);
+		_output.WriteLine(System.Text.Json.JsonSerializer.Serialize(keys));
+		Assert.NotNull(keys);
 
 	}
 }

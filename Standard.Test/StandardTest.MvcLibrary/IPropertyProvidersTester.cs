@@ -4,32 +4,6 @@ using Xunit.Abstractions;
 
 namespace StandardTest.MvcLibrary
 {
-	internal sealed class PropertyProviderModel
-	{
-		public string StringNotNull { get; set; } = "CESHI ";
-		public string StringIsNull { get; set; }
-
-		public bool Boolean { get; set; } = false;
-
-		public DateTime DateTime { get; set; } = DateTime.UtcNow;
-		public DateTime? DateTime1 { get; set; } = DateTime.UtcNow;
-		public DateTime? DateTime2 { get; set; }
-
-		[DisplayFormat(DataFormatString = "{0:hh\\:mm\\:ss\\.fff}")]
-		public TimeSpan TimeSpan { get; set; } = DateTime.UtcNow.TimeOfDay;
-		public TimeSpan? TimeSpan1 { get; set; } = DateTime.UtcNow.TimeOfDay;
-		public TimeSpan? TimeSpan2 { get; set; }
-
-		public bool? NullableBool1 { get; set; } = false;
-		public bool? NullableBool2 { get; set; }
-
-		public string[] StringArray { get; set; } = ["数组1", "数组2"];
-
-		public bool[] BoolArray { get; set; } = [true, false];
-
-		public int[] Int32Array { get; set; } = [1, 3, 7, 21, 7];
-	}
-
 	public class IPropertyProvidersTester
 	{
 		private readonly ITestOutputHelper _output;
@@ -105,4 +79,30 @@ namespace StandardTest.MvcLibrary
 			_output.WriteLine("withComma is false = {0}", provider.PropertyFor(m => m.TimeSpan2, false));
 		}
 	}
+	internal sealed class PropertyProviderModel
+	{
+		public string StringNotNull { get; set; } = "CESHI ";
+		public string StringIsNull { get; set; }
+
+		public bool Boolean { get; set; } = false;
+
+		public DateTime DateTime { get; set; } = DateTime.UtcNow;
+		public DateTime? DateTime1 { get; set; } = DateTime.UtcNow;
+		public DateTime? DateTime2 { get; set; }
+
+		[DisplayFormat(DataFormatString = "{0:hh\\:mm\\:ss\\.fff}")]
+		public TimeSpan TimeSpan { get; set; } = DateTime.UtcNow.TimeOfDay;
+		public TimeSpan? TimeSpan1 { get; set; } = DateTime.UtcNow.TimeOfDay;
+		public TimeSpan? TimeSpan2 { get; set; }
+
+		public bool? NullableBool1 { get; set; } = false;
+		public bool? NullableBool2 { get; set; }
+
+		public string[] StringArray { get; set; } = ["数组1", "数组2"];
+
+		public bool[] BoolArray { get; set; } = [true, false];
+
+		public int[] Int32Array { get; set; } = [1, 3, 7, 21, 7];
+	}
+
 }

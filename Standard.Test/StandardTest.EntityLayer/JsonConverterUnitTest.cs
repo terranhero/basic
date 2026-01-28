@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Basic.EntityLayer;
 using Basic.Enums;
 
-namespace Standard.EntityLayer.Test
+namespace StandardTest.EntityLayer
 {
 	[TestClass]
 	public class JsonConverterUnitTest

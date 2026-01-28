@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Standard.EntityLayer.Test
+namespace StandardTest.EntityLayer
 {
 	[TestClass]
 	public class AssemblyInitializeContextCtor
