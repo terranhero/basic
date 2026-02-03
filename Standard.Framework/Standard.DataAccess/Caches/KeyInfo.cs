@@ -3,19 +3,25 @@
 namespace Basic.Caches
 {
 	/// <summary>缓存键信息</summary>
-	public sealed class KeyInfo
+	public struct KeyInfo
 	{
+		internal static KeyInfo Null { get; } = new KeyInfo(null);
+
+		internal static KeyInfo Create(string key, KeyTypes type) { return new KeyInfo(key) { KeyType = type }; }
+
+		internal static KeyInfo Create(string key, KeyTypes type, DateTimeOffset expiration) { return new KeyInfo(key) { KeyType = type, Expiration = expiration }; }
+
 		/// <summary>
 		/// 初始化 KeyInfo 累实例
 		/// </summary>
 		/// <param name="key"></param>
-		public KeyInfo(string key) => KeyName = key;
+		public KeyInfo(string key) { KeyName = key; KeyType = KeyTypes.Unknown; Expiration = DateTimeOffset.MinValue; Size = 0; }
 
 		/// <summary>缓存键名称</summary>
 		public string KeyName { get; private set; }
 
 		/// <summary>缓存键类型</summary>
-		public KeyTypes KeyType { get; set; }
+		public KeyTypes KeyType { get; private set; }
 
 		/// <summary>缓存键类型,文本</summary>
 		public string KeyTypeText
@@ -71,6 +77,79 @@ namespace Basic.Caches
 				else if (Size == 0) { return "0 KB"; }
 				return string.Concat(Size, " B");
 			}
+		}
+
+		/// <summary>Create a KeyInfo from a System.String.</summary>
+		/// <param name="key">The string to get a key from</param>
+		public static implicit operator KeyInfo(string key)
+		{
+			if (key == null) { return KeyInfo.Null; }
+			return new KeyInfo(key);
+		}
+
+		/// <summary>Obtain the key as a System.String.</summary>
+		/// <param name="key">The key to get a string for.</param>
+		public static implicit operator string(KeyInfo key) { return key.KeyName; }
+
+		/// <summary>指示两个键是否不相等</summary>
+		/// <param name="x">第一个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <param name="y">第二个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <returns>如果要比较实例中<seealso cref="KeyName"/> 不相等则返回 <see langword="true"/>，否则返回 <see langword="false"/> </returns>
+		public static bool operator !=(KeyInfo x, KeyInfo y) { return x.KeyName != y.KeyName; }
+
+		/// <summary>指示两个键是否不相等</summary>
+		/// <param name="x">第一个要比较的缓存键名称</param>
+		/// <param name="y">第二个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <returns>如果要比较实例中<seealso cref="KeyName"/> 不相等则返回 <see langword="true"/>，否则返回 <see langword="false"/> </returns>
+		public static bool operator !=(string x, KeyInfo y) { return x != y.KeyName; }
+
+		/// <summary>指示两个键是否不相等</summary>
+		/// <param name="x">第二个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <param name="y">第一个要比较的缓存键名称</param>
+		/// <returns>如果要比较实例中<seealso cref="KeyName"/> 不相等则返回 <see langword="true"/>，否则返回 <see langword="false"/> </returns>
+		public static bool operator !=(KeyInfo x, string y) { return x.KeyName != y; }
+
+		/// <summary>指示两个键是否不相等</summary>
+		/// <param name="x">第一个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <param name="y">第二个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <returns>如果要比较实例中<seealso cref="KeyName"/> 相等则返回 <see langword="true"/>，否则返回 <see langword="false"/> </returns>
+		public static bool operator ==(KeyInfo x, KeyInfo y) { return x.KeyName == y.KeyName; }
+
+		/// <summary>指示两个键是否不相等</summary>
+		/// <param name="x">第一个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <param name="y">第二个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <returns>如果要比较实例中<seealso cref="KeyName"/> 相等则返回 <see langword="true"/>，否则返回 <see langword="false"/> </returns>
+		public static bool operator ==(string x, KeyInfo y) { return x == y.KeyName; }
+
+		/// <summary>指示两个键是否不相等</summary>
+		/// <param name="x">第一个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <param name="y">第二个要比较的<see cref="KeyInfo"/>实例</param>
+		/// <returns>如果要比较实例中<seealso cref="KeyName"/> 相等则返回 <see langword="true"/>，否则返回 <see langword="false"/> </returns>
+		public static bool operator ==(KeyInfo x, string y) { return x.KeyName == y; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(obj, null)) { return false; }
+			return this.KeyName == ((KeyInfo)obj).KeyName;
+			//return false;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public override int GetHashCode()
+		{
+			if (string.IsNullOrWhiteSpace(KeyName) == true) { return -1; }
+
+			return KeyName.GetHashCode();
+
 		}
 	}
 
