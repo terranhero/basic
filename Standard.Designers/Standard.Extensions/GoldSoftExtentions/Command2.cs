@@ -1,24 +1,26 @@
 ﻿using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft;
 using Microsoft.VisualStudio.Extensibility;
 using Microsoft.VisualStudio.Extensibility.Commands;
 using Microsoft.VisualStudio.Extensibility.Shell;
 
-namespace Standard.Extensions
+namespace Standard.Extensions.GoldSoftExtentions
 {
     /// <summary>
-    /// Command1 handler.
+    /// Command2 handler.
     /// </summary>
     [VisualStudioContribution]
-    internal class Command1 : Command
+    internal class Command2 : Command
     {
         private readonly TraceSource logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Command1"/> class.
+        /// Initializes a new instance of the <see cref="Command2"/> class.
         /// </summary>
         /// <param name="traceSource">Trace source instance to utilize.</param>
-        public Command1(TraceSource traceSource)
+        public Command2(TraceSource traceSource)
         {
             // This optional TraceSource can be used for logging in the command. You can use dependency injection to access
             // other services here as well.
@@ -26,14 +28,15 @@ namespace Standard.Extensions
         }
 
         /// <inheritdoc />
-        public override CommandConfiguration CommandConfiguration => new("%Standard.Extensions.Command1.DisplayName%")
+        public override CommandConfiguration CommandConfiguration => new(displayName: "Command2")
         {
             // Use this object initializer to set optional parameters for the command. The required parameter,
-            // displayName, is set above. DisplayName is localized and references an entry in .vsextension\string-resources.json.
-            Icon = new(ImageMoniker.KnownValues.Extension, IconSettings.IconAndText),
+            // displayName, is set above. To localize the displayName, add an entry in .vsextension\string-resources.json
+            // and reference it here by passing "%Standard.Extensions.Command2.DisplayName%" as a constructor parameter.
             Placements = [CommandPlacement.KnownPlacements.ExtensionsMenu],
-            //EnabledWhen = new ActivationConstraint();
+            Icon = new(ImageMoniker.KnownValues.Extension, IconSettings.IconAndText),
         };
+
         /// <inheritdoc />
         public override Task InitializeAsync(CancellationToken cancellationToken)
         {

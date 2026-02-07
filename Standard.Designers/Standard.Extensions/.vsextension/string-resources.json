@@ -1,3 +1,4 @@
 {
-  "Standard.Extensions.Command1.DisplayName": "Sample Remote Command"
+  "Standard.Extensions.Command1.DisplayName": "Sample Remote Command",
+  "GoldSoft.Configuration.Command.DisplayName": "金软配置文件..."
 }
