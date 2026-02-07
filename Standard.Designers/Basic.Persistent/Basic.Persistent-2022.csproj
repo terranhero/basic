@@ -56,9 +56,6 @@
     <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
     <CopyVsixExtensionLocation>D:\BASIC\PD_08_Product Release\</CopyVsixExtensionLocation>
   </PropertyGroup>
-  <Target Name="BeforeBuild">
-    <Message Text="Setting FileVersion to $(FileVersion)" Importance="normal" />
-  </Target>
   <Import Project="..\..\packages\tool-version.targets" />
   <ItemGroup>
     <Compile Include="Builders\AbstractMvcViewBuilder.cs" />

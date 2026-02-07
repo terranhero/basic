@@ -45,11 +45,11 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
-					<CanonicalName>金软配置文件</CanonicalName>
-					<CommandName>金软配置文件</CommandName>
-					<MenuText>金软配置文件</MenuText>
-					<ButtonText>金软配置文件</ButtonText>
-					<LocCanonicalName>金软配置文件</LocCanonicalName>
+					<CanonicalName>金软配置文件...</CanonicalName>
+					<CommandName>金软配置文件...</CommandName>
+					<MenuText>金软配置文件...</MenuText>
+					<ButtonText>金软配置文件...</ButtonText>
+					<LocCanonicalName>金软配置文件...</LocCanonicalName>
 				</Strings>
 			</Menu>
 		</Menus>
