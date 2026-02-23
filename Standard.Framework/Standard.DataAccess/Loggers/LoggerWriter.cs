@@ -223,11 +223,11 @@ namespace Basic.Loggers
 			if (url == null) { return ValueTask.CompletedTask; } else { url = url.ToLower(); }
 			if (_actions.TryGetValue(url, out ActionInfo ai))
 			{
-				return LoggerAsync(batchNo, ai.Controller, ai.Action, host, user, message, logLevel, LogResult.Successful);
+				return LoggerAsync(batchNo, ai.Controller, ai.Action, host, user, message, logLevel, resultType);
 			}
 			else
 			{
-				return LoggerAsync(batchNo, url, url, host, user, message, logLevel, LogResult.Successful);
+				return LoggerAsync(batchNo, url, url, host, user, message, logLevel, resultType);
 			}
 		}
 
@@ -1221,11 +1221,11 @@ namespace Basic.Loggers
 			if (url == null) { return; } else { url = url.ToLower(); }
 			if (_actions.TryGetValue(url, out ActionInfo ai))
 			{
-				Logger(batchNo, ai.Controller, ai.Action, host, user, message, logLevel, LogResult.Successful);
+				Logger(batchNo, ai.Controller, ai.Action, host, user, message, logLevel, resultType);
 			}
 			else
 			{
-				Logger(batchNo, url, url, host, user, message, logLevel, LogResult.Successful);
+				Logger(batchNo, url, url, host, user, message, logLevel, resultType);
 			}
 		}
 
