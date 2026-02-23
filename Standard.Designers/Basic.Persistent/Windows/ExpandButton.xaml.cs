@@ -1,4 +1,6 @@
 ﻿
+using System.Windows;
+
 namespace Basic.Windows
 {
 	/// <summary>
@@ -6,9 +8,11 @@ namespace Basic.Windows
 	/// </summary>
 	public partial class ExpandButton : System.Windows.Controls.Primitives.ToggleButton
 	{
-		public ExpandButton()
-		{
-			InitializeComponent();
-		}
+        static ExpandButton()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ExpandButton),
+                new FrameworkPropertyMetadata(typeof(ExpandButton)));
+        }
+
 	}
 }

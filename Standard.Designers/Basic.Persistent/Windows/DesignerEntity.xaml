@@ -162,6 +162,7 @@
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
 					<bcs:OfficeImage Icon="I00528" Style="{StaticResource ImageStyle}"/>
+                    
 					<TextBlock Grid.Column="1" Text="{TemplateBinding Header}" Style="{StaticResource ContentStyle}"/>
 					<bcs:ExpandButton Grid.Column="2" x:Name="PART_Expander" IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
 										  ClickMode="Press" Style="{StaticResource ExpanderStyle}" />

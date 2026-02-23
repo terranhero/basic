@@ -4,9 +4,6 @@
     <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>goldsoft.ico</ApplicationIcon>
-  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,6 +17,7 @@
     <AssemblyName>Basic.Persistent</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <ApplicationIcon>goldsoft.ico</ApplicationIcon>
     <UseCodebase>true</UseCodebase>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
@@ -30,6 +28,7 @@
     <StartAction>Program</StartAction>
     <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
     <StartArguments>/rootsuffix Exp</StartArguments>
+    <SatelliteResourceLanguages>zh-CN;zh-CHS;en-US;</SatelliteResourceLanguages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -135,9 +134,7 @@
     <Compile Include="Database\Transact\TransactColumnInfo.cs" />
     <Compile Include="Database\Transact\TransactParameterInfo.cs" />
     <Compile Include="Database\Transact\TransactTableInfo.cs" />
-    <Compile Include="Database\Windows\ColumnsWindow.xaml.cs">
-      <DependentUpon>ColumnsWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Database\Windows\ColumnsWindow.xaml.cs" />
     <Compile Include="DataCommand\AbstractCommandElement.cs" />
     <Compile Include="DataCommand\CheckedCommandElement.cs" />
     <Compile Include="DataCommand\Collections\CheckedCommandCollection.cs" />
@@ -313,9 +310,7 @@
     <Compile Include="ResourcePackage\LocalizationService.cs" />
     <Compile Include="ResourcePackage\LocalizationService.ctmenu.cs" />
     <Compile Include="ResourcePackage\PackageExtensions.cs" />
-    <Compile Include="ResourcePackage\ResourceEditor.xaml.cs">
-      <DependentUpon>ResourceEditor.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ResourcePackage\ResourceEditor.xaml.cs" />
     <Compile Include="Persistents\CodeDomExtensions.cs" />
     <Compile Include="Persistents\ConfirugationConsts.cs" />
     <Compile Include="Persistents\DbConnectionBuilder.cs" />
@@ -369,22 +364,12 @@
     <Compile Include="Validation\Validation\RequiredValidation.cs" />
     <Compile Include="Validation\Validation\StringLengthValidation.cs" />
     <Compile Include="Windows\ColumnBox.cs" />
-    <Compile Include="Windows\ColumnBoxList.xaml.cs">
-      <DependentUpon>ColumnBoxList.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\ColumnBoxList.xaml.cs" />
     <Compile Include="Windows\CommandNode.cs" />
-    <Compile Include="Windows\CommandsWindow.xaml.cs">
-      <DependentUpon>CommandsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\CreateClassicView.xaml.cs">
-      <DependentUpon>CreateClassicView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\CreateController.xaml.cs">
-      <DependentUpon>CreateController.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\CreatePersistentForm.xaml.cs">
-      <DependentUpon>CreatePersistentForm.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\CommandsWindow.xaml.cs" />
+    <Compile Include="Windows\CreateClassicView.xaml.cs" />
+    <Compile Include="Templates\CreateController.xaml.cs" />
+    <Compile Include="Windows\CreatePersistentForm.xaml.cs" />
     <Compile Include="Localizations\CreateEnumResource.xaml.cs">
       <DependentUpon>CreateEnumResource.xaml</DependentUpon>
     </Compile>
@@ -395,45 +380,27 @@
       <DependentUpon>CreateWpfView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\DesignerCanvas.cs" />
-    <Compile Include="Windows\DesignerEntitiesCanvas.xaml.cs">
-      <DependentUpon>DesignerEntitiesCanvas.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\DesignerEntity.xaml.cs">
-      <DependentUpon>DesignerEntity.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\DesignerEntitiesCanvas.xaml.cs" />
+    <Compile Include="Windows\DesignerEntity.xaml.cs" />
     <Compile Include="Windows\DesignerLine.xaml.cs">
       <DependentUpon>DesignerLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\DesignerMenuItem.cs" />
-    <Compile Include="Windows\DesignerTable.xaml.cs">
-      <DependentUpon>DesignerTable.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\DesignerTablesCanvas.xaml.cs">
-      <DependentUpon>DesignerTablesCanvas.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\DesignerTable.xaml.cs" />
+    <Compile Include="Windows\DesignerTablesCanvas.xaml.cs" />
     <Compile Include="Windows\DragThumb.cs" />
-    <Compile Include="Windows\ExpandButton.xaml.cs">
-      <DependentUpon>ExpandButton.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\ExpandButton.xaml.cs" />
     <Compile Include="Windows\IDesignerItem.cs" />
     <Compile Include="Windows\ImageCheckBox.cs" />
     <Compile Include="Windows\ImagesEnum.cs" />
-    <Compile Include="Windows\InitializationWindow.xaml.cs">
-      <DependentUpon>InitializationWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\InitializationWindow.xaml.cs" />
     <Compile Include="Windows\MessageInfo.cs" />
     <Compile Include="Windows\OfficeImage.cs" />
     <Compile Include="Windows\PropertyNode.cs" />
     <Compile Include="Windows\ResizeAdorner.cs" />
-    <Compile Include="Windows\ResizeThumb.xaml.cs">
-      <DependentUpon>ResizeThumb.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectedSharp.xaml.cs">
-      <DependentUpon>SelectedSharp.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\SelectTabItem.xaml.cs">
-      <DependentUpon>SelectTabItem.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\ResizeThumb.xaml.cs" />
+    <Compile Include="Windows\SelectedSharp.xaml.cs" />
+    <Compile Include="Windows\SelectTabItem.xaml.cs" />
     <Compile Include="Windows\VisualChildrenChanged.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -555,7 +522,6 @@
     </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager">
       <Version>10.0.1</Version>
-      <IncludeInVSIX>true</IncludeInVSIX>
     </PackageReference>
     <PackageReference Include="System.Text.Encoding.CodePages">
       <Version>10.0.1</Version>
@@ -582,8 +548,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ResourceEditor.Style.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ResourcePackage\ResourceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Templates\MvcViewWindow.xaml">
@@ -598,6 +566,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Commands.Style.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Shared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -605,6 +577,10 @@
     <Page Include="Themes\ToolBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\SelectedSharp.Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ColumnBoxList.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -639,11 +615,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\DesignerEntitiesCanvas.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\DesignerEntity.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\DesignerLine.xaml">
@@ -659,7 +633,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\ExpandButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\InitializationWindow.xaml">
@@ -667,11 +640,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\ResizeThumb.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\SelectedSharp.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\SelectTabItem.xaml">

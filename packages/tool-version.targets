@@ -19,10 +19,5 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\..\packages\basic.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
-	<Target Name="GetVsixVersion" Outputs="$(_VsixVersion)">
-		<PropertyGroup>
-			<_VsixVersion>4.8.5810</_VsixVersion>
-		</PropertyGroup>
-	</Target>
 	<Target Name="AfterBuild"></Target>
 </Project>

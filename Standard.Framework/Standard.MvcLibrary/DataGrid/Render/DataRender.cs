@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Web;
-using Basic.Interfaces;
 using System.Linq;
-using Basic.MvcLibrary;
 using System.Threading.Tasks;
+using System.Web;
 using Basic.EntityLayer;
+using Basic.Interfaces;
 
 namespace Basic.EasyLibrary
 {
@@ -98,8 +96,8 @@ namespace Basic.EasyLibrary
 							if (obj == null) { list.Add(string.Concat("\"", column.Field, "Value\":0")); }
 							else { list.Add(string.Concat("\"", column.Field, "Value\":", Convert.ToInt32(obj))); }
 
-							if (obj == null) { list.Add(string.Concat("\"", column.Field, "\":0")); }
-							else { list.Add(string.Concat("\"", column.Field, "\":\"", Convert.ToInt32(obj), "\"")); }
+							if (obj == null) { list.Add(string.Concat("\"", column.Field, "\":false")); }
+							else { list.Add(string.Concat("\"", column.Field, "\":", Convert.ToInt32(obj), "")); }
 
 							string bValue = column.GetString(model);
 							if (bValue == null) { list.Add(string.Concat("\"", column.Field, "Text\":null")); }

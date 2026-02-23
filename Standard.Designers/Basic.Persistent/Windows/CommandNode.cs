@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Data;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Basic.Properties;
 using System.Windows.Controls;
-using System.Windows.Resources;
-using System.Reflection;
-using System.Data;
 
 namespace Basic.Windows
 {

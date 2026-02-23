@@ -18,6 +18,11 @@ namespace Basic.Windows
 	/// </summary>
 	public partial class DesignerEntitiesCanvas : ItemsControl
 	{
+		static DesignerEntitiesCanvas()
+		{
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(DesignerEntitiesCanvas),
+				new FrameworkPropertyMetadata(typeof(DesignerEntitiesCanvas)));
+		}
 		private DesignerCanvas _DesignerCanvas;
 		//private ContextMenu designerMenu;
 		private readonly PersistentConfiguration _Persistent;
@@ -30,15 +35,15 @@ namespace Basic.Windows
 		private readonly string _FileName;
 		public DesignerEntitiesCanvas(PersistentPane pane, PersistentConfiguration configurationPersistent)
 		{
+			_PersistentPane = pane;
 			_ProjectItem = pane.ProjectItem; dteClass = _ProjectItem.DTE;
 			_FileName = pane.FileName;
-			InitializeComponent();
 			_Persistent = configurationPersistent;
 			_TableInfo = configurationPersistent.TableInfo;
-			_DataEntities = _Persistent.DataEntities;
-			_PersistentPane = pane;
-			vsPersistDocData = pane;
 			DataContext = configurationPersistent;
+			ItemsSource = _DataEntities = _Persistent.DataEntities;
+			vsPersistDocData = pane;
+
 			//VSColorTheme.ThemeChanged += new ThemeChangedEventHandler(VSColorTheme_ThemeChanged);
 			System.Drawing.Color wbc = VSColorTheme.GetThemedColor(EnvironmentColors.ToolWindowBackgroundColorKey);
 			Background = new SolidColorBrush(Color.FromArgb(wbc.A, wbc.R, wbc.G, wbc.B));
@@ -85,6 +90,9 @@ namespace Basic.Windows
 			if (Template != null)
 			{
 				_DesignerCanvas = Template.FindName("PART_Canvas", this) as DesignerCanvas;
+				//ItemsControl items = Template.FindName("PART_ITEMS", this) as ItemsControl;
+				//_DesignerCanvas = items.Template.FindName("PART_ITEMS", items) as DesignerCanvas;
+				_DesignerCanvas.VisualChildrenChanged += new VisualChildrenChangedHandler(DesignerCanvas_VisualChildrenChanged);
 			}
 		}
 
@@ -93,9 +101,7 @@ namespace Basic.Windows
 			return base.ArrangeOverride(arrangeBounds);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary></summary>
 		private void DesignerEntity_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			if (SelectedItem == null) { return; }
@@ -165,18 +171,25 @@ namespace Basic.Windows
 			base.OnPreviewMouseDown(e);
 		}
 
-		/// <summary>
-		/// 创建或标识用于显示给定项的元素。
-		/// </summary>
+		/// <summary>创建或标识用于显示给定项的元素。</summary>
 		/// <returns>用于显示给定项的元素。</returns>
 		protected override DependencyObject GetContainerForItemOverride()
 		{
+			// base.GetContainerForItemOverride();
 			if (base.ItemTemplate != null)
-				return base.ItemTemplate.LoadContent();
-			DesignerEntity entity = new DesignerEntity();
-			entity.MouseDoubleClick += new MouseButtonEventHandler(DesignerEntity_MouseDoubleClick);
-			entity.SelectionChanged += new CommandChengedHandler(DesignerEntity_SelectionChanged);
-			return entity;
+			{
+				DesignerEntity entity = (DesignerEntity)base.ItemTemplate.LoadContent();
+				entity.MouseDoubleClick += new MouseButtonEventHandler(DesignerEntity_MouseDoubleClick);
+				entity.SelectionChanged += new CommandChengedHandler(DesignerEntity_SelectionChanged);
+				return entity;
+			}
+			else
+			{
+				DesignerEntity entity = new DesignerEntity();
+				entity.MouseDoubleClick += new MouseButtonEventHandler(DesignerEntity_MouseDoubleClick);
+				entity.SelectionChanged += new CommandChengedHandler(DesignerEntity_SelectionChanged);
+				return entity;
+			}
 		}
 
 		/// <summary>
