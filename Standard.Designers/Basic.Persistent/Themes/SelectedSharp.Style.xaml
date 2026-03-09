@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:bw="clr-namespace:Basic.Windows"
+    xmlns:enums="clr-namespace:Basic.Enums"
+    xmlns:data="clr-namespace:System.Data;assembly=System.Data">
+    <Style TargetType="{x:Type bw:ResizeThumb}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Width" Value="7" />
+        <Setter Property="Height" Value="7" />
+        <Setter Property="Margin" Value="-3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+			  BorderThickness="1" BorderBrush="DarkGray" Background="{TemplateBinding Background}">
+                        <Control IsHitTestVisible="False" Background="DarkGray"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ThumbCorner" TargetType="{x:Type Shape}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="Stroke" Value="LightSlateGray" />
+        <Setter Property="StrokeThickness" Value=".5" />
+        <Setter Property="Width" Value="7" />
+        <Setter Property="Height" Value="7" />
+        <Setter Property="Margin" Value="-2" />
+        <Setter Property="Fill">
+            <Setter.Value>
+                <RadialGradientBrush Center="0.3, 0.3"
+                             GradientOrigin="0.3, 0.3"
+                             RadiusX="0.7"
+                             RadiusY="0.7">
+                    <GradientStop Color="White"
+                          Offset="0" />
+                    <GradientStop Color="DarkSlateGray"
+                          Offset="0.9" />
+                </RadialGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style   TargetType="{x:Type bw:SelectedSharp}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Margin="-5">
+                        <Rectangle RadiusX="0" RadiusY="0" Stroke="Black" StrokeDashArray="2,2,2,2" StrokeThickness="1"/>
+                        <bw:ResizeThumb Cursor="SizeWE" HorizontalAlignment="Left" />
+                        <bw:ResizeThumb Cursor="SizeWE" HorizontalAlignment="Right"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

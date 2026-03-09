@@ -19,14 +19,14 @@ namespace Basic.DataContexts
 			{
 				return new SqlServerDataContext(structCon.ConnectionString);
 			}
-			else if (structCon.ConnectionType == ConnectionType.OracleConnection)
-			{
-				return new OracleDataContext(structCon.ConnectionString);
-			}
-			else if (structCon.ConnectionType == ConnectionType.MySqlConnection)
-			{
-				return new MySqlDataContext(structCon.ConnectionString);
-			}
+			//else if (structCon.ConnectionType == ConnectionType.OracleConnection)
+			//{
+			//	return new OracleDataContext(structCon.ConnectionString);
+			//}
+			//else if (structCon.ConnectionType == ConnectionType.MySqlConnection)
+			//{
+			//	return new MySqlDataContext(structCon.ConnectionString);
+			//}
 			return new SqlServerDataContext(structCon.ConnectionString);
 		}
 

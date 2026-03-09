@@ -1,27 +1,25 @@
-﻿using EnvDTE;
-using Basic.DataEntities;
-using Basic.Designer;
-using Basic.EntityLayer;
-using BE = Basic.EntityLayer;
-using Basic.Enums;
-using Basic.Windows;
-using Microsoft.CSharp;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Designer.Interfaces;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using System;
+﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Transactions;
 using System.Xml;
-using CD = System.CodeDom;
+using Basic.DataEntities;
+using Basic.Designer;
+using Basic.Enums;
+using Basic.Windows;
+using EnvDTE;
+using Microsoft.CSharp;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Designer.Interfaces;
 using Microsoft.VisualStudio.OLE.Interop;
-using System.Globalization;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using BE = Basic.EntityLayer;
+using CD = System.CodeDom;
 
 namespace Basic.Configuration
 {
