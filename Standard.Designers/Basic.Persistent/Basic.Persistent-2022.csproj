@@ -483,7 +483,7 @@
       <Version>4.7.0.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json">
-      <Version>9.*</Version>
+      <Version>8.*</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom">
       <Version>170.179.0</Version>
@@ -500,14 +500,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.ComponentModel.Annotations">
-      <Version>5.0.0</Version>
-    </PackageReference>
     <PackageReference Include="System.Configuration.ConfigurationManager">
-      <Version>10.0.3</Version>
+      <Version>8.*</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.6.3</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Encoding.CodePages">
-      <Version>10.0.3</Version>
+      <Version>8.*</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -904,10 +904,14 @@
     <ProjectReference Include="..\..\Standard.Framework\Standard.DataAccess\Standard.DataAccess.csproj">
       <Project>{379e7519-4b1e-3595-db60-5e7c15dc8eff}</Project>
       <Name>Standard.DataAccess</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\..\Standard.Framework\Standard.EntityLayer\Standard.EntityLayer.csproj">
       <Project>{cde61fcc-a7d0-3391-4a65-2dbb886bbefd}</Project>
       <Name>Standard.EntityLayer</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
     <ProjectReference Include="..\RazorEngine.Core\RazorEngine.Core.csproj">
       <Project>{a08f55a8-d41b-4251-a7c9-5d6e175b1c00}</Project>
