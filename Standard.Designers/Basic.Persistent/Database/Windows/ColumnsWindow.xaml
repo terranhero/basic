@@ -6,9 +6,9 @@
                  Title="数据库列集合" ShowInTaskbar="False" 
 	WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Loaded="DialogWindow_Loaded" Width="800" Height="400">
 	<ui:DialogWindow.Resources>
-		<ObjectDataProvider x:Key="DbTypes" MethodName="GetValues" ObjectType="{x:Type enums:DbTypeEnum}">
+		<ObjectDataProvider x:Key="DbTypes" MethodName="GetValues" ObjectType="{x:Type enums:DbTypes}">
 			<ObjectDataProvider.MethodParameters>
-				<x:Type Type="enums:DbTypeEnum"/>
+				<x:Type Type="enums:DbTypes"/>
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
 	</ui:DialogWindow.Resources>

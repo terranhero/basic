@@ -12,7 +12,18 @@
 		<Authors>JACKY</Authors>
 		<Description>ORM 框架数据库持久实现，支持多种数据库(MSSQL,MYSQL,ORACLE,DB2,PostgreSQL等)，支持Linq表达式动态查询数据</Description>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
+	<PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<ExtensionsVersion>9.*</ExtensionsVersion>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionsVersion)" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="$(ExtensionsVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="$(ExtensionsVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="$(ExtensionsVersion)" />
+		<PackageReference Include="System.Runtime.Caching" Version="$(ExtensionsVersion)" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
@@ -35,7 +46,7 @@
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.1" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="Caches\MemoryClientFactory.net80.cs" />
+		<Compile Remove="Caches\MemoryClientFactory.net80.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<EmbeddedResource Include="Loggers\SYS_EVENTLOG.myf" />
