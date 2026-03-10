@@ -467,7 +467,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="app.config" />
     <Content Include="BasicConfigurationSchema-5.0.xsd">
       <SubType>Designer</SubType>
       <InstallRoot>Schemas</InstallRoot>
