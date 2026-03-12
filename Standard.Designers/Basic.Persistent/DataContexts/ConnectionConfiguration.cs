@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using Basic.Configuration;
 using Basic.Exceptions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using SC = System.Configuration;
 using MEC = Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration;
-using EnvDTE;
-using System.Linq;
+using SC = System.Configuration;
 
 namespace Basic.DataContexts
 {
@@ -36,7 +35,8 @@ namespace Basic.DataContexts
 				IConfigurationSection dbConnections = pRoot.GetSection("Connections");
 				if (dbConnections.GetChildren().Any())
 				{
-					ConnectionExtension.InitializeConnections(dbConnections); return true;
+					ConnectionExtension.InitializeConnections(dbConnections);
+					return true;
 				}
 
 				EnvDTE.DTE dteClass = project.DTE;
@@ -49,26 +49,26 @@ namespace Basic.DataContexts
 					{
 						EnvDTE.Project solutionProject = (EnvDTE.Project)outProject;
 						FileInfo startProjectFile = new FileInfo(solutionProject.FullName);
-						if (startProjectFile.Directory.Exists)
+						MEC.IConfigurationBuilder appBuilder = new MEC.ConfigurationBuilder().SetBasePath(startProjectFile.DirectoryName);
+						appBuilder.AddJsonFile("appsettings.json", true).AddJsonFile("appsettings.Development.json", true);
+						appBuilder.AddJsonFile("database.json", true).AddJsonFile("database.Development.json", true);
+						IConfigurationRoot appRoot = appBuilder.Build();
+						dbConnections = appRoot.GetSection("Connections");
+						if (dbConnections.GetChildren().Any())
 						{
-							MEC.IConfigurationBuilder appBuilder = new MEC.ConfigurationBuilder().SetBasePath(startProjectFile.DirectoryName);
-							appBuilder.AddJsonFile("appsettings.json", true).AddJsonFile("appsettings.Development.json", true);
-							appBuilder.AddJsonFile("database.json", true).AddJsonFile("database.Development.json", true);
-							IConfigurationRoot appRoot = appBuilder.Build();
-							 dbConnections = appRoot.GetSection("Connections");
-							if (dbConnections.GetChildren().Any())
-							{
-								ConnectionExtension.InitializeConnections(dbConnections);
-								return true;
-							}
+							ConnectionExtension.InitializeConnections(dbConnections);
+							return true;
+						}
+						else
+						{
+							_Service.WriteToOutput("在解决方案中获取配置文件错误，或在此目录\"{0}\"中添加以下配置文件任意一个配置文件", startProjectFile.DirectoryName);
+							_Service.WriteToOutput("appsettings.json, appsettings.Development.json, database.json, database.Development.json");
 						}
 					}
 				}
-
 				_Service.WriteToOutput("在解决方案中获取配置文件错误，请在此目录\"{0}\"中添加以下配置文件任意一个配置文件", fiProject.DirectoryName);
 				_Service.WriteToOutput("appsettings.json, appsettings.Development.json, database.json, database.Development.json");
-				_Service.WriteToOutput("或者在此目录\"{0}\"中添加以下配置文件任意一个配置文件", fiProject.DirectoryName);
-				_Service.WriteToOutput("appsettings.json, appsettings.Development.json, database.json, database.Development.json");
+			
 				return false;
 			}
 			catch (Exception ex)
@@ -78,76 +78,13 @@ namespace Basic.DataContexts
 				_Service.WriteToOutput(ex.Source);
 				return false;
 			}
-
 		}
 
 		internal bool ReadJson(EnvDTE.ProjectItem item = null)
 		{
-			try
-			{
-				EnvDTE.Project project = item.ContainingProject;
-				FileInfo pf = new FileInfo(project.FullName);
-				if (pf.Directory.Exists)
-				{
-					MEC.IConfigurationBuilder configBuilder = new MEC.ConfigurationBuilder().SetBasePath(pf.Directory.FullName);
-					configBuilder.AddJsonFile("appsettings.Development.json").AddJsonFile("database.Development.json");
-					configBuilder.AddJsonFile("appsettings.json").AddJsonFile("database.json");
-					FileInfo[] files = pf.Directory.GetFiles("*.json");
-					foreach (FileInfo file in files)
-					{
-						if (string.Compare(file.Name, "appsettings.json", true) == 0) { configBuilder.AddJsonFile("appsettings.json"); }
-						else if (string.Compare(file.Name, "appsettings.Development.json", true) == 0) { configBuilder.AddJsonFile("appsettings.Development.json"); }
-						else if (string.Compare(file.Name, "database.json", true) == 0) { configBuilder.AddJsonFile("database.json"); }
-						else if (string.Compare(file.Name, "database.Development.json", true) == 0) { configBuilder.AddJsonFile("database.Development.json"); }
-					}
-					IConfigurationRoot root = configBuilder.Build();
-					IConfigurationSection dbConnections = root.GetSection("Connections");
-					ConnectionExtension.InitializeConnections(dbConnections);
-					return true;
-				}
-				EnvDTE.DTE dteClass = project.DTE;
-				EnvDTE80.SolutionBuild2 solutionBuild2 = dteClass.Solution.SolutionBuild as EnvDTE80.SolutionBuild2;
-				foreach (string uniqueName in solutionBuild2.StartupProjects as Array)
-				{
-					_Service.GetProjectOfUniqueName(uniqueName, out IVsHierarchy hierarchy);
-					uint itemId = (uint)VSConstants.VSITEMID.Root;
-					if (hierarchy != null && hierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_ExtObject, out object outProject) >= 0)
-					{
-						EnvDTE.Project solutionProject = (EnvDTE.Project)outProject;
-						FileInfo startProjectFile = new FileInfo(solutionProject.FullName);
-						if (startProjectFile.Directory.Exists)
-						{
-							MEC.IConfigurationBuilder configBuilder = new MEC.ConfigurationBuilder().SetBasePath(pf.Directory.FullName);
-							configBuilder.AddJsonFile("appsettings.Development.json").AddJsonFile("database.Development.json");
-							configBuilder.AddJsonFile("appsettings.json").AddJsonFile("database.json");
-							FileInfo[] files = pf.Directory.GetFiles("*.json");
-							foreach (FileInfo file in files)
-							{
-								if (string.Compare(file.Name, "appsettings.json", true) == 0) { configBuilder.AddJsonFile("appsettings.json"); }
-								else if (string.Compare(file.Name, "appsettings.Development.json", true) == 0) { configBuilder.AddJsonFile("appsettings.Development.json"); }
-								else if (string.Compare(file.Name, "database.json", true) == 0) { configBuilder.AddJsonFile("database.json"); }
-								else if (string.Compare(file.Name, "database.Development.json", true) == 0) { configBuilder.AddJsonFile("database.Development.json"); }
-							}
-							IConfigurationRoot root = configBuilder.Build();
-							IConfigurationSection dbConnections = root.GetSection("Connections");
-							ConnectionExtension.InitializeConnections(dbConnections);
-							return true;
-						}
-					}
-				}
-				_Service.WriteToOutput("解决方案中无法获取配置文件");
-				return false;
-			}
-			catch (Exception ex)
-			{
-				_Service.WriteToOutput(ex.Message);
-				_Service.WriteToOutput(ex.StackTrace);
-				_Service.WriteToOutput(ex.Source);
-				return false;
-			}
-
+			if (item == null) { return false; }
+			return ReadJson(item.ContainingProject);
 		}
-
 
 		internal bool ReadConfig(EnvDTE.Project project)
 		{

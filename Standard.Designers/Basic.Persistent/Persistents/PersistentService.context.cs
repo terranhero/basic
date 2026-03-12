@@ -107,7 +107,9 @@ namespace Basic.Configuration
             if (hierarchy is IVsAggregatableProject project2) { project2.GetAggregateProjectTypeGuids(out guids); }
             return guids != null ? guids.ToUpper() : guids;
         }
+        #endregion
 
+        #region 解决方案快捷菜单扩展 - 获取 .Net 项目类型
         /// <summary>
         /// 获取项目类型
         /// </summary>
@@ -189,8 +191,10 @@ namespace Basic.Configuration
             }
             return ProjectTypes.ClassLibrary;
         }
+		#endregion
 
-        private void OnCanAddPersistent(object sender, EventArgs e)
+		#region 解决方案快捷菜单扩展 - 添加数据持久类菜单功能
+		private void OnCanAddPersistent(object sender, EventArgs e)
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             menu.Visible = menu.Enabled = false;
@@ -235,8 +239,10 @@ namespace Basic.Configuration
                 }
             }
         }
+		#endregion
 
-        private void OnCanAddLocalization(object sender, EventArgs e)
+		#region 解决方案快捷菜单扩展 - 添加本地资源文件
+		private void OnCanAddLocalization(object sender, EventArgs e)
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             menu.Visible = menu.Enabled = false;
@@ -310,8 +316,10 @@ namespace Basic.Configuration
                 itemLocalization.Open();
             }
         }
+		#endregion
 
-        private void OnCanAddController(object sender, EventArgs e)
+		#region 解决方案快捷菜单扩展 - 其他解决方案跨快捷菜单
+		private void OnCanAddController(object sender, EventArgs e)
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             menu.Visible = menu.Enabled = false;
