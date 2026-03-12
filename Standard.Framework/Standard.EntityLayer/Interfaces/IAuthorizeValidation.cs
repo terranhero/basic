@@ -7,10 +7,19 @@ namespace Basic.Interfaces
 	/// <summary>表示用户权限的验证</summary>
 	public interface IAuthorizeValidation
 	{
+		///// <summary>获取角色导航菜单</summary>
+		///// <param name="action">表示读取此导航菜单时需要进行特殊处理的操作</param>
+		///// <returns>当前角色的导航菜单</returns>
+		//NavigateMenuCollection GetNavigateMenus(Action<NavigateMenu> action);
+
 		/// <summary>获取角色导航菜单</summary>
-		/// <param name="action">表示读取此导航菜单时需要进行特殊处理的操作</param>
 		/// <returns>当前角色的导航菜单</returns>
-		STT.Task<NavigateMenuCollection> GetNavigateMenusAsync(Action<NavigateMenu> action);
+		NavigateMenuCollection GetNavigateMenus();
+
+		///// <summary>获取角色导航菜单</summary>
+		///// <param name="action">表示读取此导航菜单时需要进行特殊处理的操作</param>
+		///// <returns>当前角色的导航菜单</returns>
+		//STT.Task<NavigateMenuCollection> GetNavigateMenusAsync(Action<NavigateMenu> action);
 
 		/// <summary>获取角色导航菜单</summary>
 		/// <returns>当前角色的导航菜单</returns>
@@ -31,15 +40,6 @@ namespace Basic.Interfaces
 		/// <param name="codes">表示一组授权码</param>
 		/// <returns>这组授权码其中一个检测成功则返回true，所有授权码检测都不成功则返回false。</returns>
 		STT.Task<bool> CheckCodeAsync(params int[] codes);
-
-		/// <summary>获取角色导航菜单</summary>
-		/// <param name="action">表示读取此导航菜单时需要进行特殊处理的操作</param>
-		/// <returns>当前角色的导航菜单</returns>
-		NavigateMenuCollection GetNavigateMenus(Action<NavigateMenu> action);
-
-		/// <summary>获取角色导航菜单</summary>
-		/// <returns>当前角色的导航菜单</returns>
-		NavigateMenuCollection GetNavigateMenus();
 
 		/// <summary>检查授权码是否有效</summary>
 		/// <param name="code">The authorization code.</param>
@@ -82,13 +82,13 @@ namespace Basic.Interfaces
 	/// <summary>导航菜单</summary>
 	public sealed class NavigateMenu : global::Basic.EntityLayer.AbstractEntity
 	{
-		private NavigateMenuCollection _menus;
+		private readonly NavigateMenuCollection _menus;
 
 		/// <summary>初始化 NavigateMenu 类的实例。</summary>
 		public NavigateMenu() : base() { _menus = new NavigateMenuCollection(this); }
 
 		/// <summary>子菜单</summary>
-		public NavigateMenuCollection Children { get { return _menus; } set { _menus = value; } }
+		public NavigateMenuCollection Children { get { return _menus; } }
 
 		/// <summary>菜单关键字</summary>
 		public int MenuKey { get; set; }
@@ -154,12 +154,12 @@ namespace Basic.Interfaces
 		/// <summary>初始化 NavigateMenuCollection 类的实例。</summary>
 		public NavigateMenuCollection(NavigateMenu owner) : base(owner) { _owner = owner; }
 
-		/// <summary>初始化 NavigateMenuCollection 类的实例。</summary>
-		/// <param name="list">从中复制元素的集合</param>
-		private NavigateMenuCollection(Basic.Interfaces.IPagination<NavigateMenu> list) : base(list) { }
+		///// <summary>初始化 NavigateMenuCollection 类的实例。</summary>
+		///// <param name="list">从中复制元素的集合</param>
+		//private NavigateMenuCollection(Basic.Interfaces.IPagination<NavigateMenu> list) : base(list) { }
 
-		/// <summary>初始化 NavigateMenuCollection 类的实例。</summary>
-		/// <param name="collection">从中复制元素的集合</param>
-		private NavigateMenuCollection(System.Collections.Generic.IEnumerable<NavigateMenu> collection) : base(collection) { }
+		///// <summary>初始化 NavigateMenuCollection 类的实例。</summary>
+		///// <param name="collection">从中复制元素的集合</param>
+		//private NavigateMenuCollection(System.Collections.Generic.IEnumerable<NavigateMenu> collection) : base(collection) { }
 	}
 }

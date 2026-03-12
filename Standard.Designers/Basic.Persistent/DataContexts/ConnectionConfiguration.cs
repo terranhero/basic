@@ -36,7 +36,7 @@ namespace Basic.DataContexts
 				IConfigurationSection dbConnections = pRoot.GetSection("Connections");
 				if (dbConnections.GetChildren().Any())
 				{
-					ConnectionContext.InitializeConnections(dbConnections); return true;
+					ConnectionExtension.InitializeConnections(dbConnections); return true;
 				}
 
 				EnvDTE.DTE dteClass = project.DTE;
@@ -58,7 +58,7 @@ namespace Basic.DataContexts
 							 dbConnections = appRoot.GetSection("Connections");
 							if (dbConnections.GetChildren().Any())
 							{
-								ConnectionContext.InitializeConnections(dbConnections);
+								ConnectionExtension.InitializeConnections(dbConnections);
 								return true;
 							}
 						}
@@ -102,7 +102,7 @@ namespace Basic.DataContexts
 					}
 					IConfigurationRoot root = configBuilder.Build();
 					IConfigurationSection dbConnections = root.GetSection("Connections");
-					ConnectionContext.InitializeConnections(dbConnections);
+					ConnectionExtension.InitializeConnections(dbConnections);
 					return true;
 				}
 				EnvDTE.DTE dteClass = project.DTE;
@@ -130,7 +130,7 @@ namespace Basic.DataContexts
 							}
 							IConfigurationRoot root = configBuilder.Build();
 							IConfigurationSection dbConnections = root.GetSection("Connections");
-							ConnectionContext.InitializeConnections(dbConnections);
+							ConnectionExtension.InitializeConnections(dbConnections);
 							return true;
 						}
 					}
@@ -227,13 +227,13 @@ namespace Basic.DataContexts
 			}
 			else if (section1 != null && section1 is ConnectionStringsSection connectionStrings)
 			{
-				ConnectionContext.InitializeConnection(connectionStrings); return true;
+				ConnectionExtension.InitializeConnection(connectionStrings); return true;
 			}
 			SC.ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
 			if (section == null) { throw new ConfigurationFileException("Access_Configuration_GroupNotFound", fullName, sectionName); }
 			if (section is ConnectionsSection configurationSection)
 			{
-				ConnectionContext.InitializeConnection(configurationSection); return true;
+				ConnectionExtension.InitializeConnection(configurationSection); return true;
 			}
 
 			_Service.WriteToOutput("系统读取数据库连接异常，请在 \"{0}\" 文件中添加 配置项", fullName);

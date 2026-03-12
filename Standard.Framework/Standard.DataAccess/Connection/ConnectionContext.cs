@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using Basic.DataAccess;
 using Basic.Enums;
-using Basic.Exceptions;
 using Basic.Interfaces;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using SC = System.Configuration;
 
 namespace Basic.Configuration
 {
@@ -54,78 +48,78 @@ namespace Basic.Configuration
 		/// </summary>
 		public static void Clear() { _Connections.Clear(); _DefaultConnection = null; _DefaultName = null; }
 
-		/// <summary>初始化数据库连接参数</summary>
-		internal static void InitializeConnection(ConnectionStringsSection section)
-		{
-			_Connections.Clear();
-			foreach (ConnectionStringSettings element in section.ConnectionStrings)
-			{
-				DefaultName = element.Name;
-				if (element.ProviderName.Contains("SqlClient"))
-				{
-					DefaultConnection = Create(element.Name, ConnectionType.SqlConnection,
-					element.ConnectionString, element.ConnectionString);
-				}
-				else if (element.ProviderName.Contains("Oracle"))
-				{
-					DefaultConnection = Create(element.Name, ConnectionType.OracleConnection,
-					element.ConnectionString, element.ConnectionString);
-				}
-				else if (element.ProviderName.Contains("MySqlClient"))
-				{
-					DefaultConnection = Create(element.Name, ConnectionType.MySqlConnection,
-					element.ConnectionString, element.ConnectionString);
-				}
-				break;
-			}
-		}
+		///// <summary>初始化数据库连接参数</summary>
+		//internal static void InitializeConnection(ConnectionStringsSection section)
+		//{
+		//	_Connections.Clear();
+		//	foreach (ConnectionStringSettings element in section.ConnectionStrings)
+		//	{
+		//		DefaultName = element.Name;
+		//		if (element.ProviderName.Contains("SqlClient"))
+		//		{
+		//			DefaultConnection = Create(element.Name, ConnectionType.SqlConnection,
+		//			element.ConnectionString, element.ConnectionString);
+		//		}
+		//		else if (element.ProviderName.Contains("Oracle"))
+		//		{
+		//			DefaultConnection = Create(element.Name, ConnectionType.OracleConnection,
+		//			element.ConnectionString, element.ConnectionString);
+		//		}
+		//		else if (element.ProviderName.Contains("MySqlClient"))
+		//		{
+		//			DefaultConnection = Create(element.Name, ConnectionType.MySqlConnection,
+		//			element.ConnectionString, element.ConnectionString);
+		//		}
+		//		break;
+		//	}
+		//}
 
-		/// <summary>初始化数据库连接参数</summary>
-		/// <param name="connections">表示数据库连接配置</param>
-		public static void InitializeConnections(IConfigurationSection connections)
-		{
-			Clear(); _DefaultName = connections.GetValue<string>("DefaultName");
-			IConfigurationSection dbConnections = connections.GetRequiredSection("Connections");
-			foreach (IConfigurationSection item in dbConnections.GetChildren())
-			{
-				JsonConnectionInfo info = item.Get<JsonConnectionInfo>(); if (info == null) { continue; }
-				info.Name = item.Key; info.Version = item.GetValue<int>("Version");
-				info.ConnectionType = item.GetValue<ConnectionType>("ConnectionType");
-				info.Remove("Version"); info.Remove("ConnectionType");
-				Basic.Configuration.ConnectionInfo connection = ConnectionFactoryBuilder.CreateConnectionInfo(info);
-				Create(connection); if (_DefaultName == item.Key) { _DefaultConnection = connection; }
-			}
-		}
+		///// <summary>初始化数据库连接参数</summary>
+		///// <param name="connections">表示数据库连接配置</param>
+		//public static void InitializeConnections(IConfigurationSection connections)
+		//{
+		//	Clear(); _DefaultName = connections.GetValue<string>("DefaultName");
+		//	IConfigurationSection dbConnections = connections.GetRequiredSection("Connections");
+		//	foreach (IConfigurationSection item in dbConnections.GetChildren())
+		//	{
+		//		JsonConnectionInfo info = item.Get<JsonConnectionInfo>(); if (info == null) { continue; }
+		//		info.Name = item.Key; info.Version = item.GetValue<int>("Version");
+		//		info.ConnectionType = item.GetValue<ConnectionType>("ConnectionType");
+		//		info.Remove("Version"); info.Remove("ConnectionType");
+		//		Basic.Configuration.ConnectionInfo connection = ConnectionFactoryBuilder.CreateConnectionInfo(info);
+		//		Create(connection); if (_DefaultName == item.Key) { _DefaultConnection = connection; }
+		//	}
+		//}
 
-		/// <summary>初始化数据库连接参数</summary>
-		internal static void InitializeConnection(ConnectionsSection section)
-		{
-			//ConnectionCollection connections = section.Connections;
-			_DefaultName = section.DefaultName;
-			_Connections.Clear();
-			foreach (ConnectionElement element in section.Connections)
-			{
-				ConnectionInfo info = ConnectionFactoryBuilder.CreateConnectionInfo(element);
-				//string connectionString = ConnectionStringBuilder.CreateConnectionString(element);
-				//string display = ConnectionStringBuilder.CreateDisplayString(element);
-				Create(info);
-				if (_DefaultName == element.Name) { _DefaultConnection = info; }
-			}
-		}
+		///// <summary>初始化数据库连接参数</summary>
+		//internal static void InitializeConnection(ConnectionsSection section)
+		//{
+		//	//ConnectionCollection connections = section.Connections;
+		//	_DefaultName = section.DefaultName;
+		//	_Connections.Clear();
+		//	foreach (ConnectionElement element in section.Connections)
+		//	{
+		//		ConnectionInfo info = ConnectionFactoryBuilder.CreateConnectionInfo(element);
+		//		//string connectionString = ConnectionStringBuilder.CreateConnectionString(element);
+		//		//string display = ConnectionStringBuilder.CreateDisplayString(element);
+		//		Create(info);
+		//		if (_DefaultName == element.Name) { _DefaultConnection = info; }
+		//	}
+		//}
 
-		/// <summary>从指定配置文件中初始化数据库连接信息</summary>
-		/// <param name="fullName">配置文件路径</param>
-		public static void InitializeConfiguration(string fullName)
-		{
-			string sectionName = ConnectionsSection.ElementName;
+		///// <summary>从指定配置文件中初始化数据库连接信息</summary>
+		///// <param name="fullName">配置文件路径</param>
+		//public static void InitializeConfiguration(string fullName)
+		//{
+		//	string sectionName = ConnectionsSection.ElementName;
 
-			SC.ConfigurationFileMap fileMap = new SC.ConfigurationFileMap(fullName);
-			SC.Configuration config = SC.ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
-			SC.ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
-			if (section == null)        //读取配置文件异常，配置文件"{0}"中，不存在自定义配置组"'。
-				throw new ConfigurationFileException("Access_Configuration_GroupNotFound", fullName, sectionName);
-			if (section is ConnectionsSection configurationSection) { InitializeConnection(configurationSection); }
-		}
+		//	SC.ConfigurationFileMap fileMap = new SC.ConfigurationFileMap(fullName);
+		//	SC.Configuration config = SC.ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
+		//	SC.ConfigurationSection section = config.GetSection(string.Concat(ConfigurationGroup.ElementName, "/", sectionName));
+		//	if (section == null)        //读取配置文件异常，配置文件"{0}"中，不存在自定义配置组"'。
+		//		throw new ConfigurationFileException("Access_Configuration_GroupNotFound", fullName, sectionName);
+		//	if (section is ConnectionsSection configurationSection) { InitializeConnection(configurationSection); }
+		//}
 
 		/// <summary>更改默认数据库连接</summary>
 		/// <param name="name">数据库连接名称</param>
@@ -281,71 +275,71 @@ namespace Basic.Configuration
 		}
 	}
 
-	/// <summary>
-	/// 依赖注入扩展，添加日志配置信息
-	/// </summary>
-	public static class ConnectionExtension
-	{
-		/// <summary>使用默认配置节加载数据库连接（Connections）</summary>
-		/// <remarks>
-		/// <code>	
-		/// json配置文件格式如下所示：<br/>
-		/// "Connections": {
-		/// 	"DefaultName": "HRMS",
-		/// 	"HRMS": {
-		///			"ConnectionType": "SqlConnection",
-		///			"Version": 12,
-		///			"Application Name": "HRMS",
-		/// 		"Initial Catalog": "HRMS-V5",
-		/// 		"Data Source": "(local)",
-		/// 		"User ID": "sa",
-		/// 		"Password": "C/1Shp55C14b0TtEhs87bg==",
-		/// 		"TrustServerCertificate": "True"
-		/// 	}
-		/// }
-		/// </code>
-		/// <code>
-		/// Program.cs 启动文件中代码如下：<br/>
-		/// services.AddConnections(root);</code>
-		/// </remarks>
-		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-		/// <param name="root">包含要使用的设置的 <see cref="IConfigurationRoot"/></param>
-		public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationRoot root)
-		{
-			IConfigurationSection connections = root.GetSection("Connections");
-			ConnectionContext.InitializeConnections(connections);
-			return services;
-		}
+	///// <summary>
+	///// 依赖注入扩展，添加日志配置信息
+	///// </summary>
+	//public static class ConnectionExtension
+	//{
+	//	/// <summary>使用默认配置节加载数据库连接（Connections）</summary>
+	//	/// <remarks>
+	//	/// <code>	
+	//	/// json配置文件格式如下所示：<br/>
+	//	/// "Connections": {
+	//	/// 	"DefaultName": "HRMS",
+	//	/// 	"HRMS": {
+	//	///			"ConnectionType": "SqlConnection",
+	//	///			"Version": 12,
+	//	///			"Application Name": "HRMS",
+	//	/// 		"Initial Catalog": "HRMS-V5",
+	//	/// 		"Data Source": "(local)",
+	//	/// 		"User ID": "sa",
+	//	/// 		"Password": "C/1Shp55C14b0TtEhs87bg==",
+	//	/// 		"TrustServerCertificate": "True"
+	//	/// 	}
+	//	/// }
+	//	/// </code>
+	//	/// <code>
+	//	/// Program.cs 启动文件中代码如下：<br/>
+	//	/// services.AddConnections(root);</code>
+	//	/// </remarks>
+	//	/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+	//	/// <param name="root">包含要使用的设置的 <see cref="IConfigurationRoot"/></param>
+	//	public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationRoot root)
+	//	{
+	//		IConfigurationSection connections = root.GetSection("Connections");
+	//		ConnectionContext.InitializeConnections(connections);
+	//		return services;
+	//	}
 
-		/// <summary>使用自定义配置节名称绑定日志配置参数</summary>
-		/// <remarks>
-		/// <code>	
-		/// json配置文件格式如下所示：<br/>
-		/// "Connections": {
-		/// 	"DefaultName": "HRMS",
-		/// 	"HRMS": {
-		///			"ConnectionType": "SqlConnection",
-		///			"Version": 12,
-		///			"Application Name": "HRMS",
-		/// 		"Initial Catalog": "HRMS-V5",
-		/// 		"Data Source": "(local)",
-		/// 		"User ID": "sa",
-		/// 		"Password": "C/1Shp55C14b0TtEhs87bg==",
-		/// 		"TrustServerCertificate": "True"
-		/// 	}
-		/// }
-		/// </code>
-		/// <code>
-		/// Program.cs 启动文件中代码如下：<br/>
-		/// services.AddConnections(root);</code>
-		/// </remarks>
-		/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
-		/// <param name="connections">包含要使用的设置的 <see cref="IConfigurationSection"/></param>
-		public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationSection connections)
-		{
-			ConnectionContext.InitializeConnections(connections);
-			return services;
-		}
-	}
+	//	/// <summary>使用自定义配置节名称绑定日志配置参数</summary>
+	//	/// <remarks>
+	//	/// <code>	
+	//	/// json配置文件格式如下所示：<br/>
+	//	/// "Connections": {
+	//	/// 	"DefaultName": "HRMS",
+	//	/// 	"HRMS": {
+	//	///			"ConnectionType": "SqlConnection",
+	//	///			"Version": 12,
+	//	///			"Application Name": "HRMS",
+	//	/// 		"Initial Catalog": "HRMS-V5",
+	//	/// 		"Data Source": "(local)",
+	//	/// 		"User ID": "sa",
+	//	/// 		"Password": "C/1Shp55C14b0TtEhs87bg==",
+	//	/// 		"TrustServerCertificate": "True"
+	//	/// 	}
+	//	/// }
+	//	/// </code>
+	//	/// <code>
+	//	/// Program.cs 启动文件中代码如下：<br/>
+	//	/// services.AddConnections(root);</code>
+	//	/// </remarks>
+	//	/// <param name="services">用于添加服务的 <see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/></param>
+	//	/// <param name="connections">包含要使用的设置的 <see cref="IConfigurationSection"/></param>
+	//	public static IServiceCollection AddConnections(this IServiceCollection services, IConfigurationSection connections)
+	//	{
+	//		ConnectionContext.InitializeConnections(connections);
+	//		return services;
+	//	}
+	//}
 
 }

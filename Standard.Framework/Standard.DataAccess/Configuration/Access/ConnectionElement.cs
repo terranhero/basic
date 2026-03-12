@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using Basic.Enums;
+using Basic.Interfaces;
 
 namespace Basic.Configuration
 {

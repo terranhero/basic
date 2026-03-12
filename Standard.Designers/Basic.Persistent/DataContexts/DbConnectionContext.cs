@@ -47,7 +47,7 @@ namespace Basic.DataContexts
 						string fileName = file.Name.ToLower();
 						if (fileName == "web.config" || fileName == "app.config")
 						{
-							ConnectionContext.InitializeConfiguration(file.FullName);
+							ConnectionExtension.InitializeConfiguration(file.FullName);
 							return true;
 						}
 					}
@@ -69,7 +69,7 @@ namespace Basic.DataContexts
 								string fileName = file.Name.ToLower();
 								if (fileName == "web.config" || fileName == "app.config")
 								{
-									ConnectionContext.InitializeConfiguration(file.FullName);
+									ConnectionExtension.InitializeConfiguration(file.FullName);
 									return true;
 								}
 							}
@@ -100,7 +100,7 @@ namespace Basic.DataContexts
 						string fileName = file.Name.ToLower();
 						if (fileName == "web.config" || fileName == "app.config")
 						{
-							ConnectionContext.InitializeConfiguration(file.FullName);
+							ConnectionExtension.InitializeConfiguration(file.FullName);
 							return true;
 						}
 					}
@@ -124,7 +124,7 @@ namespace Basic.DataContexts
 								string fileName = file.Name.ToLower();
 								if (fileName == "web.config" || fileName == "app.config")
 								{
-									ConnectionContext.InitializeConfiguration(file.FullName);
+									ConnectionExtension.InitializeConfiguration(file.FullName);
 									return true;
 								}
 							}

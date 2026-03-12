@@ -5,7 +5,6 @@ using Basic.Configuration;
 using Basic.Enums;
 using Basic.Exceptions;
 using Basic.Interfaces;
-using Microsoft.Extensions.Configuration;
 
 namespace Basic.DataAccess
 {
@@ -38,7 +37,7 @@ namespace Basic.DataAccess
 			}
 			return _defaultFactory.CreateConnectionInfo(info);
 		}
-
+#if NETSTANDARD2_0
 		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
 		/// <param name="info">数据库连接配置信息</param>
 		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
@@ -50,6 +49,7 @@ namespace Basic.DataAccess
 			}
 			return _defaultFactory.CreateConnectionInfo(info);
 		}
+#endif
 
 		/// <summary>获取系统中已经注册的数据库类型</summary>
 		public static ConnectionType[] GetRegisterConnections()

@@ -11,7 +11,7 @@
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_DB2Access)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_PostgreAccess)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_MySqlAccess)]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_EntityBuilder)]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_DependencyInjections)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Basic_Persistent)]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(global::AssemblysInfo.Hrms_Authentication)]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:不需要赋值", Justification = "<挂起>")]

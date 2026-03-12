@@ -67,7 +67,7 @@ namespace Basic.Configuration
                     if (projectItem.Kind == kindPhysicalFile && projectItem.Name.EndsWith(".config", StringComparison.CurrentCultureIgnoreCase))
                     {
                         EnvDTE.Property pFullPath = projectItem.Properties.Item("FullPath");
-                        ConnectionContext.InitializeConfiguration((string)pFullPath.Value);
+						ConnectionExtension.InitializeConfiguration((string)pFullPath.Value);
                     }
                 }
             }
@@ -157,7 +157,7 @@ namespace Basic.Configuration
             IConfigurationSection section = jsonBuilder.Build().GetRequiredSection("Connections");
             JsonConnectionsSection sectionConnections = new JsonConnectionsSection();
             section.Bind(sectionConnections);
-            ConnectionContext.InitializeConnections(section);
+			ConnectionExtension.InitializeConnections(section);
 
             // JsonConfigurationWriter.WriteConfiguration(root, connection, dataProvider);
             JsonConnectionSection element = new JsonConnectionSection
