@@ -46,7 +46,7 @@ namespace Basic.DB2Access
 			return new ConnectionInfo(info.Name, info.ConnectionType, info.Version,
 				connection.ConnectionString, display.ConnectionString);
 		}
-
+#if NETSTANDARD2_0
 		/// <summary>根据数据库连接信息，构建 ConnectionInfo 对象。</summary>
 		/// <param name="element">数据库连接配置信息</param>
 		/// <returns>返回构建完成的 ConnectionInfo 对象。</returns>
@@ -72,6 +72,7 @@ namespace Basic.DB2Access
 			return new ConnectionInfo(element.Name, element.ConnectionType, element.Version,
 				connection.ConnectionString, display.ConnectionString);
 		}
+#endif
 
 		/// <summary>
 		/// 返回实现 DbConnection 类的提供程序的类的一个新实例。

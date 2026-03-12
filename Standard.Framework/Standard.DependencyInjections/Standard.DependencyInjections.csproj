@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
 	<PropertyGroup>
-		<AssemblyName>Basic.Injections</AssemblyName>
+		<AssemblyName>Basic.DependencyInjections</AssemblyName>
 		<RootNamespace>Basic</RootNamespace>
 		<DelaySign>false</DelaySign>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageId>Basic.Injections</PackageId>
-		<Product>Basic.Injections</Product>
+		<PackageId>Standard.DependencyInjections</PackageId>
+		<Product>Standard.DependencyInjections</Product>
 		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
 		<PackageTags>ORM Linq Access Dependency Injections</PackageTags>
 		<Authors>JACKY</Authors>
