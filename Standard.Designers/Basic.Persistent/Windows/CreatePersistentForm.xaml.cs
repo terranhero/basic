@@ -8,7 +8,9 @@ using System.Xml;
 using Basic.Configuration;
 using Basic.Database;
 using Basic.DataContexts;
+using Basic.EntityLayer;
 using Basic.Enums;
+using Basic.Interfaces;
 
 namespace Basic.Windows
 {
@@ -80,12 +82,12 @@ namespace Basic.Windows
 
 				persistent.Namespace = _DefaultNamespace;
 				persistent.EntityNamespace = _DefaultNamespace;
-				//persistent.ImportNameSpaces.Add(typeof(IPagination).Namespace);
-				//persistent.ImportNameSpaces.Add(typeof(AbstractEntity).Namespace);
-				//persistent.ImportNameSpaces.Add(typeof(DbTypeEnum).Namespace);
-				persistent.ImportNameSpaces.Add("Basic.Interfaces");
-				persistent.ImportNameSpaces.Add("Basic.EntityLayer");
-				persistent.ImportNameSpaces.Add("Basic.Enums");
+				persistent.ImportNameSpaces.Add(typeof(IPagination).Namespace);
+				persistent.ImportNameSpaces.Add(typeof(AbstractEntity).Namespace);
+				persistent.ImportNameSpaces.Add(typeof(DbTypeEnum).Namespace);
+				//persistent.ImportNameSpaces.Add("Basic.Interfaces");
+				//persistent.ImportNameSpaces.Add("Basic.EntityLayer");
+				//persistent.ImportNameSpaces.Add("Basic.Enums");
 				DesignTableInfo tableInfo = lstTables.SelectedItem as DesignTableInfo;
 				using (IDataContext context = DataContextFactory.CreateDbAccess(info))
 				{
@@ -123,15 +125,6 @@ namespace Basic.Windows
 				lstTables.IsEnabled = cmbConnections.IsEnabled = false;
 				if (_BackgroundWorker.IsBusy == false) { _BackgroundWorker.RunWorkerAsync(ConnectionContext.DefaultConnection); }
 			}
-			else if (config.ReadConfig(_ProjectItems.ContainingProject))
-			{
-				IList<ConnectionInfo> connections = ConnectionContext.GetConnections();
-				cmbConnections.ItemsSource = connections;
-				cmbConnections.SelectedItem = ConnectionContext.DefaultConnection;
-				lstTables.IsEnabled = cmbConnections.IsEnabled = false;
-				if (_BackgroundWorker.IsBusy == false) { _BackgroundWorker.RunWorkerAsync(ConnectionContext.DefaultConnection); }
-			}
-
 		}
 
 		private void OnConnectionsSelectionChanged(object sender, SelectionChangedEventArgs e)
