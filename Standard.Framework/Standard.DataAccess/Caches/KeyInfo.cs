@@ -14,8 +14,15 @@ namespace Basic.Caches
 		/// <summary>
 		/// 初始化 KeyInfo 累实例
 		/// </summary>
-		/// <param name="key"></param>
+		/// <param name="key">键名称</param>
 		public KeyInfo(string key) { KeyName = key; KeyType = KeyTypes.Unknown; Expiration = DateTimeOffset.MinValue; Size = 0; }
+
+		/// <summary>
+		/// 初始化 KeyInfo 累实例
+		/// </summary>
+		/// <param name="key">键名称</param>
+		/// <param name="type">键类型</param>
+		public KeyInfo(string key, KeyTypes type) { KeyName = key; KeyType = type; Expiration = DateTimeOffset.MinValue; Size = 0; }
 
 		/// <summary>缓存键名称</summary>
 		public string KeyName { get; private set; }

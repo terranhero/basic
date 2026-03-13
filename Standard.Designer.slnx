@@ -9,6 +9,7 @@
     <File Path="LICENSE" />
     <File Path="packages/Assembly.Tools.cs" />
     <File Path="packages/basic.snk" />
+    <File Path="packages/build-version.targets" />
     <File Path="packages/net-version.targets" />
     <File Path="README.md" />
   </Folder>
