@@ -137,9 +137,7 @@
     <Compile Include="Database\Transact\TransactColumnInfo.cs" />
     <Compile Include="Database\Transact\TransactParameterInfo.cs" />
     <Compile Include="Database\Transact\TransactTableInfo.cs" />
-    <Compile Include="Database\Windows\ColumnsWindow.xaml.cs">
-      <DependentUpon>ColumnsWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Database\Windows\ColumnsWindow.xaml.cs" />
     <Compile Include="DataCommand\AbstractCommandElement.cs" />
     <Compile Include="DataCommand\CheckedCommandElement.cs" />
     <Compile Include="DataCommand\Collections\CheckedCommandCollection.cs" />
@@ -153,14 +151,10 @@
     <Compile Include="DataCommand\Designer\CommandParameterConverter.cs" />
     <Compile Include="DataCommand\Designer\CommandParametersEditor.cs" />
     <Compile Include="DataCommand\Designer\CommandTextEditor.cs" />
-    <Compile Include="DataCommand\Designer\CommandTextWindow.xaml.cs">
-      <DependentUpon>CommandTextWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="DataCommand\Designer\CommandTextWindow.xaml.cs" />
     <Compile Include="DataCommand\Designer\DataConditionPropertyEditor.cs" />
     <Compile Include="DataCommand\Designer\DynamicCommandEditor.cs" />
-    <Compile Include="DataCommand\Designer\DynamicCommandWindow.xaml.cs">
-      <DependentUpon>DynamicCommandWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="DataCommand\Designer\DynamicCommandWindow.xaml.cs" />
     <Compile Include="DataCommand\Designer\DynamicTextConverter.cs" />
     <Compile Include="DataCommand\Designer\ErrorCodeConveter.cs" />
     <Compile Include="DataCommand\Designer\NewCommandsEditor.cs" />
@@ -168,9 +162,7 @@
     <Compile Include="DataCommand\Designer\PropertyNameConverter.cs" />
     <Compile Include="DataCommand\Designer\WithClauseEditor.cs" />
     <Compile Include="DataCommand\Designer\WithClausesEditor.cs" />
-    <Compile Include="DataCommand\Designer\WithClauseWindow.xaml.cs">
-      <DependentUpon>WithClauseWindow.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="DataCommand\Designer\WithClauseWindow.xaml.cs" />
     <Compile Include="DataCommand\DynamicCommandElement.cs" />
     <Compile Include="DataCommand\NewCommandElement.cs" />
     <Compile Include="DataCommand\PropertyDescriptor\CommandParameterDescriptor.cs" />
@@ -303,6 +295,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Options\IClassesOptions.cs" />
+    <Compile Include="Persistents\PersistentService.jsonconfig.cs" />
     <Compile Include="Persistents\PersistentService.database.cs" />
     <Compile Include="Persistents\PersistentService.extension.cs" />
     <Compile Include="ResourcePackage\Consts.cs" />
@@ -369,6 +362,7 @@
     <Compile Include="Windows\CommandsWindow.xaml.cs" />
     <Compile Include="Windows\CreateClassicView.xaml.cs" />
     <Compile Include="Templates\CreateController.xaml.cs" />
+    <Compile Include="Windows\PersistentForm.xaml.cs" />
     <Compile Include="Windows\CreatePersistentForm.xaml.cs" />
     <Compile Include="Localizations\CreateEnumResource.xaml.cs" />
     <Compile Include="Windows\CreateResWindow.xaml.cs" />
@@ -552,9 +546,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Persistents.Style.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
     <Page Include="Themes\DesignerEntities.Style.xaml">
       <SubType>Designer</SubType>
@@ -564,7 +555,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\GenericStyle.xaml">
+    <Page Include="Themes\Generic.Style.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

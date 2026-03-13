@@ -178,6 +178,7 @@ namespace Basic.Windows
 			RaiseEvent(eventArgs);
 		}
 		#endregion
+
 		#region 重载 OnApplyTemplate 方法，绑定 PART_TREEVIEW 事件
 		public override void OnApplyTemplate()
 		{

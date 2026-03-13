@@ -278,7 +278,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type bw:DesignerEntity}">
 					<Border CornerRadius="5"  MaxHeight="{TemplateBinding MaxHeight}" MinWidth="{TemplateBinding MinWidth}"
-			  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+							BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
 						<Border.Effect>
 							<DropShadowEffect Opacity="0.6" ShadowDepth="1"
 				Color="{Binding Path=BorderBrush.Color, RelativeSource={RelativeSource TemplatedParent}}"/>
