@@ -63,78 +63,98 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="#FF688CAF"/>
         <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
-        <Setter Property="ColumnHeaderStyle" Value="{StaticResource keyDataGridColumnHeader}"/>
-        <Setter Property="RowHeaderStyle" Value="{StaticResource keyDataGridRowHeader}"/>
-        <Setter Property="CellStyle" Value="{StaticResource keyDataGridCell}"/>
-        <!--<Setter Property="Template">
+        <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
-                    <DataGrid x:Name="PART_DATAGRID" Style="{StaticResource keyDataGrid}" ColumnHeaderStyle="{StaticResource keyDataGridColumnHeader}"
-                           RowHeaderStyle="{StaticResource keyDataGridRowHeader}" CellStyle="{StaticResource keyDataGridCell}"  
-                              ItemsSource="{Binding ItemsSource}" >
+                <ControlTemplate TargetType="{x:Type bl:ResourceEditor}">
+                    <DataGrid 
+                    x:Name="PART_DataGrid"
+                         Style="{StaticResource keyDataGrid}"
+                         ColumnHeaderStyle="{StaticResource keyDataGridColumnHeader}"
+                         RowHeaderStyle="{StaticResource keyDataGridRowHeader}" 
+                         CellStyle="{StaticResource keyDataGridCell}"  
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CanUserAddRows="{TemplateBinding CanUserAddRows}"
+                        CanUserDeleteRows="{TemplateBinding CanUserDeleteRows}"
+                        CanUserResizeRows="{TemplateBinding CanUserResizeRows}"
+                        SelectedItem="{TemplateBinding CanUserResizeRows}"
+                        SelectionUnit="{TemplateBinding SelectionUnit}"
+                        SelectionMode="{TemplateBinding SelectionMode}"
+                        AutoGenerateColumns="{TemplateBinding AutoGenerateColumns}"
+                        RowHeaderWidth="{TemplateBinding RowHeaderWidth}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        VerticalGridLinesBrush="{TemplateBinding VerticalGridLinesBrush}"
+                        HorizontalGridLinesBrush="{TemplateBinding HorizontalGridLinesBrush}"
+                        RowDetailsVisibilityMode="{TemplateBinding RowDetailsVisibilityMode}"
+                        ItemsSource="{TemplateBinding ItemsSource}">
+                        <!-- 在这里添加列定义 -->
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-							 Header="组名" Width="150" MinWidth="100" CanUserSort="False">
+                                     Header="组名" Width="150" MinWidth="100" CanUserSort="False">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
-                                        <Setter Property="HorizontalAlignment"  Value="Left" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
                                         <Setter Property="Padding" Value="6"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                                 <DataGridTextColumn.EditingElementStyle>
                                     <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="Margin" Value="0"/>
                                         <Setter Property="Padding" Value="4,5"/>
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
+
                             <DataGridTextColumn Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-							 Header="名称" Width="230" MinWidth="150">
+                                     Header="名称" Width="230" MinWidth="150">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
-                                        <Setter Property="HorizontalAlignment"  Value="Left" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
                                         <Setter Property="Padding" Value="6"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                                 <DataGridTextColumn.EditingElementStyle>
                                     <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="Margin" Value="0"/>
                                         <Setter Property="Padding" Value="4,5"/>
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
+
                             <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-							Header="资源值" Width="*" MinWidth="100" CanUserSort="False">
+                                     Header="资源值" Width="*" MinWidth="100" CanUserSort="False">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
-                                        <Setter Property="HorizontalAlignment"  Value="Left" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
                                         <Setter Property="Padding" Value="6"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                                 <DataGridTextColumn.EditingElementStyle>
                                     <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="Padding" Value="4,5"/>
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
+
                             <DataGridTextColumn Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-							 Header="注释" Width="100" MinWidth="100" CanUserSort="False">
+                                     Header="注释" Width="100" MinWidth="100" CanUserSort="False">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
-                                        <Setter Property="HorizontalAlignment"  Value="Left" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
                                         <Setter Property="Padding" Value="6"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                                 <DataGridTextColumn.EditingElementStyle>
                                     <Style TargetType="{x:Type TextBox}">
-                                        <Setter Property="VerticalAlignment"  Value="Center" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="Padding" Value="4,5"/>
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
@@ -143,6 +163,84 @@
                     </DataGrid>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>-->
+        </Setter>
     </Style>
+    <!--<Setter Property="Template">
+     <Setter.Value>
+         <ControlTemplate>
+             <DataGrid x:Name="PART_DATAGRID" Style="{StaticResource keyDataGrid}" ColumnHeaderStyle="{StaticResource keyDataGridColumnHeader}"
+                    RowHeaderStyle="{StaticResource keyDataGridRowHeader}" CellStyle="{StaticResource keyDataGridCell}"  
+                       ItemsSource="{Binding ItemsSource}" >
+                 <DataGrid.Columns>
+                     <DataGridTextColumn Binding="{Binding Group, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+						 Header="组名" Width="150" MinWidth="100" CanUserSort="False">
+                         <DataGridTextColumn.ElementStyle>
+                             <Style TargetType="{x:Type TextBlock}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="HorizontalAlignment"  Value="Left" />
+                                 <Setter Property="Padding" Value="6"/>
+                             </Style>
+                         </DataGridTextColumn.ElementStyle>
+                         <DataGridTextColumn.EditingElementStyle>
+                             <Style TargetType="{x:Type TextBox}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="Margin" Value="0"/>
+                                 <Setter Property="Padding" Value="4,5"/>
+                             </Style>
+                         </DataGridTextColumn.EditingElementStyle>
+                     </DataGridTextColumn>
+                     <DataGridTextColumn Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+						 Header="名称" Width="230" MinWidth="150">
+                         <DataGridTextColumn.ElementStyle>
+                             <Style TargetType="{x:Type TextBlock}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="HorizontalAlignment"  Value="Left" />
+                                 <Setter Property="Padding" Value="6"/>
+                             </Style>
+                         </DataGridTextColumn.ElementStyle>
+                         <DataGridTextColumn.EditingElementStyle>
+                             <Style TargetType="{x:Type TextBox}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="Margin" Value="0"/>
+                                 <Setter Property="Padding" Value="4,5"/>
+                             </Style>
+                         </DataGridTextColumn.EditingElementStyle>
+                     </DataGridTextColumn>
+                     <DataGridTextColumn Binding="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+						Header="资源值" Width="*" MinWidth="100" CanUserSort="False">
+                         <DataGridTextColumn.ElementStyle>
+                             <Style TargetType="{x:Type TextBlock}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="HorizontalAlignment"  Value="Left" />
+                                 <Setter Property="Padding" Value="6"/>
+                             </Style>
+                         </DataGridTextColumn.ElementStyle>
+                         <DataGridTextColumn.EditingElementStyle>
+                             <Style TargetType="{x:Type TextBox}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="Padding" Value="4,5"/>
+                             </Style>
+                         </DataGridTextColumn.EditingElementStyle>
+                     </DataGridTextColumn>
+                     <DataGridTextColumn Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+						 Header="注释" Width="100" MinWidth="100" CanUserSort="False">
+                         <DataGridTextColumn.ElementStyle>
+                             <Style TargetType="{x:Type TextBlock}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="HorizontalAlignment"  Value="Left" />
+                                 <Setter Property="Padding" Value="6"/>
+                             </Style>
+                         </DataGridTextColumn.ElementStyle>
+                         <DataGridTextColumn.EditingElementStyle>
+                             <Style TargetType="{x:Type TextBox}">
+                                 <Setter Property="VerticalAlignment"  Value="Center" />
+                                 <Setter Property="Padding" Value="4,5"/>
+                             </Style>
+                         </DataGridTextColumn.EditingElementStyle>
+                     </DataGridTextColumn>
+                 </DataGrid.Columns>
+             </DataGrid>
+         </ControlTemplate>
+     </Setter.Value>
+ </Setter>-->
 </ResourceDictionary>

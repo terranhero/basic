@@ -271,7 +271,7 @@
 		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="BorderBrush" Value="DarkGray"/>
 		<Setter Property="DataContext" Value="{Binding}"/>
-		<Setter Property="MinWidth" Value="280"/>
+		<Setter Property="MinWidth" Value="180"/>
 		<Setter Property="Width" Value="{Binding Path=DesignerInfo.Width, Mode=TwoWay}"/>
 		<Setter Property="Height" Value="{Binding Path=DesignerInfo.Height, Mode=TwoWay}"/>
 		<Setter Property="Template">

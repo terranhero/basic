@@ -362,7 +362,7 @@
     <Compile Include="Windows\CommandsWindow.xaml.cs" />
     <Compile Include="Windows\CreateClassicView.xaml.cs" />
     <Compile Include="Templates\CreateController.xaml.cs" />
-    <Compile Include="Windows\PersistentForm.xaml.cs" />
+    <Compile Include="Windows\CreatePersistent.xaml.cs" />
     <Compile Include="Windows\CreatePersistentForm.xaml.cs" />
     <Compile Include="Localizations\CreateEnumResource.xaml.cs" />
     <Compile Include="Windows\CreateResWindow.xaml.cs" />
@@ -628,19 +628,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\ExpandButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\InitializationWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\ResizeThumb.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\SelectedSharp.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

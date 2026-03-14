@@ -19,9 +19,13 @@ namespace Basic.Windows
 	/// </summary>
 	public partial class SelectedSharp : Control
 	{
-		public SelectedSharp()
+        static SelectedSharp()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SelectedSharp),
+				new FrameworkPropertyMetadata(typeof(SelectedSharp)));
+        }
+        public SelectedSharp()
 		{
-			InitializeComponent();
 		}
 	}
 }
