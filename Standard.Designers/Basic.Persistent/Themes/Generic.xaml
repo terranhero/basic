@@ -6,11 +6,14 @@
     xmlns:enums="clr-namespace:Basic.Enums"
     xmlns:data="clr-namespace:System.Data;assembly=System.Data">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Shared.Style.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Generic.Style.xaml" />
-		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/DesignerEntities.Style.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/ComboBox.Style.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/DesignerEntities.Style.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/SelectedSharp.Style.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/ResourceEditor.Style.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Commands.Style.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Persistents.Style.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Color x:Key="GlyphColor">#FF444444</Color>
     <Style x:Key="CheckPath" TargetType="Path">

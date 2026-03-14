@@ -4,21 +4,16 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml;
 using Basic.Collections;
 using Basic.Configuration;
 using Basic.Database;
 using Basic.DataContexts;
-using Basic.EntityLayer;
 using Basic.Enums;
-using Basic.Interfaces;
 
 namespace Basic.Windows
 {
-    /// <summary>
-    /// PersistentForm.xaml 的交互逻辑
-    /// </summary>
-    public class CreatePersistent : System.Windows.Controls.Control
+    /// <summary>PersistentForm.xaml 的交互逻辑</summary>
+    public class CreatePersistent : Microsoft.VisualStudio.PlatformUI.DialogWindow
     {
         static CreatePersistent()
         {
@@ -28,13 +23,15 @@ namespace Basic.Windows
 
         private readonly ObservableCollection<DesignTableInfo> tables = new ObservableCollection<DesignTableInfo>();
         private readonly Pagination<ConnectionInfo> connections = new Pagination<ConnectionInfo>();
+        private readonly ConnectionInfo defaultConnection;
         //private readonly EnvDTE.ProjectItems _ProjectItems;
         private readonly BackgroundWorker _BackgroundWorker;
-        private readonly string _DefaultNamespace, _FullPath;
-        public CreatePersistent(string defaultNamespace, IList<ConnectionInfo> conns)
+        //private readonly string _DefaultNamespace, _FullPath;
+        public CreatePersistent(IList<ConnectionInfo> conns, ConnectionInfo dc)
         {
-            connections.AddRange(conns);
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, OnSaveExecuted));
+            connections.AddRange(conns);
+            defaultConnection = dc;
             _BackgroundWorker = new BackgroundWorker();
             _BackgroundWorker.DoWork += new DoWorkEventHandler(BackgroundWorker_DoWork);
             _BackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BackgroundWorker_RunWorkerCompleted);
@@ -42,6 +39,11 @@ namespace Basic.Windows
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            foreach (DesignTableInfo conn in (DesignTableInfo[])e.Result)
+            {
+                tables.Add(conn);
+            }
+
             //if (_cmbConnections != null && _lstTables != null)
             //{
             //    _lstTables.IsEnabled = _cmbConnections.IsEnabled = true;
@@ -54,20 +56,35 @@ namespace Basic.Windows
             ConnectionInfo info = (ConnectionInfo)e.Argument;
             using (IDataContext context = DataContextFactory.CreateDbAccess(info))
             {
-                e.Result = new ObservableCollection<DesignTableInfo>(context.GetTables(ObjectTypeEnum.UserTable));
+                e.Result = context.GetTables(ObjectTypeEnum.UserTable);
             }
         }
 
+        #region 属性 SelectedTable 定义
+        public static readonly DependencyProperty SelectedTableProperty = DependencyProperty.Register("SelectedTable",
+            typeof(DesignTableInfo), typeof(CreatePersistent), new PropertyMetadata(null));
+        /// <summary>
+        /// 判断当前控件是否已经选择。
+        /// </summary>
+        public DesignTableInfo SelectedTable
+        {
+            get { return (DesignTableInfo)base.GetValue(SelectedTableProperty); }
+            set { base.SetValue(SelectedTableProperty, value); }
+        }
+        #endregion
 
-        //private System.Windows.Controls.ComboBox _cmbConnections;
-        //private System.Windows.Controls.ListBox _lstTables;
-
-
-        ////this.lstTables = ((System.Windows.Controls.ListBox)(target));
-
-        //private System.Windows.Controls.TextBox txtEntityName;
-        //private Microsoft.VisualStudio.PlatformUI.DialogButton btnOk;
-        //private Microsoft.VisualStudio.PlatformUI.DialogButton btnCancel;
+        #region 属性 CanSave 定义
+        public static readonly DependencyProperty CanSaveProperty = DependencyProperty.Register("CanSave",
+            typeof(bool), typeof(CreatePersistent), new PropertyMetadata(false));
+        /// <summary>
+        /// 判断当前控件是否已经选择。
+        /// </summary>
+        public bool CanSave
+        {
+            get { return (bool)base.GetValue(CanSaveProperty); }
+            set { base.SetValue(CanSaveProperty, value); }
+        }
+        #endregion
 
         #region 重载 OnApplyTemplate 方法，绑定 PART_TREEVIEW 事件
         public override void OnApplyTemplate()
@@ -78,19 +95,13 @@ namespace Basic.Windows
             {
                 cmbConnections.ItemsSource = connections;
                 cmbConnections.SelectionChanged += new SelectionChangedEventHandler(OnConnectionsSelectionChanged);
+                cmbConnections.SelectedItem = defaultConnection;
+                // if (_BackgroundWorker.IsBusy == false) { _BackgroundWorker.RunWorkerAsync(info); }
             }
             if (GetTemplateChild("lstTables") is ListBox lstTables)
             {
                 lstTables.ItemsSource = tables;
                 lstTables.SelectionChanged += new SelectionChangedEventHandler(OnTablesSelectionChanged);
-            }
-            if (GetTemplateChild("btnOk") is Microsoft.VisualStudio.PlatformUI.DialogButton button)
-            {
-                button.Command = ApplicationCommands.Save;
-            }
-            if (GetTemplateChild("txtEntityName") is TextBox box)
-            {
-               // txtEntityName = box;
             }
         }
         #endregion
@@ -133,10 +144,11 @@ namespace Basic.Windows
             //    {
             //        persistent.WriteXml(writer);
             //    }
-                //EnvDTE.ProjectItem item = _ProjectItems.AddFromFile(filePath);
-                //EnvDTE.Property property = item.Properties.Item("CustomTool");
-                //property.Value = "AccessGenerator";
-                //item.Open(); //this.Close();
+            //EnvDTE.ProjectItem item = _ProjectItems.AddFromFile(filePath);
+            //EnvDTE.Property property = item.Properties.Item("CustomTool");
+            //property.Value = "AccessGenerator";
+            //item.Open(); 
+            //this.Close();
             //}
         }
 
@@ -161,14 +173,18 @@ namespace Basic.Windows
 
         private void OnConnectionsSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (_cmbConnections.SelectedItem == null) { return; }
-            //ConnectionInfo info = (ConnectionInfo)_cmbConnections.SelectedItem;
-            //_lstTables.IsEnabled = _cmbConnections.IsEnabled = false;
-            //if (_BackgroundWorker.IsBusy == false) { _BackgroundWorker.RunWorkerAsync(info); }
+            ComboBox cmbConnections = sender as ComboBox;
+            if (cmbConnections.SelectedItem == null) { return; }
+            ConnectionInfo info = (ConnectionInfo)cmbConnections.SelectedItem;
+            if (_BackgroundWorker.IsBusy == false) { _BackgroundWorker.RunWorkerAsync(info); }
         }
 
         private void OnTablesSelectionChanged(object sender, RoutedEventArgs e)
         {
+            ListBox lstTables = sender as ListBox;
+            if (lstTables.SelectedItem == null) { return; }
+            SelectedTable = (DesignTableInfo)lstTables.SelectedItem;
+            CanSave = true;
             //if (_lstTables != null && _lstTables.SelectedItem != null && txtEntityName != null)
             //{
             //    txtEntityName.DataContext = _lstTables.SelectedItem;

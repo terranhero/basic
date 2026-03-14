@@ -237,14 +237,25 @@ namespace Basic.Configuration
                         if (ReadJson(item))
                         {
                             IList<ConnectionInfo> connections = ConnectionContext.GetConnections();
-                            DialogWindow window = new DialogWindow()
+                            CreatePersistent form = new CreatePersistent(connections, ConnectionContext.DefaultConnection)
                             {
+                                Title = "添加数据持久类",
                                 ShowActivated = true,
-                                ShowInTaskbar = false,
-                                Content = new CreatePersistent(defaultNamespace, connections),
+                                ShowInTaskbar = true,
+                                Width = 700,
+                                Height = 500,
                             };
+                            //DialogWindow window = new DialogWindow()
+                            //{
+                            //    Title = "添加数据持久类",
+                            //    ShowActivated = true,
+                            //    ShowInTaskbar = false,
+                            //    Width = 700,
+                            //    Height = 500,
+                            //    Content = form,
+                            //};
                             //PersistentForm view = new PersistentForm(this, pitem.ContainingProject, pitem);
-                            if (window.ShowDialog() == true)
+                            if (form.ShowDialog() == true)
                             {
 
                             }
