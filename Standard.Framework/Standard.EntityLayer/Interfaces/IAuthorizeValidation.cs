@@ -82,13 +82,17 @@ namespace Basic.Interfaces
 	/// <summary>导航菜单</summary>
 	public sealed class NavigateMenu : global::Basic.EntityLayer.AbstractEntity
 	{
-		private readonly NavigateMenuCollection _menus;
+		/// <summary>此处禁止改为readonly，因在缓存反序列化中异常。
+		/// 子节点没有反序列化</summary>
+		private NavigateMenuCollection _menus;
 
 		/// <summary>初始化 NavigateMenu 类的实例。</summary>
 		public NavigateMenu() : base() { _menus = new NavigateMenuCollection(this); }
 
 		/// <summary>子菜单</summary>
-		public NavigateMenuCollection Children { get { return _menus; } }
+		/// <remarks>此处禁止改为readonly，因在缓存反序列化中异常。
+		/// 子节点没有反序列化</remarks>
+		public NavigateMenuCollection Children { get { return _menus; } set { _menus = value; } }
 
 		/// <summary>菜单关键字</summary>
 		public int MenuKey { get; set; }
