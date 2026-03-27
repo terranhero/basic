@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\..\packages\std-version.targets" />
+	<PropertyGroup>
+		<AssemblyName>Basic.SqliteAccess</AssemblyName>
+		<RootNamespace>Basic</RootNamespace>
+		<DelaySign>false</DelaySign>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>JACKY</Authors>
+		<PackageId>Standard.SqliteAccess</PackageId>
+		<Product>Standard.SqliteAccess</Product>
+		<Title>Sqlite 数据库支持类</Title>
+		<PackageProjectUrl>https://gitee.com/terran-hero/basic</PackageProjectUrl>
+		<PackageTags>ORM Linq Access Sqlite</PackageTags>
+		<Description>ORM 框架数据库持久实现（Sqlite）特定数据库实现。</Description>
+	</PropertyGroup>
+	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.5" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />
+	  <ProjectReference Include="..\Standard.EntityLayer\Standard.EntityLayer.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="SqliteBulkCopyCommand.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	  <Compile Update="SqliteCheckCommand.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	  <Compile Update="SqliteDynamicCommand.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	  <Compile Update="SqliteNewValueCommand.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	  <Compile Update="SqliteBatchCommand.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	  <Compile Update="SqliteStaticAdapter.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	  <Compile Update="SqliteStaticCommand.cs">
+	    <SubType>Component</SubType>
+	  </Compile>
+	</ItemGroup>
+
+</Project>

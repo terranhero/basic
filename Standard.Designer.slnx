@@ -41,6 +41,7 @@
     <Project Path="Standard.Framework/Standard.NpgSqlAccess/Standard.PostgreAccess.csproj" />
     <Project Path="Standard.Framework/Standard.OracleAccess/Standard.OracleAccess.csproj" />
     <Project Path="Standard.Framework/Standard.SqlClientAccess/Standard.SqlClientAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.SqliteAccess/Standard.SqliteAccess.csproj" />
   </Folder>
   <Folder Name="/Standard.UnitTest/">
     <Project Path="Standard.Test/StandardTest.BasicPersistent/StandardTest.BasicPersistent.csproj" Id="844dc60f-c4e5-4109-9fd7-0f9546300a07" />

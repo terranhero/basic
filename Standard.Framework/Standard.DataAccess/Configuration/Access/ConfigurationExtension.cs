@@ -22,7 +22,7 @@ namespace Basic.Configuration
 			list[ConnectionType.OracleConnection] = "oraf";
 			//list[ConnectionType.OleDbConnection] = "olef";
 			//list[ConnectionType.OdbcConnection] = "odbcf";
-			list[ConnectionType.SQLiteConnection] = "litf";
+			list[ConnectionType.SqliteConnection] = "litf";
 			list[ConnectionType.Db2Connection] = "dbf";
 			list[ConnectionType.MySqlConnection] = "myf";
 			list[ConnectionType.NpgSqlConnection] = "pgf";

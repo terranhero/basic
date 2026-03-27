@@ -29,10 +29,10 @@ namespace Basic.Enums
 		OdbcConnection = 4,
 
 		/// <summary>
-		/// SQLiteConnection类型数据库连接
+		/// SqliteConnection 类型数据库连接
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		SQLiteConnection = 5,
+		SqliteConnection = 5,
 
 		/// <summary>
 		/// DB2Connection类型数据库连接

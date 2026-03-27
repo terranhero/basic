@@ -24,9 +24,14 @@ namespace Basic.Enums
         /// <summary>IBM DB2 数据库</summary>
         DB2 = 6,
         /// <summary>PostgreSQL 数据库</summary>
-        NPGSQL = 8
+        NPGSQL = 8,
 
-    }
+		/// <summary>
+		/// Sqlite 数据库
+		/// </summary>
+		SQLITE = 10
+
+	}
 
     /// <summary>
     /// 表示数据库连接
@@ -61,8 +66,13 @@ namespace Basic.Enums
         /// <summary>
 		/// PostgreSQL 数据库
 		/// </summary>
-        PGSQL = 8
-    }
+        PGSQL = 8,
+
+		/// <summary>
+		/// Sqlite 数据库
+		/// </summary>
+		SQLITE = 10
+	}
 
     /// <summary>
     /// 读取配置文件中数据库连接类型对应的配置文件扩展名
@@ -87,7 +97,9 @@ namespace Basic.Enums
                 return ConfigurationExtension.GetExtension(ConnectionType.NpgSqlConnection);
             else if (sqlConType == ConnectionTypeEnum.DB2)
                 return ConfigurationExtension.GetExtension(ConnectionType.Db2Connection);
-            return ConfigurationExtension.GetExtension(ConnectionType.SqlConnection);
+			else if (sqlConType == ConnectionTypeEnum.SQLITE)
+				return ConfigurationExtension.GetExtension(ConnectionType.SqliteConnection);
+			return ConfigurationExtension.GetExtension(ConnectionType.SqlConnection);
         }
 
         /// <summary>
@@ -108,7 +120,9 @@ namespace Basic.Enums
                 return ConfigurationExtension.GetExtension(ConnectionType.NpgSqlConnection);
             else if (sqlConType == ConnectionTypes.DB2)
                 return ConfigurationExtension.GetExtension(ConnectionType.Db2Connection);
-            return ConfigurationExtension.GetExtension(ConnectionType.SqlConnection);
+			else if (sqlConType == ConnectionTypes.SQLITE)
+				return ConfigurationExtension.GetExtension(ConnectionType.SqliteConnection);
+			return ConfigurationExtension.GetExtension(ConnectionType.SqlConnection);
         }
     }
 

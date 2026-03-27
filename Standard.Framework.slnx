@@ -28,12 +28,14 @@
     <Project Path="Standard.Framework/Standard.NpgSqlAccess/Standard.PostgreAccess.csproj" />
     <Project Path="Standard.Framework/Standard.OracleAccess/Standard.OracleAccess.csproj" />
     <Project Path="Standard.Framework/Standard.SqlClientAccess/Standard.SqlClientAccess.csproj" />
+    <Project Path="Standard.Framework/Standard.SqliteAccess/Standard.SqliteAccess.csproj" Id="7409220c-8fd9-4c3f-889b-efb0efaf7587" />
   </Folder>
   <Folder Name="/Standard.Test/">
     <Project Path="Standard.Designers/Basic.TestSqlParser/Basic.TestSqlParser.csproj" />
     <Project Path="Standard.Test/StandardTest.DataAccess/StandardTest.DataAccess.csproj" />
     <Project Path="Standard.Test/StandardTest.EntityLayer/StandardTest.EntityLayer.csproj" />
     <Project Path="Standard.Test/StandardTest.MvcLibrary/StandardTest.MvcLibrary.csproj" Id="139d26ad-7e61-492b-8c5f-39a20c563421" />
+    <Project Path="Standard.Test/StandardTest.SqliteAccess/StandardTest.SqliteAccess.csproj" Id="a03ebfb5-e1b7-4dbc-961c-58e3c37fa7a7" />
   </Folder>
   <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
     <Property Name="CategoryFile" Value="Basic.Solution.vsmdi" />
