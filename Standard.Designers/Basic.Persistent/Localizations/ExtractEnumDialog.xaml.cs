@@ -89,29 +89,28 @@ namespace Basic.Windows
 
 		private void OnSaveExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 			if (MessageConverter != null)
 			{
-				MessageInfo info = MessageConverter;
-				string fullName = info.FileName;
-				EnvDTE.ProjectItem item = _DTEClass.Solution.FindProjectItem(fullName);
-				if (item == null)
-				{
-					string message = string.Concat("本地化资源文件\"", info.ConverterName, "\"已经不存在，请重新选择。");
-					_CommandService.ShowMessage(message); return;
-				}
-				if (item.IsOpen == true) { item.Document.Activate(); }
-				else { item.Open(); }
-				if (!(item.Document.ActiveWindow.Object is LocalizationPane pane))
-				{
-					string message = string.Concat("本地化资源文件\"", info.ConverterName, "\"打开失败，可能原因是本地化资源编辑器已经更改。");
-					_CommandService.ShowMessage(message); return;
-				}
-				ResourceEditor editor = pane.Content as ResourceEditor;
-				foreach (LocalizationItem resx in _ResourceCollection)
-				{
-					if (resx.Created) { editor.Add(resx); }
-				}			
+				//MessageInfo info = MessageConverter;
+				//string fullName = info.FileName;
+				//EnvDTE.ProjectItem item = _DTEClass.Solution.FindProjectItem(fullName);
+				//if (item == null)
+				//{
+				//	string message = string.Concat("本地化资源文件\"", info.ConverterName, "\"已经不存在，请重新选择。");
+				//	_CommandService.ShowMessage(message); return;
+				//}
+				//if (item.IsOpen == true) { item.Document.Activate(); }
+				//else { item.Open(); }
+				//if (!(item.Document.ActiveWindow.Object is LocalizationPane pane))
+				//{
+				//	string message = string.Concat("本地化资源文件\"", info.ConverterName, "\"打开失败，可能原因是本地化资源编辑器已经更改。");
+				//	_CommandService.ShowMessage(message); return;
+				//}
+				//ResourceEditor editor = pane.Content as ResourceEditor;
+				//foreach (LocalizationItem resx in _ResourceCollection)
+				//{
+				//	if (resx.Created) { editor.Add(resx); }
+				//}
 				this.DialogResult = true;
 				base.Close();
 			}
