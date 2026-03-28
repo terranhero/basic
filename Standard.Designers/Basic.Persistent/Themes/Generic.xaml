@@ -14,7 +14,8 @@
         <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/ResourceEditor.Style.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Commands.Style.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Persistents.Style.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Localization.Style.xaml" />
+	</ResourceDictionary.MergedDictionaries>
     <Color x:Key="GlyphColor">#FF444444</Color>
     <Style x:Key="CheckPath" TargetType="Path">
         <Setter Property="Visibility" Value="Collapsed"/>

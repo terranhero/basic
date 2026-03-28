@@ -471,7 +471,7 @@
 					<ToolTipText>添加 Razor 标准视图</ToolTipText>
 				</Strings>
 			</Button>-->
-			<Button guid="GUID_PERSISTENTMENU" id="ID_ADD_MVC_VIEW" priority="0x0402" type="Button">
+			<!--<Button guid="GUID_PERSISTENTMENU" id="ID_ADD_MVC_VIEW" priority="0x0402" type="Button">
 				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
 				<Icon guid="guidSHLMainMenu" id="1"/>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -483,7 +483,7 @@
 					<CommandName>Razor视图(MVC)</CommandName>
 					<ToolTipText>添加 Razor 标准视图</ToolTipText>
 				</Strings>
-			</Button>
+			</Button>-->
 			<Button guid="GUID_PERSISTENTMENU" id="idAddController" priority="0x0403" type="Button">
 				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
 				<Icon guid="guidSHLMainMenu" id="1"/>
@@ -498,7 +498,7 @@
 					<ToolTipText>添加标准控制器</ToolTipText>
 				</Strings>
 			</Button>
-			<Button guid="GUID_PERSISTENTMENU" id="idAddWpfClassicForm" priority="0x0410" type="Button">
+			<!--<Button guid="GUID_PERSISTENTMENU" id="idAddWpfClassicForm" priority="0x0410" type="Button">
 				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
 				<Icon guid="guidSHLMainMenu" id="1"/>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -511,8 +511,8 @@
 					<CommandName>WPF 标准视图</CommandName>
 					<ToolTipText>WPF 标准视图(S&amp;)...</ToolTipText>
 				</Strings>
-			</Button>
-			<Button guid="GUID_PERSISTENTMENU" id="idAddWpfForm" priority="0x0411" type="Button">
+			</Button>-->
+			<!--<Button guid="GUID_PERSISTENTMENU" id="idAddWpfForm" priority="0x0411" type="Button">
 				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
 				<Icon guid="guidSHLMainMenu" id="1"/>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -525,7 +525,7 @@
 					<CommandName>WPF 窗体(S&amp;)...</CommandName>
 					<ToolTipText>WPF 窗体(S&amp;)...</ToolTipText>
 				</Strings>
-			</Button>
+			</Button>-->
 			<Button guid="GUID_PERSISTENTMENU" id="IDC_PERSISTENT" priority="0x0412" type="Button">
 				<Parent guid="GUID_PERSISTENTMENU" id="IDG_PROJECT_ADD" />
 				<Icon guid="guidSHLMainMenu" id="1"/>

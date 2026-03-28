@@ -457,7 +457,10 @@ namespace Basic.Configuration
 			string editorCaption = "";
 			if (_isFileReadOnly)
 				editorCaption = this.GetResourceString("@100");
-			ErrorHandler.ThrowOnFailure(frame.SetProperty((int)__VSFPROPID.VSFPROPID_EditorCaption, editorCaption));
+			if (frame != null)
+			{
+				ErrorHandler.ThrowOnFailure(frame.SetProperty((int)__VSFPROPID.VSFPROPID_EditorCaption, editorCaption));
+			}
 		}
 		/// <summary>
 		/// This method loads a localized string based on the specified resource.
@@ -585,7 +588,8 @@ namespace Basic.Configuration
 					}
 				default:
 					throw new ArgumentException("Unsupported Save flag");
-			};
+			}
+			;
 
 			return VSConstants.S_OK;
 		}
