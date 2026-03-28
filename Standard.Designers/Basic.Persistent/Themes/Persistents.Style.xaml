@@ -4,7 +4,7 @@
     xmlns:bw="clr-namespace:Basic.Windows"
     xmlns:enums="clr-namespace:Basic.Enums"
     xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
-	<Style TargetType="{x:Type bw:CreatePersistent}" BasedOn="{StaticResource  {x:Type ui:DialogWindow}}">
+	<Style TargetType="{x:Type bw:CreatePersistent}" BasedOn="{StaticResource  {x:Type ui:DialogWindowBase}}">
 		<Setter Property="Title" Value="添加数据持久类"/>
 		<Setter Property="Background" Value="#FFE8EDF9"/>
 		<Setter Property="Template">
@@ -27,47 +27,38 @@
 							<Setter Property="Padding"  Value="10" />
 						</Style>
 					</ControlTemplate.Resources>
-					<Border Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}">
-						<Grid>
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" Padding="15,15,10,15">
+						<!-- 标题栏（必需） -->
+						<!--<ui:DialogTitleBar Grid.Row="0" 
+                                           Background="{DynamicResource {x:Static ui:EnvironmentColors.MainWindowActiveCaptionBrushKey}}"
+                                           Foreground="{DynamicResource {x:Static ui:EnvironmentColors.MainWindowActiveCaptionTextBrushKey}}"
+                                           Caption="{TemplateBinding Title}"/>-->
+						<Grid Background="#FFE8EDF9">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="*"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-							<!-- 标题栏（必需） -->
-							<ui:DialogTitleBar Grid.Row="0" 
-                                           Background="{DynamicResource {x:Static ui:EnvironmentColors.MainWindowActiveCaptionBrushKey}}"
-                                           Foreground="{DynamicResource {x:Static ui:EnvironmentColors.MainWindowActiveCaptionTextBrushKey}}"
-                                           Caption="{TemplateBinding Title}"/>
-
-							<Grid Margin="15,15,10,15" Background="#FFE8EDF9">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="Auto"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="*"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
-								</Grid.RowDefinitions>
-								<ComboBox x:Name="cmbConnections" Grid.Row="0" Grid.ColumnSpan="3"
+							<ComboBox x:Name="cmbConnections" Grid.Row="0" Grid.ColumnSpan="3"
               DisplayMemberPath="DisplayName" Margin="0,5,5,5"  />
-								<ListBox Grid.Row="1" Grid.ColumnSpan="3" x:Name="lstTables" Margin="0,5,5,5"
+							<ListBox Grid.Row="1" Grid.ColumnSpan="3" x:Name="lstTables" Margin="0,5,5,5"
 						 DisplayMemberPath="TableName" SelectedValuePath="TableName"/>
-								<Label Grid.Row="2" Grid.ColumnSpan="3" Content="名称"/>
-								<TextBox Grid.Row="3" Grid.ColumnSpan="3" 
+							<Label Grid.Row="2" Grid.ColumnSpan="3" Content="名称"/>
+							<TextBox Grid.Row="3" Grid.ColumnSpan="3" 
              DataContext="{TemplateBinding SelectedTable}" Margin="0,5,5,5" 
              Text="{Binding EntityName,Mode=TwoWay}"/>
-								<ui:DialogButton Grid.Row="4" Grid.Column="1"  Content="添  加..." Command="Save" IsEnabled="{TemplateBinding CanSave}"/>
-								<ui:DialogButton Grid.Row="4" Grid.Column="2"  Content="取  消" Command="Close" IsCancel="True"/>
-							</Grid>
+							<ui:DialogButton Grid.Row="4" Grid.Column="1"  Content="添  加..." Command="Save" IsEnabled="{TemplateBinding CanSave}"/>
+							<ui:DialogButton Grid.Row="4" Grid.Column="2"  Content="取  消" Command="Close" IsCancel="True"/>
 						</Grid>
 					</Border>
-
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

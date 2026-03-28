@@ -11,18 +11,32 @@ using Basic.DataContexts;
 using Basic.EntityLayer;
 using Basic.Enums;
 using Basic.Interfaces;
+using Microsoft.VisualStudio.Shell;
 
 namespace Basic.Windows
 {
 	/// <summary>PersistentForm.xaml 的交互逻辑</summary>
-	public class CreatePersistent : Microsoft.VisualStudio.PlatformUI.DialogWindow
+	public class CreatePersistent : Microsoft.VisualStudio.PlatformUI.DialogWindowBase
 	{
 		static CreatePersistent()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(CreatePersistent),
 				new FrameworkPropertyMetadata(typeof(CreatePersistent)));
 		}
-
+		protected override void InvokeDialogHelp()
+		{
+			//if (base.HasHelpButton && ServiceProvider.GlobalProvider.GetService(typeof(Help)) is Help help)
+			//{
+			//	if (helpId.HasValue)
+			//	{
+			//		help.DisplayTopicFromId(helpTopic, helpId.Value);
+			//	}
+			//	else
+			//	{
+			//		help.DisplayTopicFromF1Keyword(helpTopic);
+			//	}
+			//}
+		}
 		private readonly ObservableCollection<DesignTableInfo> tables = new ObservableCollection<DesignTableInfo>();
 		private readonly Pagination<ConnectionInfo> connections = new Pagination<ConnectionInfo>();
 		private readonly ConnectionInfo defaultConnection;
@@ -41,6 +55,7 @@ namespace Basic.Windows
 
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			tables.Clear();
 			foreach (DesignTableInfo conn in (DesignTableInfo[])e.Result)
 			{
 				tables.Add(conn);
