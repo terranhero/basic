@@ -272,6 +272,7 @@
     </Compile>
     <Compile Include="CodeGenerator\ResourceGenerator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Localizations\ExtractEnumDialog.xaml.cs" />
     <Compile Include="Localizations\LocalizationDialog.xaml.cs" />
     <Compile Include="Localizations\CustomCultureInfo.cs" />
     <Compile Include="Localizations\LocalizationCollection.cs" />
@@ -455,6 +456,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.ConnectionUI" />
     <Reference Include="Microsoft.Data.ConnectionUI.Dialog" />
     <Reference Include="PresentationCore" />
@@ -462,6 +464,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -469,6 +472,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -543,6 +547,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Localization.Style.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ExtractEnum.Style.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Persistents.Style.xaml">

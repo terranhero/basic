@@ -25,17 +25,6 @@ namespace Basic.Windows
 		}
 		protected override void InvokeDialogHelp()
 		{
-			//if (base.HasHelpButton && ServiceProvider.GlobalProvider.GetService(typeof(Help)) is Help help)
-			//{
-			//	if (helpId.HasValue)
-			//	{
-			//		help.DisplayTopicFromId(helpTopic, helpId.Value);
-			//	}
-			//	else
-			//	{
-			//		help.DisplayTopicFromF1Keyword(helpTopic);
-			//	}
-			//}
 		}
 		private readonly ObservableCollection<DesignTableInfo> tables = new ObservableCollection<DesignTableInfo>();
 		private readonly Pagination<ConnectionInfo> connections = new Pagination<ConnectionInfo>();
@@ -83,7 +72,6 @@ namespace Basic.Windows
 			set { base.SetValue(SelectedTableProperty, value); }
 		}
 		#endregion
-
 
 		#region 属性 ConnectionInfo 定义
 		public static readonly DependencyProperty ConnectionProperty = DependencyProperty.Register("Connection",

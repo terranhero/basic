@@ -35,6 +35,10 @@ namespace Basic.Localizations
 			FileName = defaultName;
 			Title = StringUtils.GetString("Package_CreateLocalizationDialog_Title");
 		}
+		protected override void InvokeDialogHelp()
+		{
+
+		}
 
 		#region 属性 FileName 定义
 		public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName",

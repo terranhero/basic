@@ -340,7 +340,7 @@ namespace Basic.Localizations
                     }
                 }
             }
-            CreateEnumResource resourceView = new CreateEnumResource(this, dte, resourceCollection);
+            ExtractEnumDialog resourceView = new ExtractEnumDialog(this, dte, resourceCollection);
             if (resourceView.ShowModal() == true)
             {
                 string resInfo = Strings.Package_ResourceDescription;

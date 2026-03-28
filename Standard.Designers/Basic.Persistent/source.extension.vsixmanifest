@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="D4E32AFF-92E4-4E4D-9585-C4423FA06A5A" Publisher="GoldSoft Technology" Version="4.8.5818" Language="zh-Hans" />
@@ -36,5 +36,6 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.Registers" Path="|Standard.Registers|" AssemblyName="|Standard.Registers;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.EntityLayer" Path="|Standard.EntityLayer|" AssemblyName="|Standard.EntityLayer;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.DataAccess" Path="|Standard.DataAccess|" AssemblyName="|Standard.DataAccess;AssemblyName|" />
-    </Assets>
+      <Asset Type="Microsoft.VisualStudio.ToolboxControl" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+  </Assets>
 </PackageManifest>
