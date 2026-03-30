@@ -24,9 +24,8 @@ using Basic.Interfaces;
 
 namespace Basic.Configuration
 {
-	/// <summary>
-	/// 表示抽象配置文件
-	/// </summary>
+	/// <summary>表示数据持久化设计类文件内容</summary>
+	/// <remarks>设计内容包含数据库表信息、支持的数据库，资源文件等内容</remarks>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never)]
 	[XmlRoot(ElementName = XmlElementName, Namespace = XmlConfigNamespace)]
 	public sealed class PersistentConfiguration : AbstractCustomTypeDescriptor, IDisposable, ICloneable, INotifyCollectionChanged
