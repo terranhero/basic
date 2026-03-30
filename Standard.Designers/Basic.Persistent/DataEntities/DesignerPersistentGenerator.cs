@@ -47,7 +47,7 @@ namespace Basic.DataEntities
 			_PersistentConfiguration = pc;
 			_Converter = new SupportDatabasesConverter();
 			//_DatabaseType = ConnectionTypeEnum.SQLSERVER;
-			_SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.SQLSERVER };
+			_SupportDatabases = new ConnectionTypes[] { ConnectionTypes.SQLSERVER };
 			XmlNamespace = elementns;
 			XmlPrefix = prefix;
 		}
@@ -303,17 +303,17 @@ namespace Basic.DataEntities
 			}
 		}
 
-		private ConnectionTypeEnum[] _SupportDatabases;
+		private ConnectionTypes[] _SupportDatabases;
 		/// <summary>
 		/// 获取或设置数据持久类需要支持的数据库类型。
 		/// </summary>
 		[Basic.Designer.PersistentDescription("PersistentGenerator_SupportDatabases")]
 		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
 		[Basic.Designer.PersistentDisplay("PersistentGenerator_SupportDatabases_Display")]
-		[System.ComponentModel.DefaultValue(typeof(ConnectionTypeEnum), "SQLSERVER")]
+		[System.ComponentModel.DefaultValue(typeof(ConnectionTypes), "SQLSERVER")]
 		[System.ComponentModel.TypeConverter(typeof(SupportDatabasesConverter))]
 		[System.ComponentModel.Editor(typeof(SupportDatabasesEditor), typeof(UITypeEditor))]
-		public ConnectionTypeEnum[] SupportDatabases
+		public ConnectionTypes[] SupportDatabases
 		{
 			get { return _SupportDatabases; }
 			set
@@ -346,7 +346,7 @@ namespace Basic.DataEntities
 			else if (name == ContextAttribute) { _GenerateContext = Convert.ToBoolean(value); return true; }
 			else if (name == BuildSqlfAttribute) { _BuildSqlf = Convert.ToBoolean(value); return BuilderSupportDatabases(); }
 			else if (name == BuildOrafAttribute) { _BuildOraf = Convert.ToBoolean(value); return BuilderSupportDatabases(); }
-			else if (name == SupportAttribute) { _SupportDatabases = (ConnectionTypeEnum[])_Converter.ConvertFromString(value); }
+			else if (name == SupportAttribute) { _SupportDatabases = (ConnectionTypes[])_Converter.ConvertFromString(value); }
 			else if (name == ResourceAttribute) { return Enum.TryParse(value, out _ResxMode); }
 			else if (name == GenerateNewEntityAttribute) { return bool.TryParse(value, out _GenerateNewEntity); }
 			else if (name == GenerateEditEntityAttribute) { return bool.TryParse(value, out _GenerateEditEntity); }
@@ -359,15 +359,15 @@ namespace Basic.DataEntities
 		{
 			if (_BuildSqlf && _BuildOraf)
 			{
-				_SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.SQLSERVER, ConnectionTypeEnum.ORACLE };
+				_SupportDatabases = new ConnectionTypes[] { ConnectionTypes.SQLSERVER, ConnectionTypes.ORACLE };
 			}
 			else if (_BuildSqlf)
 			{
-				_SupportDatabases[0] = ConnectionTypeEnum.SQLSERVER;
+				_SupportDatabases[0] = ConnectionTypes.SQLSERVER;
 			}
 			else if (_BuildOraf)
 			{
-				_SupportDatabases[0] = ConnectionTypeEnum.ORACLE;
+				_SupportDatabases[0] = ConnectionTypes.ORACLE;
 			}
 			return true;
 		}
@@ -421,6 +421,6 @@ namespace Basic.DataEntities
 		/// </summary>
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
 		/// <param name="connectionType">表示数据库连接类型</param>
-		protected internal override void GenerateConfiguration(System.Xml.XmlWriter writer, ConnectionTypeEnum connectionType) { }
+		protected internal override void GenerateConfiguration(System.Xml.XmlWriter writer, ConnectionTypes connectionType) { }
 	}
 }

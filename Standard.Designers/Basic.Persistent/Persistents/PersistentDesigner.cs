@@ -48,7 +48,7 @@ namespace Basic.Configuration
 		private readonly NamespaceCollection _ImportNamespaces;
 		private readonly DataCommandCollection _DataCommands;
 		private readonly DesignTableInfo _TableInfo;
-		private readonly DataEntityElementCollection _DataEntityElements;
+		private readonly DesignerDataEntityCollection _DataEntityElements;
 		private readonly ProjectInfo _ProjectInfo;
 		private readonly MessageInfo _MessageInfo;
 		private readonly DesignerPersistentGenerator _Generator;
@@ -73,7 +73,7 @@ namespace Basic.Configuration
 			};
 			_Generator = new DesignerPersistentGenerator(this, XmlElementPrefix, XmlConfigNamespace);
 			_DataCommands = new DataCommandCollection(this);
-			_DataEntityElements = new DataEntityElementCollection(this, XmlElementPrefix, XmlConfigNamespace);
+			_DataEntityElements = new DesignerDataEntityCollection(this, XmlElementPrefix, XmlConfigNamespace);
 			_DataEntityElements.CollectionChanged += new NotifyCollectionChangedEventHandler(DataEntityElements_CollectionChanged);
 		}
 
@@ -221,7 +221,7 @@ namespace Basic.Configuration
 		/// 表示配置文件中实体类集合
 		/// </summary>
 		[System.ComponentModel.Bindable(true), System.ComponentModel.Browsable(false)]
-		public DataEntityElementCollection DataEntities { get { return _DataEntityElements; } }
+		public DesignerDataEntityCollection DataEntities { get { return _DataEntityElements; } }
 
 		/// <summary>
 		/// 更新当前持久类中属性与数据库字段映射关系。
@@ -368,10 +368,10 @@ namespace Basic.Configuration
 		[Basic.Designer.PersistentDescription("PersistentGenerator_SupportDatabases")]
 		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
 		[Basic.Designer.PersistentDisplay("PersistentGenerator_SupportDatabases_Display")]
-		[System.ComponentModel.DefaultValue(typeof(ConnectionTypeEnum), "SQLSERVER")]
+		[System.ComponentModel.DefaultValue(typeof(ConnectionTypes), "SQLSERVER")]
 		[System.ComponentModel.TypeConverter(typeof(SupportDatabasesConverter))]
 		[System.ComponentModel.Editor(typeof(SupportDatabasesEditor), typeof(UITypeEditor))]
-		public ConnectionTypeEnum[] SupportDatabases
+		public ConnectionTypes[] SupportDatabases
 		{
 			get { return _Generator.SupportDatabases; }
 			set { _Generator.SupportDatabases = value; }
@@ -819,7 +819,7 @@ namespace Basic.Configuration
 			{
 				_TableInfo.ReadXml(reader.ReadSubtree()); return false;
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DataEntityElementCollection.XmlElementName)
+			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DesignerDataEntityCollection.XmlElementName)
 			{
 				_DataEntityElements.ReadXml(reader.ReadSubtree()); return false;
 			}
@@ -1690,7 +1690,7 @@ namespace Basic.Configuration
 		/// </summary>
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
 		/// <param name="connectionType">表示数据库连接类型</param>
-		protected internal override void GenerateConfiguration(XmlWriter writer, ConnectionTypeEnum connectionType)
+		protected internal override void GenerateConfiguration(XmlWriter writer, ConnectionTypes connectionType)
 		{
 			writer.WriteStartElement(XmlElementPrefix, XmlElementName, XmlDataNamespace);
 			_TableInfo.GenerateConfiguration(writer, connectionType);

@@ -689,7 +689,7 @@ namespace Basic.Configuration
                     return;
                 }
 
-                DataEntityElementCollection entities = persistent.DataEntities;
+                DesignerDataEntityCollection entities = persistent.DataEntities;
                 DesignerDataEntity newEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.AddNew));
                 DesignerDataEntity selectEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.SearchTable));
                 DesignerDataEntity updateEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.Modify));

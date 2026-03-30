@@ -98,7 +98,7 @@ namespace Basic.DataEntities
 		/// </summary>
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
 		/// <param name="connectionType">表示数据库连接类型</param>
-		protected internal override void GenerateConfiguration(System.Xml.XmlWriter writer, ConnectionTypeEnum connectionType) { }
+		protected internal override void GenerateConfiguration(System.Xml.XmlWriter writer, ConnectionTypes connectionType) { }
 	}
 
 	/// <summary>

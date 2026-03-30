@@ -79,7 +79,7 @@ namespace Basic.Designer
 		/// 将对象转换为其 XML 表示形式。
 		/// </summary>
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
-		internal void GenerateConfiguration(System.Xml.XmlWriter writer, ConnectionTypeEnum connectionType)
+		internal void GenerateConfiguration(System.Xml.XmlWriter writer, ConnectionTypes connectionType)
 		{
 			writer.WriteStartElement(XmlElementName);
 			foreach (WithClause child in base.Items)

@@ -238,7 +238,7 @@ namespace Basic.Converters
         /// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
         protected internal override void WriteContent(System.Xml.XmlWriter writer)
         {
-            tableInfo.GenerateConfiguration(writer, ConnectionTypeEnum.Default);
+            tableInfo.GenerateConfiguration(writer, ConnectionTypes.Default);
             dataCommands.WriteXml(writer);
         }
 

@@ -70,15 +70,15 @@ namespace Basic.Windows
 				PersistentDesigner persistent = new PersistentDesigner();
 				ConnectionInfo info = (ConnectionInfo)cmbConnections.SelectedItem;
 				if (info.ConnectionType == ConnectionType.SqlConnection)
-					persistent.SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.SQLSERVER };
+					persistent.SupportDatabases = new ConnectionTypes[] { ConnectionTypes.SQLSERVER };
 				else if (info.ConnectionType == ConnectionType.OracleConnection)
-					persistent.SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.ORACLE };
+					persistent.SupportDatabases = new ConnectionTypes[] { ConnectionTypes.ORACLE };
 				else if (info.ConnectionType == ConnectionType.MySqlConnection)
-					persistent.SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.MYSQL };
+					persistent.SupportDatabases = new ConnectionTypes[] { ConnectionTypes.MYSQL };
 				else if (info.ConnectionType == ConnectionType.Db2Connection)
-					persistent.SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.DB2 };
+					persistent.SupportDatabases = new ConnectionTypes[] { ConnectionTypes.DB2 };
 				else if (info.ConnectionType == ConnectionType.NpgSqlConnection)
-					persistent.SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.NPGSQL };
+					persistent.SupportDatabases = new ConnectionTypes[] { ConnectionTypes.PGSQL };
 
 				persistent.Namespace = _DefaultNamespace;
 				persistent.EntityNamespace = _DefaultNamespace;

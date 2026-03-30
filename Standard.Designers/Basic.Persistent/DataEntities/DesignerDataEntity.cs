@@ -32,7 +32,7 @@ namespace Basic.DataEntities
 		private readonly DataCommandCollection fileDataCommands;
 		private readonly DataEntityPropertyCollection propertyCollection;
 		private readonly PersistentDesigner _Persistent;
-		private readonly DataEntityElementCollection dataEntityElements;
+		private readonly DesignerDataEntityCollection dataEntityElements;
 		private readonly DesignerLayoutInfo designerInfo;
 		private readonly DesignerDataContract _DataContract;
 		/// <summary>初始化 EntityDefinition 类的新实例。 </summary>
@@ -750,7 +750,7 @@ namespace Basic.DataEntities
 		/// </summary>
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
 		/// <param name="connectionType">表示数据库连接类型</param>
-		protected internal override void GenerateConfiguration(XmlWriter writer, ConnectionTypeEnum connectionType)
+		protected internal override void GenerateConfiguration(XmlWriter writer, ConnectionTypes connectionType)
 		{
 			foreach (DesignerDataCommand dataCommand in dataCommands)
 			{

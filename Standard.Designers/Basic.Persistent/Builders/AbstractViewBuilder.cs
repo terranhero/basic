@@ -122,7 +122,7 @@ namespace Basic.Builders
 		/// <summary>
 		/// 表示配置文件中实体类集合
 		/// </summary>
-		public DataEntityElementCollection DataEntities { get { return _Persistent.DataEntities; } }
+		public DesignerDataEntityCollection DataEntities { get { return _Persistent.DataEntities; } }
 
 		/// <summary>
 		/// 模版名称

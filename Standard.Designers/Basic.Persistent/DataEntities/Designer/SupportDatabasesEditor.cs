@@ -44,10 +44,10 @@ namespace Basic.Designer
 				{
 					this.listBox = new DatabaseListBox();
 				}
-				ConnectionTypeEnum[] types = (ConnectionTypeEnum[])value;
+				ConnectionTypes[] types = (ConnectionTypes[])value;
 				this.listBox.BeginEdit(editorService, provider, types);
 				editorService.DropDownControl(this.listBox);
-				ConnectionTypeEnum[] result = new ConnectionTypeEnum[listBox.CheckedItems.Count];
+				ConnectionTypes[] result = new ConnectionTypes[listBox.CheckedItems.Count];
 				listBox.CheckedItems.CopyTo(result, 0);
 				return result;
 			}
@@ -58,25 +58,25 @@ namespace Basic.Designer
 		private class DatabaseListBox : System.Windows.Forms.CheckedListBox
 		{
 			private IWindowsFormsEditorService _editorService;
-			private readonly List<ConnectionTypeEnum> dbs = new List<ConnectionTypeEnum>();
-			private readonly SortedList<ConnectionTypeEnum, int> indexList = new SortedList<ConnectionTypeEnum, int>();
+			private readonly List<ConnectionTypes> dbs = new List<ConnectionTypes>();
+			private readonly SortedList<ConnectionTypes, int> indexList = new SortedList<ConnectionTypes, int>();
 			public DatabaseListBox()
 			{
 				this.IntegralHeight = true; this.CheckOnClick = true;
-				foreach (ConnectionTypeEnum element in Enum.GetValues(typeof(ConnectionTypeEnum)))
+				foreach (ConnectionTypes element in Enum.GetValues(typeof(ConnectionTypes)))
 				{
-					if (element != ConnectionTypeEnum.Default)
+					if (element != ConnectionTypes.Default)
 					{
 						base.Items.Add(element); dbs.Add(element);
 					}
 				}
 			}
 
-			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, ConnectionTypeEnum[] types)
+			internal void BeginEdit(IWindowsFormsEditorService editorService, System.IServiceProvider provider, ConnectionTypes[] types)
 			{
 				_editorService = editorService; int index = -1;
-				List<ConnectionTypeEnum> selecteds = new List<ConnectionTypeEnum>(types);
-				foreach (ConnectionTypeEnum element in dbs)
+				List<ConnectionTypes> selecteds = new List<ConnectionTypes>(types);
+				foreach (ConnectionTypes element in dbs)
 				{
 					if (selecteds.Contains(element)) { index++; base.SetItemChecked(index, true); }
 					else { index++; base.SetItemChecked(index, false); }

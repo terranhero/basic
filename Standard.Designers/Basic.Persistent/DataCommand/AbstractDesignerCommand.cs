@@ -121,11 +121,11 @@ namespace Basic.Configuration
 		/// </summary>
 		/// <param name="connectionType"></param>
 		/// <returns></returns>
-		protected internal string ParameterPlaceholder(ConnectionTypeEnum connectionType)
+		protected internal string ParameterPlaceholder(ConnectionTypes connectionType)
 		{
-			if (connectionType == ConnectionTypeEnum.ORACLE && _CommandType == CommandType.Text)
+			if (connectionType == ConnectionTypes.ORACLE && _CommandType == CommandType.Text)
 				return ":";
-			else if (connectionType == ConnectionTypeEnum.ORACLE && _CommandType == CommandType.StoredProcedure)
+			else if (connectionType == ConnectionTypes.ORACLE && _CommandType == CommandType.StoredProcedure)
 				return string.Empty;
 			//else if (connectionType == ConnectionTypeEnum.SQLSERVER)
 			//	return "@";
@@ -143,10 +143,10 @@ namespace Basic.Configuration
 		/// </summary>
 		/// <param name="connectionType"></param>
 		/// <returns></returns>
-		protected internal string CreateCommandText(string commandText, ConnectionTypeEnum connectionType)
+		protected internal string CreateCommandText(string commandText, ConnectionTypes connectionType)
 		{
 			commandText = commandText.ToUpperInvariant();
-			if (connectionType == ConnectionTypeEnum.ORACLE && _CommandType == CommandType.Text)
+			if (connectionType == ConnectionTypes.ORACLE && _CommandType == CommandType.Text)
 			{
 				commandText = commandText.Replace("{%GUID%}", "SYSGUID()");
 				commandText = commandText.Replace("NEWID()", "SYSGUID()");
@@ -160,7 +160,7 @@ namespace Basic.Configuration
 				commandText = commandText.Replace("{%", ParameterPlaceholder(connectionType));
 				commandText = commandText.Replace("%}", "");
 			}
-			else if (connectionType == ConnectionTypeEnum.DB2)
+			else if (connectionType == ConnectionTypes.DB2)
 			{
 				commandText = commandText.Replace("{%GUID%}", "UUID()");
 				commandText = commandText.Replace("SYSGUID()", "UUID()");
@@ -174,7 +174,7 @@ namespace Basic.Configuration
 				commandText = commandText.Replace("{%", ParameterPlaceholder(connectionType));
 				commandText = commandText.Replace("%}", "");
 			}
-			else if (connectionType == ConnectionTypeEnum.SQLSERVER)
+			else if (connectionType == ConnectionTypes.SQLSERVER)
 			{
 				commandText = commandText.Replace("{%GUID%}", "NEWID()");
 				commandText = commandText.Replace("SYSGUID()", "NEWID()");
@@ -187,7 +187,7 @@ namespace Basic.Configuration
 				commandText = commandText.Replace("{%", ParameterPlaceholder(connectionType));
 				commandText = commandText.Replace("%}", "");
 			}
-			else if (connectionType == ConnectionTypeEnum.MYSQL)
+			else if (connectionType == ConnectionTypes.MYSQL)
 			{
 				commandText = commandText.Replace("{%GUID%}", "UUID()");
 				commandText = commandText.Replace("SYSGUID()", "UUID()");
@@ -206,7 +206,7 @@ namespace Basic.Configuration
 				commandText = commandText.Replace("{%", ParameterPlaceholder(connectionType));
 				commandText = commandText.Replace("%}", "");
 			}
-			else if (connectionType == ConnectionTypeEnum.NPGSQL)
+			else if (connectionType == ConnectionTypes.PGSQL)
 			{
 				commandText = commandText.Replace("{%GUID%}", "UUID()");
 				commandText = commandText.Replace("SYSGUID()", "UUID()");
@@ -230,22 +230,22 @@ namespace Basic.Configuration
 		/// <param name="connectionType">创建数据库参数的数据库连接。</param>
 		/// <returns>返回促昂件成功的参数名称包含参数符号。</returns>
 		protected internal string CreateParameterName(string parameterName,
-			ConnectionTypeEnum connectionType = ConnectionTypeEnum.Default)
+			ConnectionTypes connectionType = ConnectionTypes.Default)
 		{
 			if (parameterName == null || parameterName.Length == 0) { return null; }
-			if (connectionType == ConnectionTypeEnum.ORACLE && _CommandType == CommandType.Text)
+			if (connectionType == ConnectionTypes.ORACLE && _CommandType == CommandType.Text)
 				return string.Concat(":", parameterName);
-			else if (connectionType == ConnectionTypeEnum.ORACLE && _CommandType == CommandType.StoredProcedure)
+			else if (connectionType == ConnectionTypes.ORACLE && _CommandType == CommandType.StoredProcedure)
 				return parameterName;
-			else if (connectionType == ConnectionTypeEnum.SQLSERVER)
+			else if (connectionType == ConnectionTypes.SQLSERVER)
 				return string.Concat("@", parameterName);
-			else if (connectionType == ConnectionTypeEnum.MYSQL)
+			else if (connectionType == ConnectionTypes.MYSQL)
 				return string.Concat("@", parameterName);
-			else if (connectionType == ConnectionTypeEnum.DB2)
+			else if (connectionType == ConnectionTypes.DB2)
 				return string.Concat("@", parameterName);
-			else if (connectionType == ConnectionTypeEnum.NPGSQL)
+			else if (connectionType == ConnectionTypes.PGSQL)
 				return string.Concat("@", parameterName);
-			if (connectionType == ConnectionTypeEnum.Default)
+			if (connectionType == ConnectionTypes.Default)
 			{
 				if (!parameterName.StartsWith("{%")) { parameterName = string.Concat("{%", parameterName); }
 				if (!parameterName.EndsWith("{%")) { parameterName = string.Concat(parameterName, "%}"); }
@@ -384,7 +384,7 @@ namespace Basic.Configuration
 		/// </summary>
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
 		/// <param name="connectionType">表示数据库连接类型</param>
-		protected internal override void GenerateConfiguration(XmlWriter writer, ConnectionTypeEnum connectionType)
+		protected internal override void GenerateConfiguration(XmlWriter writer, ConnectionTypes connectionType)
 		{
 			if (_Parameters.Count == 0) { return; }
 			writer.WriteStartElement(ParametersElement);

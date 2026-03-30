@@ -3,14 +3,14 @@ using System.Globalization;
 
 namespace Basic.Properties
 {
-    /// <summary>
-    /// 
-    /// </summary>
+	/// <summary>
+	/// 
+	/// </summary>
 	public static class StringUtils
 	{
 		private static global::System.Resources.ResourceManager resourceMan;
 
-		private static global::System.Globalization.CultureInfo resourceCulture = CultureInfo.CurrentUICulture;
+		private static readonly global::System.Globalization.CultureInfo resourceCulture = CultureInfo.CurrentUICulture;
 
 		/// <summary>
 		///   返回此类使用的缓存的 ResourceManager 实例。

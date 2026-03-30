@@ -137,7 +137,7 @@ namespace Basic.Designer
         /// </summary>
         /// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
         /// <param name="connectionType">表示数据库连接类型</param>
-        protected internal virtual void GenerateConfiguration(XmlWriter writer, ConnectionTypeEnum connectionType) { }
+        protected internal virtual void GenerateConfiguration(XmlWriter writer, ConnectionTypes connectionType) { }
 
         /// <summary>
         /// 从对象的 XML 表示形式生成该对象。

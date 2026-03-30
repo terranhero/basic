@@ -187,7 +187,7 @@ namespace Basic.Configuration
 		/// <param name="connectionType">表示数据库连接类型</param>
 		protected internal override void WriteContent(System.Xml.XmlWriter writer) { }
 
-		protected internal override void GenerateConfiguration(System.Xml.XmlWriter writer, Enums.ConnectionTypeEnum connectionType)
+		protected internal override void GenerateConfiguration(System.Xml.XmlWriter writer, Enums.ConnectionTypes connectionType)
 		{
 		}
 	}

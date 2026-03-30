@@ -27,7 +27,7 @@ namespace Basic.Windows
         //private ContextMenu designerMenu;
         private readonly PersistentDesigner _Persistent;
         private readonly DesignTableInfo _TableInfo;
-        private readonly DataEntityElementCollection _DataEntities;
+        private readonly DesignerDataEntityCollection _DataEntities;
         private readonly PersistentPane _PersistentPane;
         private readonly EnvDTE.ProjectItem _ProjectItem;
         private readonly EnvDTE.DTE dteClass;

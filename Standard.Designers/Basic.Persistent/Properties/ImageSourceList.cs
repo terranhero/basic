@@ -8,30 +8,30 @@ namespace Basic.Properties
 {
 	public static class ImageSourceList
 	{
-		public const string Database_AggregateFunction = "/Basic.Persistent;component/Images/Database_AggregateFunction.ico";
-		public const string Database_CheckConstraint = "/Basic.Persistent;component/Images/Database_CheckConstraint.ico";
-		public const string Database_Column = "/Basic.Persistent;component/Images/Database_Column.ico";
-		public const string Database_Component = "/Basic.Persistent;component/Images/Database_Component.ico";
-		public const string Database_Connection = "/Basic.Persistent;component/Images/Database_Connection.ico";
-		public const string Database_DataType = "/Basic.Persistent;component/Images/Database_DataType.ico";
-		public const string Database_File = "/Basic.Persistent;component/Images/Database_File.ico";
-		public const string Database_Folder = "/Basic.Persistent;component/Images/Database_Folder.ico";
-		public const string Database_ForeignKey = "/Basic.Persistent;component/Images/Database_ForeignKey.ico";
-		public const string Database_Index = "/Basic.Persistent;component/Images/Database_Index.ico";
-		public const string Database_InputParameter = "/Basic.Persistent;component/Images/Database_InputParameter.ico";
-		public const string Database_OutputParameter = "/Basic.Persistent;component/Images/Database_OutputParameter.ico";
-		public const string Database_PrimaryKey = "/Basic.Persistent;component/Images/Database_PrimaryKey.ico";
-		public const string Database_ReturnValue = "/Basic.Persistent;component/Images/Database_ReturnValue.ico";
-		public const string Database_ScalarFunction = "/Basic.Persistent;component/Images/Database_ScalarFunction.ico";
-		public const string Database_StoredProcedure = "/Basic.Persistent;component/Images/Database_StoredProcedure.ico";
-		public const string Database_Table = "/Basic.Persistent;component/Images/Database_Table.ico";
-		public const string Database_TabularFunction = "/Basic.Persistent;component/Images/Database_TabularFunction.ico";
-		public const string Database_Trigger = "/Basic.Persistent;component/Images/Database_Trigger.ico";
-		public const string Database_UniqueKey = "/Basic.Persistent;component/Images/Database_UniqueKey.ico";
-		public const string Database_View = "/Basic.Persistent;component/Images/Database_View.ico";
-		public const string Move = "/Basic.Persistent;component/Images/Move.ico";
-		public const string Properties = "/Basic.Persistent;component/Images/Property.ico";
-		public const string AddNew = "/Basic.Persistent;component/Images/AddNew.png";
+		//public const string Database_AggregateFunction = "/Basic.Persistent;component/Images/Database_AggregateFunction.ico";
+		//public const string Database_CheckConstraint = "/Basic.Persistent;component/Images/Database_CheckConstraint.ico";
+		//public const string Database_Column = "/Basic.Persistent;component/Images/Database_Column.ico";
+		//public const string Database_Component = "/Basic.Persistent;component/Images/Database_Component.ico";
+		//public const string Database_Connection = "/Basic.Persistent;component/Images/Database_Connection.ico";
+		//public const string Database_DataType = "/Basic.Persistent;component/Images/Database_DataType.ico";
+		//public const string Database_File = "/Basic.Persistent;component/Images/Database_File.ico";
+		//public const string Database_Folder = "/Basic.Persistent;component/Images/Database_Folder.ico";
+		//public const string Database_ForeignKey = "/Basic.Persistent;component/Images/Database_ForeignKey.ico";
+		//public const string Database_Index = "/Basic.Persistent;component/Images/Database_Index.ico";
+		//public const string Database_InputParameter = "/Basic.Persistent;component/Images/Database_InputParameter.ico";
+		//public const string Database_OutputParameter = "/Basic.Persistent;component/Images/Database_OutputParameter.ico";
+		//public const string Database_PrimaryKey = "/Basic.Persistent;component/Images/Database_PrimaryKey.ico";
+		//public const string Database_ReturnValue = "/Basic.Persistent;component/Images/Database_ReturnValue.ico";
+		//public const string Database_ScalarFunction = "/Basic.Persistent;component/Images/Database_ScalarFunction.ico";
+		//public const string Database_StoredProcedure = "/Basic.Persistent;component/Images/Database_StoredProcedure.ico";
+		//public const string Database_Table = "/Basic.Persistent;component/Images/Database_Table.ico";
+		//public const string Database_TabularFunction = "/Basic.Persistent;component/Images/Database_TabularFunction.ico";
+		//public const string Database_Trigger = "/Basic.Persistent;component/Images/Database_Trigger.ico";
+		//public const string Database_UniqueKey = "/Basic.Persistent;component/Images/Database_UniqueKey.ico";
+		//public const string Database_View = "/Basic.Persistent;component/Images/Database_View.ico";
+		//public const string Move = "/Basic.Persistent;component/Images/Move.ico";
+		//public const string Properties = "/Basic.Persistent;component/Images/Property.ico";
+		//public const string AddNew = "/Basic.Persistent;component/Images/AddNew.png";
 		//        public const string addnew= addnew.png
 		//public const string copy.png
 		//public const string cut.png

@@ -13,7 +13,7 @@ namespace Basic.Collections
 	/// <summary>
 	/// 表示实体类集合
 	/// </summary>
-	public sealed class DataEntityElementCollection : AbstractCollection<DesignerDataEntity>, INotifyPropertyChanged,
+	public sealed class DesignerDataEntityCollection : AbstractCollection<DesignerDataEntity>, INotifyPropertyChanged,
 		IEnumerable<DesignerDataEntity>, INotifyCollectionChanged, IXmlSerializable
 	{
 		#region 实体定义字段
@@ -23,18 +23,18 @@ namespace Basic.Collections
 
 		private readonly PersistentDesigner persistentConfiguration;
 		/// <summary>
-		/// 初始化 AbstractCustomTypeDescriptor 类实例。
+		/// 初始化 DesignerDataEntityCollection 类实例。
 		/// </summary>
-		internal DataEntityElementCollection(PersistentDesigner persistent)
+		internal DesignerDataEntityCollection(PersistentDesigner persistent)
 			: base(persistent, null, null) { persistentConfiguration = persistent; }
 
 		/// <summary>
-		/// 初始化 DesignTableInfo 类实例
+		/// 初始化 DesignerDataEntityCollection 类实例
 		/// </summary>
 		/// <param name="persistent">包含此类实例的 PersistentConfiguration 类实例。</param>
 		/// <param name="prefix">Xml文档元素前缀。</param>
 		/// <param name="elementns">Xml文档元素命名空间。</param>
-		internal DataEntityElementCollection(PersistentDesigner persistent, string prefix, string elementns)
+		internal DesignerDataEntityCollection(PersistentDesigner persistent, string prefix, string elementns)
 			: base(persistent, prefix, elementns) { persistentConfiguration = persistent; }
 
 		/// <summary>

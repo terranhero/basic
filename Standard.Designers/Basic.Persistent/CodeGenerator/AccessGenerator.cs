@@ -245,9 +245,9 @@ namespace Basic.EntityDesigner
 				IndentChars = "\t"
 			};
 			//ProjectItem sqlItem = null, oracleItem = null;
-			foreach (ConnectionTypeEnum connectionType in persistent.SupportDatabases)
+			foreach (ConnectionTypes connectionType in persistent.SupportDatabases)
 			{
-				string extension = ConnectionTypeExtension.GetExtension(connectionType);
+				string extension = ConnectionTypesExtension.GetExtension(connectionType);
 				string filePath = string.Concat(file.DirectoryName, @"\", persistent.TableName, ".", extension);
 				using (XmlWriter writer = XmlWriter.Create(filePath, settings))
 				{
