@@ -26,8 +26,8 @@
     <Dependencies>
     </Dependencies>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.Net.Component.4.8.SDK" Version="[18.0,19.0)" DisplayName=".NET Framework 4.8 SDK" />
-        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.WebToolsExtensions" Version="[18.4.11505.171,19.0)" DisplayName="ASP.NET 和 Web 开发" />
+        <Prerequisite Id="Microsoft.Net.ComponentGroup.DevelopmentPrerequisites" Version="[18.0.11101.84,19.0)" DisplayName=".NET Framework 4.7.2 开发工具" />
+        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.WebToolsExtensions" Version="[18.0.11101.84,19.0)" DisplayName="ASP.NET 和 Web 开发" />
     </Prerequisites>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
@@ -36,6 +36,6 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.Registers" Path="|Standard.Registers|" AssemblyName="|Standard.Registers;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.EntityLayer" Path="|Standard.EntityLayer|" AssemblyName="|Standard.EntityLayer;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Standard.DataAccess" Path="|Standard.DataAccess|" AssemblyName="|Standard.DataAccess;AssemblyName|" />
-      <Asset Type="Microsoft.VisualStudio.ToolboxControl" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-  </Assets>
+        <Asset Type="Microsoft.VisualStudio.ToolboxControl" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
 </PackageManifest>
