@@ -15,7 +15,7 @@ namespace Basic.DataEntities
 	[PersistentCategory("PersistentCategory_CodeGenerator"), PersistentDescription("PersistentGenerator_Description")]
 	public sealed class PersistentGeneratorElement : AbstractCustomTypeDescriptor
 	{
-		private readonly PersistentConfiguration _PersistentConfiguration;
+		private readonly PersistentDesigner _PersistentConfiguration;
 		private readonly SupportDatabasesConverter _Converter;
 		internal const string XmlElementName = "PersistentGenerator";
 		internal const string ModifierAttribute = "Modifier";
@@ -41,7 +41,7 @@ namespace Basic.DataEntities
 		/// <param name="persistent">包含此类实例的 PersistentConfiguration 类实例。</param>
 		/// <param name="prefix">Xml文档元素前缀。</param>
 		/// <param name="elementns">Xml文档元素命名空间。</param>
-		internal PersistentGeneratorElement(PersistentConfiguration pc, string prefix, string elementns)
+		internal PersistentGeneratorElement(PersistentDesigner pc, string prefix, string elementns)
 			: base(pc)
 		{
 			_PersistentConfiguration = pc;

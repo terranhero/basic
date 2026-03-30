@@ -13,13 +13,13 @@ namespace Basic.Designer
 	/// </summary>
 	public sealed class MessageInfo : AbstractCustomTypeDescriptor
 	{
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		/// <summary>
 		/// 采用项目信息初始化 MessageInfo 类实例。
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="fileName"></param>
-		public MessageInfo(PersistentConfiguration persistent, string name, string fileName)
+		public MessageInfo(PersistentDesigner persistent, string name, string fileName)
 			: base(persistent)
 		{
 			_Persistent = persistent;

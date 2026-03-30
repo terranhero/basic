@@ -14,9 +14,9 @@ namespace Basic.Windows
 		private readonly LocalizationCollection _ResourceCollection;
 		//private readonly ObservableCollection<MessageInfo> _MessageInfos;
 		private readonly PersistentService _CommandService;
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		private readonly EnvDTE.ProjectItem _ProjectItem;
-		public CreateResWindow(PersistentService commandService, PersistentConfiguration persistent,
+		public CreateResWindow(PersistentService commandService, PersistentDesigner persistent,
 			EnvDTE80.DTE2 dteClass, LocalizationCollection resources)
 			: base("Microsoft.VisualStudio.PlatformUI.DialogWindow")
 		{

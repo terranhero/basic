@@ -65,7 +65,7 @@ namespace Basic.Configuration
 		#endregion
 
 		private readonly StaticCommandElement _StaticCommand;
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		/// <summary>
 		/// 初始化 CheckCommandElement 类实例。
 		/// </summary>

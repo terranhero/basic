@@ -21,11 +21,11 @@ namespace Basic.Collections
 		internal const string NamespaceAttribute = "Namespace";
 		#endregion
 
-		private readonly PersistentConfiguration persistentConfiguration;
+		private readonly PersistentDesigner persistentConfiguration;
 		/// <summary>
 		/// 初始化 AbstractCustomTypeDescriptor 类实例。
 		/// </summary>
-		internal DataEntityElementCollection(PersistentConfiguration persistent)
+		internal DataEntityElementCollection(PersistentDesigner persistent)
 			: base(persistent, null, null) { persistentConfiguration = persistent; }
 
 		/// <summary>
@@ -34,7 +34,7 @@ namespace Basic.Collections
 		/// <param name="persistent">包含此类实例的 PersistentConfiguration 类实例。</param>
 		/// <param name="prefix">Xml文档元素前缀。</param>
 		/// <param name="elementns">Xml文档元素命名空间。</param>
-		internal DataEntityElementCollection(PersistentConfiguration persistent, string prefix, string elementns)
+		internal DataEntityElementCollection(PersistentDesigner persistent, string prefix, string elementns)
 			: base(persistent, prefix, elementns) { persistentConfiguration = persistent; }
 
 		/// <summary>

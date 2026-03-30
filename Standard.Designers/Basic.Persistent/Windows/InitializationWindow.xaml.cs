@@ -22,8 +22,8 @@ namespace Basic.Windows
 	/// </summary>
 	public partial class InitializationWindow : Microsoft.VisualStudio.PlatformUI.DialogWindow
 	{
-		private readonly PersistentConfiguration persistentConfiguration;
-		public InitializationWindow(PersistentConfiguration persistent)
+		private readonly PersistentDesigner persistentConfiguration;
+		public InitializationWindow(PersistentDesigner persistent)
 		{
 			persistentConfiguration = persistent;
 			InitializeComponent();

@@ -30,7 +30,7 @@ namespace Basic.Designer
 			Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 			List<string> strings = new List<string>();
 			PersistentDescriptor persistentDescriptor = context.Instance as PersistentDescriptor;
-			PersistentConfiguration persistent = persistentDescriptor.DefinitionInfo;
+			PersistentDesigner persistent = persistentDescriptor.DefinitionInfo;
 			MessageInfo messageInfo = persistent.MessageConverter;
 			if (messageInfo.IsEmpty) { return new StandardValuesCollection(strings); }
 			EnvDTE.DTE dteClass = (EnvDTE.DTE)context.GetService(typeof(EnvDTE.DTE));

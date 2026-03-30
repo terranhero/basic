@@ -25,7 +25,7 @@ namespace Basic.Builders
 		[System.NonSerialized()]
 		private readonly ObservableCollection<DropDownFile> _Files;
 		[System.NonSerialized()]
-		internal protected readonly PersistentConfiguration _Persistent;
+		internal protected readonly PersistentDesigner _Persistent;
 		[System.NonSerialized()]
 		internal protected readonly AbstractEntityColllection _AbstractEntities;
 		[System.NonSerialized()]
@@ -48,7 +48,7 @@ namespace Basic.Builders
 			Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
 			_CommandService = commandService;
 			_Files = new ObservableCollection<DropDownFile>();
-			_Persistent = new PersistentConfiguration();
+			_Persistent = new PersistentDesigner();
 			_Persistent.DataEntities.CollectionChanged += new NotifyCollectionChangedEventHandler(DataEntities_CollectionChanged);
 			_AbstractEntities = new AbstractEntityColllection(_Persistent);
 			_Project = project;
@@ -112,7 +112,7 @@ namespace Basic.Builders
 		/// 表示数据持久类设计文件内容
 		/// </summary>
 
-		public PersistentConfiguration Persistent { get { return _Persistent; } }
+		public PersistentDesigner Persistent { get { return _Persistent; } }
 
 		/// <summary>
 		/// 表示配置文件中实体类集合

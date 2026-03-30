@@ -14,12 +14,12 @@ namespace Basic.Collections
 	/// </summary>
 	public sealed class AbstractEntityColllection : Basic.Collections.BaseCollection<AbstractEntityElement>
 	{
-		private readonly PersistentConfiguration persistentConfiguration;
+		private readonly PersistentDesigner persistentConfiguration;
 
 		/// <summary>
 		/// 初始化 AbstractCustomTypeDescriptor 类实例。
 		/// </summary>
-		internal AbstractEntityColllection(PersistentConfiguration persistent) { persistentConfiguration = persistent; }
+		internal AbstractEntityColllection(PersistentDesigner persistent) { persistentConfiguration = persistent; }
 
 		/// <summary>
 		/// 

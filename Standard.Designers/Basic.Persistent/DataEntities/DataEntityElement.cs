@@ -31,12 +31,12 @@ namespace Basic.DataEntities
 		private readonly DataCommandCollection dataCommands;
 		private readonly DataCommandCollection fileDataCommands;
 		private readonly DataEntityPropertyCollection propertyCollection;
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		private readonly DataEntityElementCollection dataEntityElements;
 		private readonly DesignerInfoElement designerInfo;
 		private readonly DataContractElement _DataContract;
 		/// <summary>初始化 EntityDefinition 类的新实例。 </summary>
-		public DataEntityElement(PersistentConfiguration persistent)
+		public DataEntityElement(PersistentDesigner persistent)
 			: base(persistent, typeof(Basic.EntityLayer.AbstractEntity).FullName)
 		{
 			_Persistent = persistent;
@@ -140,7 +140,7 @@ namespace Basic.DataEntities
 
 		#endregion
 
-		internal PersistentConfiguration Persistent { get { return _Persistent; } }
+		internal PersistentDesigner Persistent { get { return _Persistent; } }
 		/// <summary>
 		/// 获取当前节点元素名称
 		/// </summary>

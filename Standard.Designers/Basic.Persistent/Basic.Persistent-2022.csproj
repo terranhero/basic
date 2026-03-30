@@ -308,7 +308,7 @@
     <Compile Include="Persistents\CodeDomExtensions.cs" />
     <Compile Include="Persistents\ConfirugationConsts.cs" />
     <Compile Include="Persistents\DbConnectionBuilder.cs" />
-    <Compile Include="Persistents\PersistentConfiguration.cs" />
+    <Compile Include="Persistents\PersistentDesigner.cs" />
     <Compile Include="Persistents\PersistentFactory.cs" />
     <Compile Include="Persistents\PersistentPackage.cs" />
     <Compile Include="Persistents\PersistentPane.cs" />

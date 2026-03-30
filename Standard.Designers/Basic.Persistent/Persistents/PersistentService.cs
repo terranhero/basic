@@ -404,7 +404,7 @@ namespace Basic.Configuration
             ThreadHelper.ThrowIfNotOnUIThread();
             OleMenuCommand menu = sender as OleMenuCommand;
             menu.Enabled = menu.Visible = false;
-            PersistentConfiguration _Persistent = GetPersistentConfiguration();
+            PersistentDesigner _Persistent = GetPersistentConfiguration();
             if (_Persistent == null) { return; }
             EnvDTE80.DTE2 dteClass = GetDTE() as EnvDTE80.DTE2;
             if (_Persistent.MessageConverter.IsEmpty) { return; }
@@ -417,7 +417,7 @@ namespace Basic.Configuration
         {
             try
             {
-                PersistentConfiguration _Persistent = GetPersistentConfiguration();
+                PersistentDesigner _Persistent = GetPersistentConfiguration();
                 if (_Persistent == null) { return; }
                 if (_Persistent.MessageConverter.IsEmpty) { ShowMessage("本地化资源文件没有选择，请选择"); return; }
                 EnvDTE80.DTE2 dteClass = GetDTE();
@@ -681,7 +681,7 @@ namespace Basic.Configuration
         {
             try
             {
-                PersistentConfiguration _Persistent = GetPersistentConfiguration();
+                PersistentDesigner _Persistent = GetPersistentConfiguration();
                 if (_Persistent == null) { return; }
                 if (_Persistent.MessageConverter.IsEmpty) { ShowMessage("本地化资源文件没有选择，请选择"); return; }
                 EnvDTE80.DTE2 dteClass = GetDTE() as EnvDTE80.DTE2;
@@ -891,7 +891,7 @@ namespace Basic.Configuration
         {
             try
             {
-                PersistentConfiguration _Persistent = GetPersistentConfiguration();
+                PersistentDesigner _Persistent = GetPersistentConfiguration();
                 if (_Persistent == null) { return; }
                 if (_Persistent.MessageConverter.IsEmpty) { ShowMessage("本地化资源文件没有选择，请选择"); return; }
                 EnvDTE80.DTE2 dteClass = GetDTE() as EnvDTE80.DTE2;
@@ -962,7 +962,7 @@ namespace Basic.Configuration
         {
             try
             {
-                PersistentConfiguration _Persistent = GetPersistentConfiguration();
+                PersistentDesigner _Persistent = GetPersistentConfiguration();
                 if (_Persistent == null) { return; }
                 if (_Persistent.MessageConverter.IsEmpty) { ShowMessage("本地化资源文件没有选择，请选择"); return; }
                 EnvDTE80.DTE2 dteClass = GetDTE() as EnvDTE80.DTE2;
@@ -1229,7 +1229,7 @@ namespace Basic.Configuration
             return null;
         }
 
-        private PersistentConfiguration GetPersistentConfiguration()
+        private PersistentDesigner GetPersistentConfiguration()
         {
             IVsMonitorSelection monitorSelection = GetMonitorSelection();
             //monitorSelection.GetCurrentElementValue(0, out value0);
@@ -1300,7 +1300,7 @@ namespace Basic.Configuration
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = GetItemsCanvas();
-            PersistentConfiguration persistent = GetPersistentConfiguration();
+            PersistentDesigner persistent = GetPersistentConfiguration();
             if (canvas != null && canvas.SelectedItem != null)
             {
                 DataEntityElement entity = canvas.SelectedItem.DataContext as DataEntityElement;

@@ -29,7 +29,7 @@ namespace Basic.Designer
 		public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
 		{
 			List<MessageInfo> strings = new List<MessageInfo>();
-			PersistentConfiguration persistent = context.Instance as PersistentConfiguration;
+			PersistentDesigner persistent = context.Instance as PersistentDesigner;
 			EnvDTE.DTE dteClass = (EnvDTE.DTE)context.GetService(typeof(EnvDTE.DTE));
 			Assumes.Present(dteClass);
 			EnvDTE.Solution solutionClass = dteClass.Solution;
@@ -92,7 +92,7 @@ namespace Basic.Designer
 					this.listBox = new MessageListBox(dteClass);
 				}
 				PersistentDescriptor objectDescriptor = context.Instance as PersistentDescriptor;
-				PersistentConfiguration persistet = objectDescriptor.DefinitionInfo;
+				PersistentDesigner persistet = objectDescriptor.DefinitionInfo;
 				this.listBox.BeginEdit(editorService, provider, persistet, messageInfo.ConverterName);
 				editorService.DropDownControl(this.listBox);
 				MessageInfo info = (MessageInfo)listBox.SelectedItem;
@@ -112,7 +112,7 @@ namespace Basic.Designer
 			private readonly EnvDTE.DTE dteClass;
 			public MessageListBox(EnvDTE.DTE dte) { dteClass = dte; this.DisplayMember = "ConverterName"; this.ValueMember = "ConverterName"; }
 
-			internal void BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, PersistentConfiguration persistent, string value)
+			internal void BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, PersistentDesigner persistent, string value)
 			{
 				_editorService = editorService;
 				this.Items.Clear();

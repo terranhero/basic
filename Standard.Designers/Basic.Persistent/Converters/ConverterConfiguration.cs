@@ -29,8 +29,8 @@ namespace Basic.Converters
         internal ConverterConfiguration(string fileName)
         {
             _Version = new System.Version(4, 0, 0, 0);
-            tableInfo = new DesignTableInfo(this, PersistentConfiguration.XmlElementPrefix, PersistentConfiguration.XmlDataNamespace);
-            dataCommands = new ConverterDataCommandCollection(this, PersistentConfiguration.XmlElementPrefix, PersistentConfiguration.XmlDataNamespace);
+            tableInfo = new DesignTableInfo(this, PersistentDesigner.XmlElementPrefix, PersistentDesigner.XmlDataNamespace);
+            dataCommands = new ConverterDataCommandCollection(this, PersistentDesigner.XmlElementPrefix, PersistentDesigner.XmlDataNamespace);
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.CloseInput = true;
             settings.IgnoreComments = true;
@@ -56,17 +56,17 @@ namespace Basic.Converters
         /// <summary>
         /// 获取当前节点元素名称
         /// </summary>
-        protected internal override string ElementName { get { return PersistentConfiguration.XmlElementName; } }
+        protected internal override string ElementName { get { return PersistentDesigner.XmlElementName; } }
 
         /// <summary>
         /// 获取当前节点元素命名空间
         /// </summary>
-        protected internal override string ElementNamespace { get { return PersistentConfiguration.XmlDataNamespace; } }
+        protected internal override string ElementNamespace { get { return PersistentDesigner.XmlDataNamespace; } }
 
         /// <summary>
         /// 获取当前节点元素前缀
         /// </summary>
-        protected internal override string ElementPrefix { get { return PersistentConfiguration.XmlElementPrefix; } }
+        protected internal override string ElementPrefix { get { return PersistentDesigner.XmlElementPrefix; } }
 
         private Version _Version;
         /// <summary>
@@ -82,7 +82,7 @@ namespace Basic.Converters
         /// <returns>如果属性存在读取成功则返回true，否则返回false，有子类读取。</returns>
         protected internal override bool ReadAttribute(string name, string value)
         {
-            if (name == PersistentConfiguration.VersionAttribute) { _Version = Version.Parse(value); return true; }
+            if (name == PersistentDesigner.VersionAttribute) { _Version = Version.Parse(value); return true; }
             return false;
         }
 
@@ -93,7 +93,7 @@ namespace Basic.Converters
         /// <returns>如果属性存在读取成功则返回true，否则返回false，有子类读取。</returns>
         protected internal override void WriteAttribute(System.Xml.XmlWriter writer)
         {
-            writer.WriteAttributeString(PersistentConfiguration.VersionAttribute, _Version.ToString());
+            writer.WriteAttributeString(PersistentDesigner.VersionAttribute, _Version.ToString());
         }
 
         /// <summary>
@@ -112,11 +112,11 @@ namespace Basic.Converters
                 while (reader.Read())
                 {
                     if (reader.NodeType == XmlNodeType.Whitespace) { continue; }
-                    else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentConfiguration.TableNameElement)
+                    else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentDesigner.TableNameElement)
                     {
                         tableInfo.TableName = reader.ReadString(); continue;
                     }
-                    else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentConfiguration.ViewNameElement)
+                    else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentDesigner.ViewNameElement)
                     {
                         tableInfo.ViewName = reader.ReadString(); continue;
                     }
@@ -209,11 +209,11 @@ namespace Basic.Converters
         /// <returns>判断当前对象是否已经读取完成，如果读取完成则返回true，否则返回false。</returns>
         protected internal override bool ReadContent(System.Xml.XmlReader reader)
         {
-            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentConfiguration.TableNameElement)
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentDesigner.TableNameElement)
             {
                 tableInfo.TableName = reader.ReadString(); return false;
             }
-            else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentConfiguration.ViewNameElement)
+            else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentDesigner.ViewNameElement)
             {
                 tableInfo.ViewName = reader.ReadString(); return false;
             }
@@ -225,7 +225,7 @@ namespace Basic.Converters
             {
                 dataCommands.ReadXml(reader.ReadSubtree()); return false;
             }
-            else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == PersistentConfiguration.XmlElementName)
+            else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == PersistentDesigner.XmlElementName)
             {
                 return true;
             }

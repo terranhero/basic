@@ -14,11 +14,11 @@ namespace Basic.Collections
 	//System.Collections.ObjectModel.ObservableCollection<DataCommandElement>
 	{
 		internal const string XmlElementName = "DataCommands";
-		private readonly PersistentConfiguration persistentConfiguration;
+		private readonly PersistentDesigner persistentConfiguration;
 		/// <summary>
 		/// 初始化 DataCommandCollection 类的新实例。
 		/// </summary>
-		internal DataCommandCollection(PersistentConfiguration persistent) : base() { persistentConfiguration = persistent; }
+		internal DataCommandCollection(PersistentDesigner persistent) : base() { persistentConfiguration = persistent; }
 
 		/// <summary>
 		/// 

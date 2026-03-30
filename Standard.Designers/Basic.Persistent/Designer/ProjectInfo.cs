@@ -12,7 +12,7 @@ namespace Basic.Designer
     /// </summary>
     public sealed class ProjectInfo : AbstractCustomTypeDescriptor, IEquatable<Guid>
     {
-        private readonly PersistentConfiguration persistentConfiguration;
+        private readonly PersistentDesigner persistentConfiguration;
         private Guid _ProjectGuid = Guid.Empty;
         private string _ProjectName = null;
         private string _UniqueName = null;
@@ -35,7 +35,7 @@ namespace Basic.Designer
         /// 采用项目信息初始化 ProjectInfo 类实例。
         /// </summary>
         /// <param name="persistent">数据持久类文件</param>
-        public ProjectInfo(PersistentConfiguration persistent) : this(persistent, Guid.Empty, null, null) { }
+        public ProjectInfo(PersistentDesigner persistent) : this(persistent, Guid.Empty, null, null) { }
 
         /// <summary>
         /// 采用项目信息初始化 ProjectInfo 类实例。
@@ -44,7 +44,7 @@ namespace Basic.Designer
         /// <param name="guid"></param>
         /// <param name="name"></param>
         /// <param name="uniqueName"></param>
-        public ProjectInfo(PersistentConfiguration persistent, Guid guid, string name, string uniqueName)
+        public ProjectInfo(PersistentDesigner persistent, Guid guid, string name, string uniqueName)
             : base(persistent)
         {
             persistentConfiguration = persistent;
@@ -158,7 +158,7 @@ namespace Basic.Designer
         {
             if (!IsEmpty)
             {
-                writer.WriteStartElement(PersistentConfiguration.XmlElementPrefix, ElementName, PersistentConfiguration.XmlConfigNamespace);
+                writer.WriteStartElement(PersistentDesigner.XmlElementPrefix, ElementName, PersistentDesigner.XmlConfigNamespace);
                 WriteAttribute(writer);
                 WriteContent(writer);
                 writer.WriteEndElement();

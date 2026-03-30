@@ -89,7 +89,7 @@ namespace Basic.DataContexts
 		/// <param name="persistent">需要修改的 PersistentConfiguration 类实例。</param>
 		/// <param name="sql">需要替换的 Transact-SQL 查询语句。</param>
 		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
-		public static bool PasteStaticCommand(PersistentConfiguration persistent, string sql)
+		public static bool PasteStaticCommand(PersistentDesigner persistent, string sql)
 		{
 			if (persistent == null) { return false; }
 			TransactSqlResult result = ResolverTransactSql(sql);
@@ -681,7 +681,7 @@ namespace Basic.DataContexts
 		/// <param name="persistent"></param>
 		/// <param name="sql"></param>
 		/// <returns></returns>
-		public static bool PasteDynamicCommand(PersistentConfiguration persistent, string sql)
+		public static bool PasteDynamicCommand(PersistentDesigner persistent, string sql)
 		{
 			if (persistent == null) { return false; }
 			TransactSqlResult result = new TransactSqlResult(true);

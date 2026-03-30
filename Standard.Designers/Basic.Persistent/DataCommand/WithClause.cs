@@ -37,7 +37,7 @@ namespace Basic.Designer
 		#endregion
 
 		private readonly DynamicCommandElement _DynamicCommand;
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		internal WithClause(DynamicCommandElement command)
 			: base(command) { _DynamicCommand = command; _Persistent = command.Persistent; }
 

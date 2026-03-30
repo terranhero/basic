@@ -67,7 +67,7 @@ namespace Basic.Windows
 		{
 			if (lstTables.SelectedItem != null)
 			{
-				PersistentConfiguration persistent = new PersistentConfiguration();
+				PersistentDesigner persistent = new PersistentDesigner();
 				ConnectionInfo info = (ConnectionInfo)cmbConnections.SelectedItem;
 				if (info.ConnectionType == ConnectionType.SqlConnection)
 					persistent.SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.SQLSERVER };

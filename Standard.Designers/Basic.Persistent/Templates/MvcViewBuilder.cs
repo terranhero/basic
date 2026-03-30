@@ -122,7 +122,7 @@ namespace Basic.Builders
 		/// <param name="dpdlPath"></param>
 		internal void InitlizeModels(string dpdlPath)
 		{
-			PersistentConfiguration persistent = new PersistentConfiguration();
+			PersistentDesigner persistent = new PersistentDesigner();
 			using (StreamReader reader = new StreamReader(dpdlPath))
 			{
 				persistent.ReadXml(reader);

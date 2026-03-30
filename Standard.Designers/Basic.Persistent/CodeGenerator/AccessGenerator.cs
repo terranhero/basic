@@ -135,7 +135,7 @@ namespace Basic.EntityDesigner
 				ProjectItem item = serviceProvider.GetService(typeof(ProjectItem)) as ProjectItem;
 				Assumes.Present(item);
 				pGenerateProgress.Progress(0, 100);
-				PersistentConfiguration persistent = new PersistentConfiguration();
+				PersistentDesigner persistent = new PersistentDesigner();
 				using (StringReader reader = new StringReader(bstrInputFileContents))
 				{
 					persistent.ReadXml(reader);
@@ -236,7 +236,7 @@ namespace Basic.EntityDesigner
 			return 262144;
 		}
 
-		private void GenerateConfigurationCode(string wszInputFilePath, ProjectItem item, PersistentConfiguration persistent)
+		private void GenerateConfigurationCode(string wszInputFilePath, ProjectItem item, PersistentDesigner persistent)
 		{
 			FileInfo file = new FileInfo(wszInputFilePath);
 			XmlWriterSettings settings = new XmlWriterSettings
@@ -293,7 +293,7 @@ namespace Basic.EntityDesigner
 			}
 		}
 
-		private void GenerateContextCode(string wszInputFilePath, ProjectItem item, PersistentConfiguration persistent,
+		private void GenerateContextCode(string wszInputFilePath, ProjectItem item, PersistentDesigner persistent,
 			CodeGeneratorOptions options, CodeDomProvider provider)
 		{
 			FileInfo file = new FileInfo(wszInputFilePath);
@@ -348,7 +348,7 @@ namespace Basic.EntityDesigner
 			}
 		}
 
-		private byte[] GenerateAccessCode(string wszInputFilePath, ProjectItem item, PersistentConfiguration persistent,
+		private byte[] GenerateAccessCode(string wszInputFilePath, ProjectItem item, PersistentDesigner persistent,
 			CodeGeneratorOptions options, CodeDomProvider provider)
 		{
 			Project project = item.ContainingProject;
@@ -428,7 +428,7 @@ namespace Basic.EntityDesigner
 			}
 		}
 
-		private void GenerateDataEntityCode(string wszInputFilePath, ProjectItem item, PersistentConfiguration persistent,
+		private void GenerateDataEntityCode(string wszInputFilePath, ProjectItem item, PersistentDesigner persistent,
 			CodeGeneratorOptions options, CodeDomProvider provider)
 		{
 			FileInfo file = new FileInfo(wszInputFilePath);

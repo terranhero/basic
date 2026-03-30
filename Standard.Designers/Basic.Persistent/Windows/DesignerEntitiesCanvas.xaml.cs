@@ -25,7 +25,7 @@ namespace Basic.Windows
         }
         private DesignerCanvas _DesignerCanvas;
         //private ContextMenu designerMenu;
-        private readonly PersistentConfiguration _Persistent;
+        private readonly PersistentDesigner _Persistent;
         private readonly DesignTableInfo _TableInfo;
         private readonly DataEntityElementCollection _DataEntities;
         private readonly PersistentPane _PersistentPane;
@@ -33,7 +33,7 @@ namespace Basic.Windows
         private readonly EnvDTE.DTE dteClass;
         private readonly IVsPersistDocData vsPersistDocData;
         private readonly string _FileName;
-        public DesignerEntitiesCanvas(PersistentPane pane, PersistentConfiguration configurationPersistent)
+        public DesignerEntitiesCanvas(PersistentPane pane, PersistentDesigner configurationPersistent)
         {
             _PersistentPane = pane;
             _ProjectItem = pane.ProjectItem; dteClass = _ProjectItem.DTE;
@@ -53,7 +53,7 @@ namespace Basic.Windows
 
         /// <summary>获取数据库表设计文件</summary>
         /// <returns></returns>
-        public PersistentConfiguration GetPersistent() { return _Persistent; }
+        public PersistentDesigner GetPersistent() { return _Persistent; }
 
         #region 属性 SelectedItem 定义
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem",

@@ -20,7 +20,7 @@ namespace Basic.Designer
 		internal const string XmlElementName = "WithClauses";
 
 		private readonly DynamicCommandElement _DynamicCommand;
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		internal WithClauseCollection(DynamicCommandElement command) { _DynamicCommand = command; _Persistent = command.Persistent; }
 
 		/// <summary>判断当前With子句中是否存在分页子句</summary>

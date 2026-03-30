@@ -28,7 +28,7 @@ namespace Basic.Configuration
 	/// <remarks>设计内容包含数据库表信息、支持的数据库，资源文件等内容</remarks>
 	[System.ComponentModel.EditorBrowsable(EditorBrowsableState.Never)]
 	[XmlRoot(ElementName = XmlElementName, Namespace = XmlConfigNamespace)]
-	public sealed class PersistentConfiguration : AbstractCustomTypeDescriptor, IDisposable, ICloneable, INotifyCollectionChanged
+	public sealed class PersistentDesigner : AbstractCustomTypeDescriptor, IDisposable, ICloneable, INotifyCollectionChanged
 	{
 		#region 节点元素名称
 		internal const string XmlElementName = "PersistentConfiguration";
@@ -54,9 +54,9 @@ namespace Basic.Configuration
 		private readonly PersistentGeneratorElement _Generator;
 		private Version _Version;
 		/// <summary>
-		/// 初始化 PersistentConfiguration 类实例
+		/// 初始化 PersistentDesigner 类实例
 		/// </summary>
-		internal PersistentConfiguration()
+		internal PersistentDesigner()
 		{
 			_Version = new System.Version(5, 0, 0, 0);
 			_ImportNamespaces = new NamespaceCollection();

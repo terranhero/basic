@@ -48,7 +48,7 @@ namespace Basic.Configuration
 		private const uint PersistentFormat = 0;
 		private const string PersistentExtension = ".dpdl";
 		private DesignerEntitiesCanvas editorControl;
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		private readonly AsyncPackage _PersistentPackage;
 		private readonly EnvDTE.ProjectItem _ProjectItem;
 		private readonly IVsHierarchy vsHierarchy;
@@ -77,7 +77,7 @@ namespace Basic.Configuration
 			_ProjectItem = item;
 			_PersistentPackage = package;
 			dteClass = (EnvDTE.DTE)Package.GetGlobalService(typeof(EnvDTE.DTE));
-			_Persistent = new PersistentConfiguration();
+			_Persistent = new PersistentDesigner();
 			_Persistent.FileContentChanged += new EventHandler(OnPersistentContentChanged);
 			_Persistent.CollectionChanged += new NotifyCollectionChangedEventHandler(OnPersistentCollectionChanged);
 			editorControl = new DesignerEntitiesCanvas(this, _Persistent);
@@ -1044,7 +1044,7 @@ namespace Basic.Configuration
 		}
 		#endregion
 
-		public PersistentConfiguration GetPersistent() { return _Persistent; }
+		public PersistentDesigner GetPersistent() { return _Persistent; }
 
 		private uint FileFormat
 		{

@@ -47,7 +47,7 @@ namespace Basic.Designer
                     this.listBox = new ProjectListBox(dteClass);
                 }
                 PersistentDescriptor objectDescriptor = context.Instance as PersistentDescriptor;
-                PersistentConfiguration persistet = objectDescriptor.DefinitionInfo;
+                PersistentDesigner persistet = objectDescriptor.DefinitionInfo;
                 this.listBox.BeginEdit(editorService, provider, persistet, projectInfo.ProjectGuid);
                 editorService.DropDownControl(this.listBox);
                 ProjectInfo info = (ProjectInfo)listBox.SelectedItem;
@@ -63,13 +63,13 @@ namespace Basic.Designer
         private class ProjectListBox : ListBox
         {
             private IWindowsFormsEditorService _editorService;
-            private PersistentConfiguration persistentConfiguration;
+            private PersistentDesigner persistentConfiguration;
             private readonly EnvDTE.DTE dteClass;
             public ProjectListBox(EnvDTE.DTE dte)
             {
                 dteClass = dte;
             }
-            internal void BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, PersistentConfiguration persistent, Guid value)
+            internal void BeginEdit(IWindowsFormsEditorService editorService, IServiceProvider provider, PersistentDesigner persistent, Guid value)
             {
                 persistentConfiguration = persistent;
                 _editorService = editorService;

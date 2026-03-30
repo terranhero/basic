@@ -166,9 +166,9 @@ namespace Basic.Windows
 			//}
 		}
 
-		public PersistentConfiguration GetPersistentContent(string defaultNamespance)
+		public PersistentDesigner GetPersistentContent(string defaultNamespance)
 		{
-			PersistentConfiguration persistent = new PersistentConfiguration();
+			PersistentDesigner persistent = new PersistentDesigner();
 			ConnectionInfo info = Connection;
 			if (info.ConnectionType == ConnectionType.SqlConnection)
 				persistent.SupportDatabases = new ConnectionTypeEnum[] { ConnectionTypeEnum.SQLSERVER };

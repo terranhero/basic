@@ -50,7 +50,7 @@ namespace Basic.Designer
 					this.listBox = new FolderListBox(provider);
 				}
 				PersistentDescriptor objectDescriptor = context.Instance as PersistentDescriptor;
-				PersistentConfiguration persistet = objectDescriptor.DefinitionInfo;
+				PersistentDesigner persistet = objectDescriptor.DefinitionInfo;
 				if (persistet.Project.IsEmpty == false)
 				{
 					EnvDTE.DTE dteClass = (EnvDTE.DTE)provider.GetService(typeof(EnvDTE.DTE));

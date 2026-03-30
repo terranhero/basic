@@ -29,13 +29,13 @@ namespace Basic.DataEntities
 		internal const string CommentElement = "Comment";
 		internal const string BaseClassElement = "BaseClass";
 		#endregion
-		private readonly PersistentConfiguration persistent;
+		private readonly PersistentDesigner persistent;
 		/// <summary>
 		/// 初始化 AbstractEntityElement 类实例。
 		/// </summary>
 		/// <param name="nofity">当前配置文件，此配置文件为当前实体更改后需要通知的对象。</param>
 		/// <param name="baseClass">当前实体类基类</param>
-		protected AbstractEntityElement(PersistentConfiguration nofity, string baseClass)
+		protected AbstractEntityElement(PersistentDesigner nofity, string baseClass)
 			: base(nofity)
 		{
 			persistent = nofity;

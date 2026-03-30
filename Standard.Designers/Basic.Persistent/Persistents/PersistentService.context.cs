@@ -275,7 +275,7 @@ namespace Basic.Configuration
 			_IVsUIShell.EnableModeless(0);
 			if (WindowHelper.ShowModal(form, hwnd) == 1)
 			{
-				PersistentConfiguration persistent = form.GetPersistentContent(defaultNamespace);
+				PersistentDesigner persistent = form.GetPersistentContent(defaultNamespace);
 				string filePath = string.Concat(fullPath, persistent.TableInfo.EntityName, ".dpdl");
 				using (XmlWriter writer = XmlWriter.Create(filePath))
 				{

@@ -26,7 +26,7 @@ namespace Basic.Configuration
 		protected internal const string CShartFileExtension = "cs";
 		protected internal const string VisualBasicFileExtension = "vb";
 		private readonly DataEntityElement _EntityElement;
-		private readonly PersistentConfiguration _Persistent;
+		private readonly PersistentDesigner _Persistent;
 		/// <summary>
 		/// 初始化 StaticCommandElement 类实例
 		/// </summary>
@@ -71,7 +71,7 @@ namespace Basic.Configuration
 		/// <summary>
 		/// 当前实体模型。
 		/// </summary>
-		protected internal PersistentConfiguration Persistent { get { return _Persistent; } }
+		protected internal PersistentDesigner Persistent { get { return _Persistent; } }
 
 		private MethodModifierEnum _MethodModifier = MethodModifierEnum.Public;
 		/// <summary>
@@ -596,7 +596,7 @@ namespace Basic.Configuration
 		/// <param name="persistent">表示需要写入代码的类空间</param>
 		/// <param name="provider">代码生成器和代码编译器的实例(一般为CSharpCodeProvider或VBCodeProvider)。</param>
 		protected internal CodeMemberMethod WriteContextDesignerCode(CodeTypeMemberCollection members,
-			PersistentConfiguration persistent, CodeDomProvider provider)
+			PersistentDesigner persistent, CodeDomProvider provider)
 		{
 			CodeMemberMethod method = new CodeMemberMethod
 			{
@@ -656,7 +656,7 @@ namespace Basic.Configuration
 		/// <param name="provider">代码自动生成提供器（含代码生成规则）</param>
 		/// <returns>返回</returns>
 		protected internal virtual EditPoint WriteContextCode(EnvDTE80.CodeClass2 codeClass, CodeDomProvider provider,
-			DataEntityElement entity, PersistentConfiguration persistent)
+			DataEntityElement entity, PersistentDesigner persistent)
 		{
 			CodeFunction function = FindContextFunction(codeClass, MethodName);
 			if (function == null)

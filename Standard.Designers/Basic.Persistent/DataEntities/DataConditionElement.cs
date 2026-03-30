@@ -37,7 +37,7 @@ namespace Basic.DataEntities
 			propertyCollection = new DataConditionPropertyCollection(this);
 		}
 
-		internal PersistentConfiguration Persistent { get { return dataEntityElement.Persistent; } }
+		internal PersistentDesigner Persistent { get { return dataEntityElement.Persistent; } }
 		/// <summary>
 		/// 结果类实例
 		/// </summary>

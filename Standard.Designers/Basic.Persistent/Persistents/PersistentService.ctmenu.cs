@@ -219,7 +219,7 @@ namespace Basic.Configuration
                 {
                     if (canvas.SelectedItem == null)
                     {
-                        PersistentConfiguration persistent = pane.GetPersistent();
+                        PersistentDesigner persistent = pane.GetPersistent();
                         DataEntityElement entityEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
                         entityEntityElement.Name = string.Concat(persistent.TableInfo.EntityName, persistent.DataEntities.Count);
                         EnvDTE80.DTE2 dteClass = this.GetDTE();
@@ -351,7 +351,7 @@ namespace Basic.Configuration
                 else
                 {
                     SetWaitCursor();
-                    PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                    PersistentDesigner persistent = this.GetPersistentConfiguration();
                     if (TransactSqlResolver.PasteStaticCommand(persistent, text)) { Clipboard.Clear(); }
 
                 }
@@ -404,7 +404,7 @@ namespace Basic.Configuration
                 else
                 {
                     SetWaitCursor();
-                    PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                    PersistentDesigner persistent = this.GetPersistentConfiguration();
                     if (TransactSqlResolver.PasteDynamicCommand(persistent, text))
                     {
                         Clipboard.Clear();
@@ -423,7 +423,7 @@ namespace Basic.Configuration
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
-            PersistentConfiguration persistent = this.GetPersistentConfiguration();
+            PersistentDesigner persistent = this.GetPersistentConfiguration();
             if (persistent.TableInfo.IsEmpty) { menu.Enabled = menu.Visible = false; return; }
             menu.Enabled = menu.Visible = canvas != null && canvas.SelectedItem != null &&
                  canvas.SelectedItem.SelectedObject is DataCommandElement &&
@@ -437,7 +437,7 @@ namespace Basic.Configuration
                 DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
                 if (canvas == null) { return; }
                 PersistentPane pane = this.GetPersistentPane();
-                PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                PersistentDesigner persistent = this.GetPersistentConfiguration();
                 ConnectionConfiguration config = new ConnectionConfiguration(this);
                 if (config.ReadJson(pane.ProjectItem) == false) { return; }
                 SetWaitCursor();
@@ -487,7 +487,7 @@ namespace Basic.Configuration
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
-            PersistentConfiguration persistent = this.GetPersistentConfiguration();
+            PersistentDesigner persistent = this.GetPersistentConfiguration();
             menu.Enabled = menu.Visible = canvas != null && canvas.SelectedItem == null && !persistent.TableInfo.IsEmpty;
         }
 
@@ -497,7 +497,7 @@ namespace Basic.Configuration
             {
                 ConnectionConfiguration configInfo = new ConnectionConfiguration(this);
                 PersistentPane pane = this.GetPersistentPane();
-                PersistentConfiguration persistent = pane.GetPersistent();
+                PersistentDesigner persistent = pane.GetPersistent();
                 if (configInfo.ReadJson(pane.ProjectItem) == false) { return; }
                 if (persistent.TableInfo.IsEmpty)
                 {
@@ -535,7 +535,7 @@ namespace Basic.Configuration
                 SetWaitCursor();
                 DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
                 PersistentPane pane = this.GetPersistentPane();
-                PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                PersistentDesigner persistent = this.GetPersistentConfiguration();
                 DesignTableInfo _TableInfo = persistent.TableInfo;
                 DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
                 if (canvas.SelectedItem != null && canvas.SelectedItem.SelectedObject is DynamicCommandElement)
@@ -583,7 +583,7 @@ namespace Basic.Configuration
             {
                 PersistentPane pane = this.GetPersistentPane();
                 //DesignerEntitiesCanvas canvas = pane.Content as DesignerEntitiesCanvas;
-                PersistentConfiguration persistent = pane.GetPersistent();
+                PersistentDesigner persistent = pane.GetPersistent();
                 DesignTableInfo _TableInfo = persistent.TableInfo;
 
                 //asyncPackage.GetDialogPage()
@@ -625,7 +625,7 @@ namespace Basic.Configuration
             {
                 PersistentPane pane = this.GetPersistentPane();
                 DesignerEntitiesCanvas canvas = pane.Content as DesignerEntitiesCanvas;
-                PersistentConfiguration persistent = pane.GetPersistent();
+                PersistentDesigner persistent = pane.GetPersistent();
                 DesignTableInfo _TableInfo = persistent.TableInfo;
                 DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
                 DataEntityElement entity = designerEntity.DataContext as DataEntityElement;
@@ -673,7 +673,7 @@ namespace Basic.Configuration
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
-            PersistentConfiguration persistent = canvas.GetPersistent();
+            PersistentDesigner persistent = canvas.GetPersistent();
             menu.Enabled = menu.Visible = canvas != null && persistent.TableInfo.Columns.Count > 0;
         }
 
@@ -682,7 +682,7 @@ namespace Basic.Configuration
             try
             {
                 DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
-                PersistentConfiguration persistent = canvas.GetPersistent();
+                PersistentDesigner persistent = canvas.GetPersistent();
                 if (persistent.TableInfo.Columns.Count == 0)
                 {
                     WriteToOutput("缺少数据表字段信息，请右击弹出菜单执行\"更新数据表\"命令");
@@ -817,7 +817,7 @@ namespace Basic.Configuration
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = GetItemsCanvas();
-            PersistentConfiguration persistent = GetPersistentConfiguration();
+            PersistentDesigner persistent = GetPersistentConfiguration();
             menu.Enabled = menu.Visible = false;
             if (canvas != null && canvas.SelectedItem != null)
             {
@@ -862,7 +862,7 @@ namespace Basic.Configuration
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = GetItemsCanvas();
-            PersistentConfiguration persistent = GetPersistentConfiguration();
+            PersistentDesigner persistent = GetPersistentConfiguration();
             menu.Enabled = menu.Visible = false;
             if (canvas != null && canvas.SelectedItem != null)
             {
@@ -963,7 +963,7 @@ namespace Basic.Configuration
         {
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = GetItemsCanvas();
-            PersistentConfiguration persistent = GetPersistentConfiguration();
+            PersistentDesigner persistent = GetPersistentConfiguration();
             menu.Enabled = menu.Visible = false;
             if (canvas != null && canvas.SelectedItem != null)
             {
@@ -978,7 +978,7 @@ namespace Basic.Configuration
         {
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
             PersistentPane pane = this.GetPersistentPane();
-            PersistentConfiguration persistent = GetPersistentConfiguration();
+            PersistentDesigner persistent = GetPersistentConfiguration();
             if (canvas.SelectedItem == null) { return; }
             DesignerEntity item = canvas.SelectedItem as DesignerEntity;
             if (item == null) { return; }
@@ -1014,7 +1014,7 @@ namespace Basic.Configuration
                 string confirmMessage = string.Format("确定要删除\"{0}\"实体对象,删除对象将同时删除对象关联的命令？", entity.ClassName);
                 if (Confirm(confirmMessage))//确定
                 {
-                    PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                    PersistentDesigner persistent = this.GetPersistentConfiguration();
                     persistent.DataEntities.Remove(entity);
                 }
             }
@@ -1066,7 +1066,7 @@ namespace Basic.Configuration
                 text = text.Remove(0, ClipboardFormat.ClipboardFormatLength);
                 if (expressCode == ClipboardFormat.PersistentDataEntityFormat)
                 {
-                    PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                    PersistentDesigner persistent = this.GetPersistentConfiguration();
                     DataEntityElement entityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
                     using (StringReader strReader = new StringReader(text))
                     {
@@ -1189,7 +1189,7 @@ namespace Basic.Configuration
                 }
                 else
                 {
-                    PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                    PersistentDesigner persistent = this.GetPersistentConfiguration();
                     if (TransactSqlResolver.PasteDynamicCommand(persistent, text))
                     {
                         Clipboard.Clear();
@@ -1273,7 +1273,7 @@ namespace Basic.Configuration
                     builder.Append(ClipboardFormat.PersistentDataEntityFormat);
                     entityElement.WriteXml(writer);
                 }
-                PersistentConfiguration persistent = this.GetPersistentConfiguration();
+                PersistentDesigner persistent = this.GetPersistentConfiguration();
                 persistent.DataEntities.Remove(entityElement);
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }

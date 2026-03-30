@@ -7,13 +7,13 @@ namespace Basic.Designer
 	/// <summary>
 	/// 
 	/// </summary>
-	internal sealed class PersistentDescriptor : ObjectDescriptor<PersistentConfiguration>
+	internal sealed class PersistentDescriptor : ObjectDescriptor<PersistentDesigner>
 	{
 		/// <summary>
 		/// 初始化 ParameterDescriptor 实例
 		/// </summary>
 		/// <param name="dInfo"></param>
-		public PersistentDescriptor(PersistentConfiguration dInfo) : base(dInfo) { }
+		public PersistentDescriptor(PersistentDesigner dInfo) : base(dInfo) { }
 
 		private PropertyDescriptorCollection propertyDescriptors = null;
 		/// <summary>
