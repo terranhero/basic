@@ -129,7 +129,7 @@ namespace Basic.Builders
 			}
 
 			_Models.Clear(); ModelName = null;
-			foreach (DataEntityElement entity in persistent.DataEntities)
+			foreach (DesignerDataEntity entity in persistent.DataEntities)
 			{
 				_Models.Add(entity.FullName);
 				if (entity.Condition.Arguments.Count > 0)

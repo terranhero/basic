@@ -35,9 +35,9 @@ namespace Basic.Views
 		/// <param name="writer">需要输入代码的 System.IO.TextWriter 类实例。</param>
 		public override void WriteCode(System.IO.TextWriter writer)
 		{
-			if (base.Entity != null && Entity is DataEntityElement)
+			if (base.Entity != null && Entity is DesignerDataEntity)
 			{
-				DataEntityElement dataEntity = Entity as DataEntityElement;
+				DesignerDataEntity dataEntity = Entity as DesignerDataEntity;
 				writer.WriteLine("@model {0}", dataEntity.Condition.FullName);
 			}
 			if (!string.IsNullOrEmpty(base.Template))

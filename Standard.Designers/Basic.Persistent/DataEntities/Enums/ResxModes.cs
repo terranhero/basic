@@ -2,7 +2,7 @@
 namespace Basic.Enums
 {
 	/// <summary>数据库配置文件类型</summary>
-	public enum ResxModeEnum
+	public enum ResxModes
     {
 		/// <summary>
 		/// 配置信息没有设置

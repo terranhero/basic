@@ -19,7 +19,7 @@ namespace Basic.Database
 		/// <param name="staticCommand">从配置文件总读取的命令结构信息</param>
 		/// <param name="fileClass">配置文件信息</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static StaticCommandElement CreateInsertSqlStruct(this DesignTableInfo tableInfo, DataEntityElement dataEntity, StaticCommandElement staticCommand)
+		internal static DesignerStaticCommand CreateInsertSqlStruct(this DesignTableInfo tableInfo, DesignerDataEntity dataEntity, DesignerStaticCommand staticCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
 			bool newCreated = staticCommand == null;
@@ -46,12 +46,12 @@ namespace Basic.Database
 						dataProperties.Remove(dataProperties[pn]);
 					continue;
 				}
-				DataEntityPropertyElement property;
+				DesignerDataEntityProperty property;
 				if (dataProperties.TryGetValue(column.Name, out property))
 					DbBuilderHelper.CreateAbstractProperty(property, column, true);
 				else
 				{
-					property = new DataEntityPropertyElement(dataEntity);
+					property = new DesignerDataEntityProperty(dataEntity);
 					DbBuilderHelper.CreateAbstractProperty(property, column, false);
 					dataProperties.Add(property);
 				}
@@ -66,7 +66,7 @@ namespace Basic.Database
 		/// <param name="staticCommand">从配置文件总读取的命令结构信息</param>
 		/// <param name="fileClass">配置文件信息</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static StaticCommandElement CreateInsertSqlStruct(this DesignTableInfo tableInfo, StaticCommandElement staticCommand)
+		internal static DesignerStaticCommand CreateInsertSqlStruct(this DesignTableInfo tableInfo, DesignerStaticCommand staticCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
 			bool newCreated = staticCommand == null;
@@ -129,7 +129,7 @@ namespace Basic.Database
 				{
 					if (tableInfo.PrimaryKey.Columns.Count != tableInfo.Columns.Count)
 					{
-						NewCommandElement newCommand = new NewCommandElement(staticCommand);
+						DesignerNewCommand newCommand = new DesignerNewCommand(staticCommand);
 						newCommand.Name = tableInfo.PrimaryKey.Name;
 						sqlBuilder.Clear();
 						sqlBuilder.AppendFormat("SELECT "); int length = sqlBuilder.Length;
@@ -162,7 +162,7 @@ namespace Basic.Database
 				foreach (UniqueConstraint unique in tableInfo.UniqueConstraints)
 				{
 					sqlBuilder.Clear();
-					CheckedCommandElement checkCommand = new CheckedCommandElement(staticCommand);
+					DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(staticCommand);
 					checkCommand.Name = unique.Name;
 					sqlBuilder.AppendFormat("SELECT 1 FROM {0} WHERE ", tableInfo.TableName); int length = sqlBuilder.Length;
 					foreach (DesignColumnInfo column in unique.Columns)
@@ -190,10 +190,10 @@ namespace Basic.Database
 		/// <param name="staticCommand">从配置文件总读取的命令结构信息</param>
 		/// <param name="fileClass">配置文件信息</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static StaticCommandElement CreateUpdateSqlStruct(this DesignTableInfo tableInfo, DataEntityElement dataEntity, StaticCommandElement staticCommand)
+		internal static DesignerStaticCommand CreateUpdateSqlStruct(this DesignTableInfo tableInfo, DesignerDataEntity dataEntity, DesignerStaticCommand staticCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
-			if (staticCommand == null) { staticCommand = new StaticCommandElement(dataEntity); }
+			if (staticCommand == null) { staticCommand = new DesignerStaticCommand(dataEntity); }
 			staticCommand.Kind = ConfigurationTypeEnum.Modify;
 			staticCommand.Name = "Update";
 			staticCommand.Comment = string.Concat("更新", tableInfo.Description);
@@ -218,12 +218,12 @@ namespace Basic.Database
 				if (column.Computed) { continue; }
 				if (column.IsCreatedTimeColumn) { continue; }
 				string pn = StringHelper.GetPascalCase(column.Name);
-				DataEntityPropertyElement property;
+				DesignerDataEntityProperty property;
 				if (dataProperties.TryGetValue(column.Name, out property))
 					DbBuilderHelper.CreateAbstractProperty(property, column, true);
 				else
 				{
-					property = new DataEntityPropertyElement(dataEntity);
+					property = new DesignerDataEntityProperty(dataEntity);
 					DbBuilderHelper.CreateAbstractProperty(property, column, false);
 					dataProperties.Add(property);
 				}
@@ -274,7 +274,7 @@ namespace Basic.Database
 			if (timeStampColumn != null)
 			{
 				#region 检测更新时间戳
-				CheckedCommandElement checkCommand = new CheckedCommandElement(staticCommand);
+				DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(staticCommand);
 				checkCommand.Name = string.Concat("PK_", tableInfo.TableName);
 				StringBuilder builder = new StringBuilder();
 				builder.AppendFormat("SELECT 1 FROM {0} WHERE ", tableInfo.TableName);
@@ -320,7 +320,7 @@ namespace Basic.Database
 					StringBuilder builder = new StringBuilder();
 					builder.AppendFormat("SELECT 1 FROM {0} WHERE ", tableInfo.TableName);
 					int length = builder.Length;
-					CheckedCommandElement checkCommand = new CheckedCommandElement(staticCommand);
+					DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(staticCommand);
 					checkCommand.Name = unique.Name;
 					if (tableInfo.PrimaryKey != null && tableInfo.PrimaryKey.Columns != null && tableInfo.PrimaryKey.Columns.Count > 0)
 					{
@@ -383,7 +383,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="staticCommand">从配置文件总读取的命令结构信息</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static StaticCommandElement CreateUpdateSqlStruct(this DesignTableInfo tableInfo, StaticCommandElement staticCommand)
+		internal static DesignerStaticCommand CreateUpdateSqlStruct(this DesignTableInfo tableInfo, DesignerStaticCommand staticCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
 			if (staticCommand == null) { return staticCommand; }
@@ -454,7 +454,7 @@ namespace Basic.Database
 			if (timeStampColumn != null)
 			{
 				#region 检测更新时间戳
-				CheckedCommandElement checkCommand = new CheckedCommandElement(staticCommand);
+				DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(staticCommand);
 				checkCommand.Name = string.Concat("PK_", tableInfo.TableName);
 				StringBuilder builder = new StringBuilder();
 				builder.AppendFormat("SELECT 1 FROM {0} WHERE ", tableInfo.TableName);
@@ -500,7 +500,7 @@ namespace Basic.Database
 					StringBuilder builder = new StringBuilder();
 					builder.AppendFormat("SELECT 1 FROM {0} WHERE ", tableInfo.TableName);
 					int length = builder.Length;
-					CheckedCommandElement checkCommand = new CheckedCommandElement(staticCommand);
+					DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(staticCommand);
 					checkCommand.Name = unique.Name;
 					if (tableInfo.PrimaryKey != null && tableInfo.PrimaryKey.Columns != null && tableInfo.PrimaryKey.Columns.Count > 0)
 					{
@@ -562,10 +562,10 @@ namespace Basic.Database
 		/// <param name="sqlStruct">从配置文件总读取的命令结构信息</param>
 		/// <param name="fileClass">配置文件信息</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static StaticCommandElement CreateDeleteSqlStruct(this DesignTableInfo tableInfo, DataEntityElement dataEntity, StaticCommandElement staticCommand)
+		internal static DesignerStaticCommand CreateDeleteSqlStruct(this DesignTableInfo tableInfo, DesignerDataEntity dataEntity, DesignerStaticCommand staticCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
-			if (staticCommand == null) { staticCommand = new StaticCommandElement(dataEntity); }
+			if (staticCommand == null) { staticCommand = new DesignerStaticCommand(dataEntity); }
 			staticCommand.Kind = ConfigurationTypeEnum.Remove;
 			staticCommand.Name = "Delete";
 			staticCommand.Comment = string.Concat("删除", tableInfo.Description);
@@ -587,11 +587,11 @@ namespace Basic.Database
 			{
 				if (column.PrimaryKey || column.IsModifiedTimeColumn)
 				{
-					if (dataProperties.TryGetValue(column.Name, out DataEntityPropertyElement property))
+					if (dataProperties.TryGetValue(column.Name, out DesignerDataEntityProperty property))
 						DbBuilderHelper.CreateAbstractProperty(property, column, true);
 					else
 					{
-						property = new DataEntityPropertyElement(dataEntity);
+						property = new DesignerDataEntityProperty(dataEntity);
 						DbBuilderHelper.CreateAbstractProperty(property, column, false);
 						dataProperties.Add(property);
 					}
@@ -623,7 +623,7 @@ namespace Basic.Database
 			if (timeStampColumn != null)
 			{
 				#region 检测更新时间戳
-				CheckedCommandElement checkCommand = new CheckedCommandElement(staticCommand);
+				DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(staticCommand);
 				checkCommand.Name = string.Concat("PK_", tableInfo.TableName);
 				StringBuilder builder = new StringBuilder();
 				builder.AppendFormat("SELECT 1 FROM {0} WHERE ", tableInfo.TableName);
@@ -669,7 +669,7 @@ namespace Basic.Database
 		/// <param name="sqlStruct">从配置文件总读取的命令结构信息</param>
 		/// <param name="fileClass">配置文件信息</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static StaticCommandElement CreateDeleteSqlStruct(this DesignTableInfo tableInfo, StaticCommandElement staticCommand)
+		internal static DesignerStaticCommand CreateDeleteSqlStruct(this DesignTableInfo tableInfo, DesignerStaticCommand staticCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
 			if (staticCommand == null) { return staticCommand; }
@@ -716,7 +716,7 @@ namespace Basic.Database
 			if (timeStampColumn != null)
 			{
 				#region 检测更新时间戳
-				CheckedCommandElement checkCommand = new CheckedCommandElement(staticCommand)
+				DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(staticCommand)
 				{
 					Name = string.Concat("PK_", tableInfo.TableName)
 				};
@@ -765,10 +765,10 @@ namespace Basic.Database
 		/// <param name="tableColumns">数据库列信息</param>
 		/// <param name="viewName">表对应的视图名称</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static DynamicCommandElement CreateSearchSqlStruct(this DesignTableInfo tableInfo, DataEntityElement dataEntity, DynamicCommandElement dynamicCommand)
+		internal static DesignerDynamicCommand CreateSearchSqlStruct(this DesignTableInfo tableInfo, DesignerDataEntity dataEntity, DesignerDynamicCommand dynamicCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
-			if (dynamicCommand == null) { dynamicCommand = new DynamicCommandElement(dataEntity); }
+			if (dynamicCommand == null) { dynamicCommand = new DesignerDynamicCommand(dataEntity); }
 			dynamicCommand.Kind = ConfigurationTypeEnum.SearchTable;
 			dynamicCommand.Name = dynamicCommand.Kind.ToString();
 			dynamicCommand.Comment = string.Concat("查询", tableInfo.Description);
@@ -780,7 +780,7 @@ namespace Basic.Database
 			dataEntity.TableName = tableInfo.TableName;
 			DataEntityPropertyCollection dataProperties = dataEntity.Properties;
 
-			DataConditionElement dataCondition = dataEntity.Condition;
+			DesignerDataCondition dataCondition = dataEntity.Condition;
 			dataCondition.Comment = tableInfo.Description;
 			dataCondition.TableName = tableInfo.TableName;
 			DataConditionPropertyCollection conditionProperties = dataCondition.Arguments;
@@ -795,13 +795,13 @@ namespace Basic.Database
 				else if (dataEntity.NamingRule == NamingRules.CamelCase) { pn = StringHelper.GetCamelCase(column.Name); }
 				else if (dataEntity.NamingRule == NamingRules.UpperCase) { pn = StringHelper.GetUpperCase(column.Name); }
 				else if (dataEntity.NamingRule == NamingRules.LowerCase) { pn = StringHelper.GetLowerCase(column.Name); }
-				if (dataProperties.TryGetValue(pn, out DataEntityPropertyElement property))
+				if (dataProperties.TryGetValue(pn, out DesignerDataEntityProperty property))
 				{
 					column.CreateProperty(property, true);
 				}
 				else
 				{
-					property = new DataEntityPropertyElement(dataEntity);
+					property = new DesignerDataEntityProperty(dataEntity);
 					column.CreateProperty(property, false);
 					property.Profix = "T1";
 					dataProperties.Add(property);
@@ -809,11 +809,11 @@ namespace Basic.Database
 
 				if (conditionPropertyIsExists)
 				{
-					if (conditionProperties.TryGetValue(column.Name, out DataConditionPropertyElement conditionProperty))
+					if (conditionProperties.TryGetValue(column.Name, out DesignerDataConditionProperty conditionProperty))
 						column.CreateProperty(conditionProperty, true);
 					else
 					{
-						conditionProperty = new DataConditionPropertyElement(dataCondition);
+						conditionProperty = new DesignerDataConditionProperty(dataCondition);
 						column.CreateProperty(conditionProperty, false);
 						conditionProperties.Add(conditionProperty);
 					}
@@ -840,7 +840,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="tableInfo">从配置文件总读取的命令结构信息</param>
 		/// <param name="dynamicCommand">数据库列信息</param>
-		internal static DynamicCommandElement CreateSelectAllSqlStruct(this DesignTableInfo tableInfo, DynamicCommandElement dynamicCommand)
+		internal static DesignerDynamicCommand CreateSelectAllSqlStruct(this DesignTableInfo tableInfo, DesignerDynamicCommand dynamicCommand)
 		{
 			if (tableInfo.Columns == null || tableInfo.Columns.Count == 0) { return null; }
 			if (dynamicCommand == null) { return dynamicCommand; }
@@ -877,7 +877,7 @@ namespace Basic.Database
 		/// <param name="tableColumns">数据库列信息</param>
 		/// <param name="viewName">表对应的视图名称</param>
 		/// <param name="conType">需要生成命令结构的类型</param>
-		internal static StaticCommandElement CreateSelectByPKeySqlStruct(this DesignTableInfo tableInfo, StaticCommandElement staticCommand)
+		internal static DesignerStaticCommand CreateSelectByPKeySqlStruct(this DesignTableInfo tableInfo, DesignerStaticCommand staticCommand)
 		{
 			if (staticCommand == null) { return staticCommand; }
 			staticCommand.Kind = ConfigurationTypeEnum.SelectByKey;
@@ -932,7 +932,7 @@ namespace Basic.Database
 		/// <param name="tableInfo">数据库表结构信息</param>
 		/// <param name="dataEntity">需要刷新的实体类信息</param>
 		/// <param name="kind">当前实体类用途</param>
-		internal static void CreateDataEntityElement(this DesignTableInfo tableInfo, DataEntityElement dataEntity, ConfigurationTypeEnum kind)
+		internal static void CreateDataEntityElement(this DesignTableInfo tableInfo, DesignerDataEntity dataEntity, ConfigurationTypeEnum kind)
 		{
 			if (string.IsNullOrWhiteSpace(dataEntity.Name))
 				dataEntity.Name = tableInfo.EntityName;
@@ -942,7 +942,7 @@ namespace Basic.Database
 			foreach (DesignColumnInfo column in tableInfo.Columns)
 			{
 				string pn = StringHelper.GetPascalCase(column.Name);
-				DataEntityPropertyElement property;
+				DesignerDataEntityProperty property;
 				if (kind == ConfigurationTypeEnum.AddNew && column.IsCreatedTimeColumn)
 				{
 					if (dataProperties.ContainsKey(pn))
@@ -979,7 +979,7 @@ namespace Basic.Database
 						column.CreateProperty(property, false);
 					else
 					{
-						property = new DataEntityPropertyElement(dataEntity);
+						property = new DesignerDataEntityProperty(dataEntity);
 						column.CreateProperty(property, false);
 						dataProperties.Add(property);
 					}
@@ -991,7 +991,7 @@ namespace Basic.Database
 						column.CreateProperty(property, false);
 					else
 					{
-						property = new DataEntityPropertyElement(dataEntity);
+						property = new DesignerDataEntityProperty(dataEntity);
 						column.CreateProperty(property, false);
 						dataProperties.Add(property);
 					}
@@ -1009,7 +1009,7 @@ namespace Basic.Database
 						column.CreateProperty(property, false);
 					else
 					{
-						property = new DataEntityPropertyElement(dataEntity);
+						property = new DesignerDataEntityProperty(dataEntity);
 						column.CreateProperty(property, false);
 						dataProperties.Add(property);
 					}
@@ -1022,12 +1022,12 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="tableInfo">数据库表结构信息</param>
 		/// <param name="dataCondition">需要刷新的条件类信息</param>
-		internal static void CreateDataConditionElement(this DesignTableInfo tableInfo, DataConditionElement dataCondition)
+		internal static void CreateDataConditionElement(this DesignTableInfo tableInfo, DesignerDataCondition dataCondition)
 		{
 			dataCondition.Comment = tableInfo.Description;
 			dataCondition.TableName = tableInfo.TableName;
 			DataConditionPropertyCollection conditionProperties = dataCondition.Arguments;
-			DataConditionPropertyElement conditionProperty;
+			DesignerDataConditionProperty conditionProperty;
 			foreach (DesignColumnInfo column in tableInfo.Columns)
 			{
 				if (column.DbType != DbTypeEnum.Date && column.DbType != DbTypeEnum.DateTime &&
@@ -1039,7 +1039,7 @@ namespace Basic.Database
 					}
 					else
 					{
-						conditionProperty = new DataConditionPropertyElement(dataCondition);
+						conditionProperty = new DesignerDataConditionProperty(dataCondition);
 						column.CreateProperty(conditionProperty);
 						conditionProperties.Add(conditionProperty);
 					}
@@ -1060,7 +1060,7 @@ namespace Basic.Database
 					}
 					else
 					{
-						conditionProperty = new DataConditionPropertyElement(dataCondition);
+						conditionProperty = new DesignerDataConditionProperty(dataCondition);
 						column.Name = dtColumn1;
 						column.PropertyName = string.Concat(column.PropertyName, "1");
 						column.CreateProperty(conditionProperty);
@@ -1079,7 +1079,7 @@ namespace Basic.Database
 					}
 					else
 					{
-						conditionProperty = new DataConditionPropertyElement(dataCondition);
+						conditionProperty = new DesignerDataConditionProperty(dataCondition);
 						column.Name = dtColumn2;
 						column.PropertyName = string.Concat(column.PropertyName, "2");
 						column.CreateProperty(conditionProperty);

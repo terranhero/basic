@@ -18,7 +18,7 @@ namespace Basic.Configuration
 	/// <summary>
 	/// 表示动态配置命令
 	/// </summary>
-	internal class DynamicCommandElement : DataCommandElement, IXmlSerializable
+	internal class DesignerDynamicCommand : DesignerDataCommand, IXmlSerializable
 	{
 		#region Xml 节点名称常量
 		/// <summary>
@@ -87,7 +87,7 @@ namespace Basic.Configuration
 		/// <summary>
 		/// 初始化 DynamicCommandElement 类实例
 		/// </summary>
-		internal protected DynamicCommandElement(DataEntityElement entity)
+		internal protected DesignerDynamicCommand(DesignerDataEntity entity)
 			: base(entity) { _WithClauses = new BD.WithClauseCollection(this); }
 
 		private string _Condition = string.Empty;
@@ -530,7 +530,7 @@ namespace Basic.Configuration
 		/// <param name="entity">当前实体</param>
 		protected internal void GenerateContextGetDataTable(CodeTypeMemberCollection members, CodeMemberMethod method)
 		{
-			DataEntityElement entity = EntityElement;
+			DesignerDataEntity entity = EntityElement;
 			string paramTable = string.Format("<param name=\"table\">表示 {0} 类的实例。</param>", entity.DataTableName);
 			string paramComment = string.Format("<param name=\"condition\">表示 {0} 类的实例。</param>", entity.Condition.EntityName);
 			string returnComment = string.Format("<returns>返回查询结果，此结果表示 {0} 类的集合。</returns>", entity.EntityName);
@@ -568,7 +568,7 @@ namespace Basic.Configuration
 			iQueryEntities.InitExpression = methodInvoke;
 			method.Statements.Add(iQueryEntities);
 			CodeVariableReferenceExpression queryEntitiesReference = new CodeVariableReferenceExpression("queries");
-			foreach (DataConditionPropertyElement conditionProperty in EntityElement.Condition.Arguments)
+			foreach (DesignerDataConditionProperty conditionProperty in EntityElement.Condition.Arguments)
 			{
 				if (!EntityElement.Properties.ContainsKey(conditionProperty.Name)) { continue; }
 				CodePropertyReferenceExpression hasProperty = new CodePropertyReferenceExpression(conditionReference, conditionProperty.HasName);
@@ -606,7 +606,7 @@ namespace Basic.Configuration
 		/// <param name="members">当前类型申明的 CodeTypeMemberCollection 。</param>
 		protected internal void GenerateDesignerGetDataTable(CodeTypeMemberCollection members)
 		{
-			DataEntityElement entity = EntityElement;
+			DesignerDataEntity entity = EntityElement;
 			CodeMemberMethod method = new CodeMemberMethod(); members.Add(method);
 			this.CreateDesignerMemberMethod(method);
 			string paramTable = string.Format("<param name=\"table\">表示 {0} 类的实例。</param>", entity.DataTableName);
@@ -655,7 +655,7 @@ namespace Basic.Configuration
 		/// <param name="method">需要定义的当前方法</param>
 		protected internal void GenerateContextGetEntities(CodeTypeMemberCollection members, CodeMemberMethod method)
 		{
-			DataEntityElement entity = EntityElement;
+			DesignerDataEntity entity = EntityElement;
 			string paramComment = string.Format("<param name=\"condition\">表示 {0} 类的实例。</param>", EntityElement.Condition.EntityName);
 			string returnComment = string.Format("<returns>返回查询结果，此结果表示 {0} 类的集合。</returns>", EntityElement.EntityName);
 			if (!string.IsNullOrWhiteSpace(_Condition))
@@ -699,7 +699,7 @@ namespace Basic.Configuration
 			method.Statements.Add(iQueryEntities);
 			CodeVariableReferenceExpression queriesReference = new CodeVariableReferenceExpression("queries");
 			DataEntityPropertyCollection entityProperties = EntityElement.Properties;
-			foreach (DataConditionPropertyElement conditionProperty in EntityElement.Condition.Arguments)
+			foreach (DesignerDataConditionProperty conditionProperty in EntityElement.Condition.Arguments)
 			{
 				//如果是日期类型的查询条件，则移除末尾数字在判断是否存在属性
 				string name = conditionProperty.Name;
@@ -754,7 +754,7 @@ namespace Basic.Configuration
 		/// <param name="method">需要定义的当前方法</param>
 		protected internal void GenerateContextGetJoinEntities(CodeTypeMemberCollection members, CodeMemberMethod method)
 		{
-			DataEntityElement entity = EntityElement;
+			DesignerDataEntity entity = EntityElement;
 			string paramComment = string.Format("<param name=\"condition\">表示 {0} 类的实例。</param>", EntityElement.Condition.EntityName);
 			string returnComment = string.Format("<returns>返回查询结果，此结果表示 {0} 类的集合。</returns>", EntityElement.EntityName);
 			if (!string.IsNullOrWhiteSpace(_Condition))
@@ -798,7 +798,7 @@ namespace Basic.Configuration
 			method.Statements.Add(iQueryEntities);
 			CodeVariableReferenceExpression queriesReference = new CodeVariableReferenceExpression("queries");
 			DataEntityPropertyCollection entityProperties = EntityElement.Properties;
-			foreach (DataConditionPropertyElement conditionProperty in EntityElement.Condition.Arguments)
+			foreach (DesignerDataConditionProperty conditionProperty in EntityElement.Condition.Arguments)
 			{
 				//如果是日期类型的查询条件，则移除末尾数字在判断是否存在属性
 				string name = conditionProperty.Name;
@@ -852,7 +852,7 @@ namespace Basic.Configuration
 		/// <param name="isJoinFunction">是否调用Join方法</param>
 		protected internal void GenerateDesignerGetEntities(CodeTypeMemberCollection members, bool isJoinFunction)
 		{
-			DataEntityElement entity = EntityElement;
+			DesignerDataEntity entity = EntityElement;
 			string returnComment = string.Format("<returns>返回查询结果，此结果表示 {0} 类的集合。</returns>", entity.EntityName);
 			CodeMethodReferenceExpression methodReference = new CodeMethodReferenceExpression();
 			methodReference.MethodName = isJoinFunction ? "GetJoinEntities" : "GetEntities";

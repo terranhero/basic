@@ -55,7 +55,7 @@ namespace Basic.Converters
         /// <summary>
         /// 获取当前节点元素名称
         /// </summary>
-        protected internal override string ElementName { get { return NewCommandElement.XmlElementName; } }
+        protected internal override string ElementName { get { return DesignerNewCommand.XmlElementName; } }
 
         /// <summary>
         /// 从对象的 XML 表示形式读取属性。
@@ -65,7 +65,7 @@ namespace Basic.Converters
         /// <returns>如果属性存在读取成功则返回true，否则返回false，有子类读取。</returns>
         protected internal override bool ReadAttribute(string name, string value)
         {
-            if (name == NewCommandElement.NewTypeAttribute) { return Enum.TryParse<ExecutedStatusEnum>(value, true, out _NewType); }
+            if (name == DesignerNewCommand.NewTypeAttribute) { return Enum.TryParse<ExecutedStatusEnum>(value, true, out _NewType); }
             return base.ReadAttribute(name, value);
         }
 
@@ -76,7 +76,7 @@ namespace Basic.Converters
         /// <returns>判断当前对象是否已经读取完成，如果读取完成则返回true，否则返回false。</returns>
         protected internal override bool ReadContent(System.Xml.XmlReader reader)
         {
-            if (reader.NodeType == XmlNodeType.Element && reader.Name == NewCommandElement.CommandTextElement)//兼容5.0新版结构信息
+            if (reader.NodeType == XmlNodeType.Element && reader.Name == DesignerNewCommand.CommandTextElement)//兼容5.0新版结构信息
             {
                 _CommandText = reader.ReadString();
             }
@@ -95,7 +95,7 @@ namespace Basic.Converters
         {
             base.WriteAttribute(writer);
             if (_NewType != ExecutedStatusEnum.EveryTime)
-                writer.WriteAttributeString(NewCommandElement.NewTypeAttribute, _NewType.ToString());
+                writer.WriteAttributeString(DesignerNewCommand.NewTypeAttribute, _NewType.ToString());
         }
         /// <summary>
         /// 将对象转换为其 XML 表示形式。
@@ -104,7 +104,7 @@ namespace Basic.Converters
         /// <param name="connectionType">表示数据库连接类型</param>
         protected internal override void WriteContent(System.Xml.XmlWriter writer)
         {
-            writer.WriteElementString(NewCommandElement.CommandTextElement, CommandText);
+            writer.WriteElementString(DesignerNewCommand.CommandTextElement, CommandText);
             base.WriteContent(writer);
         }
     }

@@ -8,24 +8,24 @@ namespace Basic.DataEntities
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [System.ComponentModel.TypeConverter(typeof(DataContractConverter))]
-    public sealed class DataContractElement : AbstractCustomTypeDescriptor
+    public sealed class DesignerDataContract : AbstractCustomTypeDescriptor
     {
         internal const string XmlElementName = "DataContract";
         internal const string GenerateAttribute = "Generate";
         internal const string IsReferenceAttribute = "IsReference";
         internal const string NameAttribute = "Name";
         internal const string NamespaceAttribute = "Namespace";
-        private readonly DataEntityElement dataEntityElement;
+        private readonly DesignerDataEntity dataEntityElement;
         /// <summary>
         /// 初始化 DataContractElement 类实例。
         /// </summary>
         /// <param name="baseClass"></param>
-        internal DataContractElement(DataEntityElement nofity) : base(nofity) { dataEntityElement = nofity; }
+        internal DesignerDataContract(DesignerDataEntity nofity) : base(nofity) { dataEntityElement = nofity; }
 
         /// <summary>
         /// 返回此组件实例的名称。
         /// </summary>
-        public override string GetComponentName() { return typeof(DataContractElement).Name; }
+        public override string GetComponentName() { return typeof(DesignerDataContract).Name; }
 
         /// <summary>
         /// 获取当前节点元素命名空间
@@ -36,7 +36,7 @@ namespace Basic.DataEntities
         /// 
         /// </summary>
         /// <returns></returns>
-        public override string GetClassName() { return typeof(DataContractElement).Name; }
+        public override string GetClassName() { return typeof(DesignerDataContract).Name; }
 
         /// <summary>
         /// 
@@ -108,11 +108,11 @@ namespace Basic.DataEntities
                 if (_Generate != value)
                 {
                     _Generate = value;
-                    foreach (DataEntityPropertyElement property in dataEntityElement.Properties)
+                    foreach (DesignerDataEntityProperty property in dataEntityElement.Properties)
                     {
                         property.DataMember = _Generate;
                     }
-                    foreach (DataConditionPropertyElement property in dataEntityElement.Condition.Arguments)
+                    foreach (DesignerDataConditionProperty property in dataEntityElement.Condition.Arguments)
                     {
                         property.DataMember = _Generate;
                     }

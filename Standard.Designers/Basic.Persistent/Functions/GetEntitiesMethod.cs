@@ -21,8 +21,8 @@ namespace Basic.Functions
 	public sealed class GetEntitiesMethod : AbstractExecutableMethod
 	{
 		internal const string XmlElementName = "GetEntities";
-		private readonly DynamicCommandElement dynamicCommand;
-		internal GetEntitiesMethod(DynamicCommandElement element) : base(element) { dynamicCommand = element; }
+		private readonly DesignerDynamicCommand dynamicCommand;
+		internal GetEntitiesMethod(DesignerDynamicCommand element) : base(element) { dynamicCommand = element; }
 
 		#region 类 AbstractExecutableMethod 抽象方法
 		/// <summary>

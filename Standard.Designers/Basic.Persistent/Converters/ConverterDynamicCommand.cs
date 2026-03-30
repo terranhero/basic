@@ -67,7 +67,7 @@ namespace Basic.Converters
 		/// <summary>
 		/// 获取当前节点元素名称
 		/// </summary>
-		protected internal override string ElementName { get { return DynamicCommandElement.XmlElementName; } }
+		protected internal override string ElementName { get { return DesignerDynamicCommand.XmlElementName; } }
 
 		/// <summary>
 		/// 从对象的 XML 表示形式读取属性。
@@ -87,27 +87,27 @@ namespace Basic.Converters
 		/// <returns>判断当前对象是否已经读取完成，如果读取完成则返回true，否则返回false。</returns>
 		protected internal override bool ReadContent(System.Xml.XmlReader reader)
 		{
-			if (reader.NodeType == XmlNodeType.Element && reader.Name == DynamicCommandElement.SelectTextElement)
+			if (reader.NodeType == XmlNodeType.Element && reader.Name == DesignerDynamicCommand.SelectTextElement)
 			{
 				_SelectText = reader.ReadString();
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DynamicCommandElement.FromTextElement)
+			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DesignerDynamicCommand.FromTextElement)
 			{
 				_FromText = reader.ReadString();
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DynamicCommandElement.WhereTextElement)
+			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DesignerDynamicCommand.WhereTextElement)
 			{
 				_WhereText = reader.ReadString();
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DynamicCommandElement.GroupTextElement)
+			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DesignerDynamicCommand.GroupTextElement)
 			{
 				_GroupText = reader.ReadString();
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DynamicCommandElement.HavingTextElement)
+			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DesignerDynamicCommand.HavingTextElement)
 			{
 				_HavingText = reader.ReadString();
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DynamicCommandElement.OrderTextElement)
+			else if (reader.NodeType == XmlNodeType.Element && reader.Name == DesignerDynamicCommand.OrderTextElement)
 			{
 				_OrderText = reader.ReadString();
 			}
@@ -131,34 +131,34 @@ namespace Basic.Converters
 		protected internal override void WriteContent(System.Xml.XmlWriter writer)
 		{
 			base.WriteContent(writer);
-			writer.WriteStartElement(DynamicCommandElement.SelectTextElement);
+			writer.WriteStartElement(DesignerDynamicCommand.SelectTextElement);
 			writer.WriteCData(_SelectText);//写CData
 			writer.WriteEndElement();
 
-			writer.WriteStartElement(DynamicCommandElement.FromTextElement);
+			writer.WriteStartElement(DesignerDynamicCommand.FromTextElement);
 			writer.WriteCData(_FromText);//写CData
 			writer.WriteEndElement();
 
 			if (string.IsNullOrEmpty(_WhereText) == false)
 			{
-				writer.WriteStartElement(DynamicCommandElement.WhereTextElement);
+				writer.WriteStartElement(DesignerDynamicCommand.WhereTextElement);
 				writer.WriteCData(_WhereText);//写CData
 				writer.WriteEndElement();
 			}
 			if (string.IsNullOrEmpty(_GroupText) == false)
 			{
-				writer.WriteStartElement(DynamicCommandElement.GroupTextElement);
+				writer.WriteStartElement(DesignerDynamicCommand.GroupTextElement);
 				writer.WriteCData(_GroupText);//写CData
 				writer.WriteEndElement();
 			}
 
 			if (string.IsNullOrEmpty(_HavingText) == false)
 			{
-				writer.WriteStartElement(DynamicCommandElement.HavingTextElement);
+				writer.WriteStartElement(DesignerDynamicCommand.HavingTextElement);
 				writer.WriteCData(_HavingText);//写CData
 				writer.WriteEndElement();
 			}
-			writer.WriteElementString(DynamicCommandElement.OrderTextElement, _OrderText);
+			writer.WriteElementString(DesignerDynamicCommand.OrderTextElement, _OrderText);
 		}
 	}
 }

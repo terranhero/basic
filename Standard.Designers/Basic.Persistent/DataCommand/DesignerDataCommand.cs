@@ -21,16 +21,16 @@ namespace Basic.Configuration
 	/// 表示抽象配置命令
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	public abstract class DataCommandElement : AbstractCommandElement, IXmlSerializable
+	public abstract class DesignerDataCommand : AbstractDesignerCommand, IXmlSerializable
 	{
 		protected internal const string CShartFileExtension = "cs";
 		protected internal const string VisualBasicFileExtension = "vb";
-		private readonly DataEntityElement _EntityElement;
+		private readonly DesignerDataEntity _EntityElement;
 		private readonly PersistentDesigner _Persistent;
 		/// <summary>
 		/// 初始化 StaticCommandElement 类实例
 		/// </summary>
-		protected DataCommandElement(DataEntityElement entity)
+		protected DesignerDataCommand(DesignerDataEntity entity)
 			: base(entity)
 		{
 			_EntityElement = entity; _Persistent = entity.Persistent;
@@ -66,7 +66,7 @@ namespace Basic.Configuration
 		/// <summary>
 		/// 当前实体模型。
 		/// </summary>
-		protected internal DataEntityElement EntityElement { get { return _EntityElement; } }
+		protected internal DesignerDataEntity EntityElement { get { return _EntityElement; } }
 
 		/// <summary>
 		/// 当前实体模型。
@@ -656,7 +656,7 @@ namespace Basic.Configuration
 		/// <param name="provider">代码自动生成提供器（含代码生成规则）</param>
 		/// <returns>返回</returns>
 		protected internal virtual EditPoint WriteContextCode(EnvDTE80.CodeClass2 codeClass, CodeDomProvider provider,
-			DataEntityElement entity, PersistentDesigner persistent)
+			DesignerDataEntity entity, PersistentDesigner persistent)
 		{
 			CodeFunction function = FindContextFunction(codeClass, MethodName);
 			if (function == null)

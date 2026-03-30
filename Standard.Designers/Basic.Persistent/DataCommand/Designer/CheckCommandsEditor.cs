@@ -21,7 +21,7 @@ namespace Basic.Designer
 		/// <returns>此集合可包含的数据类型数组。</returns>
 		protected override Type[] CreateNewItemTypes()
 		{
-			return new Type[] { typeof(CheckedCommandElement) };
+			return new Type[] { typeof(DesignerCheckedCommand) };
 		}
 
 		/// <summary>

@@ -16,12 +16,12 @@ namespace Basic.DataEntities
 	/// <summary>
 	/// 表示实体或条件属性信息
 	/// </summary>
-	public abstract partial class AbstractPropertyElement : AbstractCustomTypeDescriptor
+	public abstract partial class AbstractDesignerProperty : AbstractCustomTypeDescriptor
 	{
 		#region 实体定义字段
-		private readonly AbstractEntityElement abstractEntityElement = null;
-		protected internal readonly DisplayNameElement displayName;
-		private readonly PropertyGeneratorElement generatorElement;
+		private readonly AbstractDesignerEntity abstractEntityElement = null;
+		protected internal readonly DesignerDisplayName displayName;
+		private readonly DesignerPropertyGenerator generatorElement;
 		internal const string XmlElementName = "Property";
 		internal const string NameAttribute = "Name";
 		internal const string TypeAttribute = "Type";
@@ -36,20 +36,20 @@ namespace Basic.DataEntities
 		/// 属性所属实体类实例
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		public AbstractEntityElement Owner { get { return abstractEntityElement; } }
+		public AbstractDesignerEntity Owner { get { return abstractEntityElement; } }
 
 		/// <summary>
 		/// Initializes a new instance of a EntityDefinitionProperty object.
 		/// </summary>
 		/// <param name="owner">拥有此属性的实体定义文件</param>
-		protected AbstractPropertyElement(AbstractEntityElement owner) : this(owner, null, typeof(string), false) { }
+		protected AbstractDesignerProperty(AbstractDesignerEntity owner) : this(owner, null, typeof(string), false) { }
 
 		/// <summary>
 		/// Initializes a new instance of a EntityDefinitionProperty object.
 		/// </summary>
 		/// <param name="owner">拥有此属性的实体定义文件</param>
 		/// <param name="name">连接字符串的名称。</param>
-		protected AbstractPropertyElement(AbstractEntityElement owner, string name) : this(owner, name, typeof(string), false) { }
+		protected AbstractDesignerProperty(AbstractDesignerEntity owner, string name) : this(owner, name, typeof(string), false) { }
 
 		/// <summary>
 		/// Initializes a new instance of a EntityDefinitionProperty object.
@@ -57,7 +57,7 @@ namespace Basic.DataEntities
 		/// <param name="owner">拥有此属性的实体定义文件</param>
 		/// <param name="name">连接字符串的名称。</param>
 		/// <param name="type">属性类型。</param>
-		protected AbstractPropertyElement(AbstractEntityElement owner, string name, Type type) : this(owner, name, type, false) { }
+		protected AbstractDesignerProperty(AbstractDesignerEntity owner, string name, Type type) : this(owner, name, type, false) { }
 
 		/// <summary>
 		/// Initializes a new instance of a EntityDefinitionProperty object.
@@ -66,10 +66,10 @@ namespace Basic.DataEntities
 		/// <param name="name">属性名称。</param>
 		/// <param name="type">属性类型。</param>
 		/// <param name="nullable">属性是否不能为空。</param>
-		protected AbstractPropertyElement(AbstractEntityElement owner, string name, Type type, bool nullable)
+		protected AbstractDesignerProperty(AbstractDesignerEntity owner, string name, Type type, bool nullable)
 		{
-			generatorElement = new PropertyGeneratorElement(this);
-			displayName = new DisplayNameElement(this);
+			generatorElement = new DesignerPropertyGenerator(this);
+			displayName = new DesignerDisplayName(this);
 			abstractEntityElement = owner;
 			Name = name;
 			Type = type;
@@ -82,7 +82,7 @@ namespace Basic.DataEntities
 		/// 将当前实例的属性复制到 AbstractPropertyElement 类实例的属性上。
 		/// </summary>
 		/// <param name="property">需要复制当前实例属性的 AbstractPropertyElement 类实例</param>
-		public virtual void CopyTo(AbstractPropertyElement property)
+		public virtual void CopyTo(AbstractDesignerProperty property)
 		{
 			property._Column = this._Column;
 			property._Comment = this._Comment;
@@ -426,8 +426,8 @@ namespace Basic.DataEntities
 			if (name == NameAttribute) { _Name = value; return true; }
 			else if (name == PrimaryKeyAttribute) { _PrimaryKey = Convert.ToBoolean(value); return true; }
 			else if (name == NullableAttribute) { _Nullable = Convert.ToBoolean(value); return true; }
-			else if (name == PropertyGeneratorElement.InheritAttribute) { generatorElement.Inheritance = Convert.ToBoolean(value); return true; }
-			else if (name == PropertyGeneratorElement.ModifierAttribute)
+			else if (name == DesignerPropertyGenerator.InheritAttribute) { generatorElement.Inheritance = Convert.ToBoolean(value); return true; }
+			else if (name == DesignerPropertyGenerator.ModifierAttribute)
 			{
 				PropertyModifierEnum _Modifier = PropertyModifierEnum.Public;
 				if (Enum.TryParse<PropertyModifierEnum>(value, out _Modifier))
@@ -458,11 +458,11 @@ namespace Basic.DataEntities
 			{
 				return ReadColumn(reader.ReadSubtree());
 			}
-			else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == PropertyGeneratorElement.XmlElementName)
+			else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DesignerPropertyGenerator.XmlElementName)
 			{
 				generatorElement.ReadXml(reader.ReadSubtree()); return false;
 			}
-			else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DisplayNameElement.XmlElementName)
+			else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DesignerDisplayName.XmlElementName)
 			{
 				displayName.ReadXml(reader.ReadSubtree()); return false;
 			}
@@ -508,7 +508,7 @@ namespace Basic.DataEntities
 		/// <summary>
 		/// 属性的显示名称格式设置。
 		/// </summary>
-		public DisplayNameElement DisplayName { get { return displayName; } }
+		public DesignerDisplayName DisplayName { get { return displayName; } }
 
 		/// <summary>
 		/// 属性字段名称

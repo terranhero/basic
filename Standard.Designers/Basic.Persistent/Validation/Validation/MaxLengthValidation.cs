@@ -19,7 +19,7 @@ namespace Basic.DataEntities
 		/// 初始化 DesignerMaxLength 类的新实例。
 		/// </summary>
 		/// <param name="property">当前验证器所属属性。</param>
-		public MaxLengthValidation(DataEntityPropertyElement property) : base(property) { }
+		public MaxLengthValidation(DesignerDataEntityProperty property) : base(property) { }
 
 		/// <summary>异常关键字</summary>
 		public override string ErrorKey { get { return "MaxLength"; } }

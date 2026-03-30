@@ -46,11 +46,11 @@ namespace Basic.Views
         /// </summary>
         public AbstractEntityColllection Entities { get { return _Entities; } }
 
-        private AbstractEntityElement _Entity = null;
+        private AbstractDesignerEntity _Entity = null;
         /// <summary>
         /// 获取或设置视图的实体模型。
         /// </summary>
-        public AbstractEntityElement Entity
+        public AbstractDesignerEntity Entity
         {
             get { return _Entity; }
             set { if (_Entity != value) { _Entity = value; OnPropertyChanged("Entity"); } }

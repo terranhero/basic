@@ -67,7 +67,7 @@ namespace Basic.Converters
         /// <summary>
         /// 获取当前节点元素名称
         /// </summary>
-        protected internal override string ElementName { get { return CheckedCommandElement.XmlElementName; } }
+        protected internal override string ElementName { get { return DesignerCheckedCommand.XmlElementName; } }
 
         /// <summary>
         /// 
@@ -97,10 +97,10 @@ namespace Basic.Converters
         /// <returns>如果属性存在读取成功则返回true，否则返回false，有子类读取。</returns>
         protected internal override bool ReadAttribute(string name, string value)
         {
-            if (name == CheckedCommandElement.ParameterAttribute) { _Parameter = value; return true; }
-            else if (name == CheckedCommandElement.CheckExistAttribute) { _CheckExist = Convert.ToBoolean(value); return true; }
-            else if (name == CheckedCommandElement.PropertyNameAttribute) { _SourceColumn = value; return true; }
-            else if (name == CheckedCommandElement.ErrorCodeAttribute) { _ErrorCode = value; return true; }
+            if (name == DesignerCheckedCommand.ParameterAttribute) { _Parameter = value; return true; }
+            else if (name == DesignerCheckedCommand.CheckExistAttribute) { _CheckExist = Convert.ToBoolean(value); return true; }
+            else if (name == DesignerCheckedCommand.PropertyNameAttribute) { _SourceColumn = value; return true; }
+            else if (name == DesignerCheckedCommand.ErrorCodeAttribute) { _ErrorCode = value; return true; }
             else if (name == "ReturnValue") { _ErrorCode = value; return true; }//兼容 3.0 版本。
             return base.ReadAttribute(name, value);
         }
@@ -113,10 +113,10 @@ namespace Basic.Converters
         {
             base.WriteAttribute(writer);
             if (!_CheckExist)
-                writer.WriteAttributeString(CheckedCommandElement.CheckExistAttribute, Convert.ToString(_CheckExist));
+                writer.WriteAttributeString(DesignerCheckedCommand.CheckExistAttribute, Convert.ToString(_CheckExist));
             if (!string.IsNullOrWhiteSpace(_SourceColumn))
-                writer.WriteAttributeString(CheckedCommandElement.PropertyNameAttribute, _SourceColumn);
-            writer.WriteAttributeString(CheckedCommandElement.ErrorCodeAttribute, _ErrorCode);
+                writer.WriteAttributeString(DesignerCheckedCommand.PropertyNameAttribute, _SourceColumn);
+            writer.WriteAttributeString(DesignerCheckedCommand.ErrorCodeAttribute, _ErrorCode);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Basic.Converters
             {
                 _CommandText = reader.ReadString();
             }
-            else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == CheckedCommandElement.CommandTextElement)//兼容5.0新版结构信息
+            else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DesignerCheckedCommand.CommandTextElement)//兼容5.0新版结构信息
             {
                 _CommandText = reader.ReadString();
             }
@@ -148,7 +148,7 @@ namespace Basic.Converters
         /// <param name="connectionType">表示数据库连接类型</param>
         protected internal override void WriteContent(System.Xml.XmlWriter writer)
         {
-            writer.WriteElementString(CheckedCommandElement.CommandTextElement, CommandText);
+            writer.WriteElementString(DesignerCheckedCommand.CommandTextElement, CommandText);
             base.WriteContent(writer);
         }
     }

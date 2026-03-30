@@ -13,12 +13,12 @@ namespace Basic.DataEntities
 	[System.ComponentModel.TypeConverter(typeof(ConditionTypeConverter))]
 	public sealed class DataEntityGenerator
 	{
-		private readonly DataEntityElement _DataEntity;
+		private readonly DesignerDataEntity _DataEntity;
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="dataEntity"></param>
-		public DataEntityGenerator(DataEntityElement dataEntity) { _DataEntity = dataEntity; }
+		public DataEntityGenerator(DesignerDataEntity dataEntity) { _DataEntity = dataEntity; }
 		/// <summary>
 		/// 获取或设置一个值，表示实体类型Guid。
 		/// </summary>

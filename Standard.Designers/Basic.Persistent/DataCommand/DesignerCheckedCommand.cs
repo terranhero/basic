@@ -18,7 +18,7 @@ namespace Basic.Configuration
 	[System.ComponentModel.DisplayName(XmlElementName)]
 	[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryCheckCommand)]
 	[Basic.Designer.PersistentDescription("PersistentDescription_CheckCommand")]
-	public sealed class CheckedCommandElement : AbstractCommandElement, IXmlSerializable
+	public sealed class DesignerCheckedCommand : AbstractDesignerCommand, IXmlSerializable
 	{
 		/// <summary>
 		/// 获取检测Transact-SQL 命令需要使用的参数名称。
@@ -64,13 +64,13 @@ namespace Basic.Configuration
 		internal const string ParameterAttribute = "Parameter";
 		#endregion
 
-		private readonly StaticCommandElement _StaticCommand;
+		private readonly DesignerStaticCommand _StaticCommand;
 		private readonly PersistentDesigner _Persistent;
 		/// <summary>
 		/// 初始化 CheckCommandElement 类实例。
 		/// </summary>
 		/// <param name="staticCommand">拥有此检测命令的静态命令结构</param>
-		internal CheckedCommandElement(StaticCommandElement staticCommand)
+		internal DesignerCheckedCommand(DesignerStaticCommand staticCommand)
 			: base(staticCommand) { _StaticCommand = staticCommand; _Persistent = staticCommand.Persistent; }
 
 		//private string _Converter = null;
@@ -123,7 +123,7 @@ namespace Basic.Configuration
 		public override string ToString()
 		{
 			if (string.IsNullOrWhiteSpace(Name))
-				return typeof(CheckedCommandElement).Name;
+				return typeof(DesignerCheckedCommand).Name;
 			return Name;
 		}
 

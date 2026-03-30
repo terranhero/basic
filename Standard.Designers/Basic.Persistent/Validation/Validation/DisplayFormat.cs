@@ -24,7 +24,7 @@ namespace Basic.DataEntities
 		/// 初始化 DisplayFormat 类实例。
 		/// </summary>
 		/// <param name="nofity">需要通知 DataEntityPropertyElement 类实例当前 DisplayFormat 类的属性已更改。</param>
-		public DisplayFormat(DataEntityPropertyElement nofity) : base(nofity) { }
+		public DisplayFormat(DesignerDataEntityProperty nofity) : base(nofity) { }
 
 		/// <summary>异常关键字</summary>
 		public override string ErrorKey { get { return "DisplayFormat"; } }

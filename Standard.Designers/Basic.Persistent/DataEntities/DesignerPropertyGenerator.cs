@@ -9,7 +9,7 @@ namespace Basic.DataEntities
 	/// </summary>
 	[System.ComponentModel.TypeConverter(typeof(DisplayNameConverter))]
 	[PersistentCategory("PersistentCategory_Attributes"), PersistentDescription("DisplayName_Description")]
-	public sealed class PropertyGeneratorElement : AbstractCustomTypeDescriptor
+	public sealed class DesignerPropertyGenerator : AbstractCustomTypeDescriptor
 	{
 		internal const string XmlElementName = "Generator";
 		internal const string ModifierAttribute = "Modifier";
@@ -18,12 +18,12 @@ namespace Basic.DataEntities
 		internal const string InheritAttribute = "Inherit";
 		internal const string OverrideAttribute = "Override";
 		internal const string VirtualAttribute = "Virtual";
-		private readonly AbstractPropertyElement propertyElement;
+		private readonly AbstractDesignerProperty propertyElement;
 		/// <summary>
-		/// 初始化 DisplayNameElement 类实例。
+		/// 初始化 DesignerPropertyGenerator 类实例。
 		/// </summary>
 		/// <param name="property"></param>
-		internal PropertyGeneratorElement(AbstractPropertyElement property)
+		internal DesignerPropertyGenerator(AbstractDesignerProperty property)
 			: base(property) { propertyElement = property; }
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace Basic.DataEntities
 		/// 返回此组件实例的类名。
 		/// </summary>
 		/// <returns>该对象的类名；如果此类没有名称，则为 null。</returns>
-		public override string GetClassName() { return typeof(PropertyGeneratorElement).Name; }
+		public override string GetClassName() { return typeof(DesignerPropertyGenerator).Name; }
 
 		/// <summary>
 		/// 获取当前节点元素名称

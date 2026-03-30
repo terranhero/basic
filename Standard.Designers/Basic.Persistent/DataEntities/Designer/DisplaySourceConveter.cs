@@ -29,12 +29,12 @@ namespace Basic.Designer
 		public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
 		{
 			StringCollection strings = new StringCollection();
-			DisplayNameElement display = context.Instance as DisplayNameElement;
-			if (display.Property.Owner is DataEntityElement)
+			DesignerDisplayName display = context.Instance as DesignerDisplayName;
+			if (display.Property.Owner is DesignerDataEntity)
 			{
-				DataEntityElement dataEntityElement = display.Property.Owner as DataEntityElement;
+				DesignerDataEntity dataEntityElement = display.Property.Owner as DesignerDataEntity;
 				string groupName = dataEntityElement.Persistent.GroupName;
-				foreach (DataEntityPropertyElement property in dataEntityElement.Properties)
+				foreach (DesignerDataEntityProperty property in dataEntityElement.Properties)
 				{
 					if (string.IsNullOrWhiteSpace(property.Name)) { continue; }
 					string displayName = string.Concat(groupName, "_", property.Name);
@@ -43,11 +43,11 @@ namespace Basic.Designer
 					strings.Add(displayName);
 				}
 			}
-			if (display.Property.Owner is DataConditionElement)
+			if (display.Property.Owner is DesignerDataCondition)
 			{
-				DataConditionElement dataConditionElement = display.Property.Owner as DataConditionElement;
+				DesignerDataCondition dataConditionElement = display.Property.Owner as DesignerDataCondition;
 				string groupName = dataConditionElement.Persistent.GroupName;
-				foreach (DataConditionPropertyElement property in dataConditionElement.Arguments)
+				foreach (DesignerDataConditionProperty property in dataConditionElement.Arguments)
 				{
 					if (string.IsNullOrWhiteSpace(property.Name)) { continue; }
 					string displayName = string.Concat(groupName, "_", property.Name);

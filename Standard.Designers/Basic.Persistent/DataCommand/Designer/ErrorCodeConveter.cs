@@ -32,38 +32,38 @@ namespace Basic.Designer
             if (context.Instance is CommandParameter)
             {
                 CommandParameter parameter = context.Instance as CommandParameter;
-                AbstractCommandElement command = parameter.Command;
-                if (command.NotifyObject is DataEntityElement)
+                AbstractDesignerCommand command = parameter.Command;
+                if (command.NotifyObject is DesignerDataEntity)
                 {
-                    DataEntityElement dataEntityElement = command.NotifyObject as DataEntityElement;
+                    DesignerDataEntity dataEntityElement = command.NotifyObject as DesignerDataEntity;
                     string groupName = dataEntityElement.Persistent.GroupName;
-                    foreach (DataEntityPropertyElement property in dataEntityElement.Properties)
+                    foreach (DesignerDataEntityProperty property in dataEntityElement.Properties)
                     {
                         strings.Add(string.Concat(groupName, "_", property.Name, "_Exist"));
                         strings.Add(string.Concat(groupName, "_", property.Name, "_NotExist"));
                     }
                 }
-                else if (command.NotifyObject is AbstractCommandElement)
+                else if (command.NotifyObject is AbstractDesignerCommand)
                 {
-                    AbstractCommandElement ownerCommand = command.NotifyObject as AbstractCommandElement;
-                    DataEntityElement dataEntityElement = ownerCommand.NotifyObject as DataEntityElement;
+                    AbstractDesignerCommand ownerCommand = command.NotifyObject as AbstractDesignerCommand;
+                    DesignerDataEntity dataEntityElement = ownerCommand.NotifyObject as DesignerDataEntity;
 					string groupName = dataEntityElement.Persistent.GroupName;
-                    foreach (DataEntityPropertyElement property in dataEntityElement.Properties)
+                    foreach (DesignerDataEntityProperty property in dataEntityElement.Properties)
                     {
                         strings.Add(string.Concat(groupName, "_", property.Name, "_Exist"));
                         strings.Add(string.Concat(groupName, "_", property.Name, "_NotExist"));
                     }
                 }
             }
-            else if (context.Instance is CheckedCommandElement)
+            else if (context.Instance is DesignerCheckedCommand)
             {
-                CheckedCommandElement checkCommand = context.Instance as CheckedCommandElement;
-                StaticCommandElement command = checkCommand.NotifyObject as StaticCommandElement;
-                if (command.NotifyObject is DataEntityElement)
+                DesignerCheckedCommand checkCommand = context.Instance as DesignerCheckedCommand;
+                DesignerStaticCommand command = checkCommand.NotifyObject as DesignerStaticCommand;
+                if (command.NotifyObject is DesignerDataEntity)
                 {
-                    DataEntityElement dataEntityElement = command.NotifyObject as DataEntityElement;
+                    DesignerDataEntity dataEntityElement = command.NotifyObject as DesignerDataEntity;
 					string groupName = dataEntityElement.Persistent.GroupName;
-                    foreach (DataEntityPropertyElement property in dataEntityElement.Properties)
+                    foreach (DesignerDataEntityProperty property in dataEntityElement.Properties)
                     {
                         strings.Add(string.Concat(groupName, "_", property.Name, "_Exist"));
                         strings.Add(string.Concat(groupName, "_", property.Name, "_NotExist"));

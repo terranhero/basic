@@ -12,11 +12,11 @@ namespace Basic.Functions
 	[System.ComponentModel.TypeConverter(typeof(NamespacesConverter))]
 	public abstract class AbstractExecutableMethod : AbstractCustomTypeDescriptor
 	{
-		protected internal readonly DataCommandElement dataCommand;
+		protected internal readonly DesignerDataCommand dataCommand;
 		/// <summary>
 		/// 初始化 AbstractExecutableMethod 类实例。
 		/// </summary>
-		protected AbstractExecutableMethod(DataCommandElement element) { dataCommand = element; }
+		protected AbstractExecutableMethod(DesignerDataCommand element) { dataCommand = element; }
 
 		/// <summary>
 		/// 返回此组件实例的类名。

@@ -440,10 +440,10 @@ namespace Basic.Configuration
                 string groupName = _Persistent.GroupName;
                 string publicGroupName = _Persistent.PublicGroupName;
 
-                foreach (DataEntityElement entity in _Persistent.DataEntities)
+                foreach (DesignerDataEntity entity in _Persistent.DataEntities)
                 {
                     #region 添加实体模型属性本地化资源：属性，验证，布尔可选
-                    foreach (DataEntityPropertyElement property in entity.Properties)
+                    foreach (DesignerDataEntityProperty property in entity.Properties)
                     {
                         string resName = property.DisplayName.DisplayName;
                         string pubName = string.Concat(publicGroupName, "_", property.Name);
@@ -597,7 +597,7 @@ namespace Basic.Configuration
                     #endregion
 
                     #region 添加条件模型属性本地化资源：属性
-                    foreach (DataConditionPropertyElement property in entity.Condition.Arguments)
+                    foreach (DesignerDataConditionProperty property in entity.Condition.Arguments)
                     {
                         string resName = property.DisplayName.DisplayName;
                         if (string.IsNullOrWhiteSpace(resName)) { resName = string.Concat(groupName, "_", property.Name); }
@@ -628,12 +628,12 @@ namespace Basic.Configuration
 
                     #region 添加命令错误返回资源
                     string entityPrefixion = string.Concat(groupName, "_");
-                    foreach (DataCommandElement dataCommand in entity.DataCommands)
+                    foreach (DesignerDataCommand dataCommand in entity.DataCommands)
                     {
-                        if (dataCommand is StaticCommandElement)
+                        if (dataCommand is DesignerStaticCommand)
                         {
-                            StaticCommandElement staticCommand = dataCommand as StaticCommandElement;
-                            foreach (CheckedCommandElement checkCommand in staticCommand.CheckCommands)
+                            DesignerStaticCommand staticCommand = dataCommand as DesignerStaticCommand;
+                            foreach (DesignerCheckedCommand checkCommand in staticCommand.CheckCommands)
                             {
                                 string resName = checkCommand.ErrorCode;
                                 if (resName != null && resName.StartsWith(entityPrefixion) && !resourceCollection.ContainsName(resName))
@@ -704,10 +704,10 @@ namespace Basic.Configuration
                 string groupName = _Persistent.GroupName;
                 string publicGroupName = _Persistent.PublicGroupName;
 
-                foreach (DataEntityElement entity in _Persistent.DataEntities)
+                foreach (DesignerDataEntity entity in _Persistent.DataEntities)
                 {
                     #region 添加实体模型属性本地化资源：属性，验证，布尔可选
-                    foreach (DataEntityPropertyElement property in entity.Properties)
+                    foreach (DesignerDataEntityProperty property in entity.Properties)
                     {
                         string resName = property.DisplayName.DisplayName;
                         string pubName = string.Concat(publicGroupName, "_", property.Name);
@@ -854,7 +854,7 @@ namespace Basic.Configuration
                     #endregion
 
                     #region 添加条件模型属性本地化资源：属性
-                    foreach (DataConditionPropertyElement property in entity.Condition.Arguments)
+                    foreach (DesignerDataConditionProperty property in entity.Condition.Arguments)
                     {
                         string resName = property.DisplayName.DisplayName;
                         if (string.IsNullOrWhiteSpace(resName)) { resName = string.Concat(groupName, "_", property.Name); }
@@ -908,15 +908,15 @@ namespace Basic.Configuration
                 notExistsCollection.AddEnabledCultureInfos();
                 CultureInfo cultureInfo = notExistsCollection.GetCultureInfo(1033);
                 string groupName = _Persistent.GroupName;
-                foreach (DataEntityElement entity in _Persistent.DataEntities)
+                foreach (DesignerDataEntity entity in _Persistent.DataEntities)
                 {
                     #region 添加命令错误返回资源
                     string entityPrefixion = string.Concat(groupName, "_");
-                    foreach (DataCommandElement dataCommand in entity.DataCommands)
+                    foreach (DesignerDataCommand dataCommand in entity.DataCommands)
                     {
-                        if (!(dataCommand is StaticCommandElement)) { continue; }
-                        if (!(dataCommand is StaticCommandElement staticCommand)) { continue; }
-                        foreach (CheckedCommandElement checkCommand in staticCommand.CheckCommands)
+                        if (!(dataCommand is DesignerStaticCommand)) { continue; }
+                        if (!(dataCommand is DesignerStaticCommand staticCommand)) { continue; }
+                        foreach (DesignerCheckedCommand checkCommand in staticCommand.CheckCommands)
                         {
                             string resName = checkCommand.ErrorCode;
                             if (string.IsNullOrWhiteSpace(resName)) { continue; }
@@ -983,10 +983,10 @@ namespace Basic.Configuration
                 System.Collections.Generic.List<string> notExists = new System.Collections.Generic.List<string>(200);
                 #region 设置实体属性本地化资源信息
                 string groupName = _Persistent.GroupName; string publicGroup = _Persistent.PublicGroupName;
-                foreach (DataEntityElement entity in _Persistent.DataEntities)
+                foreach (DesignerDataEntity entity in _Persistent.DataEntities)
                 {
                     #region 设置实体属性本地化资源信息
-                    foreach (DataEntityPropertyElement property in entity.Properties)
+                    foreach (DesignerDataEntityProperty property in entity.Properties)
                     {
                         if (string.IsNullOrWhiteSpace(property.DisplayName.DisplayName))
                         {
@@ -1034,7 +1034,7 @@ namespace Basic.Configuration
                     #endregion
 
                     #region 设置条件模型属性本地化资源：属性
-                    foreach (DataConditionPropertyElement property in entity.Condition.Arguments)
+                    foreach (DesignerDataConditionProperty property in entity.Condition.Arguments)
                     {
                         if (string.IsNullOrWhiteSpace(property.DisplayName.DisplayName))
                         {
@@ -1288,7 +1288,7 @@ namespace Basic.Configuration
             }
             else
             {
-                foreach (DataEntityElement entity in canvas.Items)
+                foreach (DesignerDataEntity entity in canvas.Items)
                 {
                     DesignerEntity item = canvas.ItemContainerGenerator.ContainerFromItem(entity) as DesignerEntity;
                     item.Height = double.NaN; item.Width = double.NaN;
@@ -1303,7 +1303,7 @@ namespace Basic.Configuration
             PersistentDesigner persistent = GetPersistentConfiguration();
             if (canvas != null && canvas.SelectedItem != null)
             {
-                DataEntityElement entity = canvas.SelectedItem.DataContext as DataEntityElement;
+                DesignerDataEntity entity = canvas.SelectedItem.DataContext as DesignerDataEntity;
 
                 //UIElement element = canvas.SelectedItem as UIElement;
                 if (menu.CommandID == StandardCommands.SendToBack)

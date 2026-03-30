@@ -11,14 +11,14 @@ namespace Basic.Designer
     /// 属性包装器
     /// </summary>
     /// <typeparam name="TDD">需要包装属性的信息</typeparam>
-    internal sealed class EntityPropertyDescriptor : ObjectDescriptor<AbstractPropertyElement>
+    internal sealed class EntityPropertyDescriptor : ObjectDescriptor<AbstractDesignerProperty>
     {
         private PropertyDescriptorCollection propertyDescriptors = null;
         /// <summary>
         /// 初始化 ParameterDescriptor 实例
         /// </summary>
         /// <param name="dInfo"></param>
-        public EntityPropertyDescriptor(AbstractPropertyElement dInfo) : base(dInfo) { }
+        public EntityPropertyDescriptor(AbstractDesignerProperty dInfo) : base(dInfo) { }
 
         /// <summary>
         /// 返回将特性数组用作筛选器的此组件实例的属性。
@@ -58,9 +58,9 @@ namespace Basic.Designer
                 if (property.IsBrowsable)
                     properties.Add(property);
             }
-            if (DefinitionInfo is DataEntityPropertyElement)
+            if (DefinitionInfo is DesignerDataEntityProperty)
             {
-                DataEntityPropertyElement entityProperty = DefinitionInfo as DataEntityPropertyElement;
+                DesignerDataEntityProperty entityProperty = DefinitionInfo as DesignerDataEntityProperty;
                 if (entityProperty.Attributes.Count > 0)
                 {
                     foreach (AbstractAttribute aa in entityProperty.Attributes)

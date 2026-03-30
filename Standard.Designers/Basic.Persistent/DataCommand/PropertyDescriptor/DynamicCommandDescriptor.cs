@@ -9,7 +9,7 @@ namespace Basic.Designer
 	/// 属性包装器
 	/// </summary>
 	/// <typeparam name="TDD">需要包装属性的信息</typeparam>
-	internal sealed class DynamicCommandDescriptor : ObjectDescriptor<DynamicCommandElement>
+	internal sealed class DynamicCommandDescriptor : ObjectDescriptor<DesignerDynamicCommand>
 	{
 		private PropertyDescriptorCollection propertyDescriptors = null;
 		private readonly string[] _Sorted = new string[] { 
@@ -20,7 +20,7 @@ namespace Basic.Designer
 		/// 初始化 StaticCommandDescriptor 实例
 		/// </summary>
 		/// <param name="dInfo"></param>
-		public DynamicCommandDescriptor(DynamicCommandElement dInfo) : base(dInfo) { }
+		public DynamicCommandDescriptor(DesignerDynamicCommand dInfo) : base(dInfo) { }
 
 		/// <summary>
 		/// 返回将特性数组用作筛选器的此组件实例的属性。

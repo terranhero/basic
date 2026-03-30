@@ -216,7 +216,7 @@ namespace Basic.Builders
 			if (_Persistent.NewEntity != null)
 			{
 				_Data.NewEntityName = _Persistent.NewEntity.ClassName;
-				foreach (DataEntityPropertyElement property in _Persistent.NewEntity.Properties)
+				foreach (DesignerDataEntityProperty property in _Persistent.NewEntity.Properties)
 				{
 					if (property.PrimaryKey && property.Type != null)
 						_Data.NewEntityKeys.Add(new BuilderParameterData(property.Name, property.Type.Name));
@@ -228,7 +228,7 @@ namespace Basic.Builders
 			{
 				_Data.SearchEntityName = _Persistent.SearchEntity.ClassName;
 				_Data.SearchConditionName = _Persistent.SearchEntity.Condition.ClassName;
-				foreach (DataEntityPropertyElement property in _Persistent.SearchEntity.Properties)
+				foreach (DesignerDataEntityProperty property in _Persistent.SearchEntity.Properties)
 				{
 					if (property.PrimaryKey && property.Type != null)
 						_Data.SearchEntityKeys.Add(new BuilderParameterData(property.Name, property.Type.Name));
@@ -239,7 +239,7 @@ namespace Basic.Builders
 			if (_Persistent.EditEntity != null)
 			{
 				_Data.EditEntityName = _Persistent.EditEntity.ClassName;
-				foreach (DataEntityPropertyElement property in _Persistent.EditEntity.Properties)
+				foreach (DesignerDataEntityProperty property in _Persistent.EditEntity.Properties)
 				{
 					if (property.PrimaryKey && property.Type != null)
 						_Data.EditEntityKeys.Add(new BuilderParameterData(property.Name, property.Type.Name));

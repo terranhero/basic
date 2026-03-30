@@ -13,14 +13,14 @@ namespace Basic.Collections
 	[Editor(typeof(ValidationAttributesListEditor), typeof(System.Drawing.Design.UITypeEditor))]
 	public sealed class AbstractValidationCollection : Basic.Collections.BaseCollection<AbstractAttribute>
 	{
-		private readonly DataEntityPropertyElement ownerProperty;
+		private readonly DesignerDataEntityProperty ownerProperty;
 
-		internal DataEntityPropertyElement Property { get { return ownerProperty; } }
+		internal DesignerDataEntityProperty Property { get { return ownerProperty; } }
 		/// <summary>
 		/// 初始化 AbstractAttributeCollection 类实例。
 		/// </summary>
 		/// <param name="property">拥有此集合的属性。</param>
-		internal AbstractValidationCollection(DataEntityPropertyElement property) : base() { ownerProperty = property; }
+		internal AbstractValidationCollection(DesignerDataEntityProperty property) : base() { ownerProperty = property; }
 
 		/// <summary>
 		/// 

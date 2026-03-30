@@ -51,7 +51,7 @@ namespace Basic.Configuration
 		private readonly DataEntityElementCollection _DataEntityElements;
 		private readonly ProjectInfo _ProjectInfo;
 		private readonly MessageInfo _MessageInfo;
-		private readonly PersistentGeneratorElement _Generator;
+		private readonly DesignerPersistentGenerator _Generator;
 		private Version _Version;
 		/// <summary>
 		/// 初始化 PersistentDesigner 类实例
@@ -71,7 +71,7 @@ namespace Basic.Configuration
 					_MessageInfo.GroupName = _TableInfo.EntityName;
 				}
 			};
-			_Generator = new PersistentGeneratorElement(this, XmlElementPrefix, XmlConfigNamespace);
+			_Generator = new DesignerPersistentGenerator(this, XmlElementPrefix, XmlConfigNamespace);
 			_DataCommands = new DataCommandCollection(this);
 			_DataEntityElements = new DataEntityElementCollection(this, XmlElementPrefix, XmlConfigNamespace);
 			_DataEntityElements.CollectionChanged += new NotifyCollectionChangedEventHandler(DataEntityElements_CollectionChanged);
@@ -82,9 +82,9 @@ namespace Basic.Configuration
 			this.OnCollectionChanged(this, e);
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
-				foreach (DataEntityElement entity in e.NewItems)
+				foreach (DesignerDataEntity entity in e.NewItems)
 				{
-					foreach (DataCommandElement dataCommand in entity.DataCommands)
+					foreach (DesignerDataCommand dataCommand in entity.DataCommands)
 					{
 						if (dataCommand.Kind == ConfigurationTypeEnum.AddNew) { _NewEntity = entity; continue; }
 						else if (dataCommand.Kind == ConfigurationTypeEnum.Modify) { _EditEntity = entity; continue; }
@@ -229,9 +229,9 @@ namespace Basic.Configuration
 		/// <param name="mappingProperties"></param>
 		public void UpdatePropertyMapping(IDictionary<string, string> mappingProperties)
 		{
-			foreach (DataEntityElement entity in _DataEntityElements)
+			foreach (DesignerDataEntity entity in _DataEntityElements)
 			{
-				foreach (DataEntityPropertyElement property in entity.Properties)
+				foreach (DesignerDataEntityProperty property in entity.Properties)
 				{
 					if (string.IsNullOrWhiteSpace(property.Column)) { continue; }
 					else if (!mappingProperties.ContainsKey(property.Column)) { mappingProperties.Add(property.Column, property.Name); }
@@ -316,8 +316,8 @@ namespace Basic.Configuration
 		[Basic.Designer.PersistentDescription("PersistentGenerator_ResxMode")]
 		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
 		[Basic.Designer.PersistentDisplay("PersistentGenerator_ResxMode_Display")]
-		[System.ComponentModel.DefaultValue(typeof(ResxModeEnum), "AssemlyResource")]
-		public ResxModeEnum ResxMode
+		[System.ComponentModel.DefaultValue(typeof(ResxModes), "AssemlyResource")]
+		public ResxModes ResxMode
 		{
 			get { return _Generator.ResxMode; }
 			set { _Generator.ResxMode = value; }
@@ -500,12 +500,12 @@ namespace Basic.Configuration
 		protected internal override IList SetSelectedObjects(IList selectionList)
 		{
 			selectionList.Add(new PersistentDescriptor(this));
-			foreach (DataEntityElement entity in _DataEntityElements)
+			foreach (DesignerDataEntity entity in _DataEntityElements)
 			{
-				selectionList.Add(new ObjectDescriptor<DataEntityElement>(entity));
-				foreach (DataCommandElement element in entity.DataCommands)
+				selectionList.Add(new ObjectDescriptor<DesignerDataEntity>(entity));
+				foreach (DesignerDataCommand element in entity.DataCommands)
 				{
-					selectionList.Add(new ObjectDescriptor<DataCommandElement>(element));
+					selectionList.Add(new ObjectDescriptor<DesignerDataCommand>(element));
 				}
 			}
 			return selectionList;
@@ -598,33 +598,33 @@ namespace Basic.Configuration
 		public DesignTableInfo TableInfo { get { return _TableInfo; } }
 		#endregion
 
-		private DataEntityElement _NewEntity = null;
+		private DesignerDataEntity _NewEntity = null;
 		/// <summary>
 		/// 表示新增实体类类型
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		internal DataEntityElement NewEntity { get { return _NewEntity; } }
+		internal DesignerDataEntity NewEntity { get { return _NewEntity; } }
 
-		private DataEntityElement _EditEntity = null;
+		private DesignerDataEntity _EditEntity = null;
 		/// <summary>
 		/// 表示修改实体类类型
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		internal DataEntityElement EditEntity { get { return _EditEntity; } }
+		internal DesignerDataEntity EditEntity { get { return _EditEntity; } }
 
-		private DataEntityElement _DeleteEntity = null;
+		private DesignerDataEntity _DeleteEntity = null;
 		/// <summary>
 		/// 表示删除实体类类型
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		internal DataEntityElement DeleteEntity { get { return _DeleteEntity; } }
+		internal DesignerDataEntity DeleteEntity { get { return _DeleteEntity; } }
 
-		private DataEntityElement _SearchEntity = null;
+		private DesignerDataEntity _SearchEntity = null;
 		/// <summary>
 		/// 表示查询实体类类型
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		internal DataEntityElement SearchEntity { get { return _SearchEntity; } }
+		internal DesignerDataEntity SearchEntity { get { return _SearchEntity; } }
 
 		private string _Namespace = null;
 		/// <summary>
@@ -752,21 +752,21 @@ namespace Basic.Configuration
 		protected internal override bool ReadAttribute(string name, string value)
 		{
 			if (name == VersionAttribute) { _Version = Version.Parse(value); return true; }
-			else if (name == PersistentGeneratorElement.ModifierAttribute)
+			else if (name == DesignerPersistentGenerator.ModifierAttribute)
 			{
 				ClassModifierEnum _Modifier = _Generator.Modifier;
 				if (Enum.TryParse<ClassModifierEnum>(value, out _Modifier))
 					_Generator.Modifier = _Modifier;
 				return true;
 			}
-			else if (name == PersistentGeneratorElement.GenerateAttribute)
+			else if (name == DesignerPersistentGenerator.GenerateAttribute)
 			{
 				GenerateActionEnum _Generate = _Generator.GenerateMode;
 				if (Enum.TryParse<GenerateActionEnum>(value, out _Generate))
 					_Generator.GenerateMode = _Generate;
 				return true;
 			}
-			else if (name == PersistentGeneratorElement.AccessAttribute)
+			else if (name == DesignerPersistentGenerator.AccessAttribute)
 			{
 				_Generator.BaseAccess = value;
 				return true;
@@ -811,7 +811,7 @@ namespace Basic.Configuration
 			{
 				_MessageInfo.ReadXml(reader.ReadSubtree());
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == PersistentGeneratorElement.XmlElementName)
+			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DesignerPersistentGenerator.XmlElementName)
 			{
 				_Generator.ReadXml(reader.ReadSubtree()); return false;
 			}
@@ -1080,9 +1080,9 @@ namespace Basic.Configuration
 
 			if (_Generator.BaseAccess.IndexOf("DbAccess") >= 0)
 			{
-				foreach (DataEntityElement entity in _DataEntityElements)
+				foreach (DesignerDataEntity entity in _DataEntityElements)
 				{
-					foreach (DataCommandElement command in entity.DataCommands)
+					foreach (DesignerDataCommand command in entity.DataCommands)
 					{
 						if (command.Kind == ConfigurationTypeEnum.AddNew && command.AutoGenerated)
 							command.WriteContextDesignerCode(contextCode.Members, this, provider);
@@ -1353,13 +1353,13 @@ namespace Basic.Configuration
 			if (!string.IsNullOrWhiteSpace(modelName))
 				codeAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(modelName)));
 			codeAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(TableName)));
-			if (ResxMode == ResxModeEnum.Resource)
+			if (ResxMode == ResxModes.Resource)
 			{
 				CodeFieldReferenceExpression fieldTypeExpress = new CodeFieldReferenceExpression(
 					new CodeTypeReferenceExpression(typeof(ConfigFileType).Name), "Resource");
 				codeAttribute.Arguments.Add(new CodeAttributeArgument(fieldTypeExpress));
 			}
-			else if (ResxMode == ResxModeEnum.AssemlyResource)
+			else if (ResxMode == ResxModes.AssemlyResource)
 			{
 				CodeFieldReferenceExpression fieldTypeExpress = new CodeFieldReferenceExpression(
 					new CodeTypeReferenceExpression(typeof(ConfigFileType).Name), "AssemlyResource");
@@ -1574,9 +1574,9 @@ namespace Basic.Configuration
 			accessCode.Members.Add(constructor25);
 			#endregion
 
-			foreach (DataEntityElement entity in _DataEntityElements)
+			foreach (DesignerDataEntity entity in _DataEntityElements)
 			{
-				foreach (DataCommandElement command in entity.DataCommands)
+				foreach (DesignerDataCommand command in entity.DataCommands)
 				{
 					if (_Generator.BaseAccess.IndexOf("DbAccess") >= 0)
 					{
@@ -1623,7 +1623,7 @@ namespace Basic.Configuration
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.Enums"));
 			if (!_ImportNamespaces.Contains("Basic.Interfaces"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.Interfaces"));
-			foreach (DataEntityElement entity in _DataEntityElements)
+			foreach (DesignerDataEntity entity in _DataEntityElements)
 			{
 				if (entity.Condition.Arguments.Count > 0 || entity.BaseCondition != typeof(AbstractCondition).FullName)
 					entity.Condition.WriteEntityDesignerCode(codeNamespace);
@@ -1669,7 +1669,7 @@ namespace Basic.Configuration
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.Enums"));
 			if (!_ImportNamespaces.Contains("Basic.Interfaces"))
 				codeNamespace.Imports.Add(new CodeNamespaceImport("Basic.Interfaces"));
-			foreach (DataEntityElement entity in _DataEntityElements)
+			foreach (DesignerDataEntity entity in _DataEntityElements)
 			{
 				if (entity.GeneratorMode == GenerateModeEnum.DataEntity)
 					entity.WriteEntityCode(codeNamespace);
@@ -1695,7 +1695,7 @@ namespace Basic.Configuration
 			writer.WriteStartElement(XmlElementPrefix, XmlElementName, XmlDataNamespace);
 			_TableInfo.GenerateConfiguration(writer, connectionType);
 			writer.WriteStartElement(XmlElementPrefix, DataCommandCollection.XmlElementName, XmlDataNamespace);
-			foreach (DataEntityElement dataCommand in _DataEntityElements)
+			foreach (DesignerDataEntity dataCommand in _DataEntityElements)
 			{
 				dataCommand.GenerateConfiguration(writer, connectionType);
 			}

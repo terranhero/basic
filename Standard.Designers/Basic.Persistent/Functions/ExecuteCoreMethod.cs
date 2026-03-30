@@ -12,8 +12,8 @@ namespace Basic.Functions
 	public sealed class ExecuteCoreMethod : AbstractExecutableMethod
 	{
 		internal const string XmlElementName = "ExecuteCore";
-		private readonly StaticCommandElement staticCommand;
-		internal ExecuteCoreMethod(StaticCommandElement element)
+		private readonly DesignerStaticCommand staticCommand;
+		internal ExecuteCoreMethod(DesignerStaticCommand element)
 			: base(element)
 		{
 			staticCommand = element;

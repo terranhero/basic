@@ -208,8 +208,8 @@ namespace Basic.Builders
 
 		private void AddCreateAction(CodeTypeDeclaration codeClass)
 		{
-			DataEntityElement newEntity = _Persistent.NewEntity;
-			DataEntityElement searchEntity = _Persistent.SearchEntity;
+			DesignerDataEntity newEntity = _Persistent.NewEntity;
+			DesignerDataEntity searchEntity = _Persistent.SearchEntity;
 			if (newEntity == null) { return; }
 			CodeMemberMethod getMethod = new CodeMemberMethod();
 			getMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
@@ -290,7 +290,7 @@ namespace Basic.Builders
 			CodeVariableDeclarationStatement vdEntity = new CodeVariableDeclarationStatement(className, "entityGrid");
 			CodeObjectCreateExpression initExpression = new CodeObjectCreateExpression(className);
 			CodeVariableReferenceExpression entityReference = new CodeVariableReferenceExpression("entity");
-			foreach (DataEntityPropertyElement property in newEntity.Properties)
+			foreach (DesignerDataEntityProperty property in newEntity.Properties)
 			{
 				if (property.PrimaryKey)
 					initExpression.Parameters.Add(new CodeFieldReferenceExpression(entityReference, property.Name));
@@ -323,8 +323,8 @@ namespace Basic.Builders
 
 		private void AddEditAction(CodeTypeDeclaration codeClass)
 		{
-			DataEntityElement editEntity = _Persistent.NewEntity;
-			DataEntityElement searchEntity = _Persistent.SearchEntity;
+			DesignerDataEntity editEntity = _Persistent.NewEntity;
+			DesignerDataEntity searchEntity = _Persistent.SearchEntity;
 
 			if (editEntity == null || searchEntity == null) { return; }
 
@@ -345,7 +345,7 @@ namespace Basic.Builders
 			#region ??Entity entity = new ??Entity(PrimaryKey);
 			CodeVariableDeclarationStatement cvdEntity = new CodeVariableDeclarationStatement(searchEntity.ClassName, "entity");
 			CodeObjectCreateExpression newMethod = new CodeObjectCreateExpression(searchEntity.ClassName);
-			foreach (DataEntityPropertyElement property in editEntity.Properties)
+			foreach (DesignerDataEntityProperty property in editEntity.Properties)
 			{
 				if (property.PrimaryKey && property.Type != null)
 				{
@@ -446,8 +446,8 @@ namespace Basic.Builders
 
 		private void AddDeleteAction(CodeTypeDeclaration codeClass)
 		{
-			DataEntityElement deleteEntity = _Persistent.DeleteEntity;
-			DataEntityElement searchEntity = _Persistent.SearchEntity;
+			DesignerDataEntity deleteEntity = _Persistent.DeleteEntity;
+			DesignerDataEntity searchEntity = _Persistent.SearchEntity;
 
 			if (deleteEntity == null) { return; }
 			CodeThisReferenceExpression thisReference = new CodeThisReferenceExpression();
@@ -523,9 +523,9 @@ namespace Basic.Builders
 
 		private void AddSearchAction(CodeTypeDeclaration codeClass)
 		{
-			DataEntityElement searchEntity = _Persistent.SearchEntity;
+			DesignerDataEntity searchEntity = _Persistent.SearchEntity;
 			if (searchEntity == null) { return; }
-			DataConditionElement dataCondition = searchEntity.Condition;
+			DesignerDataCondition dataCondition = searchEntity.Condition;
 
 			CodeThisReferenceExpression thisReference = new CodeThisReferenceExpression();
 			CodeMemberMethod postMethod = new CodeMemberMethod();
@@ -567,9 +567,9 @@ namespace Basic.Builders
 
 		private void AddComplexSearchAction(CodeTypeDeclaration codeClass)
 		{
-			DataEntityElement searchEntity = _Persistent.SearchEntity;
+			DesignerDataEntity searchEntity = _Persistent.SearchEntity;
 			if (searchEntity == null) { return; }
-			DataConditionElement dataCondition = searchEntity.Condition;
+			DesignerDataCondition dataCondition = searchEntity.Condition;
 
 			CodeThisReferenceExpression thisReference = new CodeThisReferenceExpression();
 			#region [AcceptVerbs(HttpVerbs.Get)]ActionResult AdSearch

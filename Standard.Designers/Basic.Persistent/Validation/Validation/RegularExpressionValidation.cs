@@ -19,7 +19,7 @@ namespace Basic.DataEntities
 		/// 初始化 RegularExpressionValidation 类的新实例。
 		/// </summary>
 		/// <param name="property">当前验证器所属属性。</param>
-		public RegularExpressionValidation(DataEntityPropertyElement property) : base(property) { }
+		public RegularExpressionValidation(DesignerDataEntityProperty property) : base(property) { }
 
 		/// <summary>
 		/// 异常关键字。

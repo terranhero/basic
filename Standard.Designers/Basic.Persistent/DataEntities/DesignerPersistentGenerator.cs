@@ -13,7 +13,7 @@ namespace Basic.DataEntities
 	/// </summary>
 	[System.ComponentModel.TypeConverter(typeof(DisplayNameConverter))]
 	[PersistentCategory("PersistentCategory_CodeGenerator"), PersistentDescription("PersistentGenerator_Description")]
-	public sealed class PersistentGeneratorElement : AbstractCustomTypeDescriptor
+	public sealed class DesignerPersistentGenerator : AbstractCustomTypeDescriptor
 	{
 		private readonly PersistentDesigner _PersistentConfiguration;
 		private readonly SupportDatabasesConverter _Converter;
@@ -41,7 +41,7 @@ namespace Basic.DataEntities
 		/// <param name="persistent">包含此类实例的 PersistentConfiguration 类实例。</param>
 		/// <param name="prefix">Xml文档元素前缀。</param>
 		/// <param name="elementns">Xml文档元素命名空间。</param>
-		internal PersistentGeneratorElement(PersistentDesigner pc, string prefix, string elementns)
+		internal DesignerPersistentGenerator(PersistentDesigner pc, string prefix, string elementns)
 			: base(pc)
 		{
 			_PersistentConfiguration = pc;
@@ -80,7 +80,7 @@ namespace Basic.DataEntities
 		/// 返回此组件实例的类名。
 		/// </summary>
 		/// <returns>该对象的类名；如果此类没有名称，则为 null。</returns>
-		public override string GetClassName() { return typeof(PersistentGeneratorElement).Name; }
+		public override string GetClassName() { return typeof(DesignerPersistentGenerator).Name; }
 
 		/// <summary>
 		/// 返回此组件实例的名称。
@@ -282,15 +282,15 @@ namespace Basic.DataEntities
 		//	set { _DatabaseType = value; }
 		//}
 
-		private ResxModeEnum _ResxMode = ResxModeEnum.AssemlyResource;
+		private ResxModes _ResxMode = ResxModes.AssemlyResource;
 		/// <summary>
 		/// 获取或设置数据持久类需要支持的数据库类型。
 		/// </summary>
 		[Basic.Designer.PersistentDescription("PersistentGenerator_ResxMode")]
 		[Basic.Designer.PersistentCategory("PersistentCategory_CodeGenerator")]
 		[Basic.Designer.PersistentDisplay("PersistentGenerator_ResxMode_Display")]
-		[System.ComponentModel.DefaultValue(typeof(ResxModeEnum), "AssemlyResource")]
-		public ResxModeEnum ResxMode
+		[System.ComponentModel.DefaultValue(typeof(ResxModes), "AssemlyResource")]
+		public ResxModes ResxMode
 		{
 			get { return _ResxMode; }
 			set
@@ -390,7 +390,7 @@ namespace Basic.DataEntities
 				writer.WriteAttributeString(NamingAttribute, _NamingRule.ToString());
 			if (_GenerateMode != GenerateActionEnum.Multiple)
 				writer.WriteAttributeString(GenerateAttribute, _GenerateMode.ToString());
-			if (_ResxMode != ResxModeEnum.AssemlyResource)
+			if (_ResxMode != ResxModes.AssemlyResource)
 				writer.WriteAttributeString(ResourceAttribute, _ResxMode.ToString());
 			if (_BaseAccess != typeof(AbstractAccess).Name)
 				writer.WriteAttributeString(AccessAttribute, _BaseAccess.ToString());

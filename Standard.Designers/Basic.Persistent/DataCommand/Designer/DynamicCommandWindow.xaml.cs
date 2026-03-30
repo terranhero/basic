@@ -21,8 +21,8 @@ namespace Basic.Designer
 	/// </summary>
 	public partial class DynamicCommandWindow : Microsoft.VisualStudio.PlatformUI.DialogWindow
 	{
-		private readonly DynamicCommandElement _DynamicCommand;
-		internal DynamicCommandWindow(DynamicCommandElement dynamicCommand)
+		private readonly DesignerDynamicCommand _DynamicCommand;
+		internal DynamicCommandWindow(DesignerDynamicCommand dynamicCommand)
 		{
 			InitializeComponent();
 			this.DataContext = _DynamicCommand = dynamicCommand;

@@ -9,8 +9,8 @@ namespace Basic.Collections
 	/// 表示执行数据库命令的集合
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	public sealed class DataCommandCollection : Basic.Collections.BaseCollection<DataCommandElement>,
-		ICollection<DataCommandElement>, IEnumerable<DataCommandElement>, INotifyCollectionChanged
+	public sealed class DataCommandCollection : Basic.Collections.BaseCollection<DesignerDataCommand>,
+		ICollection<DesignerDataCommand>, IEnumerable<DesignerDataCommand>, INotifyCollectionChanged
 	//System.Collections.ObjectModel.ObservableCollection<DataCommandElement>
 	{
 		internal const string XmlElementName = "DataCommands";
@@ -35,7 +35,7 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="index">从零开始的索引，应在该位置插入 item。</param>
 		/// <param name="item">要插入的对象。</param>
-		protected override void InsertItem(int index, DataCommandElement item)
+		protected override void InsertItem(int index, DesignerDataCommand item)
 		{
 			item.FileContentChanged += new System.EventHandler((sender, e) => { persistentConfiguration.OnFileContentChanged(e); });
 			string name = this.GetKey(item);
@@ -50,6 +50,6 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="item">需要获取键的集合子元素</param>
 		/// <returns>返回元素的键</returns>
-		protected internal override string GetKey(DataCommandElement item) { return item.Name; }
+		protected internal override string GetKey(DesignerDataCommand item) { return item.Name; }
 	}
 }

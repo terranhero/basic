@@ -19,7 +19,7 @@ namespace Basic.Configuration
     [System.ComponentModel.DisplayNameAttribute(XmlElementName)]
     [Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryNewCommand)]
     [Basic.Designer.PersistentDescription("PersistentDescription_NewCommand")]
-    public sealed class NewCommandElement : AbstractCommandElement, IXmlSerializable
+    public sealed class DesignerNewCommand : AbstractDesignerCommand, IXmlSerializable
     {
         #region 节点元素名称
         /// <summary>
@@ -54,12 +54,12 @@ namespace Basic.Configuration
             return XmlElementName;
         }
 
-        private readonly StaticCommandElement StaticCommand;
+        private readonly DesignerStaticCommand StaticCommand;
         /// <summary>
         /// 初始化 NewCommandElement 类实例。
         /// </summary>
         /// <param name="staticCommand">拥有此检测命令的静态命令结构</param>
-        internal NewCommandElement(StaticCommandElement staticCommand)
+        internal DesignerNewCommand(DesignerStaticCommand staticCommand)
             : base(staticCommand)
         {
             StaticCommand = staticCommand;
@@ -113,7 +113,7 @@ namespace Basic.Configuration
         public override string ToString()
         {
             if (string.IsNullOrWhiteSpace(Name))
-                return typeof(NewCommandElement).Name;
+                return typeof(DesignerNewCommand).Name;
             return Name;
         }
 

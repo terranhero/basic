@@ -20,7 +20,7 @@ namespace Basic.Configuration
     [Basic.Designer.PersistentDescription("PersistentDescription_Parameter")]
     public sealed class CommandParameter : AbstractCustomTypeDescriptor, IXmlSerializable
     {
-        private readonly AbstractCommandElement _Command;
+        private readonly AbstractDesignerCommand _Command;
         internal const string XmlElementName = "Parameter";
         internal const string ColumnAttribute = "Column";
         internal const string ParameterTypeAttribute = "DbType";
@@ -29,12 +29,12 @@ namespace Basic.Configuration
         internal const string ScaleAttribute = "Scale";
         internal const string NullableAttribute = "Nullable";
         internal const string DirectionAttribute = "Direction";
-        internal AbstractCommandElement Command { get { return _Command; } }
+        internal AbstractDesignerCommand Command { get { return _Command; } }
         /// <summary>
         /// 初始化 CommandParameter 类实例。
         /// </summary>
         /// <param name="command">拥有此参数的 AbstractCommandElement 类命令实例。</param>
-        internal CommandParameter(AbstractCommandElement command)
+        internal CommandParameter(AbstractDesignerCommand command)
             : base() { _Command = command; }
 
         /// <summary>

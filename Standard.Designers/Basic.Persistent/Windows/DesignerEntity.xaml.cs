@@ -158,10 +158,10 @@ namespace Basic.Windows
 			add { AddHandler(DesignerEntity.CreateCommandEvent, value); }
 			remove { RemoveHandler(DesignerEntity.CreateCommandEvent, value); }
 		}
-		private void RaiseCreateCommandEvent(CreateCommandEventArgs eventArgs)
-		{
-			RaiseEvent(eventArgs);
-		}
+		//private void RaiseCreateCommandEvent(CreateCommandEventArgs eventArgs)
+		//{
+		//	RaiseEvent(eventArgs);
+		//}
 
 		public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged",
 		RoutingStrategy.Bubble, typeof(CommandChengedHandler), typeof(DesignerEntity));
@@ -306,7 +306,7 @@ namespace Basic.Windows
 		/// <param name="e">包含事件数据的 System.Windows.Input.MouseButtonEventArgs。事件数据将报告已按下了鼠标左键。</param>
 		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
 		{
-			ArrayList newList = new ArrayList { new ObjectDescriptor<DataEntityElement>(DataContext as DataEntityElement) };
+			ArrayList newList = new ArrayList { new ObjectDescriptor<DesignerDataEntity>(DataContext as DesignerDataEntity) };
 			CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 			RaiseSelectionChangedEvent(eventArgs);
 			if (SelectedItem != null) { SelectedItem.IsSelected = false; }
@@ -321,10 +321,10 @@ namespace Basic.Windows
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
 			KeyboardDevice kd = e.KeyboardDevice;
-			if (IsSelected && kd.Modifiers == ModifierKeys.Control && SelectedObject != null && SelectedObject is DataEntityPropertyElement)
+			if (IsSelected && kd.Modifiers == ModifierKeys.Control && SelectedObject != null && SelectedObject is DesignerDataEntityProperty)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataEntityPropertyElement property = SelectedObject as DataEntityPropertyElement;
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataEntityProperty property = SelectedObject as DesignerDataEntityProperty;
 				int index = entity.Properties.IndexOf(property);
 				int count = entity.Properties.Count;
 				if (e.Key == Key.Up && index >= 1)
@@ -338,10 +338,10 @@ namespace Basic.Windows
 					entity.Properties.Move(index, index + 1);
 				}
 			}
-			else if (IsSelected && kd.Modifiers == ModifierKeys.Control && SelectedObject != null && SelectedObject is DataConditionPropertyElement)
+			else if (IsSelected && kd.Modifiers == ModifierKeys.Control && SelectedObject != null && SelectedObject is DesignerDataConditionProperty)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataConditionPropertyElement property = SelectedObject as DataConditionPropertyElement;
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataConditionProperty property = SelectedObject as DesignerDataConditionProperty;
 				int index = entity.Condition.Arguments.IndexOf(property);
 				int count = entity.Condition.Arguments.Count;
 				if (e.Key == Key.Up && index >= 1)
@@ -355,10 +355,10 @@ namespace Basic.Windows
 					entity.Condition.Arguments.Move(index, index + 1);
 				}
 			}
-			else if (IsSelected && kd.Modifiers == ModifierKeys.Control && SelectedObject != null && SelectedObject is DataCommandElement)
+			else if (IsSelected && kd.Modifiers == ModifierKeys.Control && SelectedObject != null && SelectedObject is DesignerDataCommand)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataCommandElement command = SelectedObject as DataCommandElement;
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataCommand command = SelectedObject as DesignerDataCommand;
 				int index = entity.DataCommands.IndexOf(command);
 				int count = entity.DataCommands.Count;
 				if (e.Key == Key.Up && index >= 1)
@@ -372,7 +372,7 @@ namespace Basic.Windows
 					entity.DataCommands.Move(index, index + 1);
 				}
 			}
-			else if (IsSelected && e.Key == Key.Up && SelectedObject is DataEntityPropertyElement)
+			else if (IsSelected && e.Key == Key.Up && SelectedObject is DesignerDataEntityProperty)
 			{
 				DependencyObject parentItem = VisualTreeHelper.GetParent(SelectedItem);
 				TreeViewItem headerItems = ItemsControl.ItemsControlFromItemContainer(SelectedItem) as TreeViewItem;
@@ -436,27 +436,27 @@ namespace Basic.Windows
 		{
 			base.SetValue(SelectedObjectPropertyKey, e.NewValue);
 			ArrayList newList = new ArrayList();
-			if (e.NewValue is DataEntityPropertyElement)
+			if (e.NewValue is DesignerDataEntityProperty)
 			{
-				newList.Add(new EntityPropertyDescriptor(e.NewValue as DataEntityPropertyElement));
+				newList.Add(new EntityPropertyDescriptor(e.NewValue as DesignerDataEntityProperty));
 				CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 				RaiseSelectionChangedEvent(eventArgs);
 			}
-			else if (e.NewValue is DataConditionPropertyElement)
+			else if (e.NewValue is DesignerDataConditionProperty)
 			{
-				newList.Add(new EntityPropertyDescriptor(e.NewValue as DataConditionPropertyElement));
+				newList.Add(new EntityPropertyDescriptor(e.NewValue as DesignerDataConditionProperty));
 				CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 				RaiseSelectionChangedEvent(eventArgs);
 			}
-			else if (e.NewValue is StaticCommandElement)
+			else if (e.NewValue is DesignerStaticCommand)
 			{
-				newList.Add(new StaticCommandDescriptor(e.NewValue as StaticCommandElement));
+				newList.Add(new StaticCommandDescriptor(e.NewValue as DesignerStaticCommand));
 				CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 				RaiseSelectionChangedEvent(eventArgs);
 			}
-			else if (e.NewValue is DynamicCommandElement)
+			else if (e.NewValue is DesignerDynamicCommand)
 			{
-				newList.Add(new DynamicCommandDescriptor(e.NewValue as DynamicCommandElement));
+				newList.Add(new DynamicCommandDescriptor(e.NewValue as DesignerDynamicCommand));
 				CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 				RaiseSelectionChangedEvent(eventArgs);
 			}
@@ -467,7 +467,7 @@ namespace Basic.Windows
 				{
 					item.IsSelected = true;
 					base.SetValue(SelectedObjectPropertyKey, item.DataContext);
-					newList.Add(new ObjectDescriptor<DataEntityElement>(DataContext as DataEntityElement));
+					newList.Add(new ObjectDescriptor<DesignerDataEntity>(DataContext as DesignerDataEntity));
 					CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 					RaiseSelectionChangedEvent(eventArgs);
 				}
@@ -475,7 +475,7 @@ namespace Basic.Windows
 				{
 					item.IsSelected = true;
 					base.SetValue(SelectedObjectPropertyKey, item.DataContext);
-					newList.Add(new ObjectDescriptor<DataEntityElement>(DataContext as DataEntityElement));
+					newList.Add(new ObjectDescriptor<DesignerDataEntity>(DataContext as DesignerDataEntity));
 					CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 					RaiseSelectionChangedEvent(eventArgs);
 				}
@@ -483,14 +483,14 @@ namespace Basic.Windows
 				{
 					item.IsSelected = true;
 					base.SetValue(SelectedObjectPropertyKey, DataContext);
-					newList.Add(new ObjectDescriptor<DataEntityElement>(DataContext as DataEntityElement));
+					newList.Add(new ObjectDescriptor<DesignerDataEntity>(DataContext as DesignerDataEntity));
 					CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 					RaiseSelectionChangedEvent(eventArgs);
 				}
 			}
 			else
 			{
-				newList.Add(new ObjectDescriptor<DataEntityElement>(DataContext as DataEntityElement));
+				newList.Add(new ObjectDescriptor<DesignerDataEntity>(DataContext as DesignerDataEntity));
 				CommandChangedEventArgs eventArgs = new CommandChangedEventArgs(SelectionChangedEvent, newList);
 				RaiseSelectionChangedEvent(eventArgs);
 			}
@@ -507,10 +507,10 @@ namespace Basic.Windows
 		/// <returns></returns>
 		public bool Remove()
 		{
-			if (SelectedObject is DataConditionPropertyElement)
+			if (SelectedObject is DesignerDataConditionProperty)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataConditionPropertyElement property = SelectedObject as DataConditionPropertyElement;
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataConditionProperty property = SelectedObject as DesignerDataConditionProperty;
 				string confirmMessage = string.Format("确定要删除\"{0}\"类型的\"{1}\"属性？", entity.Condition.ClassName, property.Name);
 				if (designerCanvas.Confirm(confirmMessage))//确定
 				{
@@ -528,10 +528,10 @@ namespace Basic.Windows
 				}
 				return true;
 			}
-			else if (SelectedObject is DataEntityPropertyElement)
+			else if (SelectedObject is DesignerDataEntityProperty)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataEntityPropertyElement property = SelectedObject as DataEntityPropertyElement;
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataEntityProperty property = SelectedObject as DesignerDataEntityProperty;
 				string confirmMessage = string.Format("确定要删除\"{0}\"类型的\"{1}\"属性？", entity.ClassName, property.Name);
 				if (designerCanvas.Confirm(confirmMessage))//确定
 				{
@@ -549,10 +549,10 @@ namespace Basic.Windows
 				}
 				return true;
 			}
-			else if (SelectedObject is DataCommandElement)
+			else if (SelectedObject is DesignerDataCommand)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataCommandElement command = SelectedObject as DataCommandElement;
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataCommand command = SelectedObject as DesignerDataCommand;
 				string confirmMessage = string.Format("确定要删除\"{0}\"命令？", command.Name);
 				if (designerCanvas.Confirm(confirmMessage))//确定
 				{
@@ -581,34 +581,34 @@ namespace Basic.Windows
 		/// <returns></returns>
 		public void CreateProperty(object sender, EventArgs e)
 		{
-			if (SelectedObject is DataConditionPropertyElement)
+			if (SelectedObject is DesignerDataConditionProperty)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataConditionPropertyElement property = new DataConditionPropertyElement(entity.Condition);
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataConditionProperty property = new DesignerDataConditionProperty(entity.Condition);
 				entity.Condition.Arguments.Add(property);
 			}
-			else if (SelectedObject is DataEntityPropertyElement)
+			else if (SelectedObject is DesignerDataEntityProperty)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataEntityPropertyElement property = new DataEntityPropertyElement(entity);
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataEntityProperty property = new DesignerDataEntityProperty(entity);
 				entity.Properties.Add(property);
 			}
-			else if (SelectedObject is DataEntityElement)
+			else if (SelectedObject is DesignerDataEntity)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataEntityPropertyElement property = new DataEntityPropertyElement(entity);
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataEntityProperty property = new DesignerDataEntityProperty(entity);
 				entity.Properties.Add(property);
 			}
-			else if (SelectedObject is DataConditionElement)
+			else if (SelectedObject is DesignerDataCondition)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataConditionPropertyElement property = new DataConditionPropertyElement(entity.Condition);
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataConditionProperty property = new DesignerDataConditionProperty(entity.Condition);
 				entity.Condition.Arguments.Add(property);
 			}
 			else if (SelectedObject == null && IsFocused)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataEntityPropertyElement property = new DataEntityPropertyElement(entity);
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataEntityProperty property = new DesignerDataEntityProperty(entity);
 				entity.Properties.Add(property);
 			}
 		}
@@ -620,19 +620,19 @@ namespace Basic.Windows
 		/// <param name="e"></param>
 		public void InsertProperty(object sender, EventArgs e)
 		{
-			if (SelectedObject is DataConditionPropertyElement)
+			if (SelectedObject is DesignerDataConditionProperty)
 			{
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataConditionPropertyElement oldValue = SelectedObject as DataConditionPropertyElement;
-				DataConditionPropertyElement property = new DataConditionPropertyElement(entity.Condition);
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataConditionProperty oldValue = SelectedObject as DesignerDataConditionProperty;
+				DesignerDataConditionProperty property = new DesignerDataConditionProperty(entity.Condition);
 				int index = entity.Condition.Arguments.IndexOf(oldValue);
 				entity.Condition.Arguments.Insert(index, property);
 			}
-			else if (SelectedObject is DataEntityPropertyElement)
+			else if (SelectedObject is DesignerDataEntityProperty)
 			{
-				DataEntityPropertyElement oldValue = SelectedObject as DataEntityPropertyElement;
-				DataEntityElement entity = DataContext as DataEntityElement;
-				DataEntityPropertyElement property = new DataEntityPropertyElement(entity);
+				DesignerDataEntityProperty oldValue = SelectedObject as DesignerDataEntityProperty;
+				DesignerDataEntity entity = DataContext as DesignerDataEntity;
+				DesignerDataEntityProperty property = new DesignerDataEntityProperty(entity);
 				int index = entity.Properties.IndexOf(oldValue);
 				entity.Properties.Insert(index, property);
 			}

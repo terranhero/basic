@@ -19,9 +19,9 @@ namespace Basic.Windows
 		private readonly EnvDTE80.DTE2 dteClass;
 		private readonly TableDesignerCollection designerTables;
 		private readonly TableDesignerInfo tableDesignerInfo;
-		private readonly DataEntityElement dataEntityElement;
-		private StaticCommandElement staticCommand;
-		public CommandsWindow(EnvDTE80.DTE2 dte, DataEntityElement entity, StaticCommandElement command)
+		private readonly DesignerDataEntity dataEntityElement;
+		private DesignerStaticCommand staticCommand;
+		public CommandsWindow(EnvDTE80.DTE2 dte, DesignerDataEntity entity, DesignerStaticCommand command)
 			: base("Microsoft.VisualStudio.PlatformUI.DialogWindow")
 		{
 			designerTables = new TableDesignerCollection("Database_Tables");
@@ -134,7 +134,7 @@ namespace Basic.Windows
 			if (staticCommand == null)
 			{
 				int count = dataEntityElement.Persistent.DataCommands.Count;
-				StaticCommandElement staticCommand1 = new StaticCommandElement(dataEntityElement);
+				DesignerStaticCommand staticCommand1 = new DesignerStaticCommand(dataEntityElement);
 				if (tableDesignerInfo.CreateInsertParameter(dataEntityElement, staticCommand1))
 				{
 					staticCommand1.Name = string.Concat("InsertCommand", count + 1);
@@ -145,9 +145,9 @@ namespace Basic.Windows
 					this.Close();
 				}
 			}
-			else if (staticCommand is StaticCommandElement)
+			else if (staticCommand is DesignerStaticCommand)
 			{
-				StaticCommandElement staticCommand1 = staticCommand as StaticCommandElement;
+				DesignerStaticCommand staticCommand1 = staticCommand as DesignerStaticCommand;
 				staticCommand1.CommandText = txtInsertText.Text;
 				staticCommand1.Parameters.Clear();
 				if (tableDesignerInfo.CreateInsertParameter(dataEntityElement, staticCommand1))
@@ -163,7 +163,7 @@ namespace Basic.Windows
 			if (staticCommand == null)
 			{
 				int count = dataEntityElement.Persistent.DataCommands.Count;
-				StaticCommandElement staticCommand1 = new StaticCommandElement(dataEntityElement);
+				DesignerStaticCommand staticCommand1 = new DesignerStaticCommand(dataEntityElement);
 				staticCommand1.Name = string.Concat("UpdateCommand", count + 1);
 				staticCommand1.ExecutableMethod = Enums.StaticMethodEnum.ExecuteNonQuery;
 				staticCommand1.CommandText = txtUpdateText.Text;
@@ -174,7 +174,7 @@ namespace Basic.Windows
 					this.Close();
 				}
 			}
-			else if (staticCommand is StaticCommandElement)
+			else if (staticCommand is DesignerStaticCommand)
 			{
 				staticCommand.CommandText = txtUpdateText.Text;
 				staticCommand.Parameters.Clear();
@@ -191,7 +191,7 @@ namespace Basic.Windows
 			if (staticCommand == null)
 			{
 				int count = dataEntityElement.Persistent.DataCommands.Count;
-				StaticCommandElement staticCommand1 = new StaticCommandElement(dataEntityElement);
+				DesignerStaticCommand staticCommand1 = new DesignerStaticCommand(dataEntityElement);
 				staticCommand1.Name = string.Concat("SelectCommand", count + 1);
 				staticCommand1.ExecutableMethod = StaticMethodEnum.ExecuteNonQuery;
 				staticCommand1.CommandText = txtSelectText.Text;
@@ -202,7 +202,7 @@ namespace Basic.Windows
 					this.Close();
 				}
 			}
-			else if (staticCommand is StaticCommandElement)
+			else if (staticCommand is DesignerStaticCommand)
 			{
 				staticCommand.CommandText = txtSelectText.Text;
 				staticCommand.Parameters.Clear();
@@ -219,7 +219,7 @@ namespace Basic.Windows
 			if (staticCommand == null)
 			{
 				int count = dataEntityElement.Persistent.DataCommands.Count;
-				StaticCommandElement staticCommand1 = new StaticCommandElement(dataEntityElement);
+				DesignerStaticCommand staticCommand1 = new DesignerStaticCommand(dataEntityElement);
 				staticCommand1.Name = string.Concat("DeleteCommand", count + 1);
 				staticCommand1.ExecutableMethod = Enums.StaticMethodEnum.ExecuteNonQuery;
 				staticCommand1.CommandText = txtDeleteText.Text;
@@ -230,7 +230,7 @@ namespace Basic.Windows
 					this.Close();
 				}
 			}
-			else if (staticCommand is StaticCommandElement)
+			else if (staticCommand is DesignerStaticCommand)
 			{
 				staticCommand.CommandText = txtDeleteText.Text;
 				staticCommand.Parameters.Clear();
@@ -257,19 +257,19 @@ namespace Basic.Windows
 					if (staticCommand != null)
 					{
 						this.DialogResult = true;
-						if (staticCommand is StaticCommandElement)
+						if (staticCommand is DesignerStaticCommand)
 						{
 							procedure.CreateCommand(staticCommand);
 						}
 						else
 						{
-							StaticCommandElement staticCommand1 = new StaticCommandElement(dataEntityElement);
+							DesignerStaticCommand staticCommand1 = new DesignerStaticCommand(dataEntityElement);
 							procedure.CreateCommand(staticCommand1);
 						}
 					}
 					else
 					{
-						StaticCommandElement staticCommand1 = new StaticCommandElement(dataEntityElement);
+						DesignerStaticCommand staticCommand1 = new DesignerStaticCommand(dataEntityElement);
 						procedure.CreateCommand(staticCommand1);
 						dataEntityElement.DataCommands.Add(staticCommand1);
 					}

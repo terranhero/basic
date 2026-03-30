@@ -82,12 +82,12 @@ namespace Basic.Converters
         /// <returns>如果属性存在读取成功则返回true，否则返回false，有子类读取。</returns>
         protected internal override bool ReadAttribute(string name, string value)
         {
-            if (name == AbstractCommandElement.NameAttribute) { _Name = value; return true; }
-            else if (name == AbstractCommandElement.CommandTypeAttribute)
+            if (name == AbstractDesignerCommand.NameAttribute) { _Name = value; return true; }
+            else if (name == AbstractDesignerCommand.CommandTypeAttribute)
             {
                 return Enum.TryParse<CommandType>(value, true, out _CommandType);
             }
-            else if (name == AbstractCommandElement.CommandTimeoutAttribute)
+            else if (name == AbstractDesignerCommand.CommandTimeoutAttribute)
             {
                 CommandTimeout = Convert.ToInt32(value); return true;
             }
@@ -100,11 +100,11 @@ namespace Basic.Converters
         /// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
         protected internal override void WriteAttribute(System.Xml.XmlWriter writer)
         {
-            if (WriteName) { writer.WriteAttributeString(AbstractCommandElement.NameAttribute, _Name); }
+            if (WriteName) { writer.WriteAttributeString(AbstractDesignerCommand.NameAttribute, _Name); }
             if (_CommandType != System.Data.CommandType.Text)
-                writer.WriteAttributeString(AbstractCommandElement.CommandTypeAttribute, CommandType.ToString());
+                writer.WriteAttributeString(AbstractDesignerCommand.CommandTypeAttribute, CommandType.ToString());
             if (_CommandTimeout != 30)
-                writer.WriteAttributeString(AbstractCommandElement.CommandTimeoutAttribute, _CommandTimeout.ToString());
+                writer.WriteAttributeString(AbstractDesignerCommand.CommandTimeoutAttribute, _CommandTimeout.ToString());
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Basic.Converters
         /// <returns>判断当前对象是否已经读取完成，如果读取完成则返回true，否则返回false。</returns>
         internal protected override bool ReadContent(System.Xml.XmlReader reader)
         {
-         if (reader.NodeType == XmlNodeType.Element && reader.LocalName == AbstractCommandElement.ParametersElement)
+         if (reader.NodeType == XmlNodeType.Element && reader.LocalName == AbstractDesignerCommand.ParametersElement)
             {
                 _Parameters.ReadXml(reader.ReadSubtree());
             }
@@ -128,7 +128,7 @@ namespace Basic.Converters
         protected internal override void WriteContent(System.Xml.XmlWriter writer)
         {
             if (_Parameters.Count == 0) { return; }
-            writer.WriteStartElement(AbstractCommandElement.ParametersElement);
+            writer.WriteStartElement(AbstractDesignerCommand.ParametersElement);
             foreach (ConverterParameter param in _Parameters)
             {
                 param.WriteXml(writer);

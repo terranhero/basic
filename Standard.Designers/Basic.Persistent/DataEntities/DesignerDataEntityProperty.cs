@@ -10,9 +10,9 @@ namespace Basic.DataEntities
 	/// <summary>
 	/// 实体类属性信息
 	/// </summary>
-	public sealed partial class DataEntityPropertyElement : AbstractPropertyElement
+	public sealed partial class DesignerDataEntityProperty : AbstractDesignerProperty
 	{
-		private readonly DataEntityElement dataEntityElement;
+		private readonly DesignerDataEntity dataEntityElement;
 		private readonly AbstractValidationCollection abstractAttributes;
 
 		#region 构造函数
@@ -20,14 +20,14 @@ namespace Basic.DataEntities
 		/// Initializes a new instance of a DataEntityPropertyElement object.
 		/// </summary>
 		/// <param name="owner">拥有此属性的实体定义文件</param>
-		internal DataEntityPropertyElement(DataEntityElement owner) : this(owner, null, typeof(string), false) { }
+		internal DesignerDataEntityProperty(DesignerDataEntity owner) : this(owner, null, typeof(string), false) { }
 
 		/// <summary>
 		/// Initializes a new instance of a DataEntityPropertyElement object.
 		/// </summary>
 		/// <param name="owner">拥有此属性的实体定义文件</param>
 		/// <param name="name">连接字符串的名称。</param>
-		internal DataEntityPropertyElement(DataEntityElement owner, string name) : this(owner, name, typeof(string), false) { }
+		internal DesignerDataEntityProperty(DesignerDataEntity owner, string name) : this(owner, name, typeof(string), false) { }
 
 		/// <summary>
 		/// Initializes a new instance of a DataEntityPropertyElement object.
@@ -35,7 +35,7 @@ namespace Basic.DataEntities
 		/// <param name="owner">拥有此属性的实体定义文件</param>
 		/// <param name="name">连接字符串的名称。</param>
 		/// <param name="type">属性类型。</param>
-		internal DataEntityPropertyElement(DataEntityElement owner, string name, Type type) : this(owner, name, type, false) { }
+		internal DesignerDataEntityProperty(DesignerDataEntity owner, string name, Type type) : this(owner, name, type, false) { }
 
 		/// <summary>
 		/// Initializes a new instance of a DataEntityPropertyElement object.
@@ -44,7 +44,7 @@ namespace Basic.DataEntities
 		/// <param name="name">属性名称。</param>
 		/// <param name="type">属性类型。</param>
 		/// <param name="nullable">属性是否不能为空。</param>
-		internal DataEntityPropertyElement(DataEntityElement owner, string name, Type type, bool nullable)
+		internal DesignerDataEntityProperty(DesignerDataEntity owner, string name, Type type, bool nullable)
 			: base(owner, name, type, nullable)
 		{
 			this.dataEntityElement = owner;

@@ -13,8 +13,8 @@ namespace Basic.Collections
 	/// <summary>
 	/// 表示实体类集合
 	/// </summary>
-	public sealed class DataEntityElementCollection : AbstractCollection<DataEntityElement>, INotifyPropertyChanged,
-		IEnumerable<DataEntityElement>, INotifyCollectionChanged, IXmlSerializable
+	public sealed class DataEntityElementCollection : AbstractCollection<DesignerDataEntity>, INotifyPropertyChanged,
+		IEnumerable<DesignerDataEntity>, INotifyCollectionChanged, IXmlSerializable
 	{
 		#region 实体定义字段
 		internal const string XmlElementName = "DataEntityElements";
@@ -45,7 +45,7 @@ namespace Basic.Collections
 		/// <summary>表示将实体模型移动位置</summary>
 		/// <param name="item"></param>
 		/// <param name="offset"></param>
-		internal void Move(DataEntityElement item, int offset)
+		internal void Move(DesignerDataEntity item, int offset)
 		{
 			int index = IndexOf(item);
 			if (index >= 0) { MoveItem(index, index + offset); }
@@ -53,7 +53,7 @@ namespace Basic.Collections
 
 		/// <summary>表示将实体模型移动位置</summary>
 		/// <param name="item"></param>
-		internal void MoveToFirst(DataEntityElement item)
+		internal void MoveToFirst(DesignerDataEntity item)
 		{
 			int index = IndexOf(item);
 			if (index >= 0) { MoveItem(index, 0); }
@@ -61,7 +61,7 @@ namespace Basic.Collections
 
 		/// <summary>表示将实体模型移动位置</summary>
 		/// <param name="item"></param>
-		internal void MoveToLast(DataEntityElement item)
+		internal void MoveToLast(DesignerDataEntity item)
 		{
 			int index = IndexOf(item);
 			if (index >= 0) { MoveItem(index, Items.Count - 1); }
@@ -72,7 +72,7 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="item"></param>
-		protected override void InsertItem(int index, Basic.DataEntities.DataEntityElement item)
+		protected override void InsertItem(int index, Basic.DataEntities.DesignerDataEntity item)
 		{
 			string name = this.GetKey(item);
 			if (base.ContainsKey(name)) { item.Name = string.Concat(item.Name, "_", this.Count); }
@@ -115,7 +115,7 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="item">需要获取键的集合子元素</param>
 		/// <returns>返回元素的键</returns>
-		protected internal override string GetKey(DataEntityElement item) { return item.EntityName; }
+		protected internal override string GetKey(DesignerDataEntity item) { return item.EntityName; }
 
 		/// <summary>
 		/// 将对象转换为其 XML 表示形式。
@@ -159,9 +159,9 @@ namespace Basic.Collections
 			while (reader.Read())
 			{
 				if (reader.NodeType == System.Xml.XmlNodeType.Whitespace) { continue; }
-				else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DataEntityElement.XmlElementName)
+				else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DesignerDataEntity.XmlElementName)
 				{
-					DataEntityElement element = new DataEntityElement(persistentConfiguration);
+					DesignerDataEntity element = new DesignerDataEntity(persistentConfiguration);
 					element.ReadXml(reader.ReadSubtree());
 					this.Add(element);
 				}
@@ -174,7 +174,7 @@ namespace Basic.Collections
 		/// <param name="index"></param>
 		protected override void RemoveItem(int index)
 		{
-			DataEntityElement item = base[index];
+			DesignerDataEntity item = base[index];
 			item.DataCommands.Clear();
 			base.RemoveItem(index);
 		}

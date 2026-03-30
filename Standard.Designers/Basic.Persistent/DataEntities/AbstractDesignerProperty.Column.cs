@@ -14,7 +14,7 @@ namespace Basic.DataEntities
 	/// <summary>
 	/// 表示实体定义模型中属性定义信息,实体属性对应数据库字段信息
 	/// </summary>
-	partial class AbstractPropertyElement
+	partial class AbstractDesignerProperty
 	{
 		internal const string ColumnElement = "Column";
 		internal const string PrimaryKeyAttribute = "PKey";

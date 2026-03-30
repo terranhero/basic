@@ -70,7 +70,7 @@ namespace Basic.DataContexts
 		/// <param name="staticCommand">需要修改的 StaticCommand 类型的命令。</param>
 		/// <param name="sql">需要替换的 Transact-SQL 查询语句。</param>
 		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
-		public static bool PasteStaticCommand(StaticCommandElement staticCommand, string sql)
+		public static bool PasteStaticCommand(DesignerStaticCommand staticCommand, string sql)
 		{
 			if (staticCommand == null) { return false; }
 			staticCommand.CommandText = sql;
@@ -94,8 +94,8 @@ namespace Basic.DataContexts
 			if (persistent == null) { return false; }
 			TransactSqlResult result = ResolverTransactSql(sql);
 			persistent.UpdatePropertyMapping(result.PropertyMapping);
-			DataEntityElement dataEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
-			StaticCommandElement staticCommand = new StaticCommandElement(dataEntityElement)
+			DesignerDataEntity dataEntityElement = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
+			DesignerStaticCommand staticCommand = new DesignerStaticCommand(dataEntityElement)
 			{
 				Name = "StaticCommand1"
 			};
@@ -296,7 +296,7 @@ namespace Basic.DataContexts
 		/// <param name="entity">需要更新的实体模型</param>
 		/// <param name="dynamicCommand">动态命令。</param>
 		/// <returns>执行成功返回 true，否则返回 false。</returns>
-		public static bool UpdateDataEntity(DataEntityElement entity, DynamicCommandElement dynamicCommand)
+		public static bool UpdateDataEntity(DesignerDataEntity entity, DesignerDynamicCommand dynamicCommand)
 		{
 			StringBuilder textBuilder = new StringBuilder(1000);
 			if (dynamicCommand.WithClauses.Count > 0)
@@ -333,7 +333,7 @@ namespace Basic.DataContexts
 		/// <param name="result">SQL语句解析结果。</param>
 		/// <param name="text">SQL解析源。</param>
 		/// <returns>执行成功返回 true，否则返回 false。</returns>
-		private static bool UpdateDataCondition(DataConditionElement entity, TransactSqlResult result, string text)
+		private static bool UpdateDataCondition(DesignerDataCondition entity, TransactSqlResult result, string text)
 		{
 			using (IDataContext context = DataContextFactory.CreateDbAccess())
 			{
@@ -351,7 +351,7 @@ namespace Basic.DataContexts
 		/// <param name="entity">需要更新的实体模型</param>
 		/// <param name="text">数据源。</param>
 		/// <returns>执行成功返回 true，否则返回 false。</returns>
-		public static bool UpdateDataCondition(DataConditionElement entity, string text)
+		public static bool UpdateDataCondition(DesignerDataCondition entity, string text)
 		{
 			TransactSqlResult result = ResolverTransactSql(text);
 			return UpdateDataCondition(entity, result, text);
@@ -498,7 +498,7 @@ namespace Basic.DataContexts
 		/// <param name="dynamicCommand">需要修改的 DynamicCommand 类型的命令。</param>
 		/// <param name="reader">需要替换的 Transact-SQL 查询语句。</param>
 		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
-		public static bool PasteCommand(TransactSqlResult result, DynamicCommandElement dynamicCommand, StringReader reader)
+		public static bool PasteCommand(TransactSqlResult result, DesignerDynamicCommand dynamicCommand, StringReader reader)
 		{
 			if (dynamicCommand == null) { return false; }
 
@@ -583,7 +583,7 @@ namespace Basic.DataContexts
 		/// <param name="dynamicCommand">需要修改的 DynamicCommand 类型的命令。</param>
 		/// <param name="sql">需要替换的 Transact-SQL 查询语句。</param>
 		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
-		public static bool PasteDynamicCommand(DynamicCommandElement dynamicCommand, StringReader reader)
+		public static bool PasteDynamicCommand(DesignerDynamicCommand dynamicCommand, StringReader reader)
 		{
 			if (dynamicCommand == null) { return false; }
 			//TransactTableCollection result = ResolverTransactSql(sql);
@@ -663,7 +663,7 @@ namespace Basic.DataContexts
 		/// <param name="dynamicCommand">需要修改的 DynamicCommand 类型的命令。</param>
 		/// <param name="sql">需要替换的 Transact-SQL 查询语句。</param>
 		/// <returns>如果替换成功则返回 True，否则返回 False。</returns>
-		public static bool PasteDynamicCommand(DynamicCommandElement dynamicCommand, string sql)
+		public static bool PasteDynamicCommand(DesignerDynamicCommand dynamicCommand, string sql)
 		{
 			if (dynamicCommand == null) { return false; }
 			TransactSqlResult result = ResolverTransactSql(sql);
@@ -686,8 +686,8 @@ namespace Basic.DataContexts
 			if (persistent == null) { return false; }
 			TransactSqlResult result = new TransactSqlResult(true);
 			persistent.UpdatePropertyMapping(result.PropertyMapping);
-			DataEntityElement dataEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
-			DynamicCommandElement dynamicCommand = new DynamicCommandElement(dataEntityElement);
+			DesignerDataEntity dataEntityElement = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
+			DesignerDynamicCommand dynamicCommand = new DesignerDynamicCommand(dataEntityElement);
 			using (StringReader reader = new StringReader(sql))
 			{
 				PasteCommand(result, dynamicCommand, reader);
@@ -706,7 +706,7 @@ namespace Basic.DataContexts
 			return true;
 		}
 
-		private static void CreateDynamicCommand(DynamicCommandElement dynamicCommand, TransactSqlResult result)
+		private static void CreateDynamicCommand(DesignerDynamicCommand dynamicCommand, TransactSqlResult result)
 		{
 			if (result.WithBuilder.Length > 0)
 			{

@@ -23,7 +23,7 @@ namespace Basic.DataEntities
 
 		/// <summary>初始化 CustomValidationCollection 类的新实例</summary>
 		/// <param name="nofity">当前验证器所属属性。</param>
-		public CustomValidationAttribute(DataEntityPropertyElement nofity) : base(nofity) { }
+		public CustomValidationAttribute(DesignerDataEntityProperty nofity) : base(nofity) { }
 
 		/// <summary>异常关键字</summary>
 		public override string ErrorKey { get { return "CustomValidation"; } }

@@ -28,7 +28,7 @@ namespace Basic.DataEntities
 			PropertyDescriptorCollection properties = new PropertyDescriptorCollection(null);
 			if (propertyDescriptors == null)
 				propertyDescriptors = base.GetProperties(attributes);
-			DataEntityElement entity = context.Instance as DataEntityElement;
+			DesignerDataEntity entity = context.Instance as DesignerDataEntity;
 			foreach (PropertyDescriptor property in propertyDescriptors)
 			{
 				if (property.Name == "ConditionGenerator" && entity.Condition.Visibility != System.Windows.Visibility.Visible)

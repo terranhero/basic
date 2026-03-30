@@ -19,9 +19,9 @@ namespace Basic.Designer
 		/// <summary>WithClauses 配置节名称</summary>
 		internal const string XmlElementName = "WithClauses";
 
-		private readonly DynamicCommandElement _DynamicCommand;
+		private readonly DesignerDynamicCommand _DynamicCommand;
 		private readonly PersistentDesigner _Persistent;
-		internal WithClauseCollection(DynamicCommandElement command) { _DynamicCommand = command; _Persistent = command.Persistent; }
+		internal WithClauseCollection(DesignerDynamicCommand command) { _DynamicCommand = command; _Persistent = command.Persistent; }
 
 		/// <summary>判断当前With子句中是否存在分页子句</summary>
 		/// <returns>如果存在分页子句，则返回true，否则返回false。</returns>

@@ -44,7 +44,7 @@ namespace Basic.DataEntities
 					{
 						editorService.CloseDropDown();
 						if (compareProperty != null)
-							compareProperty.SetOtherProperty(listBox.SelectedItem as DataEntityPropertyElement);
+							compareProperty.SetOtherProperty(listBox.SelectedItem as DesignerDataEntityProperty);
 					};
 				}
 				listBox.BeginEdit(editorService, validation, value);
@@ -67,12 +67,12 @@ namespace Basic.DataEntities
 			{
 				_editorService = editorService;
 				this.Items.Clear();
-				DataEntityElement entity = validation.Property.Owner as DataEntityElement;
+				DesignerDataEntity entity = validation.Property.Owner as DesignerDataEntity;
 				ICompareProperty compareProperty = validation as ICompareProperty;
 				//DataEntityElement entity = property.Owner as DataEntityElement;
 				if (entity == null) { return; }
-				this.Items.Add(new DataEntityPropertyElement(entity));
-				foreach (DataEntityPropertyElement property in entity.Properties)
+				this.Items.Add(new DesignerDataEntityProperty(entity));
+				foreach (DesignerDataEntityProperty property in entity.Properties)
 				{
 					if (property != validation.Property)
 					{
@@ -85,7 +85,7 @@ namespace Basic.DataEntities
 			internal object EndEdit(object value)
 			{
 				if (this.SelectedItem != null)
-					return (this.SelectedItem as DataEntityPropertyElement).Name;
+					return (this.SelectedItem as DesignerDataEntityProperty).Name;
 				return null;
 			}
 		}

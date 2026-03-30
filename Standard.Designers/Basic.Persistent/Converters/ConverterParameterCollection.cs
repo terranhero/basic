@@ -30,7 +30,7 @@ namespace Basic.Converters
         /// </summary>
         protected internal override string ElementName
         {
-            get { return DataCommandElement.ParametersElement; }
+            get { return DesignerDataCommand.ParametersElement; }
         }
 
         /// <summary>

@@ -15,6 +15,6 @@ namespace Basic.DataEntities
 		/// 设置 OtherProperty 属性值。
 		/// </summary>
 		/// <param name="property"></param>
-		void SetOtherProperty(DataEntityPropertyElement property);
+		void SetOtherProperty(DesignerDataEntityProperty property);
 	}
 }

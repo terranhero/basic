@@ -181,8 +181,8 @@ namespace Basic.Configuration
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
             menu.Enabled = menu.Visible = false;
             if (canvas == null || canvas.SelectedItem == null) { return; }
-            menu.Enabled = menu.Visible = canvas.SelectedItem.SelectedObject is DataConditionPropertyElement ||
-                 canvas.SelectedItem.SelectedObject is DataEntityPropertyElement;
+            menu.Enabled = menu.Visible = canvas.SelectedItem.SelectedObject is DesignerDataConditionProperty ||
+                 canvas.SelectedItem.SelectedObject is DesignerDataEntityProperty;
         }
         #endregion
 
@@ -200,10 +200,10 @@ namespace Basic.Configuration
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
             menu.Enabled = menu.Visible = false;
             if (canvas == null || canvas.SelectedItem == null) { return; }
-            menu.Enabled = menu.Visible = canvas.SelectedItem.SelectedObject is DataConditionPropertyElement ||
-                 canvas.SelectedItem.SelectedObject is DataEntityPropertyElement ||
-                 canvas.SelectedItem.SelectedObject is DataConditionElement ||
-                 canvas.SelectedItem.SelectedObject is DataEntityElement;
+            menu.Enabled = menu.Visible = canvas.SelectedItem.SelectedObject is DesignerDataConditionProperty ||
+                 canvas.SelectedItem.SelectedObject is DesignerDataEntityProperty ||
+                 canvas.SelectedItem.SelectedObject is DesignerDataCondition ||
+                 canvas.SelectedItem.SelectedObject is DesignerDataEntity;
         }
         #endregion
 
@@ -220,7 +220,7 @@ namespace Basic.Configuration
                     if (canvas.SelectedItem == null)
                     {
                         PersistentDesigner persistent = pane.GetPersistent();
-                        DataEntityElement entityEntityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                        DesignerDataEntity entityEntityElement = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                         entityEntityElement.Name = string.Concat(persistent.TableInfo.EntityName, persistent.DataEntities.Count);
                         EnvDTE80.DTE2 dteClass = this.GetDTE();
                         CommandsWindow window = new CommandsWindow(dteClass, entityEntityElement, null);
@@ -234,7 +234,7 @@ namespace Basic.Configuration
                     else
                     {
                         DesignerEntity designerItem = canvas.SelectedItem as DesignerEntity;
-                        DataEntityElement entityEntityElement = designerItem.DataContext as DataEntityElement;
+                        DesignerDataEntity entityEntityElement = designerItem.DataContext as DesignerDataEntity;
                         EnvDTE80.DTE2 dteClass = this.GetDTE();
                         CommandsWindow window1 = new CommandsWindow(dteClass, entityEntityElement, null);
                         if (window1.ShowModal() == true) { }
@@ -268,8 +268,8 @@ namespace Basic.Configuration
                 {
                     if (canvas.SelectedItem != null)
                     {
-                        DataEntityElement entityEntityElement = canvas.SelectedItem.DataContext as DataEntityElement;
-                        StaticCommandElement dataCommand = canvas.SelectedItem.SelectedObject as StaticCommandElement;
+                        DesignerDataEntity entityEntityElement = canvas.SelectedItem.DataContext as DesignerDataEntity;
+                        DesignerStaticCommand dataCommand = canvas.SelectedItem.SelectedObject as DesignerStaticCommand;
                         EnvDTE80.DTE2 dteClass = this.GetDTE();
                         CommandsWindow window1 = new CommandsWindow(dteClass, entityEntityElement, dataCommand);
                         if (window1.ShowModal() == true) { }
@@ -299,7 +299,7 @@ namespace Basic.Configuration
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
             menu.Enabled = menu.Visible = false;
             if (canvas == null || canvas.SelectedItem == null) { return; }
-            menu.Enabled = menu.Visible = canvas.SelectedItem.SelectedObject is StaticCommandElement;
+            menu.Enabled = menu.Visible = canvas.SelectedItem.SelectedObject is DesignerStaticCommand;
         }
         #endregion
 
@@ -331,16 +331,16 @@ namespace Basic.Configuration
                 //else if (config.ReadConfig(pane.ProjectItem) == false) { return; }
                 if (canvas.SelectedItem != null)
                 {
-                    DataEntityElement entityEntityElement = canvas.SelectedItem.DataContext as DataEntityElement;
-                    DataCommandElement dataCommand = canvas.SelectedItem.SelectedObject as DataCommandElement;
-                    if (dataCommand is StaticCommandElement)
+                    DesignerDataEntity entityEntityElement = canvas.SelectedItem.DataContext as DesignerDataEntity;
+                    DesignerDataCommand dataCommand = canvas.SelectedItem.SelectedObject as DesignerDataCommand;
+                    if (dataCommand is DesignerStaticCommand)
                     {
-                        StaticCommandElement staticCommand = dataCommand as StaticCommandElement;
+                        DesignerStaticCommand staticCommand = dataCommand as DesignerStaticCommand;
                         if (TransactSqlResolver.PasteStaticCommand(staticCommand, text)) { Clipboard.Clear(); }
                     }
                     else
                     {
-                        StaticCommandElement staticCommand = new StaticCommandElement(entityEntityElement);
+                        DesignerStaticCommand staticCommand = new DesignerStaticCommand(entityEntityElement);
                         if (TransactSqlResolver.PasteStaticCommand(staticCommand, text))
                         {
                             Clipboard.Clear();
@@ -374,10 +374,10 @@ namespace Basic.Configuration
                 if (config.ReadJson(pane.ProjectItem) == false) { return; }
                 if (canvas.SelectedItem != null)
                 {
-                    DataEntityElement entityEntityElement = canvas.SelectedItem.DataContext as DataEntityElement;
-                    if (canvas.SelectedItem.SelectedObject is DynamicCommandElement)
+                    DesignerDataEntity entityEntityElement = canvas.SelectedItem.DataContext as DesignerDataEntity;
+                    if (canvas.SelectedItem.SelectedObject is DesignerDynamicCommand)
                     {
-                        DynamicCommandElement dynamicCommand = canvas.SelectedItem.SelectedObject as DynamicCommandElement;
+                        DesignerDynamicCommand dynamicCommand = canvas.SelectedItem.SelectedObject as DesignerDynamicCommand;
                         using (StringReader reader = new StringReader(text))
                         {
                             if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, reader))
@@ -388,7 +388,7 @@ namespace Basic.Configuration
                     }
                     else
                     {
-                        DynamicCommandElement dynamicCommand = new DynamicCommandElement(entityEntityElement)
+                        DesignerDynamicCommand dynamicCommand = new DesignerDynamicCommand(entityEntityElement)
                         {
                             Name = string.Concat("DynamicCommand_", entityEntityElement.DataCommands.Count)
                         };
@@ -426,8 +426,8 @@ namespace Basic.Configuration
             PersistentDesigner persistent = this.GetPersistentConfiguration();
             if (persistent.TableInfo.IsEmpty) { menu.Enabled = menu.Visible = false; return; }
             menu.Enabled = menu.Visible = canvas != null && canvas.SelectedItem != null &&
-                 canvas.SelectedItem.SelectedObject is DataCommandElement &&
-                 (!(canvas.SelectedItem.SelectedObject is DynamicCommandElement));
+                 canvas.SelectedItem.SelectedObject is DesignerDataCommand &&
+                 (!(canvas.SelectedItem.SelectedObject is DesignerDynamicCommand));
         }
 
         private void OnUpdateCommand(object sender, EventArgs e)
@@ -444,9 +444,9 @@ namespace Basic.Configuration
                 if (canvas.SelectedItem != null)
                 {
                     DesignerEntity selectedItem = canvas.SelectedItem;
-                    if (selectedItem.SelectedObject is StaticCommandElement)
+                    if (selectedItem.SelectedObject is DesignerStaticCommand)
                     {
-                        StaticCommandElement command = selectedItem.SelectedObject as StaticCommandElement;
+                        DesignerStaticCommand command = selectedItem.SelectedObject as DesignerStaticCommand;
                         if (command.Kind == ConfigurationTypeEnum.AddNew)
                             persistent.TableInfo.CreateInsertSqlStruct(command);
                         else if (command.Kind == ConfigurationTypeEnum.Modify)
@@ -456,9 +456,9 @@ namespace Basic.Configuration
                         else if (command.Kind == ConfigurationTypeEnum.SelectByKey)
                             persistent.TableInfo.CreateSelectByPKeySqlStruct(command);
                     }
-                    else if (selectedItem.SelectedObject is DynamicCommandElement)
+                    else if (selectedItem.SelectedObject is DesignerDynamicCommand)
                     {
-                        DynamicCommandElement dataCommand = selectedItem.SelectedObject as DynamicCommandElement;
+                        DesignerDynamicCommand dataCommand = selectedItem.SelectedObject as DesignerDynamicCommand;
                         string text = Clipboard.GetText(TextDataFormat.UnicodeText);
                         if (!string.IsNullOrWhiteSpace(text) && TransactSqlResolver.CanPaste(text))
                         {
@@ -525,7 +525,7 @@ namespace Basic.Configuration
             OleMenuCommand menu = sender as OleMenuCommand;
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
             menu.Enabled = menu.Visible = canvas != null && canvas.SelectedItem != null &&
-                 canvas.SelectedItem.SelectedObject is DynamicCommandElement;
+                 canvas.SelectedItem.SelectedObject is DesignerDynamicCommand;
         }
 
         private void OnUpdateCondition(object sender, EventArgs e)
@@ -538,13 +538,13 @@ namespace Basic.Configuration
                 PersistentDesigner persistent = this.GetPersistentConfiguration();
                 DesignTableInfo _TableInfo = persistent.TableInfo;
                 DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
-                if (canvas.SelectedItem != null && canvas.SelectedItem.SelectedObject is DynamicCommandElement)
+                if (canvas.SelectedItem != null && canvas.SelectedItem.SelectedObject is DesignerDynamicCommand)
                 {
-                    DataEntityElement entity = canvas.SelectedItem.DataContext as DataEntityElement;
+                    DesignerDataEntity entity = canvas.SelectedItem.DataContext as DesignerDataEntity;
                     ConnectionConfiguration config = new ConnectionConfiguration(this);
                     if (config.ReadJson(pane.ProjectItem))
                     {
-                        DynamicCommandElement dynamicCommand = canvas.SelectedItem.SelectedObject as DynamicCommandElement;
+                        DesignerDynamicCommand dynamicCommand = canvas.SelectedItem.SelectedObject as DesignerDynamicCommand;
                         StringBuilder textBuilder = new StringBuilder(1000);
                         if (dynamicCommand.WithClauses.Count > 0)
                         {
@@ -628,14 +628,14 @@ namespace Basic.Configuration
                 PersistentDesigner persistent = pane.GetPersistent();
                 DesignTableInfo _TableInfo = persistent.TableInfo;
                 DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
-                DataEntityElement entity = designerEntity.DataContext as DataEntityElement;
-                if (designerEntity.SelectedObject is DataConditionPropertyElement || designerEntity.SelectedObject is DataConditionElement)
+                DesignerDataEntity entity = designerEntity.DataContext as DesignerDataEntity;
+                if (designerEntity.SelectedObject is DesignerDataConditionProperty || designerEntity.SelectedObject is DesignerDataCondition)
                 {
                     _TableInfo.CreateDataConditionElement(entity.Condition);
                 }
-                else if (designerEntity.SelectedObject is StaticCommandElement)
+                else if (designerEntity.SelectedObject is DesignerStaticCommand)
                 {
-                    StaticCommandElement command = designerEntity.SelectedObject as StaticCommandElement;
+                    DesignerStaticCommand command = designerEntity.SelectedObject as DesignerStaticCommand;
                     if (command.Kind == ConfigurationTypeEnum.AddNew)
                         _TableInfo.CreateInsertSqlStruct(command);
                     else if (command.Kind == ConfigurationTypeEnum.Modify)
@@ -645,12 +645,12 @@ namespace Basic.Configuration
                     else if (command.Kind == ConfigurationTypeEnum.SelectByKey)
                         _TableInfo.CreateSelectByPKeySqlStruct(command);
                 }
-                else if (designerEntity.SelectedObject is DynamicCommandElement)
+                else if (designerEntity.SelectedObject is DesignerDynamicCommand)
                 {
                     ConnectionConfiguration config = new ConnectionConfiguration(this);
                     if (config.ReadJson(pane.ProjectItem))
                     {
-                        DynamicCommandElement dynamicCommand = designerEntity.SelectedObject as DynamicCommandElement;
+                        DesignerDynamicCommand dynamicCommand = designerEntity.SelectedObject as DesignerDynamicCommand;
                         TransactSqlResolver.UpdateDataEntity(entity, dynamicCommand);
                     }
                 }
@@ -690,10 +690,10 @@ namespace Basic.Configuration
                 }
 
                 DataEntityElementCollection entities = persistent.DataEntities;
-                DataEntityElement newEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.AddNew));
-                DataEntityElement selectEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.SearchTable));
-                DataEntityElement updateEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.Modify));
-                DataEntityElement deleteEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.Remove));
+                DesignerDataEntity newEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.AddNew));
+                DesignerDataEntity selectEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.SearchTable));
+                DesignerDataEntity updateEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.Modify));
+                DesignerDataEntity deleteEntity = entities.FirstOrDefault(m => m.DataCommands.Any(p => p.Kind == ConfigurationTypeEnum.Remove));
                 //foreach (DataEntityElement entity in persistent.DataEntities)
                 //{
                 //	foreach (DataCommandElement element in entity.DataCommands)
@@ -709,12 +709,12 @@ namespace Basic.Configuration
                 {
                     if (selectEntity == null)
                     {
-                        selectEntity = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                        selectEntity = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                         selectEntity.DesignerInfo.Left = 12;
                         selectEntity.DesignerInfo.Top = 22.0;
                         selectEntity.DesignerInfo.Expander = true;
                         persistent.DataEntities.Add(selectEntity);
-                        DynamicCommandElement dynamicCommand = new DynamicCommandElement(selectEntity);
+                        DesignerDynamicCommand dynamicCommand = new DesignerDynamicCommand(selectEntity);
                         persistent.TableInfo.CreateSearchSqlStruct(selectEntity, dynamicCommand);
                         selectEntity.DataCommands.Add(dynamicCommand);
                     }
@@ -726,7 +726,7 @@ namespace Basic.Configuration
                     bool notExistSelectTable = selectEntity == null;
                     if (selectEntity == null)
                     {
-                        selectEntity = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                        selectEntity = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                         selectEntity.DesignerInfo.Left = 12;
                         selectEntity.DesignerInfo.Top = 22.0;
                         selectEntity.DesignerInfo.Expander = true;
@@ -734,25 +734,25 @@ namespace Basic.Configuration
                     }
                     if (notExistSelectTable)
                     {
-                        DynamicCommandElement dynamicCommand = new DynamicCommandElement(selectEntity);
+                        DesignerDynamicCommand dynamicCommand = new DesignerDynamicCommand(selectEntity);
                         persistent.TableInfo.CreateSearchSqlStruct(selectEntity, dynamicCommand);
                         selectEntity.DataCommands.Add(dynamicCommand);
                     }
                     if (newEntity == null)
                     {
-                        StaticCommandElement staticCommand = new StaticCommandElement(selectEntity);
+                        DesignerStaticCommand staticCommand = new DesignerStaticCommand(selectEntity);
                         persistent.TableInfo.CreateInsertSqlStruct(selectEntity, staticCommand);
                         selectEntity.DataCommands.Add(staticCommand);
                     }
                     if (updateEntity == null)
                     {
-                        StaticCommandElement staticCommand = new StaticCommandElement(selectEntity);
+                        DesignerStaticCommand staticCommand = new DesignerStaticCommand(selectEntity);
                         persistent.TableInfo.CreateUpdateSqlStruct(selectEntity, staticCommand);
                         selectEntity.DataCommands.Add(staticCommand);
                     }
                     if (deleteEntity == null)
                     {
-                        StaticCommandElement staticCommand = new StaticCommandElement(selectEntity);
+                        DesignerStaticCommand staticCommand = new DesignerStaticCommand(selectEntity);
                         persistent.TableInfo.CreateDeleteSqlStruct(selectEntity, staticCommand);
                         selectEntity.DataCommands.Add(staticCommand);
                     }
@@ -761,44 +761,44 @@ namespace Basic.Configuration
                 {
                     if (selectEntity == null)
                     {
-                        selectEntity = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                        selectEntity = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                         selectEntity.DesignerInfo.Left = 470.0;
                         selectEntity.DesignerInfo.Top = 22.0;
                         selectEntity.DesignerInfo.Expander = true;
-                        DynamicCommandElement dynamicCommand = new DynamicCommandElement(selectEntity);
+                        DesignerDynamicCommand dynamicCommand = new DesignerDynamicCommand(selectEntity);
                         persistent.TableInfo.CreateSearchSqlStruct(selectEntity, dynamicCommand);
                         selectEntity.DataCommands.Add(dynamicCommand);
                         persistent.DataEntities.Add(selectEntity);
                     }
                     if (newEntity == null)
                     {
-                        newEntity = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                        newEntity = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                         newEntity.DesignerInfo.Left = 12;
                         newEntity.DesignerInfo.Top = 22.0;
                         newEntity.DesignerInfo.Expander = true;
-                        StaticCommandElement staticCommand = new StaticCommandElement(newEntity);
+                        DesignerStaticCommand staticCommand = new DesignerStaticCommand(newEntity);
                         persistent.TableInfo.CreateInsertSqlStruct(newEntity, staticCommand);
                         newEntity.DataCommands.Add(staticCommand);
                         persistent.DataEntities.Add(newEntity);
                     }
                     if (updateEntity == null)
                     {
-                        updateEntity = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                        updateEntity = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                         updateEntity.DesignerInfo.Left = 240;
                         updateEntity.DesignerInfo.Top = 22.0;
                         updateEntity.DesignerInfo.Expander = true;
-                        StaticCommandElement staticCommand = new StaticCommandElement(updateEntity);
+                        DesignerStaticCommand staticCommand = new DesignerStaticCommand(updateEntity);
                         persistent.TableInfo.CreateUpdateSqlStruct(updateEntity, staticCommand);
                         updateEntity.DataCommands.Add(staticCommand);
                         persistent.DataEntities.Add(updateEntity);
                     }
                     if (deleteEntity == null)
                     {
-                        deleteEntity = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                        deleteEntity = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                         deleteEntity.DesignerInfo.Left = 12;
                         deleteEntity.DesignerInfo.Top = 292.0;
                         deleteEntity.DesignerInfo.Expander = true;
-                        StaticCommandElement staticCommand = new StaticCommandElement(deleteEntity);
+                        DesignerStaticCommand staticCommand = new DesignerStaticCommand(deleteEntity);
                         persistent.TableInfo.CreateDeleteSqlStruct(deleteEntity, staticCommand);
                         deleteEntity.DataCommands.Add(staticCommand);
                         persistent.DataEntities.Add(deleteEntity);
@@ -823,7 +823,7 @@ namespace Basic.Configuration
             {
                 DesignerEntity item = canvas.SelectedItem;
                 menu.Enabled = menu.Visible = true;
-                if (item.SelectedObject is DataCommandElement)
+                if (item.SelectedObject is DesignerDataCommand)
                     menu.Enabled = menu.Visible = (persistent != null && persistent.GenerateContext);
             }
         }
@@ -834,27 +834,27 @@ namespace Basic.Configuration
             PersistentPane _PersistentPane = this.GetPersistentPane();
             if (canvas.SelectedItem == null) { return; }
             DesignerEntity item = canvas.SelectedItem;
-            if (item.SelectedObject is DataEntityPropertyElement)
+            if (item.SelectedObject is DesignerDataEntityProperty)
             {
-                DataEntityPropertyElement property = item.SelectedObject as DataEntityPropertyElement;
-                _PersistentPane.EditDataEntityCode(item.DataContext as DataEntityElement, property);
+                DesignerDataEntityProperty property = item.SelectedObject as DesignerDataEntityProperty;
+                _PersistentPane.EditDataEntityCode(item.DataContext as DesignerDataEntity, property);
             }
-            else if (item.SelectedObject is DataConditionPropertyElement)
+            else if (item.SelectedObject is DesignerDataConditionProperty)
             {
-                DataConditionPropertyElement property = item.SelectedObject as DataConditionPropertyElement;
-                _PersistentPane.EditConditionCode(item.DataContext as DataEntityElement, property);
+                DesignerDataConditionProperty property = item.SelectedObject as DesignerDataConditionProperty;
+                _PersistentPane.EditConditionCode(item.DataContext as DesignerDataEntity, property);
             }
-            else if (item.SelectedObject is DataCommandElement)
+            else if (item.SelectedObject is DesignerDataCommand)
             {
-                _PersistentPane.EditCommandCode(item.SelectedObject as DataCommandElement, item.DataContext as DataEntityElement);
+                _PersistentPane.EditCommandCode(item.SelectedObject as DesignerDataCommand, item.DataContext as DesignerDataEntity);
             }
-            else if (item.SelectedObject is DataEntityElement)
+            else if (item.SelectedObject is DesignerDataEntity)
             {
-                _PersistentPane.EditDataEntityCode(item.DataContext as DataEntityElement, null);
+                _PersistentPane.EditDataEntityCode(item.DataContext as DesignerDataEntity, null);
             }
-            else if (item.SelectedObject is DataConditionElement)
+            else if (item.SelectedObject is DesignerDataCondition)
             {
-                _PersistentPane.EditConditionCode(item.DataContext as DataEntityElement, null);
+                _PersistentPane.EditConditionCode(item.DataContext as DesignerDataEntity, null);
             }
         }
 
@@ -868,7 +868,7 @@ namespace Basic.Configuration
             {
                 DesignerEntity item = canvas.SelectedItem;
                 menu.Enabled = menu.Visible = true;
-                if (item.SelectedObject is DataCommandElement)
+                if (item.SelectedObject is DesignerDataCommand)
                     menu.Enabled = menu.Visible = (persistent != null && persistent.GenerateContext);
             }
         }
@@ -879,27 +879,27 @@ namespace Basic.Configuration
             PersistentPane _PersistentPane = this.GetPersistentPane();
             if (canvas.SelectedItem == null) { return; }
             DesignerEntity item = canvas.SelectedItem;
-            if (item.SelectedObject is DataEntityPropertyElement)
+            if (item.SelectedObject is DesignerDataEntityProperty)
             {
-                DataEntityPropertyElement property = item.SelectedObject as DataEntityPropertyElement;
-                _PersistentPane.EditDataEntityCode(item.DataContext as DataEntityElement, property);
+                DesignerDataEntityProperty property = item.SelectedObject as DesignerDataEntityProperty;
+                _PersistentPane.EditDataEntityCode(item.DataContext as DesignerDataEntity, property);
             }
-            else if (item.SelectedObject is DataConditionPropertyElement)
+            else if (item.SelectedObject is DesignerDataConditionProperty)
             {
-                DataConditionPropertyElement property = item.SelectedObject as DataConditionPropertyElement;
-                _PersistentPane.EditConditionCode(item.DataContext as DataEntityElement, property);
+                DesignerDataConditionProperty property = item.SelectedObject as DesignerDataConditionProperty;
+                _PersistentPane.EditConditionCode(item.DataContext as DesignerDataEntity, property);
             }
-            else if (item.SelectedObject is DataCommandElement)
+            else if (item.SelectedObject is DesignerDataCommand)
             {
-                _PersistentPane.EditCommandCode(item.SelectedObject as DataCommandElement, item.DataContext as DataEntityElement);
+                _PersistentPane.EditCommandCode(item.SelectedObject as DesignerDataCommand, item.DataContext as DesignerDataEntity);
             }
-            else if (item.SelectedObject is DataEntityElement)
+            else if (item.SelectedObject is DesignerDataEntity)
             {
-                _PersistentPane.EditDataEntityCode(item.DataContext as DataEntityElement, null);
+                _PersistentPane.EditDataEntityCode(item.DataContext as DesignerDataEntity, null);
             }
-            else if (item.SelectedObject is DataConditionElement)
+            else if (item.SelectedObject is DesignerDataCondition)
             {
-                _PersistentPane.EditConditionCode(item.DataContext as DataEntityElement, null);
+                _PersistentPane.EditConditionCode(item.DataContext as DesignerDataEntity, null);
             }
         }
         #endregion
@@ -913,7 +913,7 @@ namespace Basic.Configuration
             if (canvas != null && canvas.SelectedItem != null)
             {
                 DesignerEntity item = canvas.SelectedItem;
-                menu.Enabled = menu.Visible = item.SelectedObject is DataCommandElement;
+                menu.Enabled = menu.Visible = item.SelectedObject is DesignerDataCommand;
             }
         }
 
@@ -923,9 +923,9 @@ namespace Basic.Configuration
             if (canvas.SelectedItem == null) { return; }
             DesignerEntity item = canvas.SelectedItem as DesignerEntity;
             if (item == null) { return; }
-            if (item.SelectedObject is DynamicCommandElement)
+            if (item.SelectedObject is DesignerDynamicCommand)
             {
-                DynamicCommandElement dynamicCommand = item.SelectedObject as DynamicCommandElement;
+                DesignerDynamicCommand dynamicCommand = item.SelectedObject as DesignerDynamicCommand;
                 Clipboard.Clear(); StringBuilder text = new StringBuilder(2000);
                 string newLine = Environment.NewLine;
                 if (dynamicCommand.WithClauses.Count > 0)
@@ -949,9 +949,9 @@ namespace Basic.Configuration
                     text.Append("ORDER BY ").AppendLine(dynamicCommand.OrderText);
                 Clipboard.SetText(text.ToString());
             }
-            else if (item.SelectedObject is StaticCommandElement)
+            else if (item.SelectedObject is DesignerStaticCommand)
             {
-                StaticCommandElement staticCommand = item.SelectedObject as StaticCommandElement;
+                DesignerStaticCommand staticCommand = item.SelectedObject as DesignerStaticCommand;
                 Clipboard.Clear(); StringBuilder text = new StringBuilder(2000);
                 Clipboard.SetText(staticCommand.CommandText);
             }
@@ -968,7 +968,7 @@ namespace Basic.Configuration
             if (canvas != null && canvas.SelectedItem != null)
             {
                 DesignerEntity item = canvas.SelectedItem;
-                if (item.SelectedObject is DataCommandElement)
+                if (item.SelectedObject is DesignerDataCommand)
                     menu.Enabled = menu.Visible = (persistent != null && !persistent.GenerateContext);
             }
 
@@ -982,9 +982,9 @@ namespace Basic.Configuration
             if (canvas.SelectedItem == null) { return; }
             DesignerEntity item = canvas.SelectedItem as DesignerEntity;
             if (item == null) { return; }
-            if (item.SelectedObject is DataCommandElement)
+            if (item.SelectedObject is DesignerDataCommand)
             {
-                DataCommandElement command = item.SelectedObject as DataCommandElement;
+                DesignerDataCommand command = item.SelectedObject as DesignerDataCommand;
                 CodeTypeMemberCollection members = new CodeTypeMemberCollection();
                 CodeDomProvider provider = pane.GetCodeDomProvider();
                 CodeMemberMethod codeMethod = command.WriteContextDesignerCode(members, persistent, provider);
@@ -1010,7 +1010,7 @@ namespace Basic.Configuration
             if (canvas == null || canvas.SelectedItem == null) { return; }
             if (canvas.SelectedItem.Remove() == false)
             {
-                DataEntityElement entity = canvas.SelectedItem.DataContext as DataEntityElement;
+                DesignerDataEntity entity = canvas.SelectedItem.DataContext as DesignerDataEntity;
                 string confirmMessage = string.Format("确定要删除\"{0}\"实体对象,删除对象将同时删除对象关联的命令？", entity.ClassName);
                 if (Confirm(confirmMessage))//确定
                 {
@@ -1067,7 +1067,7 @@ namespace Basic.Configuration
                 if (expressCode == ClipboardFormat.PersistentDataEntityFormat)
                 {
                     PersistentDesigner persistent = this.GetPersistentConfiguration();
-                    DataEntityElement entityElement = new DataEntityElement(persistent) { Guid = Guid.NewGuid() };
+                    DesignerDataEntity entityElement = new DesignerDataEntity(persistent) { Guid = Guid.NewGuid() };
                     using (StringReader strReader = new StringReader(text))
                     {
                         using (XmlReader reader = XmlReader.Create(strReader, new XmlReaderSettings() { IgnoreComments = true }))
@@ -1081,16 +1081,16 @@ namespace Basic.Configuration
                 else if (canvas.SelectedItem != null && expressCode == ClipboardFormat.PersistentEntityPropertyFormat)
                 {
                     DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
-                    DataEntityElement entityElement = designerEntity.DataContext as DataEntityElement;
+                    DesignerDataEntity entityElement = designerEntity.DataContext as DesignerDataEntity;
                     using (StringReader strReader = new StringReader(text))
                     {
                         using (XmlReader reader = XmlReader.Create(strReader, new XmlReaderSettings() { IgnoreComments = true }))
                         {
-                            DataEntityPropertyElement property = new DataEntityPropertyElement(entityElement);
+                            DesignerDataEntityProperty property = new DesignerDataEntityProperty(entityElement);
                             property.ReadXml(reader);
-                            if (designerEntity.SelectedObject is DataEntityPropertyElement)
+                            if (designerEntity.SelectedObject is DesignerDataEntityProperty)
                             {
-                                int index = entityElement.Properties.IndexOf(designerEntity.SelectedObject as DataEntityPropertyElement);
+                                int index = entityElement.Properties.IndexOf(designerEntity.SelectedObject as DesignerDataEntityProperty);
                                 entityElement.Properties.Insert(index, property);
                             }
                             else { entityElement.Properties.Add(property); }
@@ -1101,16 +1101,16 @@ namespace Basic.Configuration
                 else if (canvas.SelectedItem != null && expressCode == ClipboardFormat.PersistentConditionPropertyFormat)
                 {
                     DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
-                    DataEntityElement entityElement = designerEntity.DataContext as DataEntityElement;
+                    DesignerDataEntity entityElement = designerEntity.DataContext as DesignerDataEntity;
                     using (StringReader strReader = new StringReader(text))
                     {
                         using (XmlReader reader = XmlReader.Create(strReader, new XmlReaderSettings() { IgnoreComments = true }))
                         {
-                            DataConditionPropertyElement property = new DataConditionPropertyElement(entityElement.Condition);
+                            DesignerDataConditionProperty property = new DesignerDataConditionProperty(entityElement.Condition);
                             property.ReadXml(reader);
-                            if (designerEntity.SelectedObject is DataConditionPropertyElement)
+                            if (designerEntity.SelectedObject is DesignerDataConditionProperty)
                             {
-                                int index = entityElement.Condition.Arguments.IndexOf(designerEntity.SelectedObject as DataConditionPropertyElement);
+                                int index = entityElement.Condition.Arguments.IndexOf(designerEntity.SelectedObject as DesignerDataConditionProperty);
                                 entityElement.Condition.Arguments.Insert(index, property);
                             }
                             else { entityElement.Condition.Arguments.Add(property); }
@@ -1123,12 +1123,12 @@ namespace Basic.Configuration
                 else if (canvas.SelectedItem != null && expressCode == ClipboardFormat.PersistentStaticCommandFormat)
                 {
                     DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
-                    DataEntityElement entityElement = designerEntity.DataContext as DataEntityElement;
+                    DesignerDataEntity entityElement = designerEntity.DataContext as DesignerDataEntity;
                     using (StringReader strReader = new StringReader(text))
                     {
                         using (XmlReader reader = XmlReader.Create(strReader, new XmlReaderSettings() { IgnoreComments = true }))
                         {
-                            StaticCommandElement command = new StaticCommandElement(entityElement);
+                            DesignerStaticCommand command = new DesignerStaticCommand(entityElement);
                             command.ReadXml(reader);
                             entityElement.DataCommands.Add(command);
                             Clipboard.Clear();
@@ -1138,12 +1138,12 @@ namespace Basic.Configuration
                 else if (canvas.SelectedItem != null && expressCode == ClipboardFormat.PersistentDynamicCommandFormat)
                 {
                     DesignerEntity designerEntity = canvas.SelectedItem as DesignerEntity;
-                    DataEntityElement entityElement = designerEntity.DataContext as DataEntityElement;
+                    DesignerDataEntity entityElement = designerEntity.DataContext as DesignerDataEntity;
                     using (StringReader strReader = new StringReader(text))
                     {
                         using (XmlReader reader = XmlReader.Create(strReader, new XmlReaderSettings() { IgnoreComments = true }))
                         {
-                            DynamicCommandElement command = new DynamicCommandElement(entityElement);
+                            DesignerDynamicCommand command = new DesignerDynamicCommand(entityElement);
                             command.ReadXml(reader);
                             entityElement.DataCommands.Add(command);
                             Clipboard.Clear();
@@ -1160,10 +1160,10 @@ namespace Basic.Configuration
                 if (config.ReadJson(pane.ProjectItem) == false) { return; }
                 if (canvas.SelectedItem != null)
                 {
-                    DataEntityElement entityEntityElement = canvas.SelectedItem.DataContext as DataEntityElement;
-                    if (canvas.SelectedItem.SelectedObject is DynamicCommandElement)
+                    DesignerDataEntity entityEntityElement = canvas.SelectedItem.DataContext as DesignerDataEntity;
+                    if (canvas.SelectedItem.SelectedObject is DesignerDynamicCommand)
                     {
-                        DynamicCommandElement dynamicCommand = canvas.SelectedItem.SelectedObject as DynamicCommandElement;
+                        DesignerDynamicCommand dynamicCommand = canvas.SelectedItem.SelectedObject as DesignerDynamicCommand;
                         using (StringReader reader = new StringReader(text))
                         {
                             if (TransactSqlResolver.PasteDynamicCommand(dynamicCommand, reader))
@@ -1174,7 +1174,7 @@ namespace Basic.Configuration
                     }
                     else
                     {
-                        DynamicCommandElement dynamicCommand = new DynamicCommandElement(entityEntityElement)
+                        DesignerDynamicCommand dynamicCommand = new DesignerDynamicCommand(entityEntityElement)
                         {
                             Name = string.Concat("DynamicCommand_", entityEntityElement.DataCommands.Count)
                         };
@@ -1206,8 +1206,8 @@ namespace Basic.Configuration
             if (canvas == null || canvas.SelectedItem == null) { return; }
             StringBuilder builder = new StringBuilder(5000);
             DesignerEntity item = canvas.SelectedItem as DesignerEntity;
-            DataEntityElement entityElement = item.DataContext as DataEntityElement;
-            if (item.SelectedObject == null || item.SelectedObject is DataEntityElement || item.SelectedObject is DataConditionElement)
+            DesignerDataEntity entityElement = item.DataContext as DesignerDataEntity;
+            if (item.SelectedObject == null || item.SelectedObject is DesignerDataEntity || item.SelectedObject is DesignerDataCondition)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
@@ -1216,42 +1216,42 @@ namespace Basic.Configuration
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is DataConditionPropertyElement)
+            else if (item.SelectedObject is DesignerDataConditionProperty)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentConditionPropertyFormat);
-                    DataConditionPropertyElement property = item.SelectedObject as DataConditionPropertyElement;
+                    DesignerDataConditionProperty property = item.SelectedObject as DesignerDataConditionProperty;
                     property.WriteXml(writer);
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is DataEntityPropertyElement)
+            else if (item.SelectedObject is DesignerDataEntityProperty)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentEntityPropertyFormat);
-                    DataEntityPropertyElement property = item.SelectedObject as DataEntityPropertyElement;
+                    DesignerDataEntityProperty property = item.SelectedObject as DesignerDataEntityProperty;
                     property.WriteXml(writer);
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is StaticCommandElement)
+            else if (item.SelectedObject is DesignerStaticCommand)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentStaticCommandFormat);
-                    StaticCommandElement command = item.SelectedObject as StaticCommandElement;
+                    DesignerStaticCommand command = item.SelectedObject as DesignerStaticCommand;
                     command.WriteXml(writer);
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is DynamicCommandElement)
+            else if (item.SelectedObject is DesignerDynamicCommand)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentDynamicCommandFormat);
-                    DynamicCommandElement command = item.SelectedObject as DynamicCommandElement;
+                    DesignerDynamicCommand command = item.SelectedObject as DesignerDynamicCommand;
                     command.WriteXml(writer);
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
@@ -1265,8 +1265,8 @@ namespace Basic.Configuration
             if (canvas == null || canvas.SelectedItem == null) { return; }
             StringBuilder builder = new StringBuilder(5000);
             DesignerEntity item = canvas.SelectedItem as DesignerEntity;
-            DataEntityElement entityElement = item.DataContext as DataEntityElement;
-            if (item.SelectedObject == null || item.SelectedObject is DataEntityElement || item.SelectedObject is DataConditionElement)
+            DesignerDataEntity entityElement = item.DataContext as DesignerDataEntity;
+            if (item.SelectedObject == null || item.SelectedObject is DesignerDataEntity || item.SelectedObject is DesignerDataCondition)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
@@ -1277,45 +1277,45 @@ namespace Basic.Configuration
                 persistent.DataEntities.Remove(entityElement);
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is DataConditionPropertyElement)
+            else if (item.SelectedObject is DesignerDataConditionProperty)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentConditionPropertyFormat);
-                    DataConditionPropertyElement property = item.SelectedObject as DataConditionPropertyElement;
+                    DesignerDataConditionProperty property = item.SelectedObject as DesignerDataConditionProperty;
                     property.WriteXml(writer);
                     entityElement.Condition.Arguments.Remove(property);
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is DataEntityPropertyElement)
+            else if (item.SelectedObject is DesignerDataEntityProperty)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentEntityPropertyFormat);
-                    DataEntityPropertyElement property = item.SelectedObject as DataEntityPropertyElement;
+                    DesignerDataEntityProperty property = item.SelectedObject as DesignerDataEntityProperty;
                     property.WriteXml(writer);
                     entityElement.Properties.Remove(property);
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is StaticCommandElement)
+            else if (item.SelectedObject is DesignerStaticCommand)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentStaticCommandFormat);
-                    StaticCommandElement command = item.SelectedObject as StaticCommandElement;
+                    DesignerStaticCommand command = item.SelectedObject as DesignerStaticCommand;
                     command.WriteXml(writer);
                     entityElement.DataCommands.Remove(command);
                 }
                 Clipboard.SetText(builder.ToString(), TextDataFormat.Xaml);
             }
-            else if (item.SelectedObject is DynamicCommandElement)
+            else if (item.SelectedObject is DesignerDynamicCommand)
             {
                 using (XmlWriter writer = XmlWriter.Create(builder))
                 {
                     builder.Append(ClipboardFormat.PersistentDynamicCommandFormat);
-                    DynamicCommandElement command = item.SelectedObject as DynamicCommandElement;
+                    DesignerDynamicCommand command = item.SelectedObject as DesignerDynamicCommand;
                     command.WriteXml(writer);
                     entityElement.DataCommands.Remove(command);
                 }

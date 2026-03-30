@@ -17,7 +17,7 @@ namespace Basic.DataEntities
 	/// <summary>
 	/// 表示数据实体抽象类
 	/// </summary>
-	public abstract class AbstractEntityElement : AbstractCustomTypeDescriptor
+	public abstract class AbstractDesignerEntity : AbstractCustomTypeDescriptor
 	{
 		#region Xml节点常量
 		internal const string NameAttribute = "Name";
@@ -31,11 +31,11 @@ namespace Basic.DataEntities
 		#endregion
 		private readonly PersistentDesigner persistent;
 		/// <summary>
-		/// 初始化 AbstractEntityElement 类实例。
+		/// 初始化 AbstractEntityDesigner 类实例。
 		/// </summary>
 		/// <param name="nofity">当前配置文件，此配置文件为当前实体更改后需要通知的对象。</param>
 		/// <param name="baseClass">当前实体类基类</param>
-		protected AbstractEntityElement(PersistentDesigner nofity, string baseClass)
+		protected AbstractDesignerEntity(PersistentDesigner nofity, string baseClass)
 			: base(nofity)
 		{
 			persistent = nofity;

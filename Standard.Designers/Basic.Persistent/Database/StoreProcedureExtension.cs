@@ -19,7 +19,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="staticCommand"></param>
 		/// <returns></returns>
-		public static StaticCommandElement CreateCommand(this StoreProcedure procedure, StaticCommandElement staticCommand)
+		public static DesignerStaticCommand CreateCommand(this StoreProcedure procedure, DesignerStaticCommand staticCommand)
 		{
 			staticCommand.Parameters.Clear();
 			staticCommand.CheckCommands.Clear();
@@ -31,7 +31,7 @@ namespace Basic.Database
 			staticCommand.CommandType = CommandType.StoredProcedure;
 			if (procedure.Parameters != null && procedure.Parameters.Length > 0)
 			{
-				DataConditionElement dataCondition = staticCommand.EntityElement.Condition;
+				DesignerDataCondition dataCondition = staticCommand.EntityElement.Condition;
 				DataConditionPropertyCollection conditionProperties = dataCondition.Arguments;
 				conditionProperties.Clear();
 				foreach (ProcedureParameter column in procedure.Parameters)
@@ -39,7 +39,7 @@ namespace Basic.Database
 					string pn = StringHelper.GetPascalCase(column.Name);
 					string columnName = column.Name.ToUpper();
 
-					DataConditionPropertyElement property = new DataConditionPropertyElement(dataCondition);
+					DesignerDataConditionProperty property = new DesignerDataConditionProperty(dataCondition);
 					DbBuilderHelper.CreateAbstractProperty(property, column);
 					conditionProperties.Add(property);
 
@@ -69,7 +69,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="staticCommand"></param>
 		/// <returns></returns>
-		public static DataEntityElement CreateEntity(this StoreProcedure procedure, DataEntityElement dataEntity)
+		public static DesignerDataEntity CreateEntity(this StoreProcedure procedure, DesignerDataEntity dataEntity)
 		{
 			if (procedure.Columns == null || procedure.Columns.Length == 0)
 				return null;
@@ -79,9 +79,9 @@ namespace Basic.Database
 			foreach (DesignColumnInfo column in procedure.Columns)
 			{
 				//string pn = StringHelper.GetCsName(column.Name);
-				if (!dataProperties.TryGetValue(column.Name, out DataEntityPropertyElement property))
+				if (!dataProperties.TryGetValue(column.Name, out DesignerDataEntityProperty property))
 				{
-					property = new DataEntityPropertyElement(dataEntity);
+					property = new DesignerDataEntityProperty(dataEntity);
 					DbBuilderHelper.CreateAbstractProperty(property, column, false);
 					dataProperties.Add(property);
 				}

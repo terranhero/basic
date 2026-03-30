@@ -56,8 +56,8 @@ namespace Basic.Converters
 		/// <returns>如果属性存在读取成功则返回true，否则返回false，有子类读取。</returns>
 		protected internal override bool ReadAttribute(string name, string value)
 		{
-			if (name == DataCommandElement.KindAttribute) { return Enum.TryParse<ConfigurationTypeEnum>(value, true, out _Kind); }
-			else if (name == DataCommandElement.CommentAttribute) { Comment = value; return true; }
+			if (name == DesignerDataCommand.KindAttribute) { return Enum.TryParse<ConfigurationTypeEnum>(value, true, out _Kind); }
+			else if (name == DesignerDataCommand.CommentAttribute) { Comment = value; return true; }
 			return base.ReadAttribute(name, value);
 		}
 
@@ -80,9 +80,9 @@ namespace Basic.Converters
 		{
 			base.WriteAttribute(writer);
 			if (_Kind != ConfigurationTypeEnum.Other)
-				writer.WriteAttributeString(DataCommandElement.KindAttribute, _Kind.ToString());
+				writer.WriteAttributeString(DesignerDataCommand.KindAttribute, _Kind.ToString());
 			if (!string.IsNullOrWhiteSpace(_Comment))
-				writer.WriteAttributeString(DataCommandElement.CommentAttribute, _Comment);
+				writer.WriteAttributeString(DesignerDataCommand.CommentAttribute, _Comment);
 
 		}
 

@@ -13,24 +13,24 @@ namespace Basic.DataEntities
 	/// </summary>
 	[System.ComponentModel.TypeConverter(typeof(DisplayNameConverter))]
 	[PersistentCategory("PersistentCategory_Attributes"), PersistentDescription("DisplayName_Description")]
-	public sealed class DisplayNameElement : AbstractCustomTypeDescriptor
+	public sealed class DesignerDisplayName : AbstractCustomTypeDescriptor
 	{
 		internal const string XmlElementName = "DisplayName";
 		internal const string NameAttribute = "Name";
 		internal const string PromptAttribute = "Prompt";
 		internal const string ConverterAttribute = "Converter";
 		internal const string DisplayTypeAttribute = "DisplayType";
-		private readonly AbstractPropertyElement propertyElement;
+		private readonly AbstractDesignerProperty propertyElement;
 		/// <summary>
 		/// 当亲属性
 		/// </summary>
-		internal AbstractPropertyElement Property { get { return propertyElement; } }
+		internal AbstractDesignerProperty Property { get { return propertyElement; } }
 
 		/// <summary>
 		/// 初始化 DisplayNameElement 类实例。
 		/// </summary>
 		/// <param name="property"></param>
-		internal DisplayNameElement(AbstractPropertyElement property)
+		internal DesignerDisplayName(AbstractDesignerProperty property)
 			: base(property) { propertyElement = property; }
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Basic.DataEntities
 		/// 返回此组件实例的类名。
 		/// </summary>
 		/// <returns>该对象的类名；如果此类没有名称，则为 null。</returns>
-		public override string GetClassName() { return typeof(DisplayNameElement).Name; }
+		public override string GetClassName() { return typeof(DesignerDisplayName).Name; }
 
 		/// <summary>
 		/// 获取当前节点元素名称
@@ -81,7 +81,7 @@ namespace Basic.DataEntities
 			if (!string.IsNullOrWhiteSpace(_DisplayName))
 			{
 
-				if (_DisplayType == DisplayTypeEnum.WebDisplayAttribute)
+				if (_DisplayType == DisplayTypes.WebDisplayAttribute)
 				{
 					CodeTypeReference displayReference = new CodeTypeReference(typeof(WebDisplayAttribute), CodeTypeReferenceOptions.GlobalReference);
 					CodeAttributeDeclaration columnAttribute = new CodeAttributeDeclaration(displayReference);
@@ -92,7 +92,7 @@ namespace Basic.DataEntities
 						columnAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(_Prompt)));
 					property.CustomAttributes.Add(columnAttribute);
 				}
-				else if (_DisplayType == DisplayTypeEnum.DisplayAttribute)
+				else if (_DisplayType == DisplayTypes.DisplayAttribute)
 				{
 					CodeTypeReference displayReference = new CodeTypeReference(typeof(DisplayAttribute), CodeTypeReferenceOptions.GlobalReference);
 					CodeAttributeDeclaration columnAttribute = new CodeAttributeDeclaration(displayReference);
@@ -104,13 +104,13 @@ namespace Basic.DataEntities
 			}
 		}
 
-		private DisplayTypeEnum _DisplayType = DisplayTypeEnum.WebDisplayAttribute;
+		private DisplayTypes _DisplayType = DisplayTypes.WebDisplayAttribute;
 		/// <summary>
 		/// 获取或设置显示特性的类型。
 		/// </summary>
 		[PersistentDescription("DisplayName_DisplayType")]
-		[System.ComponentModel.DefaultValue(typeof(DisplayTypeEnum), "WebDisplayAttribute")]
-		public DisplayTypeEnum DisplayType
+		[System.ComponentModel.DefaultValue(typeof(DisplayTypes), "WebDisplayAttribute")]
+		public DisplayTypes DisplayType
 		{
 			get { return _DisplayType; }
 			set
@@ -191,7 +191,7 @@ namespace Basic.DataEntities
 			if (name == NameAttribute) { _DisplayName = value; return true; }
 			else if (name == ConverterAttribute) { _ConverterName = value; return true; }
 			else if (name == PromptAttribute) { _Prompt = value; return true; }
-			else if (name == DisplayTypeAttribute) { return Enum.TryParse<DisplayTypeEnum>(value, out _DisplayType); }
+			else if (name == DisplayTypeAttribute) { return Enum.TryParse<DisplayTypes>(value, out _DisplayType); }
 			return false;
 		}
 
@@ -207,7 +207,7 @@ namespace Basic.DataEntities
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
 		protected internal override void WriteAttribute(System.Xml.XmlWriter writer)
 		{
-			if (_DisplayType != DisplayTypeEnum.WebDisplayAttribute)
+			if (_DisplayType != DisplayTypes.WebDisplayAttribute)
 				writer.WriteAttributeString(DisplayTypeAttribute, _DisplayType.ToString());
 
 			if (!string.IsNullOrWhiteSpace(_DisplayName))

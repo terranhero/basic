@@ -45,13 +45,13 @@ namespace Basic.Converters
             while (reader.Read())
             {
                 if (reader.NodeType == System.Xml.XmlNodeType.Whitespace) { continue; }
-                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == StaticCommandElement.XmlElementName)
+                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DesignerStaticCommand.XmlElementName)
                 {
                     ConverterStaticCommand element = new ConverterStaticCommand(_Configuration);
                     element.ReadXml(reader.ReadSubtree());
                     this.Add(element);
                 }
-                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DynamicCommandElement.XmlElementName)
+                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DesignerDynamicCommand.XmlElementName)
                 {
                     ConverterDynamicCommand element = new ConverterDynamicCommand(_Configuration);
                     element.ReadXml(reader.ReadSubtree());

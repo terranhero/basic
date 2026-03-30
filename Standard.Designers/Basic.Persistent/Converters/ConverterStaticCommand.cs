@@ -62,7 +62,7 @@ namespace Basic.Converters
         /// <summary>
         /// 获取当前节点元素名称
         /// </summary>
-        protected internal override string ElementName { get { return StaticCommandElement.XmlElementName; } }
+        protected internal override string ElementName { get { return DesignerStaticCommand.XmlElementName; } }
 
         /// <summary>
         /// 从对象的 XML 表示形式读取属性。
@@ -92,11 +92,11 @@ namespace Basic.Converters
             {
                 _NewCommands.ReadXml(reader.ReadSubtree());
             }
-            else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == StaticCommandElement.CommandTextElement)//兼容5.0新版结构信息
+            else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DesignerStaticCommand.CommandTextElement)//兼容5.0新版结构信息
             {
                 _CommandText = reader.ReadString();
             }
-            else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == StaticCommandElement.XmlElementName)
+            else if (reader.NodeType == XmlNodeType.EndElement && reader.LocalName == DesignerStaticCommand.XmlElementName)
             {
                 return true;
             }
@@ -131,7 +131,7 @@ namespace Basic.Converters
         /// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
         protected internal override void WriteContent(System.Xml.XmlWriter writer)
         {
-            writer.WriteElementString(StaticCommandElement.CommandTextElement, CommandText);
+            writer.WriteElementString(DesignerStaticCommand.CommandTextElement, CommandText);
             if (_CheckCommands != null && _CheckCommands.Count > 0)
                 _CheckCommands.WriteXml(writer);
             if (_NewCommands != null && _NewCommands.Count > 0)

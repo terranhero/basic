@@ -106,27 +106,27 @@ namespace Basic.Windows
         {
             if (SelectedItem == null) { return; }
             if (!(SelectedItem is DesignerEntity item)) { return; }
-            if (item.SelectedObject is DataEntityPropertyElement)
+            if (item.SelectedObject is DesignerDataEntityProperty)
             {
-                DataEntityPropertyElement property = item.SelectedObject as DataEntityPropertyElement;
-                _PersistentPane.EditDataEntityCode(item.DataContext as DataEntityElement, property);
+                DesignerDataEntityProperty property = item.SelectedObject as DesignerDataEntityProperty;
+                _PersistentPane.EditDataEntityCode(item.DataContext as DesignerDataEntity, property);
             }
-            else if (item.SelectedObject is DataConditionPropertyElement)
+            else if (item.SelectedObject is DesignerDataConditionProperty)
             {
-                DataConditionPropertyElement property = item.SelectedObject as DataConditionPropertyElement;
-                _PersistentPane.EditConditionCode(item.DataContext as DataEntityElement, property);
+                DesignerDataConditionProperty property = item.SelectedObject as DesignerDataConditionProperty;
+                _PersistentPane.EditConditionCode(item.DataContext as DesignerDataEntity, property);
             }
-            else if (item.SelectedObject is DataCommandElement)
+            else if (item.SelectedObject is DesignerDataCommand)
             {
-                _PersistentPane.EditCommandCode(item.SelectedObject as DataCommandElement, item.DataContext as DataEntityElement);
+                _PersistentPane.EditCommandCode(item.SelectedObject as DesignerDataCommand, item.DataContext as DesignerDataEntity);
             }
-            else if (item.SelectedObject is DataEntityElement)
+            else if (item.SelectedObject is DesignerDataEntity)
             {
-                _PersistentPane.EditDataEntityCode(item.DataContext as DataEntityElement, null);
+                _PersistentPane.EditDataEntityCode(item.DataContext as DesignerDataEntity, null);
             }
-            else if (item.SelectedObject is DataConditionElement)
+            else if (item.SelectedObject is DesignerDataCondition)
             {
-                _PersistentPane.EditConditionCode(item.DataContext as DataEntityElement, null);
+                _PersistentPane.EditConditionCode(item.DataContext as DesignerDataEntity, null);
             }
         }
 

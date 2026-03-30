@@ -3,8 +3,9 @@ using Basic.Designer;
 
 namespace Basic.Configuration
 {
+	/// <summary>每个实体模型布局信息，包含位置，大小，是否展开等</summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	public sealed class DesignerInfoElement : AbstractCustomTypeDescriptor
+	public sealed class DesignerLayoutInfo : AbstractCustomTypeDescriptor
 	{
 		internal const string XmlElementName = "DesignerInfo";
 		internal const string ExpanderAttribute = "Expander";
@@ -17,7 +18,7 @@ namespace Basic.Configuration
 		/// 初始化 AbstractEntityElement 类实例。
 		/// </summary>
 		/// <param name="baseClass"></param>
-		internal DesignerInfoElement(AbstractCustomTypeDescriptor nofity)
+		internal DesignerLayoutInfo(AbstractCustomTypeDescriptor nofity)
 			: base(nofity)
 		{
 			_Left = new Random().Next(400);
@@ -26,15 +27,24 @@ namespace Basic.Configuration
 
 		/// <summary>
 		/// 返回此组件实例的名称。
-		public override string GetComponentName() { return typeof(DesignerInfoElement).Name; }
+		/// </summary>
+		/// <returns>该对象的名称；如果该对象没有名称，则为 null。</returns>
+		public override string GetComponentName() { return typeof(DesignerLayoutInfo).Name; }
 
 		/// <summary>
 		/// 获取当前节点元素命名空间
 		/// </summary>
 		protected internal override string ElementNamespace { get { return null; } }
 
-		public override string GetClassName() { return typeof(DesignerInfoElement).Name; }
+		/// <summary>
+		/// 返回此组件实例的类名。
+		/// </summary>
+		/// <returns>该对象的类名；如果此类没有名称，则为 null。</returns>
+		public override string GetClassName() { return typeof(DesignerLayoutInfo).Name; }
 
+		/// <summary>
+		/// 获取当前节点元素名称
+		/// </summary>
 		protected internal override string ElementName { get { return XmlElementName; } }
 
 		private double _Width = double.NaN;

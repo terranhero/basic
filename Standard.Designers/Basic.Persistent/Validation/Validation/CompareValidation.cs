@@ -23,7 +23,7 @@ namespace Basic.DataEntities
 		/// <summary>
 		/// 初始化 CompareValidation 类的新实例。
 		/// </summary>
-		public CompareValidation(DataEntityPropertyElement property) : base(property) { }
+		public CompareValidation(DesignerDataEntityProperty property) : base(property) { }
 
 		/// <summary>异常关键字</summary>
 		public override string ErrorKey { get { return "Compare"; } }
@@ -63,7 +63,7 @@ namespace Basic.DataEntities
 		/// 设置 OtherProperty 属性值。
 		/// </summary>
 		/// <param name="property"></param>
-		void ICompareProperty.SetOtherProperty(DataEntityPropertyElement property)
+		void ICompareProperty.SetOtherProperty(DesignerDataEntityProperty property)
 		{
 			OtherProperty = property.Name;
 		}

@@ -52,7 +52,7 @@ namespace Basic.Designer
 				//if (string.IsNullOrWhiteSpace(editorTitle)) { editorTitle = StringUtils.GetString("PersistentDescription_CommandText_Editor"); }
 				DynamicCommandDescriptor dynamicDescriptor = context.Instance as DynamicCommandDescriptor;
 				if (dynamicDescriptor == null) { return value; }
-				DynamicCommandElement dynamicCommand = dynamicDescriptor.DefinitionInfo;
+				DesignerDynamicCommand dynamicCommand = dynamicDescriptor.DefinitionInfo;
 				DynamicCommandWindow window = new DynamicCommandWindow(dynamicCommand);
 				if (window.ShowModal() == true)
 				{
@@ -275,7 +275,7 @@ namespace Basic.Designer
 			/// 设置界面文本框值。
 			/// </summary>
 			/// <param name="value"></param>
-			public void SetDynamicCommand(DynamicCommandElement dynamicCommand)
+			public void SetDynamicCommand(DesignerDynamicCommand dynamicCommand)
 			{
 				if (string.IsNullOrWhiteSpace(dynamicCommand.SelectText))
 				{
@@ -347,7 +347,7 @@ namespace Basic.Designer
 			/// 设置界面文本框值。
 			/// </summary>
 			/// <param name="value"></param>
-			public object GetDynamicCommand(DynamicCommandElement dynamicCommand, PropertyDescriptor propertyDescriptor, object value)
+			public object GetDynamicCommand(DesignerDynamicCommand dynamicCommand, PropertyDescriptor propertyDescriptor, object value)
 			{
 				dynamicCommand.SelectText = txtSelect.Text;
 				dynamicCommand.FromText = txtFrom.Text;

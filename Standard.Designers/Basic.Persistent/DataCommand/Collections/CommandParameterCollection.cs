@@ -17,11 +17,11 @@ namespace Basic.Collections
     public sealed class CommandParameterCollection : Basic.Collections.BaseCollection<CommandParameter>,
          ICollection<CommandParameter>, IEnumerable<CommandParameter>, INotifyCollectionChanged
     {
-        private readonly AbstractCommandElement _Command;
+        private readonly AbstractDesignerCommand _Command;
         /// <summary>
         /// 初始化 CommandParameterCollection 类的新实例。
         /// </summary>
-        internal CommandParameterCollection(AbstractCommandElement command)
+        internal CommandParameterCollection(AbstractDesignerCommand command)
             : base() { _Command = command; }
 
         /// <summary>

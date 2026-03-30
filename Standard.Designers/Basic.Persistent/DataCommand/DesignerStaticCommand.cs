@@ -18,12 +18,12 @@ namespace Basic.Configuration
 	/// <summary>
 	/// 表示静态配置命令
 	/// </summary>
-	public class StaticCommandElement : DataCommandElement, IXmlSerializable, INotifyCollectionChanged
+	public class DesignerStaticCommand : DesignerDataCommand, IXmlSerializable, INotifyCollectionChanged
 	{
 		/// <summary>
 		/// 初始化 StaticCommandElement 类实例
 		/// </summary>
-		internal StaticCommandElement(DataEntityElement entity)
+		internal DesignerStaticCommand(DesignerDataEntity entity)
 			: base(entity)
 		{
 			_CheckCommands = new GBS.CheckedCommandCollection(this);
@@ -525,9 +525,9 @@ namespace Basic.Configuration
 				while (reader2.Read())  //读取所有静态命令节点信息
 				{
 					if (reader2.NodeType == XmlNodeType.Whitespace) { continue; }
-					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == CheckedCommandElement.XmlElementName)
+					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == DesignerCheckedCommand.XmlElementName)
 					{
-						CheckedCommandElement checkCommand = new CheckedCommandElement(this);
+						DesignerCheckedCommand checkCommand = new DesignerCheckedCommand(this);
 						checkCommand.ReadXml(reader2.ReadSubtree());
 						_CheckCommands.Add(checkCommand);
 					}
@@ -541,9 +541,9 @@ namespace Basic.Configuration
 				while (reader2.Read())  //读取所有静态命令节点信息
 				{
 					if (reader2.NodeType == XmlNodeType.Whitespace) { continue; }
-					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == NewCommandElement.XmlElementName)
+					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == DesignerNewCommand.XmlElementName)
 					{
-						NewCommandElement newCommand = new NewCommandElement(this);
+						DesignerNewCommand newCommand = new DesignerNewCommand(this);
 						newCommand.ReadXml(reader2.ReadSubtree());
 						_NewCommands.Add(newCommand);
 					}
@@ -586,7 +586,7 @@ namespace Basic.Configuration
 			if (_CheckCommands != null && _CheckCommands.Count > 0)
 			{
 				writer.WriteStartElement(GBS.CheckedCommandCollection.XmlElementName);
-				foreach (CheckedCommandElement checkCommand in _CheckCommands)
+				foreach (DesignerCheckedCommand checkCommand in _CheckCommands)
 				{
 					checkCommand.WriteXml(writer);
 				}
@@ -595,7 +595,7 @@ namespace Basic.Configuration
 			if (_NewCommands != null && _NewCommands.Count > 0)
 			{
 				writer.WriteStartElement(NewCommandCollection.XmlElementName);
-				foreach (NewCommandElement newCommand in _NewCommands)
+				foreach (DesignerNewCommand newCommand in _NewCommands)
 				{
 					newCommand.WriteXml(writer);
 				}
@@ -702,7 +702,7 @@ namespace Basic.Configuration
 			if (_CheckCommands != null && _CheckCommands.Count > 0)
 			{
 				writer.WriteStartElement(GBS.CheckedCommandCollection.XmlElementName);
-				foreach (CheckedCommandElement checkCommand in _CheckCommands)
+				foreach (DesignerCheckedCommand checkCommand in _CheckCommands)
 				{
 					checkCommand.GenerateConfiguration(writer, connectionType);
 				}
@@ -711,7 +711,7 @@ namespace Basic.Configuration
 			if (_NewCommands != null && _NewCommands.Count > 0)
 			{
 				writer.WriteStartElement(NewCommandCollection.XmlElementName);
-				foreach (NewCommandElement newCommand in _NewCommands)
+				foreach (DesignerNewCommand newCommand in _NewCommands)
 				{
 					newCommand.GenerateConfiguration(writer, connectionType);
 				}

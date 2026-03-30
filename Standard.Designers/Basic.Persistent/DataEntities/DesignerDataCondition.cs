@@ -21,16 +21,16 @@ namespace Basic.DataEntities
 	/// </summary>
 	[TypeConverter(typeof(ConditionTypeConverter))]
 	[PersistentCategoryAttribute(PersistentCategoryAttribute.CategoryCondition)]
-	public class DataConditionElement : AbstractEntityElement
+	public class DesignerDataCondition : AbstractDesignerEntity
 	{
 		internal const string XmlElementName = "DataConditionElement";
 		internal const string BaseClassAttribute = "BaseClass";
 		private readonly DataConditionPropertyCollection propertyCollection;
-		private readonly DataEntityElement dataEntityElement;
+		private readonly DesignerDataEntity dataEntityElement;
 		/// <summary>
 		/// 初始化 DataConditionElement 类的新实例。 
 		/// </summary>
-		public DataConditionElement(DataEntityElement entityElement)
+		public DesignerDataCondition(DesignerDataEntity entityElement)
 			: base(entityElement.Persistent, typeof(AbstractCondition).FullName)
 		{
 			dataEntityElement = entityElement;
@@ -51,10 +51,10 @@ namespace Basic.DataEntities
 		{
 			get
 			{
-				foreach (DataCommandElement dataCommand in dataEntityElement.DataCommands)
+				foreach (DesignerDataCommand dataCommand in dataEntityElement.DataCommands)
 				{
-					if (dataCommand is DynamicCommandElement) { return System.Windows.Visibility.Visible; }
-					StaticCommandElement staticCommand = dataCommand as StaticCommandElement;
+					if (dataCommand is DesignerDynamicCommand) { return System.Windows.Visibility.Visible; }
+					DesignerStaticCommand staticCommand = dataCommand as DesignerStaticCommand;
 					if (staticCommand != null && staticCommand.ExecutableMethod == StaticMethodEnum.FillDataSet)
 						return Visibility.Visible;
 					else if (staticCommand != null && staticCommand.ExecutableMethod == StaticMethodEnum.FillDataTable)
@@ -168,9 +168,9 @@ namespace Basic.DataEntities
 				while (reader2.Read())
 				{
 					if (reader2.NodeType == XmlNodeType.Whitespace) { continue; }
-					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == DataConditionPropertyElement.XmlElementName)
+					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == DesignerDataConditionProperty.XmlElementName)
 					{
-						DataConditionPropertyElement element = new DataConditionPropertyElement(this);
+						DesignerDataConditionProperty element = new DesignerDataConditionProperty(this);
 						element.ReadXml(reader2.ReadSubtree());
 						propertyCollection.Add(element);
 					}
@@ -192,7 +192,7 @@ namespace Basic.DataEntities
 		{
 			base.WriteContent(writer);
 			writer.WriteStartElement(DataConditionPropertyCollection.XmlElementName);
-			foreach (DataConditionPropertyElement property in propertyCollection)
+			foreach (DesignerDataConditionProperty property in propertyCollection)
 				property.WriteXml(writer);
 			writer.WriteEndElement();
 		}
@@ -230,7 +230,7 @@ namespace Basic.DataEntities
 			constructor.BaseConstructorArgs.Add(new CodePrimitiveExpression(propertyCollection.Count));
 			entityClass.Members.Add(constructor);
 
-			foreach (DataConditionPropertyElement property in propertyCollection)
+			foreach (DesignerDataConditionProperty property in propertyCollection)
 			{
 				property.WriteDesignerCode(entityClass, null);
 			}

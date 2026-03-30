@@ -16,7 +16,7 @@ namespace Basic.Database
 		/// 将 DesignTableInfo 对象的内容复制到当前实例。
 		/// </summary>
 		/// <param name="entity">标识需要复制的 DesignTableInfo 类实例。</param>
-		public static void CopyFrom(this ColumnDesignerInfo column, DataEntityPropertyElement property)
+		public static void CopyFrom(this ColumnDesignerInfo column, DesignerDataEntityProperty property)
 		{
 			column.PrimaryKey = property.PrimaryKey;
 			column.Comment = property.Comment;
@@ -74,7 +74,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		public static void CreateProperty(this ColumnDesignerInfo column, DataConditionPropertyElement property)
+		public static void CreateProperty(this ColumnDesignerInfo column, DesignerDataConditionProperty property)
 		{
 			column.CreateProperty(property, false);
 		}
@@ -85,7 +85,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		public static void CreateProperty(this ColumnDesignerInfo column, DataConditionPropertyElement property, bool updated)
+		public static void CreateProperty(this ColumnDesignerInfo column, DesignerDataConditionProperty property, bool updated)
 		{
 			if (!updated)
 				property.Name = StringHelper.GetPascalCase(column.Name);
@@ -108,7 +108,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
-		public static void CreateProperty(this ColumnDesignerInfo column, DataEntityPropertyElement property)
+		public static void CreateProperty(this ColumnDesignerInfo column, DesignerDataEntityProperty property)
 		{
 			column.CreateProperty(property, false);
 		}
@@ -119,7 +119,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		public static void CreateProperty(this ColumnDesignerInfo column, DataEntityPropertyElement property, bool updated)
+		public static void CreateProperty(this ColumnDesignerInfo column, DesignerDataEntityProperty property, bool updated)
 		{
 			if (!updated)
 				property.Name = StringHelper.GetPascalCase(column.Name);
@@ -143,7 +143,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		public static void CreateProperty(this FunctionParameterInfo parameter, DataConditionPropertyElement property)
+		public static void CreateProperty(this FunctionParameterInfo parameter, DesignerDataConditionProperty property)
 		{
 			parameter.CreateProperty(property, false);
 		}
@@ -154,7 +154,7 @@ namespace Basic.Database
 		/// <param name="parameter">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		public static void CreateProperty(this FunctionParameterInfo parameter, DataConditionPropertyElement property, bool updated)
+		public static void CreateProperty(this FunctionParameterInfo parameter, DesignerDataConditionProperty property, bool updated)
 		{
 			if (!updated)
 				property.Name = StringHelper.GetPascalCase(parameter.Name);

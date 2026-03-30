@@ -266,12 +266,12 @@ namespace Basic.EntityDesigner
 				{
 					projectItem = item.ProjectItems.AddFromFile(filePath);
 					GetGeneratorInfo(projectItem, item.Name);
-					if (persistent.ResxMode == ResxModeEnum.Resource)
+					if (persistent.ResxMode == ResxModes.Resource)
 					{
 						EnvDTE.Property property = projectItem.Properties.Item("ItemType");
 						property.Value = "Resource";
 					}
-					else if (persistent.ResxMode == ResxModeEnum.AssemlyResource)
+					else if (persistent.ResxMode == ResxModes.AssemlyResource)
 					{
 						EnvDTE.Property property = projectItem.Properties.Item("BuildAction");
 						property.Value = prjBuildAction.prjBuildActionEmbeddedResource;
@@ -279,12 +279,12 @@ namespace Basic.EntityDesigner
 				}
 				else
 				{
-					if (persistent.ResxMode == ResxModeEnum.Resource)
+					if (persistent.ResxMode == ResxModes.Resource)
 					{
 						EnvDTE.Property property = projectItem.Properties.Item("ItemType");
 						if (!object.Equals(property.Value, "Resource")) { property.Value = "Resource"; }
 					}
-					else if (persistent.ResxMode == ResxModeEnum.AssemlyResource)
+					else if (persistent.ResxMode == ResxModes.AssemlyResource)
 					{
 						EnvDTE.Property property = projectItem.Properties.Item("BuildAction");
 						property.Value = prjBuildAction.prjBuildActionEmbeddedResource;
@@ -357,13 +357,13 @@ namespace Basic.EntityDesigner
 			string acFullName = string.Concat(file.DirectoryName, @"\", acFileName, ".", provider.FileExtension);
 
 			string moduleName = null;
-			if (persistent.ResxMode == ResxModeEnum.Resource)
+			if (persistent.ResxMode == ResxModes.Resource)
 			{
 				FileInfo projectFile = new FileInfo(project.FullName);
 				if (file.DirectoryName != projectFile.DirectoryName)
 					moduleName = file.DirectoryName.Replace(projectFile.DirectoryName + "\\", "").Replace("\\", "/");
 			}
-			else if (persistent.ResxMode == ResxModeEnum.AssemlyResource)
+			else if (persistent.ResxMode == ResxModes.AssemlyResource)
 			{
 				foreach (Property prop in item.Properties)
 				{

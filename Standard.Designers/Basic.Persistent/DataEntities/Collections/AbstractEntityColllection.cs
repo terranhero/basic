@@ -12,7 +12,7 @@ namespace Basic.Collections
 	/// <summary>
 	/// 表示 AbstractEntityElement 类实例的集合
 	/// </summary>
-	public sealed class AbstractEntityColllection : Basic.Collections.BaseCollection<AbstractEntityElement>
+	public sealed class AbstractEntityColllection : Basic.Collections.BaseCollection<AbstractDesignerEntity>
 	{
 		private readonly PersistentDesigner persistentConfiguration;
 
@@ -26,6 +26,6 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		protected internal override string GetKey(AbstractEntityElement item) { return item.ClassName; }
+		protected internal override string GetKey(AbstractDesignerEntity item) { return item.ClassName; }
 	}
 }

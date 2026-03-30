@@ -861,7 +861,7 @@ namespace Basic.Configuration
 		/// <summary>启动数据库命令代码编辑，如果designer文件中已经存在则导航至此代码，否则自动生成代码并导航到此处</summary>
 		/// <param name="dataCommand">数据库命令，动态命令和静态命令</param>
 		/// <param name="entity">包含此命令的实例模型</param>
-		internal void EditCommandCode(DataCommandElement dataCommand, DataEntityElement entity)
+		internal void EditCommandCode(DesignerDataCommand dataCommand, DesignerDataEntity entity)
 		{
 			ThreadHelper.ThrowIfNotOnUIThread();
 			if (dataCommand.Kind != ConfigurationTypeEnum.Other && dataCommand.Kind != ConfigurationTypeEnum.SearchTable) { return; }
@@ -883,7 +883,7 @@ namespace Basic.Configuration
 			}
 		}
 
-		internal void EditDataEntityCode(DataEntityElement entity, DataEntityPropertyElement property)
+		internal void EditDataEntityCode(DesignerDataEntity entity, DesignerDataEntityProperty property)
 		{
 			ThreadHelper.ThrowIfNotOnUIThread();
 			IVSMDCodeDomProvider provider = (IVSMDCodeDomProvider)GetService(typeof(SVSMDCodeDomProvider));
@@ -971,7 +971,7 @@ namespace Basic.Configuration
 			}
 		}
 
-		internal void EditConditionCode(DataEntityElement entity, DataConditionPropertyElement property)
+		internal void EditConditionCode(DesignerDataEntity entity, DesignerDataConditionProperty property)
 		{
 			ThreadHelper.ThrowIfNotOnUIThread();
 			IVSMDCodeDomProvider provider = (IVSMDCodeDomProvider)GetService(typeof(SVSMDCodeDomProvider));
@@ -1233,7 +1233,7 @@ namespace Basic.Configuration
 			if (codeNamespace == null) { return; }
 			if (_Persistent.EntityNamespaceChanged)
 				codeNamespace.Name = _Persistent.EntityNamespace;
-			foreach (DataEntityElement entity in _Persistent.DataEntities)
+			foreach (DesignerDataEntity entity in _Persistent.DataEntities)
 			{
 				if (entity.NameChanged)
 				{

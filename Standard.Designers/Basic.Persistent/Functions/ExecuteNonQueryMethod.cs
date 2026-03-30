@@ -19,8 +19,8 @@ namespace Basic.Functions
 	public sealed class ExecuteNonQueryMethod : AbstractExecutableMethod
 	{
 		internal const string XmlElementName = "ExecuteNonQuery";
-		private readonly StaticCommandElement staticCommand;
-		internal ExecuteNonQueryMethod(StaticCommandElement element)
+		private readonly DesignerStaticCommand staticCommand;
+		internal ExecuteNonQueryMethod(DesignerStaticCommand element)
 			: base(element) { staticCommand = element; }
 
 		#region 类 AbstractExecutableMethod 抽象方法

@@ -24,7 +24,7 @@ namespace Basic.Designer
 		/// <returns>此集合可包含的数据类型数组。</returns>
 		protected override Type[] CreateNewItemTypes()
 		{
-			return new Type[] { typeof(DataConditionPropertyElement) };
+			return new Type[] { typeof(DesignerDataConditionProperty) };
 		}
 
 		/// <summary>

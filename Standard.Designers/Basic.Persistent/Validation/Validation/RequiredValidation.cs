@@ -24,7 +24,7 @@ namespace Basic.DataEntities
 
 		/// <summary>初始化 RequiredValidation 类的新实例</summary>
 		/// <param name="property">当前验证器所属属性。</param>
-		public RequiredValidation(DataEntityPropertyElement nofity) : base(nofity) { }
+		public RequiredValidation(DesignerDataEntityProperty nofity) : base(nofity) { }
 
 		/// <summary>
 		/// 返回表示当前 DesignerBoolReqiured 的 System.String。

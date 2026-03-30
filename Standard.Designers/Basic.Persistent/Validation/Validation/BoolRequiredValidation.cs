@@ -30,7 +30,7 @@ namespace Basic.DataEntities
 		/// 初始化 BoolReqiuredValidation 类的新实例。
 		/// </summary>
 		/// <param name="property">当前验证器所属属性。</param>
-		public BoolRequiredValidation(DataEntityPropertyElement nofity) : base(nofity) { }
+		public BoolRequiredValidation(DesignerDataEntityProperty nofity) : base(nofity) { }
 
 		private string _OtherProperty = string.Empty;
 		/// <summary>
@@ -78,7 +78,7 @@ namespace Basic.DataEntities
 		/// 设置 OtherProperty 属性值。
 		/// </summary>
 		/// <param name="property"></param>
-		void ICompareProperty.SetOtherProperty(DataEntityPropertyElement property)
+		void ICompareProperty.SetOtherProperty(DesignerDataEntityProperty property)
 		{
 			OtherProperty = property.Name;
 			PropertyType = property.Type;

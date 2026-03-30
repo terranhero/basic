@@ -18,13 +18,13 @@ namespace Basic.Database
         /// 将 DesignTableInfo 对象的内容复制到当前实例。
         /// </summary>
         /// <param name="entity">标识需要复制的 DesignTableInfo 类实例。</param>
-        public static void CopyFrom(this TableDesignerInfo table, DataEntityElement entity)
+        public static void CopyFrom(this TableDesignerInfo table, DesignerDataEntity entity)
         {
             table.Name = entity.TableName;
             table.Common = entity.Comment;
             table.Owner = "dbo";
             table.Columns.Clear();
-            foreach (DataEntityPropertyElement property in entity.Properties)
+            foreach (DesignerDataEntityProperty property in entity.Properties)
             {
                 ColumnDesignerInfo columnInfo = table.Columns.CreateColumn();
                 columnInfo.CopyFrom(property);
@@ -87,7 +87,7 @@ namespace Basic.Database
         /// </summary>
         /// <param name="table">数据库表信息</param>
         /// <param name="staticCommand"></param>
-        public static bool CreateSelectParameter(this TableDesignerInfo table, DataEntityElement entity, StaticCommandElement staticCommand)
+        public static bool CreateSelectParameter(this TableDesignerInfo table, DesignerDataEntity entity, DesignerStaticCommand staticCommand)
         {
             if (table.Columns == null || table.Columns.Count == 0) { return false; }
             if (table.Tables.CheckedColumns.Count == 0) { return false; }
@@ -97,7 +97,7 @@ namespace Basic.Database
                 if (!column.IsWhere) { continue; }
                 if (propertyNotExist)
                 {
-                    DataEntityPropertyElement property = entity.CreateProperty(column.Name);
+                    DesignerDataEntityProperty property = entity.CreateProperty(column.Name);
                     column.CreateProperty(property);
                     entity.Properties.Add(property);
                 }
@@ -177,7 +177,7 @@ namespace Basic.Database
         /// </summary>
         /// <param name="table">数据库表信息</param>
         /// <param name="staticCommand"></param>
-        public static bool CreateInsertParameter(this TableDesignerInfo table, DataEntityElement entity, StaticCommandElement staticCommand)
+        public static bool CreateInsertParameter(this TableDesignerInfo table, DesignerDataEntity entity, DesignerStaticCommand staticCommand)
         {
             if (table.Columns == null || table.Columns.Count == 0) { return false; }
             if (table.Tables.CheckedColumns.Count == 0) { return false; }
@@ -187,7 +187,7 @@ namespace Basic.Database
                 if (column.Computed || (column.CanUseDefault && column.UseDefault)) { continue; }
                 if (propertyNotExist)
                 {
-                    DataEntityPropertyElement property = entity.CreateProperty(column.Name);
+                    DesignerDataEntityProperty property = entity.CreateProperty(column.Name);
                     column.CreateProperty(property);
                     entity.Properties.Add(property);
                 }
@@ -279,7 +279,7 @@ namespace Basic.Database
         /// </summary>
         /// <param name="table">数据库表信息</param>
         /// <param name="staticCommand"></param>
-        public static bool CreateUpdateParameter(this TableDesignerInfo table, DataEntityElement entity, StaticCommandElement staticCommand)
+        public static bool CreateUpdateParameter(this TableDesignerInfo table, DesignerDataEntity entity, DesignerStaticCommand staticCommand)
         {
             if (table.Columns == null || table.Columns.Count == 0) { return false; }
             if (table.Tables.CheckedColumns.Count == 0) { return false; }
@@ -289,7 +289,7 @@ namespace Basic.Database
                 if ((!column.IsWhere) && (column.Computed || (column.CanUseDefault && column.UseDefault))) { continue; }
                 if (propertyNotExist)
                 {
-                    DataEntityPropertyElement property = entity.CreateProperty(column.Name);
+                    DesignerDataEntityProperty property = entity.CreateProperty(column.Name);
                     column.CreateProperty(property);
                     entity.Properties.Add(property);
                 }
@@ -354,7 +354,7 @@ namespace Basic.Database
         /// </summary>
         /// <param name="table">数据库表信息</param>
         /// <param name="staticCommand"></param>
-        public static bool CreateDeleteParameter(this TableDesignerInfo table, DataEntityElement entity, StaticCommandElement staticCommand)
+        public static bool CreateDeleteParameter(this TableDesignerInfo table, DesignerDataEntity entity, DesignerStaticCommand staticCommand)
         {
             if (table.Columns == null || table.Columns.Count == 0) { return false; }
             if (table.Tables.CheckedColumns.Count == 0) { return false; }
@@ -363,7 +363,7 @@ namespace Basic.Database
             {
                 if (propertyNotExist)
                 {
-                    DataEntityPropertyElement property = entity.CreateProperty(column.Name);
+                    DesignerDataEntityProperty property = entity.CreateProperty(column.Name);
                     column.CreateProperty(property);
                     entity.Properties.Add(property);
                 }
@@ -421,7 +421,7 @@ namespace Basic.Database
         /// 根据数据库列信息，创建新增数据库命令及其参数
         /// </summary>
         /// <param name="table">数据库表信息</param>
-        public static bool CreateSelectCommand(this TableDesignerCollection tables, DynamicCommandElement dynamicCommand)
+        public static bool CreateSelectCommand(this TableDesignerCollection tables, DesignerDynamicCommand dynamicCommand)
         {
             if (tables.CheckedColumns.Count == 0) { return false; }
             if (tables.Group) { return tables.CreateGroupCommand(dynamicCommand); }
@@ -626,7 +626,7 @@ namespace Basic.Database
         /// 根据数据库列信息，创建新增数据库命令及其参数
         /// </summary>
         /// <param name="table">数据库表信息</param>
-        private static bool CreateGroupCommand(this TableDesignerCollection tables, DynamicCommandElement dynamicCommand)
+        private static bool CreateGroupCommand(this TableDesignerCollection tables, DesignerDynamicCommand dynamicCommand)
         {
             if (tables.CheckedColumns.Count == 0) { return false; }
             CheckedColumnCollection outputColumns = new CheckedColumnCollection(tables);
@@ -688,7 +688,7 @@ namespace Basic.Database
         /// </summary>
         /// <param name="table">数据库表信息</param>
         /// <param name="dynamicCommand"></param>
-        public static bool CreateSelectParameter(this TableDesignerCollection tables, DataEntityElement entity, DynamicCommandElement dynamicCommand)
+        public static bool CreateSelectParameter(this TableDesignerCollection tables, DesignerDataEntity entity, DesignerDynamicCommand dynamicCommand)
         {
             if (tables.CheckedColumns.Count == 0) { return false; }
             bool propertyNotExist = entity.Properties.Count <= 0;
@@ -702,15 +702,15 @@ namespace Basic.Database
                     isSelect = true;
                     if (propertyNotExist)
                     {
-                        DataEntityPropertyElement property = entity.CreateProperty(column.Name);
+                        DesignerDataEntityProperty property = entity.CreateProperty(column.Name);
                         column.CreateProperty(property);
                         entity.Properties.Add(property);
                     }
                     if (!column.IsWhere && !column.IsFrom) { continue; }
-                    DataConditionPropertyElement conProperty;
+                    DesignerDataConditionProperty conProperty;
                     if (!entity.Condition.Arguments.TryGetValue(column.Name, out conProperty))
                     {
-                        conProperty = new DataConditionPropertyElement(entity.Condition);
+                        conProperty = new DesignerDataConditionProperty(entity.Condition);
                         column.CreateProperty(conProperty);
                         entity.Condition.Arguments.Add(conProperty);
                     }
@@ -726,10 +726,10 @@ namespace Basic.Database
                     TableFunctionInfo functionInfo = tableInfo as TableFunctionInfo;
                     foreach (FunctionParameterInfo parameterInfo in functionInfo.Parameters)
                     {
-                        DataConditionPropertyElement conProperty;
+                        DesignerDataConditionProperty conProperty;
                         if (!entity.Condition.Arguments.TryGetValue(parameterInfo.Name, out conProperty))
                         {
-                            conProperty = new DataConditionPropertyElement(entity.Condition);
+                            conProperty = new DesignerDataConditionProperty(entity.Condition);
                             parameterInfo.CreateProperty(conProperty);
                             entity.Condition.Arguments.Add(conProperty);
                         }

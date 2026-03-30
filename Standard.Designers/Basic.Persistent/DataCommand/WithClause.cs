@@ -36,9 +36,9 @@ namespace Basic.Designer
 		internal const string TableQueryElement = "Query";
 		#endregion
 
-		private readonly DynamicCommandElement _DynamicCommand;
+		private readonly DesignerDynamicCommand _DynamicCommand;
 		private readonly PersistentDesigner _Persistent;
-		internal WithClause(DynamicCommandElement command)
+		internal WithClause(DesignerDynamicCommand command)
 			: base(command) { _DynamicCommand = command; _Persistent = command.Persistent; }
 
 		private bool _AllowPaging = false;

@@ -11,10 +11,10 @@ namespace Basic.Collections
 	/// 表示新值命令集合
 	/// </summary>
 	[Editor(typeof(NewCommandsEditor), typeof(System.Drawing.Design.UITypeEditor))]
-	public sealed class NewCommandCollection : Basic.Collections.BaseCollection<NewCommandElement>,
-		ICollection<NewCommandElement>, IEnumerable<NewCommandElement>, INotifyCollectionChanged
+	public sealed class NewCommandCollection : Basic.Collections.BaseCollection<DesignerNewCommand>,
+		ICollection<DesignerNewCommand>, IEnumerable<DesignerNewCommand>, INotifyCollectionChanged
 	{
-		private readonly StaticCommandElement staticCommand;
+		private readonly DesignerStaticCommand staticCommand;
 		/// <summary>
 		/// 数据库表中所有列配置节名称
 		/// </summary>
@@ -22,14 +22,14 @@ namespace Basic.Collections
 		/// <summary>
 		/// 初始化 NewCommandCollection 类的新实例。
 		/// </summary>
-		internal NewCommandCollection(StaticCommandElement element) : base() { staticCommand = element; }
+		internal NewCommandCollection(DesignerStaticCommand element) : base() { staticCommand = element; }
 
 		/// <summary>
 		/// 将一项插入集合中指定索引处。
 		/// </summary>
 		/// <param name="index">从零开始的索引，应在该位置插入 item。</param>
 		/// <param name="item">要插入的对象。</param>
-		protected override void InsertItem(int index, Basic.Configuration.NewCommandElement item)
+		protected override void InsertItem(int index, Basic.Configuration.DesignerNewCommand item)
         {
             if (string.IsNullOrWhiteSpace(item.Name)) { item.Name = string.Concat("NewCommand", Convert.ToString(base.Count).PadLeft(2, '0')); }
 			item.FileContentChanged += new System.EventHandler((sender, e) => { staticCommand.OnFileContentChanged(e); });
@@ -51,6 +51,6 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="item">需要获取键的集合子元素</param>
 		/// <returns>返回元素的键</returns>
-		protected internal override string GetKey(NewCommandElement item) { return item.Name; }
+		protected internal override string GetKey(DesignerNewCommand item) { return item.Name; }
 	}
 }

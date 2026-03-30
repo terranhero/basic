@@ -23,7 +23,7 @@ namespace Basic.Database
 		/// <param name="tableCollection">数据库表结构信息</param>
 		/// <param name="dataEntity">需要刷新的实体类信息</param>
 		/// <param name="kind">当前实体类用途</param>
-		internal static void CreateDataEntityElement(this TransactSqlResult tableCollection, DataEntityElement dataEntity)
+		internal static void CreateDataEntityElement(this TransactSqlResult tableCollection, DesignerDataEntity dataEntity)
 		{
 			if (string.IsNullOrWhiteSpace(dataEntity.Name))
 				dataEntity.Name = tableCollection.EntityName;
@@ -38,10 +38,10 @@ namespace Basic.Database
 				else if (dataEntity.NamingRule == NamingRules.UpperCase) { pn = StringHelper.GetUpperCase(column.Name); }
 				else if (dataEntity.NamingRule == NamingRules.LowerCase) { pn = StringHelper.GetLowerCase(column.Name); }
 
-				if (dataProperties.TryGetValue(pn, out DataEntityPropertyElement property)) { column.CreateProperty(property, false); }
+				if (dataProperties.TryGetValue(pn, out DesignerDataEntityProperty property)) { column.CreateProperty(property, false); }
 				else
 				{
-					property = new DataEntityPropertyElement(dataEntity);
+					property = new DesignerDataEntityProperty(dataEntity);
 					column.CreateProperty(property, false);
 					dataProperties.Add(property);
 				}
@@ -53,7 +53,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
-		internal static void CreateProperty(this TransactColumnInfo column, DataEntityPropertyElement property)
+		internal static void CreateProperty(this TransactColumnInfo column, DesignerDataEntityProperty property)
 		{
 			column.CreateProperty(property, false);
 		}
@@ -64,7 +64,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		internal static void CreateProperty(this TransactColumnInfo column, DataEntityPropertyElement property, bool updated)
+		internal static void CreateProperty(this TransactColumnInfo column, DesignerDataEntityProperty property, bool updated)
 		{
 			NamingRules nr = property.Owner.NamingRule;
 			if (updated == false && nr == NamingRules.DefaultCase && string.IsNullOrWhiteSpace(column.PropertyName) == false)
@@ -100,7 +100,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="tableInfo">数据库表结构信息</param>
 		/// <param name="dataCondition">需要刷新的条件类信息</param>
-		internal static void CreateDataConditionElement(this TransactSqlResult tableCollection, DataConditionElement dataCondition)
+		internal static void CreateDataConditionElement(this TransactSqlResult tableCollection, DesignerDataCondition dataCondition)
 		{
 			dataCondition.TableName = tableCollection.TableName;
 			dataCondition.Comment = tableCollection.Description;
@@ -108,7 +108,7 @@ namespace Basic.Database
 			foreach (TransactColumnInfo column in tableCollection.Columns)
 			{
 				string columnName = column.Name.ToUpper();
-				DataConditionPropertyElement conditionProperty = null;
+				DesignerDataConditionProperty conditionProperty = null;
 				if (column.DbType != DbTypeEnum.Date && column.DbType != DbTypeEnum.DateTime &&
 					 column.DbType != DbTypeEnum.DateTime2 && column.DbType != DbTypeEnum.DateTimeOffset)
 				{
@@ -118,7 +118,7 @@ namespace Basic.Database
 					}
 					else
 					{
-						conditionProperty = new DataConditionPropertyElement(dataCondition);
+						conditionProperty = new DesignerDataConditionProperty(dataCondition);
 						column.CreateProperty(conditionProperty, false);
 						conditionProperties.Add(conditionProperty);
 					}
@@ -138,7 +138,7 @@ namespace Basic.Database
 					}
 					else
 					{
-						conditionProperty = new DataConditionPropertyElement(dataCondition);
+						conditionProperty = new DesignerDataConditionProperty(dataCondition);
 						column.Name = dtColumn1;
 						column.PropertyName = string.Concat(column.PropertyName, "1");
 						column.CreateProperty(conditionProperty, false);
@@ -157,7 +157,7 @@ namespace Basic.Database
 					}
 					else
 					{
-						conditionProperty = new DataConditionPropertyElement(dataCondition);
+						conditionProperty = new DesignerDataConditionProperty(dataCondition);
 						column.Name = dtColumn2;
 						column.PropertyName = string.Concat(column.PropertyName, "2");
 						column.CreateProperty(conditionProperty, false);
@@ -175,7 +175,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		internal static void CreateProperty(this TransactColumnInfo column, DataConditionPropertyElement property)
+		internal static void CreateProperty(this TransactColumnInfo column, DesignerDataConditionProperty property)
 		{
 			column.CreateProperty(property, false);
 		}
@@ -186,7 +186,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		internal static void CreateProperty(this TransactColumnInfo column, DataConditionPropertyElement property, bool updated)
+		internal static void CreateProperty(this TransactColumnInfo column, DesignerDataConditionProperty property, bool updated)
 		{
 			if (!updated && !string.IsNullOrWhiteSpace(column.PropertyName))
 				property.Name = column.PropertyName;
@@ -251,7 +251,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="tableCollection">数据库表结构信息</param>
 		/// <param name="dataCommand">需要刷新的条件类信息</param>
-		internal static void CreateParameters(this TransactSqlResult tableCollection, DataCommandElement dataCommand)
+		internal static void CreateParameters(this TransactSqlResult tableCollection, DesignerDataCommand dataCommand)
 		{
 			foreach (TransactParameterInfo info in tableCollection.Parameters)
 			{
@@ -307,7 +307,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="result">数据库表结构信息</param>
 		/// <param name="dataCommand">需要刷新的条件类信息</param>
-		internal static void GetParameters(this TransactSqlResult result, IDataContext context, DataCommandElement dataCommand, string transactSql)
+		internal static void GetParameters(this TransactSqlResult result, IDataContext context, DesignerDataCommand dataCommand, string transactSql)
 		{
 			foreach (CommandParameter parameter in dataCommand.Parameters)
 			{

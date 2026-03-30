@@ -20,7 +20,7 @@ namespace Basic.DataEntities
 		/// 初始化 RangeValidation 类的新实例。
 		/// </summary>
 		/// <param name="property">当前验证器所属属性。</param>
-		public RangeValidation(DataEntityPropertyElement property) : base(property) { }
+		public RangeValidation(DesignerDataEntityProperty property) : base(property) { }
 
 		/// <summary>
 		/// 异常关键字。

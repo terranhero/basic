@@ -12,7 +12,7 @@ namespace Basic.Designer
 	/// <summary>
 	/// 表示命令的属性描述
 	/// </summary>
-	internal sealed class CommandPropertyDescriptor<T> : PropertyDescriptor where T : AbstractCommandElement
+	internal sealed class CommandPropertyDescriptor<T> : PropertyDescriptor where T : AbstractDesignerCommand
 	{
 		private readonly T _Command;
 		/// <summary>

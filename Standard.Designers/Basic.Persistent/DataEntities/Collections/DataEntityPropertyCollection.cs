@@ -11,18 +11,18 @@ namespace Basic.Collections
 	/// <summary>
 	/// 
 	/// </summary>
-	public sealed class DataEntityPropertyCollection : Basic.Collections.AbstractCollection<DataEntityPropertyElement>,
-		ICollection<DataEntityPropertyElement>, IEnumerable<DataEntityPropertyElement>, INotifyCollectionChanged
+	public sealed class DataEntityPropertyCollection : Basic.Collections.AbstractCollection<DesignerDataEntityProperty>,
+		ICollection<DesignerDataEntityProperty>, IEnumerable<DesignerDataEntityProperty>, INotifyCollectionChanged
 	{
 		/// <summary>
 		/// 数据库表中所有列配置节名称
 		/// </summary>
 		internal const string XmlElementName = "Properties";
-		internal readonly DataEntityElement dataEntityElement;
+		internal readonly DesignerDataEntity dataEntityElement;
 		/// <summary>
 		/// 初始化 DataEntityPropertyCollection 类的新实例。
 		/// </summary>
-		internal DataEntityPropertyCollection(DataEntityElement entity) : base(entity) { dataEntityElement = entity; }
+		internal DataEntityPropertyCollection(DesignerDataEntity entity) : base(entity) { dataEntityElement = entity; }
 
 		/// <summary>
 		/// 
@@ -39,7 +39,7 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="item"></param>
-		protected override void InsertItem(int index, DataEntityPropertyElement item)
+		protected override void InsertItem(int index, DesignerDataEntityProperty item)
 		{
 			if (string.IsNullOrWhiteSpace(item.Name) && string.IsNullOrWhiteSpace(item.Column))
 				item.Name = string.Concat("Property_", index);
@@ -53,7 +53,7 @@ namespace Basic.Collections
 		/// </summary>
 		/// <param name="item">需要获取键的集合子元素</param>
 		/// <returns>返回元素的键</returns>
-		protected internal override string GetKey(DataEntityPropertyElement item)
+		protected internal override string GetKey(DesignerDataEntityProperty item)
 		{
 			if (!string.IsNullOrWhiteSpace(item.Name))
 				return item.Name;
@@ -70,7 +70,7 @@ namespace Basic.Collections
 
 		protected internal override bool ReadChildContent(System.Xml.XmlReader reader)
 		{
-			DataEntityPropertyElement element = new DataEntityPropertyElement(dataEntityElement);
+			DesignerDataEntityProperty element = new DesignerDataEntityProperty(dataEntityElement);
 			element.ReadXml(reader);
 			base.Add(element);
 			return false;

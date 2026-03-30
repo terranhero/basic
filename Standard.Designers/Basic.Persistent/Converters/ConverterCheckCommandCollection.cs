@@ -42,7 +42,7 @@ namespace Basic.Converters
             while (reader.Read())
             {
                 if (reader.NodeType == System.Xml.XmlNodeType.Whitespace) { continue; }
-                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == CheckedCommandElement.XmlElementName)
+                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DesignerCheckedCommand.XmlElementName)
                 {
                     ConverterCheckCommand element = new ConverterCheckCommand(staticCommand);
                     element.ReadXml(reader.ReadSubtree());

@@ -12,7 +12,7 @@ namespace Basic.Configuration
 {
 	/// <summary>表示抽象配置命令</summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	public abstract class AbstractCommandElement : AbstractCustomTypeDescriptor, IXmlSerializable, INotifyCollectionChanged
+	public abstract class AbstractDesignerCommand : AbstractCustomTypeDescriptor, IXmlSerializable, INotifyCollectionChanged
 	{
 		#region Xml 节点名称常量
 		/// <summary>
@@ -91,7 +91,7 @@ namespace Basic.Configuration
 		/// <summary>
 		/// 初始化 AbstractCommandElement 类实例。
 		/// </summary>
-		protected AbstractCommandElement(AbstractCustomTypeDescriptor nofity)
+		protected AbstractDesignerCommand(AbstractCustomTypeDescriptor nofity)
 			: base(nofity)
 		{
 			_Parameters = new CommandParameterCollection(this);

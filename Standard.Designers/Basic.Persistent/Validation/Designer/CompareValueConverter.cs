@@ -156,8 +156,8 @@ namespace Basic.DataEntities
 			ICompareProperty property = context.Instance as ICompareProperty;
 			if (validation != null && property != null)
 			{
-				DataEntityPropertyElement otherProperty = null;
-				DataEntityElement entity = validation.Property.Owner as DataEntityElement;
+				DesignerDataEntityProperty otherProperty = null;
+				DesignerDataEntity entity = validation.Property.Owner as DesignerDataEntity;
 				if (entity.Properties.TryGetValue(property.OtherProperty, out otherProperty))
 					return ConvertToValue(otherProperty.Type, context, culture, value);
 				return base.ConvertFrom(context, culture, value);

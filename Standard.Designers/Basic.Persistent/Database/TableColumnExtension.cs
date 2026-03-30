@@ -45,7 +45,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		internal static void CreateProperty(this DesignColumnInfo column, DataConditionPropertyElement property)
+		internal static void CreateProperty(this DesignColumnInfo column, DesignerDataConditionProperty property)
 		{
 			column.CreateProperty(property, false);
 		}
@@ -56,7 +56,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		internal static void CreateProperty(this DesignColumnInfo column, DataConditionPropertyElement property, bool updated)
+		internal static void CreateProperty(this DesignColumnInfo column, DesignerDataConditionProperty property, bool updated)
 		{
 			NamingRules nr = property.Owner.NamingRule;
 			if (updated == false && nr == NamingRules.DefaultCase && string.IsNullOrWhiteSpace(column.PropertyName) == false)
@@ -89,7 +89,7 @@ namespace Basic.Database
 		/// </summary>
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
-		internal static void CreateProperty(this DesignColumnInfo column, DataEntityPropertyElement property)
+		internal static void CreateProperty(this DesignColumnInfo column, DesignerDataEntityProperty property)
 		{
 			column.CreateProperty(property, false);
 		}
@@ -100,7 +100,7 @@ namespace Basic.Database
 		/// <param name="column">数据库表结构信息</param>
 		/// <param name="property">需要刷新的实体类信息</param>
 		/// <param name="updated">当前是表示创建，还是更新，默认值为 false 表示需要创建当前字段的属性。</param>
-		internal static void CreateProperty(this DesignColumnInfo column, DataEntityPropertyElement property, bool updated)
+		internal static void CreateProperty(this DesignColumnInfo column, DesignerDataEntityProperty property, bool updated)
 		{
 			NamingRules nr = property.Owner.NamingRule;
 			if (updated == false && nr == NamingRules.DefaultCase && string.IsNullOrWhiteSpace(column.PropertyName) == false)

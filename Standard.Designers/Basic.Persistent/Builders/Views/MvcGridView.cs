@@ -40,10 +40,10 @@ namespace Basic.Views
                     writer.WriteLine("@{{ ViewBag.Title = \"Grid\"; Layout = \"{0}\"; }}", base.Template);
                 writer.WriteLine("@using (IEasyGrid<{0}> grid = Html.EasyGrid<{0}>(\"gvTable\"))", base.Entity.FullName);
                 writer.WriteLine("{");
-                if (base.Entity is DataEntityElement)
+                if (base.Entity is DesignerDataEntity)
                 {
-                    DataEntityElement entity = base.Entity as DataEntityElement;
-                    foreach (DataEntityPropertyElement property in entity.Properties)
+                    DesignerDataEntity entity = base.Entity as DesignerDataEntity;
+                    foreach (DesignerDataEntityProperty property in entity.Properties)
                     {
                         if (property.PrimaryKey)
                         {
@@ -62,10 +62,10 @@ namespace Basic.Views
                         else { writer.WriteLine("\tgrid.LabelFor(m => m.{0});", property.Name); }
                     }
                 }
-                else if (base.Entity is DataConditionElement)
+                else if (base.Entity is DesignerDataCondition)
                 {
-                    DataConditionElement condition = base.Entity as DataConditionElement;
-                    foreach (DataConditionPropertyElement property in condition.Arguments)
+                    DesignerDataCondition condition = base.Entity as DesignerDataCondition;
+                    foreach (DesignerDataConditionProperty property in condition.Arguments)
                     {
                         if (property.PrimaryKey) { writer.WriteLine("\tgrid.IdFieldFor(m => m.{0});", property.Name); continue; }
                         if (property.DbType == DbTypeEnum.Timestamp) { writer.WriteLine("\tgrid.TsFieldFor(m => m.{0});", property.Name); }

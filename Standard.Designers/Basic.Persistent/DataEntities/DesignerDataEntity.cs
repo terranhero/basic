@@ -21,7 +21,7 @@ namespace Basic.DataEntities
 	/// <summary>
 	/// 表示实体类定义信息
 	/// </summary>
-	public sealed class DataEntityElement : AbstractEntityElement
+	public sealed class DesignerDataEntity : AbstractDesignerEntity
 	{
 		internal const string XmlElementName = "DataEntityElement";
 		internal const string GenerateModeAttribute = "GenerateMode";
@@ -33,16 +33,16 @@ namespace Basic.DataEntities
 		private readonly DataEntityPropertyCollection propertyCollection;
 		private readonly PersistentDesigner _Persistent;
 		private readonly DataEntityElementCollection dataEntityElements;
-		private readonly DesignerInfoElement designerInfo;
-		private readonly DataContractElement _DataContract;
+		private readonly DesignerLayoutInfo designerInfo;
+		private readonly DesignerDataContract _DataContract;
 		/// <summary>初始化 EntityDefinition 类的新实例。 </summary>
-		public DataEntityElement(PersistentDesigner persistent)
+		public DesignerDataEntity(PersistentDesigner persistent)
 			: base(persistent, typeof(Basic.EntityLayer.AbstractEntity).FullName)
 		{
 			_Persistent = persistent;
-			_DataContract = new DataContractElement(this);
-			designerInfo = new DesignerInfoElement(persistent);
-			dataCondition = new DataConditionElement(this);
+			_DataContract = new DesignerDataContract(this);
+			designerInfo = new DesignerLayoutInfo(persistent);
+			dataCondition = new DesignerDataCondition(this);
 			dataEntityElements = persistent.DataEntities;
 			dataCommands = new DataCommandCollection(persistent);
 			dataCommands.CollectionChanged += new NotifyCollectionChangedEventHandler(OnCommandsCollectionChanged);
@@ -56,14 +56,14 @@ namespace Basic.DataEntities
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
-				foreach (DataCommandElement element in e.NewItems)
+				foreach (DesignerDataCommand element in e.NewItems)
 				{
 					fileDataCommands.Add(element);
 				}
 			}
 			else if (e.Action == NotifyCollectionChangedAction.Remove)
 			{
-				foreach (DataCommandElement element in e.OldItems)
+				foreach (DesignerDataCommand element in e.OldItems)
 				{
 					fileDataCommands.Remove(element);
 				}
@@ -344,14 +344,14 @@ namespace Basic.DataEntities
 		/// 实体类设计信息
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		public DesignerInfoElement DesignerInfo { get { return designerInfo; } }
+		public DesignerLayoutInfo DesignerInfo { get { return designerInfo; } }
 
-		private readonly DataConditionElement dataCondition;
+		private readonly DesignerDataCondition dataCondition;
 		/// <summary>
 		/// 实体类设计信息
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		public DataConditionElement Condition { get { return dataCondition; } }
+		public DesignerDataCondition Condition { get { return dataCondition; } }
 
 		/// <summary>
 		/// 结果类实例
@@ -533,14 +533,14 @@ namespace Basic.DataEntities
 		[System.ComponentModel.Browsable(false)]
 		internal string OldDataRowName { get { return string.Concat(OldName, "Row"); } }
 
-		public DataEntityPropertyElement CreateProperty()
+		public DesignerDataEntityProperty CreateProperty()
 		{
-			return new DataEntityPropertyElement(this);
+			return new DesignerDataEntityProperty(this);
 		}
 
-		public DataEntityPropertyElement CreateProperty(string name)
+		public DesignerDataEntityProperty CreateProperty(string name)
 		{
-			return new DataEntityPropertyElement(this, name);
+			return new DesignerDataEntityProperty(this, name);
 		}
 
 		/// <summary>
@@ -630,10 +630,10 @@ namespace Basic.DataEntities
 			if (name == GenerateModeAttribute) { return Enum.TryParse<GenerateModeEnum>(value, out _GeneratorMode); }
 			else if (name == EnabledValidationAttribute) { m_EnabledValidation = Convert.ToBoolean(value); return true; }
 			else if (name == GenerateCollectionAttribute) { _GenerateCollection = Convert.ToBoolean(value); return true; }
-			else if (name == DesignerInfoElement.WidthAttribute) { designerInfo.Width = Convert.ToDouble(value); return true; }
-			else if (name == DesignerInfoElement.HeightAttribute) { designerInfo.Height = Convert.ToDouble(value); return true; }
-			else if (name == DesignerInfoElement.LeftAttribute) { designerInfo.Left = Convert.ToDouble(value); return true; }
-			else if (name == DesignerInfoElement.TopAttribute) { designerInfo.Top = Convert.ToDouble(value); return true; }
+			else if (name == DesignerLayoutInfo.WidthAttribute) { designerInfo.Width = Convert.ToDouble(value); return true; }
+			else if (name == DesignerLayoutInfo.HeightAttribute) { designerInfo.Height = Convert.ToDouble(value); return true; }
+			else if (name == DesignerLayoutInfo.LeftAttribute) { designerInfo.Left = Convert.ToDouble(value); return true; }
+			else if (name == DesignerLayoutInfo.TopAttribute) { designerInfo.Top = Convert.ToDouble(value); return true; }
 			return base.ReadAttribute(name, value);
 		}
 
@@ -665,11 +665,11 @@ namespace Basic.DataEntities
 			{
 				dataCondition.Arguments.ReadXml(reader.ReadSubtree());
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DesignerInfoElement.XmlElementName)
+			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DesignerLayoutInfo.XmlElementName)
 			{
 				designerInfo.ReadXml(reader.ReadSubtree());
 			}
-			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DataContractElement.XmlElementName)
+			else if (reader.NodeType == XmlNodeType.Element && reader.LocalName == DesignerDataContract.XmlElementName)
 			{
 				_DataContract.ReadXml(reader.ReadSubtree());
 			}
@@ -678,15 +678,15 @@ namespace Basic.DataEntities
 				System.Xml.XmlReader reader2 = reader.ReadSubtree();
 				while (reader2.Read())  //读取所有命令节点信息(动态/静态)
 				{
-					if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == StaticCommandElement.XmlElementName)
+					if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == DesignerStaticCommand.XmlElementName)
 					{
-						StaticCommandElement dataCommand = new StaticCommandElement(this);
+						DesignerStaticCommand dataCommand = new DesignerStaticCommand(this);
 						dataCommand.ReadXml(reader2);
 						dataCommands.Add(dataCommand);
 					}
-					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == DynamicCommandElement.XmlElementName)
+					else if (reader2.NodeType == XmlNodeType.Element && reader2.LocalName == DesignerDynamicCommand.XmlElementName)
 					{
-						DynamicCommandElement dataCommand = new DynamicCommandElement(this);
+						DesignerDynamicCommand dataCommand = new DesignerDynamicCommand(this);
 						dataCommand.ReadXml(reader2);
 						dataCommands.Add(dataCommand);
 					}
@@ -720,16 +720,16 @@ namespace Basic.DataEntities
 		{
 			base.WriteContent(writer);
 			writer.WriteStartElement(DataEntityPropertyCollection.XmlElementName);
-			foreach (DataEntityPropertyElement property in propertyCollection)
+			foreach (DesignerDataEntityProperty property in propertyCollection)
 				property.WriteXml(writer);
 			writer.WriteEndElement();
 			writer.WriteStartElement(DataConditionPropertyCollection.XmlElementName);
-			writer.WriteAttributeString(DataConditionElement.BaseClassAttribute, dataCondition.BaseClass);
+			writer.WriteAttributeString(DesignerDataCondition.BaseClassAttribute, dataCondition.BaseClass);
 			if (dataCondition.Guid != Guid.Empty)
 				writer.WriteAttributeString(GuidAttribute, dataCondition.Guid.ToString("D"));
 			if (Expanded) { writer.WriteAttributeString(ExpandedAttribute, dataCondition.Expanded.ToString().ToLower()); }
 
-			foreach (DataConditionPropertyElement property in dataCondition.Arguments)
+			foreach (DesignerDataConditionProperty property in dataCondition.Arguments)
 				property.WriteXml(writer);
 			writer.WriteEndElement();
 			_DataContract.WriteXml(writer);
@@ -737,7 +737,7 @@ namespace Basic.DataEntities
 			writer.WriteStartElement(DataCommandCollection.XmlElementName);
 			if (dataCommands != null && dataCommands.Count > 0)
 			{
-				foreach (DataCommandElement dataCommand in dataCommands)
+				foreach (DesignerDataCommand dataCommand in dataCommands)
 				{
 					dataCommand.WriteXml(writer);
 				}
@@ -752,7 +752,7 @@ namespace Basic.DataEntities
 		/// <param name="connectionType">表示数据库连接类型</param>
 		protected internal override void GenerateConfiguration(XmlWriter writer, ConnectionTypeEnum connectionType)
 		{
-			foreach (DataCommandElement dataCommand in dataCommands)
+			foreach (DesignerDataCommand dataCommand in dataCommands)
 			{
 				dataCommand.GenerateConfiguration(writer, connectionType);
 			}
@@ -925,7 +925,7 @@ namespace Basic.DataEntities
 				pkConstructor.BaseConstructorArgs.Add(baseConstructor);
 
 			#region 实体属性
-			foreach (DataEntityPropertyElement property in propertyCollection)
+			foreach (DesignerDataEntityProperty property in propertyCollection)
 			{
 				property.WriteDesignerCode(entityClass, pkConstructor);
 				if (property.PrimaryKey)
@@ -1150,7 +1150,7 @@ namespace Basic.DataEntities
 			newColumnArray.CreateType = new CodeTypeReference(typeof(System.Data.DataColumn), CodeTypeReferenceOptions.GlobalReference);
 			#endregion
 
-			foreach (DataEntityPropertyElement entityProperty in this.Properties)
+			foreach (DesignerDataEntityProperty entityProperty in this.Properties)
 			{
 				entityProperty.WriteIniColumnCode(initColumns);
 				entityProperty.WriteIniClassCode(initClass);
@@ -1243,7 +1243,7 @@ namespace Basic.DataEntities
 
 			rowCode.Members.Add(constructor);
 			#region 实体属性
-			foreach (DataEntityPropertyElement property in this.Properties)
+			foreach (DesignerDataEntityProperty property in this.Properties)
 			{
 				property.WriteRowCode(rowCode, Name);
 			}

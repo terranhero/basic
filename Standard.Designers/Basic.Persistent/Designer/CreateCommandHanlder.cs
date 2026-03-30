@@ -23,10 +23,10 @@ namespace Basic.Designer
 	public class EditCommandEventArgs : RoutedEventArgs
 	{
 		// Fields
-		private readonly DataEntityElement _DataEntity;
-		private readonly DataCommandElement _DataCommand;
+		private readonly DesignerDataEntity _DataEntity;
+		private readonly DesignerDataCommand _DataCommand;
 
-		public EditCommandEventArgs(RoutedEvent routedEvent, DataEntityElement newValue, DataCommandElement dataCommand)
+		public EditCommandEventArgs(RoutedEvent routedEvent, DesignerDataEntity newValue, DesignerDataCommand dataCommand)
 			: base(routedEvent, newValue)
 		{
 			this._DataEntity = newValue;
@@ -43,12 +43,12 @@ namespace Basic.Designer
 		/// <summary>
 		/// 表示创建何种命令
 		/// </summary>
-		public DataCommandElement DataCommand { get { return _DataCommand; } }
+		public DesignerDataCommand DataCommand { get { return _DataCommand; } }
 
 		/// <summary>
 		/// 表示当前发起命令创建事件的实体对象。
 		/// </summary>
-		public DataEntityElement DataEntity { get { return this._DataEntity; } }
+		public DesignerDataEntity DataEntity { get { return this._DataEntity; } }
 	}
 
 	/// <summary>
@@ -64,10 +64,10 @@ namespace Basic.Designer
 	public class CreateCommandEventArgs : RoutedEventArgs
 	{
 		// Fields
-		private readonly DataEntityElement _DataEntity;
+		private readonly DesignerDataEntity _DataEntity;
 		private readonly CommandType _CommandType;
 
-		public CreateCommandEventArgs(RoutedEvent routedEvent, DataEntityElement newValue, CommandType type)
+		public CreateCommandEventArgs(RoutedEvent routedEvent, DesignerDataEntity newValue, CommandType type)
 			: base(routedEvent, newValue)
 		{
 			this._DataEntity = newValue;
@@ -89,6 +89,6 @@ namespace Basic.Designer
 		/// <summary>
 		/// 表示当前发起命令创建事件的实体对象。
 		/// </summary>
-		public DataEntityElement DataEntity { get { return this._DataEntity; } }
+		public DesignerDataEntity DataEntity { get { return this._DataEntity; } }
 	}
 }

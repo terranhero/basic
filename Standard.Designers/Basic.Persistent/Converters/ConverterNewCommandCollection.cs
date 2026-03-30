@@ -48,7 +48,7 @@ namespace Basic.Converters
             while (reader.Read())
             {
                 if (reader.NodeType == System.Xml.XmlNodeType.Whitespace) { continue; }
-                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == NewCommandElement.XmlElementName)
+                else if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.LocalName == DesignerNewCommand.XmlElementName)
                 {
                     ConverterNewCommand element = new ConverterNewCommand(_StaticCommand);
                     element.ReadXml(reader.ReadSubtree());

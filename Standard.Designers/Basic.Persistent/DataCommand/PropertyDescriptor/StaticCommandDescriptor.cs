@@ -9,14 +9,14 @@ namespace Basic.Designer
 	/// 属性包装器
 	/// </summary>
 	/// <typeparam name="TDD">需要包装属性的信息</typeparam>
-	internal sealed class StaticCommandDescriptor : ObjectDescriptor<StaticCommandElement>
+	internal sealed class StaticCommandDescriptor : ObjectDescriptor<DesignerStaticCommand>
 	{
 		private PropertyDescriptorCollection propertyDescriptors = null;
 		/// <summary>
 		/// 初始化 StaticCommandDescriptor 实例
 		/// </summary>
 		/// <param name="dInfo"></param>
-		public StaticCommandDescriptor(StaticCommandElement dInfo) : base(dInfo) { }
+		public StaticCommandDescriptor(DesignerStaticCommand dInfo) : base(dInfo) { }
 
 		/// <summary>
 		/// 返回将特性数组用作筛选器的此组件实例的属性。
@@ -42,13 +42,13 @@ namespace Basic.Designer
 				else if (property.IsBrowsable)
 					properties.Add(property);
 			}
-			foreach (NewCommandElement newCommand in base.DefinitionInfo.NewCommands)
+			foreach (DesignerNewCommand newCommand in base.DefinitionInfo.NewCommands)
 			{
-				properties.Add(new CommandPropertyDescriptor<NewCommandElement>(newCommand));
+				properties.Add(new CommandPropertyDescriptor<DesignerNewCommand>(newCommand));
 			}
-			foreach (CheckedCommandElement newCommand in base.DefinitionInfo.CheckCommands)
+			foreach (DesignerCheckedCommand newCommand in base.DefinitionInfo.CheckCommands)
 			{
-				properties.Add(new CommandPropertyDescriptor<CheckedCommandElement>(newCommand));
+				properties.Add(new CommandPropertyDescriptor<DesignerCheckedCommand>(newCommand));
 			}
             //foreach (CommandParameter parameter in base.DefinitionInfo.Parameters)
             //{

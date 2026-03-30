@@ -12,19 +12,19 @@ namespace Basic.DataEntities
 	/// </summary>
 	public abstract class AbstractAttribute : AbstractCustomTypeDescriptor
 	{
-		private readonly DataEntityPropertyElement property;
+		private readonly DesignerDataEntityProperty property;
 
 		/// <summary>
 		/// 初始化 AbstractAttribute 类实例。
 		/// </summary>
 		/// <param name="nofity">需要通知 DataEntityPropertyElement 类实例当前类的属性已更改。</param>
-		protected AbstractAttribute(DataEntityPropertyElement nofity) : base(nofity) { property = nofity; }
+		protected AbstractAttribute(DesignerDataEntityProperty nofity) : base(nofity) { property = nofity; }
 
 		/// <summary>
 		/// 当前特性应用的属性。
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
-		public DataEntityPropertyElement Property { get { return property; } }
+		public DesignerDataEntityProperty Property { get { return property; } }
 
 		/// <summary>
 		/// 返回此组件实例的类名。
@@ -113,7 +113,7 @@ namespace Basic.DataEntities
 		/// 初始化 AbstractAttribute 类实例。
 		/// </summary>
 		/// <param name="nofity">需要通知 DataEntityPropertyElement 类实例当前类的属性已更改。</param>
-		protected AbstractValidationAttribute(DataEntityPropertyElement nofity) : base(nofity) { }
+		protected AbstractValidationAttribute(DesignerDataEntityProperty nofity) : base(nofity) { }
 
 		/// <summary>
 		/// 异常关键字。

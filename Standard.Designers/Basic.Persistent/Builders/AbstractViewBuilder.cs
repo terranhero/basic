@@ -63,7 +63,7 @@ namespace Basic.Builders
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
-				foreach (DataEntityElement entity in e.NewItems)
+				foreach (DesignerDataEntity entity in e.NewItems)
 				{
 					_AbstractEntities.Add(entity);
 					if (entity.Condition.Arguments.Count > 0 || entity.BaseCondition != typeof(AbstractCondition).FullName)
@@ -72,12 +72,12 @@ namespace Basic.Builders
 			}
 			else if (e.Action == NotifyCollectionChangedAction.Replace)
 			{
-				foreach (DataEntityElement entity in e.OldItems)
+				foreach (DesignerDataEntity entity in e.OldItems)
 				{
 					_AbstractEntities.Remove(entity);
 					_AbstractEntities.Remove(entity.Condition);
 				}
-				foreach (DataEntityElement entity in e.NewItems)
+				foreach (DesignerDataEntity entity in e.NewItems)
 				{
 					_AbstractEntities.Add(entity);
 					if (entity.Condition.Arguments.Count > 0 || entity.BaseCondition != typeof(AbstractCondition).FullName)
@@ -86,7 +86,7 @@ namespace Basic.Builders
 			}
 			else if (e.Action == NotifyCollectionChangedAction.Remove)
 			{
-				foreach (DataEntityElement entity in e.OldItems)
+				foreach (DesignerDataEntity entity in e.OldItems)
 				{
 					_AbstractEntities.Remove(entity);
 					_AbstractEntities.Remove(entity.Condition);

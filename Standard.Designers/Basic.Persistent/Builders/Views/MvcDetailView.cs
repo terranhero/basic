@@ -44,10 +44,10 @@ namespace Basic.Views
                 string fieldClassName = "editor-field";
                 if (ViewType == ViewTypeEnum.X2EditView) { fieldClassName = "editor-field2"; }
                 else if (ViewType == ViewTypeEnum.X3EditView) { fieldClassName = "editor-field3"; }
-                if (base.Entity is DataEntityElement)
+                if (base.Entity is DesignerDataEntity)
                 {
-                    DataEntityElement entity = base.Entity as DataEntityElement;
-                    foreach (DataEntityPropertyElement property in entity.Properties)
+                    DesignerDataEntity entity = base.Entity as DesignerDataEntity;
+                    foreach (DesignerDataEntityProperty property in entity.Properties)
                     {
                         if (property.PrimaryKey) { continue; }
                         index++;
@@ -64,10 +64,10 @@ namespace Basic.Views
                         else if (ViewType == ViewTypeEnum.X3EditView && index % 3 == 0) { writer.WriteLine("\t\t</tr>\r\n\t\t<tr>"); }
                     }
                 }
-                else if (base.Entity is DataConditionElement)
+                else if (base.Entity is DesignerDataCondition)
                 {
-                    DataConditionElement condition = base.Entity as DataConditionElement;
-                    foreach (DataConditionPropertyElement property in condition.Arguments)
+                    DesignerDataCondition condition = base.Entity as DesignerDataCondition;
+                    foreach (DesignerDataConditionProperty property in condition.Arguments)
                     {
                         if (property.PrimaryKey) { continue; }
                         index++;
