@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using Basic.Designer;
@@ -132,6 +133,11 @@ namespace Basic.Localizations
 		[SuppressMessage("Usage", "VSTHRD010:在主线程上调用单线程类型", Justification = "<挂起>")]
 		private void OnAddCultureExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			OleMenuCommand menu = sender as OleMenuCommand;
 			GetLocalizationPane(out LocalizationPane pane);
 			Microsoft.Assumes.Present(pane);
@@ -224,6 +230,11 @@ namespace Basic.Localizations
 		[SuppressMessage("Usage", "VSTHRD010:在主线程上调用单线程类型", Justification = "<挂起>")]
 		private void OnRemoveCultureExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			OleMenuCommand menu = sender as OleMenuCommand;
 			GetLocalizationPane(out LocalizationPane pane);
 			Microsoft.Assumes.Present(pane);
@@ -260,6 +271,11 @@ namespace Basic.Localizations
 
 		private void OnCutExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			GetLocalizationPane(out LocalizationPane pane);
 			if (pane != null)
 			{
@@ -298,6 +314,11 @@ namespace Basic.Localizations
 
 		private void OnCopyExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			GetLocalizationPane(out LocalizationPane pane);
 			if (pane != null)
 			{
@@ -334,6 +355,11 @@ namespace Basic.Localizations
 
 		private void OnPasteExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			GetLocalizationPane(out LocalizationPane pane);
 			if (pane == null) { return; }
 			LocalizationCollection localizations = pane.Localizations;
@@ -391,6 +417,11 @@ namespace Basic.Localizations
 
 		private void OnDeleteExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			GetLocalizationPane(out LocalizationPane pane);
 			if (pane == null) { return; }
 			LocalizationCollection localizations = pane.Localizations;
@@ -445,6 +476,11 @@ namespace Basic.Localizations
 		#region 数据操作(插入/追加)
 		private void OnAppendExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			GetLocalizations(out LocalizationPane pane, out ResourceEditor editor);
 			if (pane == null || editor == null) { return; }
 			LocalizationCollection localizations = pane.Localizations;
@@ -472,6 +508,11 @@ namespace Basic.Localizations
 		}
 		private void OnInsertExecuted(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			GetLocalizations(out LocalizationPane pane, out ResourceEditor editor);
 			if (pane == null || editor == null) { return; }
 			LocalizationCollection localizations = pane.Localizations;

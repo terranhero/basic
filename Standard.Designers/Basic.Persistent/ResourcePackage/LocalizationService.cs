@@ -289,6 +289,11 @@ namespace Basic.Localizations
 		/// <param name="e"></param>
 		private void OnExtractEnum(object sender, EventArgs e)
 		{
+			ThreadHelper.JoinableTaskFactory.Run(async () =>
+			{
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				// 在这里执行文件读写或访问 Editor 控件的逻辑
+			});
 			ThreadHelper.ThrowIfNotOnUIThread();
 			EnvDTE80.DTE2 dte = dteClass as EnvDTE80.DTE2;
 			EnvDTE.TextSelection textSelection = (EnvDTE.TextSelection)dte.ActiveDocument.Selection;

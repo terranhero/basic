@@ -11,18 +11,18 @@ using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextManager.Interop;
 using Point = System.Windows.Point;
 
 namespace Basic.Localizations
 {
 	/// <summary>
-	/// 
+	/// This control host the editor (an extended RichTextBox) and is responsible for
+	/// handling the commands targeted to the editor as well as saving and loading
+	/// the document. This control also implement the search and replace functionalities.
+	/// IVsPersistDocData,  to Enable persistence functionality for document data
+	/// IPersistFileFormat,  to enable the programmatic loading or saving of an object 
 	/// </summary>
-	[System.Runtime.InteropServices.ComSourceInterfaces(typeof(IVsTextViewEvents))]
 	[System.Runtime.InteropServices.ComVisible(true)]
-	[System.Runtime.InteropServices.Guid(Consts.guidPaneString)]
-	[SuppressMessage("Usage", "VSTHRD010:在主线程上调用单线程类型", Justification = "<挂起>")]
 	public sealed class LocalizationPane : WindowPane, IVsPersistDocData, IPersistFileFormat,
 		 IVsFileChangeEvents, IVsDocDataFileChangeControl
 	{

@@ -424,7 +424,8 @@ namespace Basic.Localizations
 						if (resourceCollection.TryGetValue(name, out LocalizationItem localResx))
 						{
 							string value = node.Value as string;
-							if (string.IsNullOrWhiteSpace(value)) { value = localResx.Value; };
+							if (string.IsNullOrWhiteSpace(value)) { value = localResx.Value; }
+							;
 							if (localResx.ContainsKey(cultureInfo.Name))
 								localResx[cultureInfo.Name] = value;
 							else
@@ -451,9 +452,13 @@ namespace Basic.Localizations
 				IndentChars = "\t",
 				NewLineChars = Environment.NewLine
 			};
-			using (XmlWriter writer = XmlWriter.Create(pszFilename, settings))
+			using (FileStream stream = new FileStream(pszFilename, FileMode.Create,
+				FileAccess.ReadWrite, FileShare.ReadWrite))
 			{
-				this.WriteXml(writer);
+				using (XmlWriter writer = XmlWriter.Create(stream, settings))
+				{
+					this.WriteXml(writer);
+				}
 			}
 			FileInfo itemInfo = new FileInfo(pszFilename);
 			string resxName = itemInfo.FullName.Replace(itemInfo.Extension, ".resx");
