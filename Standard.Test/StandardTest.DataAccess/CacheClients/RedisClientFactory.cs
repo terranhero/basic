@@ -102,9 +102,8 @@ namespace Basic.Caches
 					DateTime? expireTime = await _database.KeyExpireTimeAsync(key);
 					var size = await server.ExecuteAsync("MEMORY", "USAGE", key);
 
-					keys.Add(new KeyInfo(key)
+					keys.Add(new KeyInfo(key, GetKeyType(type))
 					{
-						KeyType = GetKeyType(type),
 						Size = (long)size,
 						Expiration = GetKeyExpiration(expireTime, timeToLive),
 					});

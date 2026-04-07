@@ -24,7 +24,7 @@ namespace StandardTest.DataAccess
 			IConfigurationBuilder configBuilder = new ConfigurationBuilder().SetBasePath(path);
 			IConfigurationRoot root = configBuilder.AddJsonFile("databases.json", true, true).Build();
 			IConfigurationSection connections = root.GetSection("Connections");
-			ConnectionContext.InitializeConnections(connections);
+			ConnectionExtension.InitializeConnections(connections);
 			SqlServerRegister.RegisterSqlServerAccess();
 			SqlServerRegister.RegisterSqlServer2012Access();
 		}

@@ -30,6 +30,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Standard.Framework\Standard.DataAccess\Standard.DataAccess.csproj" />
+		<ProjectReference Include="..\..\Standard.Framework\Standard.DependencyInjections\Standard.DependencyInjections.csproj" />
 		<ProjectReference Include="..\..\Standard.Framework\Standard.EntityLayer\Standard.EntityLayer.csproj" />
 		<ProjectReference Include="..\..\Standard.Framework\Standard.SqlClientAccess\Standard.SqlClientAccess.csproj" />
 	</ItemGroup>
