@@ -102,9 +102,10 @@ namespace Basic.EntityLayer
 		{
 			if (fieldWebDisplay != null && fieldWebDisplay.HasDisplayName)
 			{
+				IMessageRequest request = MessageRequest.GetRequest(cultureInfo);
 				string displayName = fieldWebDisplay.DisplayName;
 				string converterName = fieldWebDisplay.ConverterName;
-				return MessageContext.GetString(converterName, displayName, cultureInfo);
+				return request.GetString(converterName, displayName);
 			}
 			return base.DisplayName;
 		}
