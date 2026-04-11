@@ -697,7 +697,7 @@ namespace Basic.Configuration
 			CodeVariableDeclarationStatement iQueryEntities = new CodeVariableDeclarationStatement(queryEntitiesType, "queries");
 			iQueryEntities.InitExpression = methodInvoke;
 			method.Statements.Add(iQueryEntities);
-			CodeVariableReferenceExpression queriesReference = new CodeVariableReferenceExpression("queries");
+			CodeVariableReferenceExpression queriesReference = new CodeVariableReferenceExpression("await queries");
 			DataEntityPropertyCollection entityProperties = EntityElement.Properties;
 			foreach (DesignerDataConditionProperty conditionProperty in EntityElement.Condition.Arguments)
 			{
@@ -737,7 +737,7 @@ namespace Basic.Configuration
 				CodeTypeReference iPaginationReference = new CodeTypeReference("IPagination");
 				iPaginationReference.TypeArguments.Add(EntityElement.EntityName);
 				//method.Attributes |= MemberAttributes.Async;
-				method.ReturnType = new CodeTypeReference("Task");
+				method.ReturnType = new CodeTypeReference("async Task");
 				method.ReturnType.TypeArguments.Add(iPaginationReference);
 			}
 			else
