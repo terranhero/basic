@@ -16,6 +16,9 @@
         <ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Persistents.Style.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/Localization.Style.xaml" />
 		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/ExtractEnum.Style.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/CommandText.Style.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/WithClause.Style.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Basic.Persistent;component/Themes/DynamicCommand.Style.xaml" />
 	</ResourceDictionary.MergedDictionaries>
     <Color x:Key="GlyphColor">#FF444444</Color>
     <Style x:Key="CheckPath" TargetType="Path">

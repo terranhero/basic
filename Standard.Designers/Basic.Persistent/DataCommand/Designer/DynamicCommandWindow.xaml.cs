@@ -21,10 +21,16 @@ namespace Basic.Designer
 	/// </summary>
 	public partial class DynamicCommandWindow : Microsoft.VisualStudio.PlatformUI.DialogWindow
 	{
+		static DynamicCommandWindow()
+		{
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(DynamicCommandWindow),
+				new FrameworkPropertyMetadata(typeof(DynamicCommandWindow)));
+		}
 		private readonly DesignerDynamicCommand _DynamicCommand;
 		internal DynamicCommandWindow(DesignerDynamicCommand dynamicCommand)
 		{
-			InitializeComponent();
+			this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, OnCopyExecuted));
+			this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, OnCloseExecuted));
 			this.DataContext = _DynamicCommand = dynamicCommand;
 		}
 
@@ -50,7 +56,7 @@ namespace Basic.Designer
 		}
 
 
-		private void btnCopy_Click(object sender, EventArgs e)
+		private void OnCopyExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			Clipboard.Clear();
 			StringBuilder text = new StringBuilder();
@@ -76,7 +82,7 @@ namespace Basic.Designer
 			Clipboard.SetText(text.ToString());
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void OnCloseExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
 			this.DialogResult = true; this.Close();
 		}

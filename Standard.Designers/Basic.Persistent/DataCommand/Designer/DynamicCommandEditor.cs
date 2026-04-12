@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing.Design;
-using System.Windows.Forms.Design;
-using Basic.Properties;
-using Basic.Configuration;
 using System.ComponentModel;
+using System.Drawing.Design;
+using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
+using Basic.Configuration;
 
 namespace Basic.Designer
 {
@@ -16,7 +13,6 @@ namespace Basic.Designer
 	/// </summary>
 	public sealed class DynamicCommandEditor : UITypeEditor
 	{
-
 		/// <summary>
 		/// 获取由 EditValue 方法使用的编辑器样式。
 		/// </summary>
@@ -39,21 +35,13 @@ namespace Basic.Designer
 			if (provider != null)
 			{
 				IWindowsFormsEditorService editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-				if (editorService == null)
-				{
-					return value;
-				}
+				if (editorService == null) { return value; }
 
-				//if (formCommand == null)
-				//{
-				//	formCommand = new DynamicCommandForm();
-				//	formCommand.Height = 550;
-				//}
 				//if (string.IsNullOrWhiteSpace(editorTitle)) { editorTitle = StringUtils.GetString("PersistentDescription_CommandText_Editor"); }
 				DynamicCommandDescriptor dynamicDescriptor = context.Instance as DynamicCommandDescriptor;
 				if (dynamicDescriptor == null) { return value; }
 				DesignerDynamicCommand dynamicCommand = dynamicDescriptor.DefinitionInfo;
-				DynamicCommandWindow window = new DynamicCommandWindow(dynamicCommand);
+				DynamicCommandWindow window = new DynamicCommandWindow(dynamicCommand) { Width = 960, Height = 460 };
 				if (window.ShowModal() == true)
 				{
 					return window.GetDynamicCommand(context.PropertyDescriptor, value);
@@ -62,6 +50,7 @@ namespace Basic.Designer
 				//{
 				//	formCommand.Text = string.Format(editorTitle, dynamicCommand.Name);
 				//}
+				//DynamicCommandForm formCommand = new DynamicCommandForm() { Height = 550 };
 				//formCommand.SetDynamicCommand(dynamicCommand);
 				//if (editorService.ShowDialog(formCommand) == System.Windows.Forms.DialogResult.OK)
 				//	return formCommand.GetDynamicCommand(dynamicCommand, context.PropertyDescriptor, value);

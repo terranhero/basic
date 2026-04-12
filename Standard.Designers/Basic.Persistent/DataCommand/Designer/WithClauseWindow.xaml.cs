@@ -1,32 +1,35 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using Basic.Collections;
-using Basic.Configuration;
-using Basic.Database;
-using Basic.DataContexts;
-using Basic.DataEntities;
-using Basic.Enums;
+﻿using System.Windows;
+using System.Windows.Input;
 
 namespace Basic.Designer
 {
 	/// <summary>
-	/// CommandWindow.xaml 的交互逻辑
+	/// WithClauseDialog.xaml 的交互逻辑
 	/// </summary>
-	public partial class WithClauseWindow : Microsoft.VisualStudio.PlatformUI.DialogWindow
+	public partial class WithClauseDialog : Microsoft.VisualStudio.PlatformUI.DialogWindow
 	{
-		private readonly WithClause _WithClause;
-		public WithClauseWindow(WithClause clause)
-			: base()
+		static WithClauseDialog()
 		{
-			InitializeComponent();
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(WithClauseDialog),
+				new FrameworkPropertyMetadata(typeof(WithClauseDialog)));
+		}
+		private readonly WithClause _WithClause;
+		public WithClauseDialog(WithClause clause) : base()
+		{
+			this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, OnDeleteExecuted));
+			this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, OnCloseExecuted));
 			this.DataContext = _WithClause = clause;
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			if (sender == btnDelete) { this.DialogResult = true; this.Close(); }
-			else if (sender == btnClose) { this.Close(); }
+			this.DialogResult = true;
+			this.Close();
+		}
+
+		private void OnCloseExecuted(object sender, ExecutedRoutedEventArgs e)
+		{
+			this.Close();
 		}
 	}
 }

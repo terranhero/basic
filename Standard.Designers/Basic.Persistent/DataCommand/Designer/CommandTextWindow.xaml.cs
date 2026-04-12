@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using Basic.Collections;
-using Basic.Configuration;
-using Basic.Database;
-using Basic.DataContexts;
-using Basic.DataEntities;
-using Basic.Enums;
 
 namespace Basic.Designer
 {
 	/// <summary>
-	/// CommandTextWindow.xaml 的交互逻辑
+	/// CommandTextForm.xaml 的交互逻辑
 	/// </summary>
-	public partial class CommandTextWindow : Microsoft.VisualStudio.PlatformUI.DialogWindow
+	public partial class CommandTextForm : Microsoft.VisualStudio.PlatformUI.DialogWindow
 	{
-		public CommandTextWindow(object value)
-			: base() { InitializeComponent(); SetCommandText(value); }
+		static CommandTextForm()
+		{
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(CommandTextForm),
+				new FrameworkPropertyMetadata(typeof(CommandTextForm)));
+		}
+		protected override void InvokeDialogHelp()
+		{
+		}
+
+		public CommandTextForm() : base() { }
 
 		/// <summary>
 		/// 
@@ -27,15 +28,23 @@ namespace Basic.Designer
 			string text = Convert.ToString(value);
 			if (!string.IsNullOrWhiteSpace(text))
 			{
-				if (text.IndexOf(Environment.NewLine) >= 0) { txtCommandText.Text = text; }
-				else { txtCommandText.Text = text.Replace("\n", Environment.NewLine); }
+				if (text.IndexOf(Environment.NewLine) >= 0) { CommandText = text; }
+				else { CommandText = text.Replace("\n", Environment.NewLine); }
 			}
 		}
 
+		#region 属性 SelectedTable 定义
+		public static readonly DependencyProperty CommandTextProperty = DependencyProperty.Register("CommandText",
+			typeof(string), typeof(CommandTextForm), new PropertyMetadata(null));
 		/// <summary>
-		/// 文本框内容。
+		/// 判断当前控件是否已经选择。
 		/// </summary>
-		public string CommandText { get { return txtCommandText.Text; } }
+		public string CommandText
+		{
+			get { return (string)base.GetValue(CommandTextProperty); }
+			set { base.SetValue(CommandTextProperty, value); }
+		}
+		#endregion
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{

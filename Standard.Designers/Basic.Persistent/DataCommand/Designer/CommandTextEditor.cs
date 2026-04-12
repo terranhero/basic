@@ -6,6 +6,7 @@ using System.Drawing.Design;
 using System.Windows.Forms.Design;
 using Basic.Properties;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Basic.Designer
 {
@@ -25,7 +26,15 @@ namespace Basic.Designer
 			return UITypeEditorEditStyle.Modal;
 		}
 
-		private string editorTitle;
+		private readonly RichTextBox rich = new RichTextBox
+		{
+			Multiline = true,
+			Height = 240,
+			Width = 700,
+			ScrollBars = RichTextBoxScrollBars.ForcedBoth
+		};
+
+
 		/// <summary>
 		/// 使用 System.Drawing.Design.UITypeEditor.GetEditStyle() 方法所指示的编辑器样式编辑指定对象的值。
 		/// </summary>
@@ -40,16 +49,21 @@ namespace Basic.Designer
 				IWindowsFormsEditorService editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
 				if (editorService == null) { return value; }
 
-				CommandTextWindow window = new CommandTextWindow(value);
-				if (string.IsNullOrWhiteSpace(editorTitle)) { editorTitle = StringUtils.GetString("PersistentDescription_CommandText_Editor"); }
-				if (context.PropertyDescriptor != null && !string.IsNullOrWhiteSpace(editorTitle))
-				{
-					window.Title = string.Format(editorTitle, context.PropertyDescriptor.Name);
-				}
-				if (window.ShowModal() == true)
-				{
-					return window.CommandText;
-				}
+				rich.Text = Convert.ToString(value);
+				editorService.DropDownControl(rich);
+				return rich.Text;
+				//CommandTextForm window = new CommandTextForm() { Width = 800, Height = 300 };
+				//private string editorTitle;
+				//if (string.IsNullOrWhiteSpace(editorTitle)) { editorTitle = StringUtils.GetString("PersistentDescription_CommandText_Editor"); }
+				//if (context.PropertyDescriptor != null && !string.IsNullOrWhiteSpace(editorTitle))
+				//{
+				//	window.Title = string.Format(editorTitle, context.PropertyDescriptor.Name);
+				//}
+				//window.SetCommandText(value);
+				//if (window.ShowModal() == true)
+				//{
+				//	return window.CommandText;
+				//}
 			}
 			return base.EditValue(context, provider, value);
 		}

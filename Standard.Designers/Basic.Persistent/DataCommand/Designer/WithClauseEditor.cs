@@ -43,7 +43,7 @@ namespace Basic.Designer
 				if (editorService == null) { return value; }
 				if (value is WithClause && context.Instance is DynamicCommandDescriptor) //用户选中了WithClause类型单元格
 				{
-					WithClauseWindow window = new WithClauseWindow(value as WithClause);
+					WithClauseDialog window = new WithClauseDialog(value as WithClause);
 					if (window.ShowModal() == true)
 					{
 						DynamicCommandDescriptor dcd = context.Instance as DynamicCommandDescriptor;
@@ -52,7 +52,7 @@ namespace Basic.Designer
 				}
 				else if (value is string && context.Instance is WithClause)
 				{
-					WithClauseWindow window = new WithClauseWindow(context.Instance as WithClause);
+					WithClauseDialog window = new WithClauseDialog(context.Instance as WithClause);
 					window.ShowModal();
 				}
 			}

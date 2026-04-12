@@ -1,0 +1,62 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"    
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:bd="clr-namespace:Basic.Designer"
+					xmlns:local="clr-namespace:Basic.Designer"
+xmlns:swc="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+    xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
+	<Style TargetType="{x:Type bd:DynamicCommandWindow}" BasedOn="{StaticResource  {x:Type ui:DialogWindow}}">
+		<Setter Property="Title" Value="{Binding Name, StringFormat={}修改【{0}】的属性}"/>
+		<Setter Property="Background" Value="#FFE8EDF9"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type bd:DynamicCommandWindow}">
+					<ControlTemplate.Resources>
+						<local:DynamicTextConverter x:Key="keyTextConverter" />
+						<swc:BooleanToVisibilityConverter x:Key="keyBoolToVisibility"/>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="Margin" Value="6,0"/>
+						</Style>
+						<Style TargetType="{x:Type TextBox}">
+							<Setter Property="Margin" Value="6"/>
+							<Setter Property="FontSize" Value="12"/>
+							<Setter Property="Padding" Value="5"/>
+						</Style>
+					</ControlTemplate.Resources>
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" Padding="5">
+						<Grid Background="#FFE8EDF9">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<TextBlock Grid.Row="0" Text="获取或设置 Transact-SQL 语句中 SELECT 部分" VerticalAlignment="Center"/>
+							<TextBox Grid.Row="1" Text="{Binding SelectText, Mode=TwoWay, Converter={StaticResource keyTextConverter}}" AcceptsReturn="True" TextWrapping="Wrap" AutoWordSelection="True" VerticalScrollBarVisibility="Auto"/>
+							<TextBlock Grid.Row="2" Text="获取或设置 Transact-SQL 语句中 FROM 部分"/>
+							<TextBox Grid.Row="3" Text="{Binding FromText, Mode=TwoWay, Converter={StaticResource keyTextConverter}}" AcceptsReturn="True" TextWrapping="Wrap" AutoWordSelection="True" VerticalScrollBarVisibility="Auto"/>
+							<TextBlock Grid.Row="4" Text="获取或设置 Transact-SQL 语句中 WHERE 部分" Visibility="{Binding HasWhere,Converter={StaticResource keyBoolToVisibility}}"/>
+							<TextBox Grid.Row="5" Text="{Binding WhereText, Mode=TwoWay, Converter={StaticResource keyTextConverter}}" MinLines="2" AcceptsReturn="True" TextWrapping="Wrap" AutoWordSelection="True" VerticalScrollBarVisibility="Auto" Visibility="{Binding HasWhere,Converter={StaticResource keyBoolToVisibility}}" />
+							<TextBlock Grid.Row="6" Text="获取或设置 Transact-SQL 语句中 GROUP BY 部分" Visibility="{Binding HasGroup,Converter={StaticResource keyBoolToVisibility}}"/>
+							<TextBox Grid.Row="7" Text="{Binding GroupText, Mode=TwoWay, Converter={StaticResource keyTextConverter}}" MinLines="2" AcceptsReturn="True" TextWrapping="Wrap" AutoWordSelection="True" VerticalScrollBarVisibility="Auto" Visibility="{Binding HasGroup, Converter={StaticResource keyBoolToVisibility}}" />
+							<TextBlock Grid.Row="8" Text="获取或设置 Transact-SQL 语句中 ORDER BY 部分" Visibility="{Binding HasOrder,Converter={StaticResource keyBoolToVisibility}}"/>
+							<TextBox Grid.Row="9" Text="{Binding OrderText, Mode=TwoWay, Converter={StaticResource keyTextConverter}}" AutoWordSelection="True" VerticalScrollBarVisibility="Auto" Visibility="{Binding HasOrder, Converter={StaticResource keyBoolToVisibility}}" />
+							<StackPanel Grid.Row="10" Orientation="Horizontal" Margin="6" HorizontalAlignment="Right">
+								<Button Height="30" Padding="10,0" FontSize="14" Command="Copy">复制完整的Transact-SQL到剪贴板</Button>
+								<Button Height="30" Width="90" Margin="30,0,0,0" FontSize="14" Command="Close">关 闭</Button>
+							</StackPanel>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>
