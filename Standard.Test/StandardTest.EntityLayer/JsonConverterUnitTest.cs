@@ -46,7 +46,8 @@ namespace StandardTest.EntityLayer
 				ShiftDate = new DateTime(2025, 08, 07),
 				CalendarType = CalendarTypes.AllDay,
 				ClassType = ClassTypes.TimingClass,
-				PeopleCount = 7,
+				//PeopleCount = 7,
+				TotalTimes = 7,
 				ClassKey = 203,
 				ShortName = "D",
 				ClassName = "夜班",
@@ -253,7 +254,7 @@ namespace StandardTest.EntityLayer
 
 		private decimal m_TotalNumber;
 
-		private decimal m_PeopleCount;
+		private Nullable<decimal> m_PeopleCount;
 
 		private decimal m_CostSubtotal;
 
@@ -348,6 +349,7 @@ namespace StandardTest.EntityLayer
 		/// <value>班别类型1:休息,2:定时,3:不定时</value>
 		[global::Basic.EntityLayer.ColumnMappingAttribute("T2", "CLASSTYPE", DbTypeEnum.Int16, false)]
 		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ClassType", "SalaryStrings")]
+		[global::Basic.EntityLayer.IgnoreSerialize(IgnoreConditions.WhenIsNull)]
 		public ClassTypes ClassType
 		{
 			get
@@ -371,6 +373,7 @@ namespace StandardTest.EntityLayer
 		/// <value>班别代码</value>
 		[global::Basic.EntityLayer.ColumnMappingAttribute("T2", "CLASSCODE", DbTypeEnum.NVarChar, 50, false)]
 		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ClassCode", "SalaryStrings")]
+		[global::Basic.EntityLayer.IgnoreSerialize(IgnoreConditions.WhenIsNull)]
 		public string ClassCode
 		{
 			get
@@ -394,6 +397,7 @@ namespace StandardTest.EntityLayer
 		/// <value>属性 ShortName 的值</value>
 		[global::Basic.EntityLayer.ColumnMappingAttribute("T2", "SHORTNAME", DbTypeEnum.NVarChar, 10, false)]
 		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_ShortName", "SalaryStrings")]
+		[global::Basic.EntityLayer.IgnoreSerialize(IgnoreConditions.WhenIsNull)]
 		public string ShortName
 		{
 			get
@@ -532,7 +536,8 @@ namespace StandardTest.EntityLayer
 		/// <value>出勤人数</value>
 		[global::Basic.EntityLayer.ColumnMappingAttribute("T1", "PEOPLECOUNT", DbTypeEnum.Decimal, 9, 2, false)]
 		[global::Basic.EntityLayer.WebDisplayAttribute("DailySummary_PeopleCount", "SalaryStrings")]
-		public decimal PeopleCount
+		[global::Basic.EntityLayer.IgnoreSerialize(IgnoreConditions.WhenIsNull)]
+		public Nullable<decimal> PeopleCount
 		{
 			get
 			{

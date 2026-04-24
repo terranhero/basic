@@ -186,6 +186,24 @@ namespace Basic.DataEntities
 			}
 		}
 
+		/// <summary>获取或设置序列化时忽略当前属性的条件。</summary>
+		/// <value>一个 <see cref="IgnoreConditions"/> 枚举值，指定在何种条件下忽略属性的序列化。默认值为 <c>Always</c>。</value>
+		[Basic.Designer.PersistentDescription("PersistentDescription_IgnoreSerialize")]
+		[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryCodeGenerator)]
+		[System.ComponentModel.DefaultValue(typeof(IgnoreConditions), "Always")]
+		public IgnoreConditions IgnoreSerialize
+		{
+			get { return generatorElement.IgnoreSerialize; }
+			set
+			{
+				if (generatorElement.IgnoreSerialize != value)
+				{
+					generatorElement.IgnoreSerialize = value;
+					base.RaisePropertyChanged("IgnoreSerialize");
+				}
+			}
+		}
+
 		/// <summary>
 		/// 获取或设置一个值，该值指示当前属性是否需要添加标记 System.Runtime.Serialization.DataMemberAttribute。
 		/// </summary>
@@ -677,6 +695,28 @@ namespace Basic.DataEntities
 				CodeTypeReference ignoreTypeReference = new CodeTypeReference(typeof(IgnorePropertyAttribute), CodeTypeReferenceOptions.GlobalReference);
 				CodeAttributeDeclaration ignoreAttribute = new CodeAttributeDeclaration(ignoreTypeReference);
 				property.CustomAttributes.Add(ignoreAttribute);
+			}
+
+			if (IgnoreSerialize != IgnoreConditions.Always)
+			{
+				CodeFieldReferenceExpression fieldTypeExpress = new CodeFieldReferenceExpression(
+					 new CodeTypeReferenceExpression(typeof(IgnoreConditions).Name), IgnoreSerialize.ToString());
+				CodeTypeReference ignoreSerializeTypeReference = new CodeTypeReference(typeof(IgnoreSerializeAttribute), CodeTypeReferenceOptions.GlobalReference);
+				CodeAttributeDeclaration ignoreAttribute = new CodeAttributeDeclaration(ignoreSerializeTypeReference);
+				ignoreAttribute.Arguments.Add(new CodeAttributeArgument(fieldTypeExpress));
+				property.CustomAttributes.Add(ignoreAttribute);
+
+				//输出 System.Text.Json.Serialization.JsonIgnoreAttribute
+				if (IgnoreSerialize == IgnoreConditions.WhenIsNull)
+				{
+					CodeFieldReferenceExpression fieldTypeExpress1 = new CodeFieldReferenceExpression(
+					new CodeTypeReferenceExpression(typeof(System.Text.Json.Serialization.JsonIgnoreCondition)), "WhenWritingNull");
+					CodeTypeReference jsonIgnoreTypeReference = new CodeTypeReference(typeof(System.Text.Json.Serialization.JsonIgnoreAttribute),
+						CodeTypeReferenceOptions.GlobalReference);
+					CodeAttributeDeclaration jsonIgnoreAttribute = new CodeAttributeDeclaration(jsonIgnoreTypeReference);
+					ignoreAttribute.Arguments.Add(new CodeAttributeArgument(fieldTypeExpress1));
+					property.CustomAttributes.Add(jsonIgnoreAttribute);
+				}
 			}
 
 			#region 主键信息

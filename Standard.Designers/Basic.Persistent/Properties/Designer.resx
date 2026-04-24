@@ -2237,4 +2237,13 @@ GlobalEnabledValidation的默认值为 False。</value>
   <data name="PersistentGenerator_GenerateNewEntity-zh-CN" xml:space="preserve">
     <value>生成新增模型</value>
   </data>
+  <data name="PersistentDescription_IgnoreSerialize-zh-CN" xml:space="preserve">
+    <value>获取或设置序列化时忽略当前属性的条件</value>
+  </data>
+  <data name="PersistentDescription_IgnoreSerialize-en-US" xml:space="preserve">
+    <value>Get or set the condition to ignore the current property during serialization</value>
+  </data>
+  <data name="PersistentDescription_IgnoreSerialize" xml:space="preserve">
+    <value>获取或设置序列化时忽略当前属性的条件</value>
+  </data>
 </root>

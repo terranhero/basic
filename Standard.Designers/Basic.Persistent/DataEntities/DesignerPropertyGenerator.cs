@@ -1,6 +1,9 @@
-﻿using Basic.Designer;
+﻿using System;
+using System.Xml.Linq;
+using Basic.Designer;
+using Basic.EntityLayer;
 using Basic.Enums;
-using System;
+using Newtonsoft.Json.Linq;
 
 namespace Basic.DataEntities
 {
@@ -14,6 +17,7 @@ namespace Basic.DataEntities
 		internal const string XmlElementName = "Generator";
 		internal const string ModifierAttribute = "Modifier";
 		internal const string IgnoreAttribute = "Ignore";
+		internal const string IgnoreSerializeAttribute = "Serialize";
 		internal const string MemberAttribute = "Member";
 		internal const string InheritAttribute = "Inherit";
 		internal const string OverrideAttribute = "Override";
@@ -84,6 +88,25 @@ namespace Basic.DataEntities
 				{
 					_Ignore = value;
 					base.RaisePropertyChanged("Ignore");
+				}
+			}
+		}
+
+		private IgnoreConditions _IgnoreSerialize = IgnoreConditions.Always;
+		/// <summary>获取或设置序列化时忽略当前属性的条件。</summary>
+		/// <value>一个 <see cref="IgnoreConditions"/> 枚举值，指定在何种条件下忽略属性的序列化。默认值为 <c>Always</c>。</value>
+		[Basic.Designer.PersistentDescription("PersistentDescription_IgnoreSerialize")]
+		[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryCodeGenerator)]
+		[System.ComponentModel.DefaultValue(typeof(IgnoreConditions), "Always")]
+		public IgnoreConditions IgnoreSerialize
+		{
+			get { return _IgnoreSerialize; }
+			set
+			{
+				if (_IgnoreSerialize != value)
+				{
+					_IgnoreSerialize = value;
+					base.RaisePropertyChanged("IgnoreSerialize");
 				}
 			}
 		}
@@ -181,6 +204,7 @@ namespace Basic.DataEntities
 			{
 				if (_Modifier != PropertyModifierEnum.Public) { return false; }
 				else if (_DataMember || _Ignore || _Inheritance || _Override || _Virtual) { return false; }
+				else if (_IgnoreSerialize != IgnoreConditions.Always) { return false; }
 				return true;
 			}
 		}
@@ -193,9 +217,10 @@ namespace Basic.DataEntities
 		/// <returns>如果属性存在读取成功则返回true，否则返回false，有子类读取。</returns>
 		protected internal override bool ReadAttribute(string name, string value)
 		{
-			if (name == ModifierAttribute) { Enum.TryParse<PropertyModifierEnum>(value, out _Modifier); }
+			if (name == ModifierAttribute) { return Enum.TryParse(value, out _Modifier); }
 			else if (name == MemberAttribute) { _DataMember = Convert.ToBoolean(value); return true; }
 			else if (name == IgnoreAttribute) { _Ignore = Convert.ToBoolean(value); return true; }
+			else if (name == IgnoreSerializeAttribute) { return Enum.TryParse(value, out _IgnoreSerialize); }
 			else if (name == InheritAttribute) { _Inheritance = Convert.ToBoolean(value); return true; }
 			else if (name == OverrideAttribute) { _Override = Convert.ToBoolean(value); return true; }
 			else if (name == VirtualAttribute) { _Virtual = Convert.ToBoolean(value); return true; }
@@ -217,6 +242,7 @@ namespace Basic.DataEntities
 			if (_Modifier != PropertyModifierEnum.Public)
 				writer.WriteAttributeString(ModifierAttribute, _Modifier.ToString());
 			if (_Ignore) { writer.WriteAttributeString(IgnoreAttribute, Convert.ToString(_Ignore).ToLower()); }
+			if (_IgnoreSerialize != IgnoreConditions.Always) { writer.WriteAttributeString(IgnoreSerializeAttribute, _IgnoreSerialize.ToString()); }
 			if (_DataMember)
 				writer.WriteAttributeString(MemberAttribute, Convert.ToString(_DataMember).ToLower());
 			if (_Inheritance)
