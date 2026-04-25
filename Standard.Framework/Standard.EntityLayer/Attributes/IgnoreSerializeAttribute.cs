@@ -48,15 +48,16 @@ namespace Basic.EntityLayer
 		public IgnoreConditions Condition { get; private set; }
 	}
 
-	/// <summary>
-	/// 定义属性在序列化过程中被忽略的条件。
-	/// </summary>
-	/// <remarks>
-	/// 该枚举用于 <see cref="IgnorePropertyAttribute"/> 中，提供灵活的忽略策略，
-	/// 以便在不同场景下控制属性的序列化行为。
-	/// </remarks>
+	/// <summary>定义属性在序列化过程中被忽略的条件。</summary>
+	/// <remarks>该枚举用于 <see cref="IgnoreSerializeAttribute"/> 中，提供灵活的忽略策略，
+	/// 以便在不同场景下控制属性的序列化行为。</remarks>
 	public enum IgnoreConditions
 	{
+		/// <summary>
+		/// 属性始终被序列化。
+		/// </summary>	
+		Serialized = 0,
+
 		/// <summary>
 		/// 属性始终被忽略，无论其值是什么。
 		/// </summary>

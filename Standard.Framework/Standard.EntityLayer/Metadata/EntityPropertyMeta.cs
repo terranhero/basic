@@ -17,7 +17,7 @@ namespace Basic.EntityLayer
 	public sealed class EntityPropertyMeta : PropertyDescriptor
 	{
 		private readonly PropertyInfo _PropertyInfo;
-		private readonly ColumnMappingAttribute fieldColumnMapping;
+		private readonly ColumnMappingAttribute _Mapping;
 		private readonly JoinFieldAttribute fieldJoinField;
 		private readonly ColumnAttribute fieldColumn;
 		private readonly DisplayFormatAttribute fieldDisplayFormat;
@@ -26,8 +26,8 @@ namespace Basic.EntityLayer
 		private readonly ValidationCollection fieldValidations = new ValidationCollection();
 		private readonly GroupNameAttribute _GroupName;
 		private readonly static long _Int32Max = Convert.ToInt64(int.MaxValue);
-		private readonly bool _PrimaryKey = false;
-		private static readonly MD5 _md5 = MD5.Create();
+		//private readonly bool _PrimaryKey = false;
+		//private static readonly MD5 _md5 = MD5.Create();
 
 		internal EntityPropertyMeta(PropertyInfo info)
 			: base(info.Name, Attribute.GetCustomAttributes(info))
@@ -36,12 +36,13 @@ namespace Basic.EntityLayer
 			if (attributes == null || attributes.Length == 0) { return; }
 			foreach (System.Attribute attribute in attributes)
 			{
-				if (attribute is ColumnMappingAttribute) { fieldColumnMapping = attribute as ColumnMappingAttribute; }
-				else if (attribute is ColumnAttribute) { fieldColumn = attribute as ColumnAttribute; _PrimaryKey = fieldColumn.PrimaryKey; }
+				if (attribute is ColumnMappingAttribute) { _Mapping = attribute as ColumnMappingAttribute; }
+				else if (attribute is ColumnAttribute) { fieldColumn = attribute as ColumnAttribute; PrimaryKey = fieldColumn.PrimaryKey; }
 				else if (attribute is DisplayFormatAttribute) { fieldDisplayFormat = attribute as DisplayFormatAttribute; }
 				else if (attribute is ImportAttribute) { fieldImport = attribute as ImportAttribute; }
-				else if (attribute is PrimaryKeyAttribute) { _PrimaryKey = true; }
+				else if (attribute is PrimaryKeyAttribute) { PrimaryKey = true; }
 				else if (attribute is IgnorePropertyAttribute) { Ignore = true; }
+				else if (attribute is IgnoreSerializeAttribute igs) { IgnoreCondition = igs.Condition; }
 				else if (attribute is WebDisplayAttribute) { fieldWebDisplay = attribute as WebDisplayAttribute; }
 				else if (attribute is ValidationAttribute) { fieldValidations.Add(attribute as ValidationAttribute); }
 				else if (attribute is GroupNameAttribute) { _GroupName = attribute as GroupNameAttribute; }
@@ -77,7 +78,7 @@ namespace Basic.EntityLayer
 		internal ValidationCollection Validations { get { return fieldValidations; } }
 
 		/// <summary>获取当前属性的数据库字段信息</summary>
-		public ColumnMappingAttribute Mapping { get { return fieldColumnMapping; } }
+		public ColumnMappingAttribute Mapping { get { return _Mapping; } }
 
 		/// <summary>获取当前属性的数据库字段信息</summary>
 		public JoinFieldAttribute JoinField { get { return fieldJoinField; } }
@@ -134,19 +135,30 @@ namespace Basic.EntityLayer
 		/// <value>为该成员显示的名称。</value>
 		public override string DisplayName { get { return CultureDisplayName; } }
 
-		///// <summary>
-		///// 获取当前属性是否需要序列化
-		///// 在SelectByKey查询时是否需要。
-		///// </summary>
-		//public bool IgnoreProperty { get { return _IgnoreProperty; } }
+		/// <summary>
+		/// 获取当前属性在序列化时的忽略条件。
+		/// </summary>
+		/// <remarks>
+		/// 该属性值决定了当前属性是否参与序列化过程。<br/>
+		/// 默认值为 <see cref="IgnoreConditions.Serialized"/>，
+		/// 表示属性始终被序列化，<see cref="JsonConverter.Serialize{T}(T)"/> 输出等。
+		/// </remarks>
+		public IgnoreConditions IgnoreCondition { get; private set; } = IgnoreConditions.Serialized;
 
 		/// <summary>当前属性是否有 IgnorePropertyAttribute 特性标记</summary>
 		public bool Ignore { get; private set; } = false;
 
 		/// <summary>
-		/// 获取当前属性是否为主键。
+		/// 获取一个值，该值指示当前属性是否为主键。
 		/// </summary>
-		public bool PrimaryKey { get { return _PrimaryKey; } }
+		/// <value>
+		/// 如果当前属性是主键，则为 <see cref="bool">true</see>；否则为 <see cref="bool">false</see>。默认值为 <see cref="bool">false</see>。
+		/// </value>
+		/// <remarks>
+		/// <para>主键属性在序列化、查询（如 <c>SelectByKey</c>）和数据持久化等操作中具有特殊作用。</para>
+		/// <para>设置为 <c>true</c> 时，该属性将作为唯一标识符使用，通常对应数据库表中的主键字段。</para>
+		/// </remarks>
+		public bool PrimaryKey { get; private set; } = false;
 
 		private TypeConverter m_TypeConverter = null;
 		/// <summary>

@@ -724,7 +724,7 @@ namespace Basic.DataEntities
 					CodeTypeReference jsonIgnoreTypeReference = new CodeTypeReference(typeof(System.Text.Json.Serialization.JsonIgnoreAttribute),
 						CodeTypeReferenceOptions.GlobalReference);
 					CodeAttributeDeclaration jsonIgnoreAttribute = new CodeAttributeDeclaration(jsonIgnoreTypeReference);
-					ignoreAttribute.Arguments.Add(new CodeAttributeArgument(fieldTypeExpress1));
+					jsonIgnoreAttribute.Arguments.Add(new CodeAttributeArgument("Condition", fieldTypeExpress1));
 					property.CustomAttributes.Add(jsonIgnoreAttribute);
 				}
 			}
