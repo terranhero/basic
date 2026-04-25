@@ -190,8 +190,8 @@ namespace Basic.DataEntities
 		/// <value>一个 <see cref="IgnoreConditions"/> 枚举值，指定在何种条件下忽略属性的序列化。默认值为 <c>Always</c>。</value>
 		[Basic.Designer.PersistentDescription("PersistentDescription_IgnoreSerialize")]
 		[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryCodeGenerator)]
-		[System.ComponentModel.DefaultValue(typeof(IgnoreConditions), "Always")]
-		public IgnoreConditions IgnoreSerialize
+		[System.ComponentModel.DefaultValue(typeof(IgnoreSerializes), "Serialized")]
+		public IgnoreSerializes IgnoreSerialize
 		{
 			get { return generatorElement.IgnoreSerialize; }
 			set
@@ -683,6 +683,16 @@ namespace Basic.DataEntities
 			if (Override) { property.Attributes |= MemberAttributes.Override; }
 			else if (!Virtual) { property.Attributes |= MemberAttributes.Final; }
 
+			#region 主键信息
+			if (_PrimaryKey)
+			{
+				CodeTypeReference primaryKeyReference = new CodeTypeReference(typeof(Basic.EntityLayer.PrimaryKeyAttribute),
+				CodeTypeReferenceOptions.GlobalReference);
+				CodeAttributeDeclaration primaryKeyAttribute = new CodeAttributeDeclaration(primaryKeyReference);
+				property.CustomAttributes.Add(primaryKeyAttribute);
+			}
+			#endregion
+
 			if (DataMember)
 			{
 				CodeTypeReference dataMemberTypeReference = new CodeTypeReference(typeof(DataMemberAttribute), CodeTypeReferenceOptions.GlobalReference);
@@ -697,7 +707,7 @@ namespace Basic.DataEntities
 				property.CustomAttributes.Add(ignoreAttribute);
 			}
 
-			if (IgnoreSerialize != IgnoreConditions.Always)
+			if (IgnoreSerialize != IgnoreSerializes.Serialized)
 			{
 				CodeFieldReferenceExpression fieldTypeExpress = new CodeFieldReferenceExpression(
 					 new CodeTypeReferenceExpression(typeof(IgnoreConditions).Name), IgnoreSerialize.ToString());
@@ -707,7 +717,7 @@ namespace Basic.DataEntities
 				property.CustomAttributes.Add(ignoreAttribute);
 
 				//输出 System.Text.Json.Serialization.JsonIgnoreAttribute
-				if (IgnoreSerialize == IgnoreConditions.WhenIsNull)
+				if (IgnoreSerialize == IgnoreSerializes.WhenIsNull)
 				{
 					CodeFieldReferenceExpression fieldTypeExpress1 = new CodeFieldReferenceExpression(
 					new CodeTypeReferenceExpression(typeof(System.Text.Json.Serialization.JsonIgnoreCondition)), "WhenWritingNull");
@@ -718,16 +728,6 @@ namespace Basic.DataEntities
 					property.CustomAttributes.Add(jsonIgnoreAttribute);
 				}
 			}
-
-			#region 主键信息
-			if (_PrimaryKey)
-			{
-				CodeTypeReference primaryKeyReference = new CodeTypeReference(typeof(Basic.EntityLayer.PrimaryKeyAttribute),
-				CodeTypeReferenceOptions.GlobalReference);
-				CodeAttributeDeclaration primaryKeyAttribute = new CodeAttributeDeclaration(primaryKeyReference);
-				property.CustomAttributes.Add(primaryKeyAttribute);
-			}
-			#endregion
 
 			if (_DbType == DbTypeEnum.Timestamp)
 			{

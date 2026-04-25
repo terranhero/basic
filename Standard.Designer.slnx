@@ -45,7 +45,10 @@
   </Folder>
   <Folder Name="/Standard.UnitTest/">
     <Project Path="Standard.Test/StandardTest.BasicPersistent/StandardTest.BasicPersistent.csproj" Id="844dc60f-c4e5-4109-9fd7-0f9546300a07" />
+    <Project Path="Standard.Test/StandardTest.DataAccess/StandardTest.DataAccess.csproj" />
     <Project Path="Standard.Test/StandardTest.EntityLayer/StandardTest.EntityLayer.csproj" />
+    <Project Path="Standard.Test/StandardTest.MvcLibrary/StandardTest.MvcLibrary.csproj" />
+    <Project Path="Standard.Test/StandardTest.SqliteAccess/StandardTest.SqliteAccess.csproj" />
   </Folder>
   <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
     <Property Name="CategoryFile" Value="Basic.Solution.vsmdi" />

@@ -52,9 +52,7 @@ namespace Basic.DataEntities
 		}
 		#endregion
 
-		/// <summary>
-		/// 字段前缀，主要用于查询
-		/// </summary>
+		/// <summary>字段前缀，主要用于查询</summary>
 		[PersistentDescription("PropertyDescription_Attributes"), PersistentCategory("PersistentCategory_Attributes")]
 		//[Editor(typeof(ValidationAttributesEditor), typeof(System.Drawing.Design.UITypeEditor))]
 		[Editor(typeof(ValidationAttributesListEditor), typeof(System.Drawing.Design.UITypeEditor))]

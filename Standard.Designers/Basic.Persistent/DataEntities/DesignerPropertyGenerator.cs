@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Basic.Designer;
 using Basic.EntityLayer;
 using Basic.Enums;
+using Microsoft.VisualStudio.Settings.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace Basic.DataEntities
@@ -92,13 +93,13 @@ namespace Basic.DataEntities
 			}
 		}
 
-		private IgnoreConditions _IgnoreSerialize = IgnoreConditions.Always;
+		private IgnoreSerializes _IgnoreSerialize = IgnoreSerializes.Serialized;
 		/// <summary>获取或设置序列化时忽略当前属性的条件。</summary>
 		/// <value>一个 <see cref="IgnoreConditions"/> 枚举值，指定在何种条件下忽略属性的序列化。默认值为 <c>Always</c>。</value>
 		[Basic.Designer.PersistentDescription("PersistentDescription_IgnoreSerialize")]
 		[Basic.Designer.PersistentCategory(PersistentCategoryAttribute.CategoryCodeGenerator)]
-		[System.ComponentModel.DefaultValue(typeof(IgnoreConditions), "Always")]
-		public IgnoreConditions IgnoreSerialize
+		[System.ComponentModel.DefaultValue(typeof(IgnoreSerializes), "Serialized")]
+		public IgnoreSerializes IgnoreSerialize
 		{
 			get { return _IgnoreSerialize; }
 			set
@@ -204,7 +205,7 @@ namespace Basic.DataEntities
 			{
 				if (_Modifier != PropertyModifierEnum.Public) { return false; }
 				else if (_DataMember || _Ignore || _Inheritance || _Override || _Virtual) { return false; }
-				else if (_IgnoreSerialize != IgnoreConditions.Always) { return false; }
+				else if (_IgnoreSerialize !=  IgnoreSerializes.Serialized) { return false; }
 				return true;
 			}
 		}
@@ -242,7 +243,7 @@ namespace Basic.DataEntities
 			if (_Modifier != PropertyModifierEnum.Public)
 				writer.WriteAttributeString(ModifierAttribute, _Modifier.ToString());
 			if (_Ignore) { writer.WriteAttributeString(IgnoreAttribute, Convert.ToString(_Ignore).ToLower()); }
-			if (_IgnoreSerialize != IgnoreConditions.Always) { writer.WriteAttributeString(IgnoreSerializeAttribute, _IgnoreSerialize.ToString()); }
+			if (_IgnoreSerialize != IgnoreSerializes.Serialized) { writer.WriteAttributeString(IgnoreSerializeAttribute, _IgnoreSerialize.ToString()); }
 			if (_DataMember)
 				writer.WriteAttributeString(MemberAttribute, Convert.ToString(_DataMember).ToLower());
 			if (_Inheritance)
@@ -266,5 +267,54 @@ namespace Basic.DataEntities
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
 		/// <param name="connectionType">表示数据库连接类型</param>
 		protected internal override void GenerateConfiguration(System.Xml.XmlWriter writer, ConnectionTypes connectionType) { }
+	}
+
+	/// <summary>
+	/// 定义属性在序列化过程中被忽略的条件。
+	/// </summary>
+	/// <remarks>
+	/// 该枚举用于 <see cref="IgnorePropertyAttribute"/> 中，提供灵活的忽略策略，
+	/// 以便在不同场景下控制属性的序列化行为。
+	/// </remarks>
+	public enum IgnoreSerializes
+	{
+		/// <summary>
+		/// 属性始终被序列化。
+		/// </summary>
+		Serialized = 0,
+
+		/// <summary>
+		/// 属性始终被忽略，无论其值是什么。
+		/// </summary>
+		/// <remarks>
+		/// 使用此选项时，该属性不会出现在 ToString(bool) 方法生成的字符串表示中。
+		/// 适用于不希望暴露的敏感信息或内部使用的属性。
+		/// </remarks>
+		Always = 1,
+
+		/// <summary>
+		/// 仅当属性的值为 null 时才忽略该属性。
+		/// 此条件仅适用于引用类型（类、接口、委托、字符串、数组等）的属性或字段。
+		/// </summary>
+		/// <remarks>
+		/// 使用此选项可以精简输出字符串，避免序列化大量无意义的 null 值属性。
+		/// 如果属性有非 null 值（包括空字符串或空集合），则仍会正常序列化。
+		/// 对于值类型（如 int、bool、DateTime 等），由于不能为 null，此条件等同于不忽略。
+		/// </remarks>
+		/// <example>
+		/// <code>
+		/// public class Product
+		/// {
+		///     public string Name { get; set; }
+		///     
+		///     [IgnoreProperty(IgnoreConditions.WhenIsNull)]
+		///     public string Description { get; set; }  // 仅在为 null 时忽略
+		///     
+		///     [IgnoreProperty(IgnoreConditions.WhenIsNull)]
+		///     public List&lt;string&gt; Tags { get; set; }  // 仅在为 null 时忽略，空列表不会忽略
+		/// }
+		/// </code>
+		/// </example>
+		WhenIsNull = 3,
 	}
 }
