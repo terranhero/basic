@@ -348,7 +348,7 @@ namespace Basic.Localizations
 					}
 				}
 			}
-			ExtractEnumDialog resourceView = new ExtractEnumDialog(this, dte, resourceCollection);
+			ExtractEnumDialog resourceView = new ExtractEnumDialog(this, dte, resourceCollection) { Width = 700, Height = 340 };
 			if (resourceView.ShowModal() == true)
 			{
 				//Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
