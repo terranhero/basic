@@ -6,7 +6,6 @@
 *.user
 *.sln.docstates
 *.xlsx
-*.ps1
 
 # Build results
 [Dd]ebug/
