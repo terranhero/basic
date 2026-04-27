@@ -22,7 +22,6 @@
     <Project Path="Standard.Designers/Basic.Persistent/Basic.Persistent-2022.csproj" Id="aa38af92-e5ca-4f24-abc4-d516a890b803">
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="Standard.Designers/Basic.TestSqlParser/Basic.TestSqlParser.csproj" />
     <Project Path="Standard.Designers/RazorEngine.Core/RazorEngine.Core.csproj" />
     <Project Path="Standard.Designers/Standard.Extensions/Standard.Extensions.csproj" Id="c234c5c3-cc79-4324-b0ea-e7f28883f20c" />
     <Project Path="Standard.Designers/Standard.Localizations/Standard.Localizations.csproj" Id="5d9aef5a-9bf4-4275-b263-b6ea13961337" />
@@ -49,6 +48,7 @@
     <Project Path="Standard.Test/StandardTest.EntityLayer/StandardTest.EntityLayer.csproj" />
     <Project Path="Standard.Test/StandardTest.MvcLibrary/StandardTest.MvcLibrary.csproj" />
     <Project Path="Standard.Test/StandardTest.SqliteAccess/StandardTest.SqliteAccess.csproj" />
+    <Project Path="Standard.Test/StandardTest.SqlParser/StandardTest.SqlParser.csproj" />
   </Folder>
   <Properties Name="TestCaseManagementSettings" Scope="PostLoad">
     <Property Name="CategoryFile" Value="Basic.Solution.vsmdi" />
