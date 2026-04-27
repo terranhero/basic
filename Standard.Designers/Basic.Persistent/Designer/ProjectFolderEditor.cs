@@ -98,6 +98,12 @@ namespace Basic.Designer
 					FileInfo fileInfo = new FileInfo(entityProject.FullName);
 					string directoryName = fileInfo.DirectoryName + "\\";
 					SearchProjectSubDirectory(directoryName, projectName, entityProject.ProjectItems);
+					if (this.Items.Count >= 10) { this.Height = this.ItemHeight * 10; }
+					if (value != null) { SelectedItem = value; }
+
+					if (Items.Count > 1) { return true; }
+
+					SearchProjectSubDirectory(directoryName, null, entityProject.ProjectItems);
 					if (this.Items.Count >= 10)
 						this.Height = this.ItemHeight * 10;
 					if (value != null) { SelectedItem = value; }
@@ -107,9 +113,8 @@ namespace Basic.Designer
 
 			internal bool BeginEdit(IWindowsFormsEditorService editorService, EnvDTE.Project project, string value)
 			{
-				Items.Clear();
 				_editorService = editorService;
-				Items.Add(string.Empty);
+				Items.Clear(); Items.Add(string.Empty);
 				FileInfo fileInfo = new FileInfo(project.FullName);
 				string directoryName = fileInfo.DirectoryName + "\\";
 				SearchProjectSubDirectory(directoryName, null, project.ProjectItems);
