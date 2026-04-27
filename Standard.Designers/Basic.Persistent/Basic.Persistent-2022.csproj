@@ -272,6 +272,7 @@
     </Compile>
     <Compile Include="CodeGenerator\ResourceGenerator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Localizations\AddResourceDialog.xaml.cs" />
     <Compile Include="Localizations\ExtractEnumDialog.xaml.cs" />
     <Compile Include="Localizations\LocalizationDialog.xaml.cs" />
     <Compile Include="Localizations\CustomCultureInfo.cs" />
@@ -363,8 +364,6 @@
     <Compile Include="Templates\CreateController.xaml.cs" />
     <Compile Include="Windows\CreatePersistent.xaml.cs" />
     <Compile Include="Windows\CreatePersistentForm.xaml.cs" />
-    <Compile Include="Localizations\CreateEnumResource.xaml.cs" />
-    <Compile Include="Windows\CreateResWindow.xaml.cs" />
     <Compile Include="Windows\CreateWpfView.xaml.cs" />
     <Compile Include="Windows\DesignerCanvas.cs" />
     <Compile Include="Windows\DesignerEntitiesCanvas.xaml.cs" />
@@ -538,6 +537,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\AddResource.Style.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\WithClause.Style.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -601,14 +603,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
-    <Page Include="Localizations\CreateEnumResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\CreateResWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\CreateWpfView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -4,23 +4,20 @@
     xmlns:bw="clr-namespace:Basic.Windows"
     xmlns:enums="clr-namespace:Basic.Enums"
     xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
-	<Style TargetType="{x:Type bw:ExtractEnumDialog}" BasedOn="{StaticResource  {x:Type ui:DialogWindow}}">
-		<Setter Property="Title" Value="添加枚举资源"/>
+	<Style TargetType="{x:Type bw:AddResourceDialog}" BasedOn="{StaticResource  {x:Type ui:DialogWindow}}">
+		<Setter Property="Title" Value="添加属性和命令资源"/>
 		<Setter Property="Background" Value="#FFE8EDF9"/>
-		<Setter Property="Width" Value="750"/>
-		<Setter Property="Height" Value="380"/>
+		<Setter Property="Width" Value="850"/>
+		<Setter Property="Height" Value="230"/>
 		<Setter Property="ShowInTaskbar" Value="False"/>
 		<Setter Property="ResizeMode" Value="CanResize"/>
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type bw:ExtractEnumDialog}">
+				<ControlTemplate TargetType="{x:Type bw:AddResourceDialog}">
 					<ControlTemplate.Resources>
 						<BooleanToVisibilityConverter x:Key="btvConverter"/>
 						<Style TargetType="ui:DialogButton">
 							<Setter Property="Margin" Value="10,5,0,0"/>
-						</Style>
-						<Style TargetType="Label">
-							<!--<Setter Property="Margin" Value="0,5"/>-->
 						</Style>
 						<Style TargetType="ComboBox">
 							<Setter Property="Margin" Value="0,5,5,5"/>
@@ -43,12 +40,13 @@
 							<Setter Property="CanUserDeleteRows" Value="False"/>
 							<Setter Property="CanUserReorderColumns" Value="False"/>
 							<Setter Property="CanUserResizeRows" Value="False"/>
-							<Setter Property="CanUserResizeColumns" Value="False"/>
+							<Setter Property="CanUserResizeColumns" Value="True"/>
 							<Setter Property="SelectionMode" Value="Single"/>
 							<Setter Property="SelectionUnit" Value="Cell"/>
 							<Setter Property="AutoGenerateColumns" Value="False"/>
 							<Setter Property="VerticalContentAlignment" Value="Center"/>
-							<Setter Property="BorderThickness" Value="0"/>
+							<Setter Property="BorderThickness" Value="1"/>
+							<Setter Property="RowHeaderWidth" Value="0"/>
 						</Style>
 					</ControlTemplate.Resources>
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
@@ -61,18 +59,11 @@
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="Auto"/>
 								<RowDefinition Height="*"/>
 								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-							<Label Grid.Row="0" Grid.ColumnSpan="3" Content="本地化资源文件" />
-							<ComboBox Grid.Row="1" Grid.ColumnSpan="3" x:Name="PART_LOCALIZATIONS"
-									  DisplayMemberPath="ConverterName" SelectedValuePath="FileName"/>
-							<Label Grid.Row="4" Grid.ColumnSpan="3" Content="枚举资源列表"/>
-							<DataGrid x:Name="PART_ENUMS" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding Views}" IsEnabled="{Binding SelectedFile}" Margin="0,0,0,28" Grid.RowSpan="2">
+							<Label Grid.Row="0" Grid.ColumnSpan="3" Content="{TemplateBinding ResourceFile}"/>
+							<DataGrid Name="PART_ITEMS" Grid.Row="1" Grid.ColumnSpan="3">
 								<DataGrid.ColumnHeaderStyle>
 									<Style TargetType="{x:Type DataGridColumnHeader}">
 										<Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -96,6 +87,11 @@
 								</DataGrid.CellStyle>
 								<DataGrid.Columns>
 									<DataGridCheckBoxColumn Header="是否创建" Binding="{Binding Created, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="50">
+										<DataGridCheckBoxColumn.HeaderTemplate>
+											<DataTemplate>
+												<CheckBox ToolTip="全选或全不选" IsChecked="{Binding AllChecked, RelativeSource={RelativeSource AncestorType=bw:AddResourceDialog}}"/>
+											</DataTemplate>
+										</DataGridCheckBoxColumn.HeaderTemplate>
 										<DataGridCheckBoxColumn.EditingElementStyle>
 											<Style TargetType="CheckBox">
 												<Setter Property="VerticalAlignment" Value="Center"/>
@@ -161,8 +157,9 @@
 									</DataGridTemplateColumn>
 								</DataGrid.Columns>
 							</DataGrid>
-							<ui:DialogButton Grid.Row="6" Grid.Column="1" Name="btnOk"  Content="添  加..." Command="Save" IsEnabled="{TemplateBinding CanSave}"/>
-							<ui:DialogButton Grid.Row="6" Grid.Column="2" Name="btnCancel" Content="取  消" IsCancel="True" Command="Close"/>
+
+							<ui:DialogButton Grid.Row="2" Grid.Column="1" Content="添  加..." Command="Save" IsDefault="True" IsEnabled="{TemplateBinding CanSave}" />
+							<ui:DialogButton Grid.Row="2" Grid.Column="2" Content="取  消"   IsCancel="True"/>
 						</Grid>
 					</Border>
 				</ControlTemplate>
