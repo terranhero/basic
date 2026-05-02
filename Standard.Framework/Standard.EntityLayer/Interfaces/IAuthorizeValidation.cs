@@ -94,6 +94,38 @@ namespace Basic.Interfaces
 		/// 子节点没有反序列化</remarks>
 		public NavigateMenuCollection Children { get { return _menus; } set { _menus = value; } }
 
+		/// <summary>
+		/// 创建当前导航菜单对象的浅拷贝副本，仅克隆对象内容，不包含子节点内容。
+		/// </summary>
+		/// <returns>
+		/// 一个新的 <see cref="NavigateMenu"/> 实例，其属性值与当前对象完全相同，但引用类型属性（如子菜单集合）会被递归克隆，确保独立于原对象。
+		/// </returns>
+		/// <remarks>
+		/// 此方法通常用于：
+		/// <list type="bullet">
+		/// <item><description>基于原型模板动态生成个性化的菜单副本（如根据权限过滤子项）；</description></item>
+		/// <item><description>避免在缓存或共享集合中意外修改原始菜单对象。</description></item>
+		/// </list>
+		/// </remarks>
+		public NavigateMenu Clone()
+		{
+			return new NavigateMenu()
+			{
+				MenuKey = this.MenuKey,
+				ShowOrder = this.ShowOrder,
+				MenuName = this.MenuName,
+				ShortName = this.ShortName,
+				MenuText = this.MenuText,
+				ShortText = this.ShortText,
+				ImagePath = this.ImagePath,
+				UrlPath = this.UrlPath,
+				UrlQuery = this.UrlQuery,
+				UrlHelp = this.UrlHelp,
+				Expanded = this.Expanded,
+				Memo = this.Memo
+			};
+		}
+
 		/// <summary>菜单关键字</summary>
 		public int MenuKey { get; set; }
 
@@ -148,7 +180,7 @@ namespace Basic.Interfaces
 	}
 
 	/// <summary>导航菜单集合</summary>
-	[global::System.Runtime.InteropServices.GuidAttribute("66B154DD-B11C-4663-9FEF-9760A2BEC7DA")]
+	[global::System.Runtime.InteropServices.Guid("66B154DD-B11C-4663-9FEF-9760A2BEC7DA")]
 	public partial class NavigateMenuCollection : global::Basic.Collections.AbstractEntityCollection<NavigateMenu>
 	{
 		/// <summary>初始化 NavigateMenuCollection 类的实例。</summary>
