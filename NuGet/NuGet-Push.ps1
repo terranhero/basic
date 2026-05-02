@@ -14,7 +14,7 @@ if(Test-Path $path"\NuGet.exe")
 	Write-Host "如果执行nuget.exe命令报错，请检查nuget source 是否配置"
 	Write-Host "https://api.nuget.org/v3/index.json"
 	Write-Host "如果执行nuget.exe命令报错，请检查nuget apiKey 是否配置,如果没有可执行以下命令"
-	Write-Host "nuget.exe setApiKey ********** source https://api.nuget.org/v3/index.json"
+	Write-Host "nuget.exe setApiKey ********** -source https://api.nuget.org/v3/index.json"
     Write-Host "开始生成NuGet包"
     $fileVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($dllPath+"Basic.EntityLayer.dll")
     $version= $fileVersion.FileVersion
@@ -73,29 +73,29 @@ if(Test-Path $path"\NuGet.exe")
 
             $oldver = Read-Host "回车直接删除此版本($oldversion)的NuGet包或者输入需要删除的NuGet包版本号"
             if($oldver -eq "" -or $oldver -eq $null){ $oldver = $oldversion}
-            Start-Process dotnet "nuget delete Standard.EntityLayer $oldver --non-interactive" -NoNewWindow -Wait
-            Start-Process dotnet "nuget delete Standard.DataAccess $oldver --non-interactive" -NoNewWindow -Wait
-			Start-Process dotnet "nuget delete Standard.DependencyInjections $oldver --non-interactive" -NoNewWindow -Wait
-            Start-Process dotnet "nuget delete Standard.MvcLibrary $oldver --non-interactive" -NoNewWindow -Wait
-            Start-Process dotnet "nuget delete Standard.SqlClientAccess $oldver --non-interactive" -NoNewWindow -Wait
-            Start-Process dotnet "nuget delete Standard.MySqlAccess $oldver --non-interactive" -NoNewWindow -Wait
-            Start-Process dotnet "nuget delete Standard.PostgreAccess $oldver --non-interactive" -NoNewWindow -Wait
-            Start-Process dotnet "nuget delete Standard.OracleAccess $oldver --non-interactive" -NoNewWindow -Wait
-            Start-Process dotnet "nuget delete Standard.DB2Access $oldver --non-interactive" -NoNewWindow -Wait
-			Start-Process dotnet "nuget delete Standard.SqliteAccess $oldver --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.EntityLayer $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.DataAccess $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+			Start-Process dotnet "nuget delete Standard.DependencyInjections --source https://api.nuget.org/v3/index.json $oldver --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.MvcLibrary $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.SqlClientAccess $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.MySqlAccess $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.PostgreAccess $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.OracleAccess $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+            Start-Process dotnet "nuget delete Standard.DB2Access $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
+			Start-Process dotnet "nuget delete Standard.SqliteAccess $oldver --source https://api.nuget.org/v3/index.json --non-interactive" -NoNewWindow -Wait
         }
 		Write-Host "开始向(https://www.nuget.org)推送NuGet包。"
 		
-        Start-Process dotnet "nuget push ""$path\Package\Standard.EntityLayer.$version.nupkg""" -NoNewWindow -Wait
-        Start-Process dotnet "nuget push ""$path\Package\Standard.DataAccess.$version.nupkg""" -NoNewWindow -Wait
-		Start-Process dotnet "nuget push ""$path\Package\Standard.DependencyInjections.$version.nupkg""" -NoNewWindow -Wait
-        Start-Process dotnet "nuget push ""$path\Package\Standard.MvcLibrary.$version.nupkg""" -NoNewWindow -Wait
-        Start-Process dotnet "nuget push ""$path\Package\Standard.MySqlAccess.$version.nupkg""" -NoNewWindow -Wait
-        Start-Process dotnet "nuget push ""$path\Package\Standard.SqlClientAccess.$version.nupkg""" -NoNewWindow -Wait
-		Start-Process dotnet "nuget push ""$path\Package\Standard.PostgreAccess.$version.nupkg""" -NoNewWindow -Wait
-		Start-Process dotnet "nuget push ""$path\Package\Standard.OracleAccess.$version.nupkg""" -NoNewWindow -Wait
-		Start-Process dotnet "nuget push ""$path\Package\Standard.DB2Access.$version.nupkg""" -NoNewWindow -Wait
-		Start-Process dotnet "nuget push ""$path\Package\Standard.SqliteAccess.$version.nupkg""" -NoNewWindow -Wait
+        Start-Process dotnet "nuget push ""$path\Package\Standard.EntityLayer.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+        Start-Process dotnet "nuget push ""$path\Package\Standard.DataAccess.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+		Start-Process dotnet "nuget push ""$path\Package\Standard.DependencyInjections.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+        Start-Process dotnet "nuget push ""$path\Package\Standard.MvcLibrary.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+        Start-Process dotnet "nuget push ""$path\Package\Standard.MySqlAccess.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+        Start-Process dotnet "nuget push ""$path\Package\Standard.SqlClientAccess.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+		Start-Process dotnet "nuget push ""$path\Package\Standard.PostgreAccess.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+		Start-Process dotnet "nuget push ""$path\Package\Standard.OracleAccess.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+		Start-Process dotnet "nuget push ""$path\Package\Standard.DB2Access.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
+		Start-Process dotnet "nuget push ""$path\Package\Standard.SqliteAccess.$version.nupkg"" --source https://api.nuget.org/v3/index.json" -NoNewWindow -Wait
 
         Write-Host "向(https://www.nuget.org)推送NuGet包完成。"
     }
