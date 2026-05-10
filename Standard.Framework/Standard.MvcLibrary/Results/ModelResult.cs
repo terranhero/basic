@@ -53,18 +53,15 @@ namespace Basic.MvcLibrary
 			await response.WriteAsync("{");
 			await response.WriteAsync(string.Format("\"Success\":true,\"total\":{0}", _TotalCount));
 			IServiceProvider provider = context.HttpContext.RequestServices;
-			JsonConverter converter = provider.GetRequiredService<JsonConverter>();
 			if (_AnonObject != null)
 			{
 				await response.WriteAsync(",\"row\":");
-				if (converter == null) { converter = new JsonConverter(_CultureInfo); }
-				await response.WriteAsync(converter.Serialize(_AnonObject));
+				await response.WriteAsync(JsonConverter.Serialize(_AnonObject, _CultureInfo));
 			}
 			if (_Entities != null)
 			{
 				await response.WriteAsync(",\"rows\":");
-				if (converter == null) { converter = new JsonConverter(_CultureInfo); }
-				await response.WriteAsync(converter.Serialize(_Entities));
+				await response.WriteAsync(JsonConverter.Serialize(_Entities, _CultureInfo));
 			}
 			await response.WriteAsync("}");
 		}

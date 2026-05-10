@@ -4,7 +4,7 @@ namespace Basic.EntityLayer
 {
 
 	/// <summary>
-	/// 表示实体类在调用 <see cref="JsonConverter.Serialize{T}(T)"/>方法时确认属性是否需要序列化。
+	/// 表示实体类在调用 <see cref="JsonConverter.Serialize{T}(T, System.Globalization.CultureInfo)"/>方法时确认属性是否需要序列化。
 	/// 应用此特性的属性会在生成字符串表示时被有条件地忽略。
 	/// </summary>
 	/// <remarks>

@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Globalization;
 using Basic.EntityLayer;
 using Basic.Enums;
 
@@ -10,7 +11,7 @@ namespace StandardTest.EntityLayer
 		[TestMethod]
 		public void SystemSerializeCollectionPropertiesFull()
 		{
-			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
+			//JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
 			List<DailyResultEntity> list = new List<DailyResultEntity>(5);
 			DailyResultEntity item = new DailyResultEntity()
 			{
@@ -39,7 +40,7 @@ namespace StandardTest.EntityLayer
 		[TestMethod]
 		public void SerializeDailySummaryEntityEmpty()
 		{
-			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
+			//JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
 			List<DailySummaryEntity> list = new List<DailySummaryEntity>(5);
 			DailySummaryEntity item = new DailySummaryEntity()
 			{
@@ -56,7 +57,7 @@ namespace StandardTest.EntityLayer
 				//WorkHour = 8,
 			};
 			list.Add(item);
-			string result = converter.Serialize(list, true);
+			string result = JsonConverter.Serialize(list, true, System.Globalization.CultureInfo.CurrentUICulture);
 			Console.WriteLine(result);
 			List<DailySummaryEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailySummaryEntity>>(result);
 			Assert.IsFalse(list1.Count == 0, result);
@@ -65,7 +66,7 @@ namespace StandardTest.EntityLayer
 		[TestMethod]
 		public void SerializeDailySummaryEntityFull()
 		{
-			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
+			//JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
 			List<DailySummaryEntity> list = new List<DailySummaryEntity>(5);
 			DailySummaryEntity item = new DailySummaryEntity()
 			{
@@ -82,7 +83,7 @@ namespace StandardTest.EntityLayer
 			};
 			item.Items["CM1"] = 23M;
 			list.Add(item);
-			string result = converter.Serialize(list, true);
+			string result = JsonConverter.Serialize(list, true, System.Globalization.CultureInfo.CurrentUICulture);
 			Console.WriteLine(result);
 			List<DailySummaryEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailySummaryEntity>>(result);
 			Assert.IsFalse(list1.Count == 0, result);
@@ -91,7 +92,7 @@ namespace StandardTest.EntityLayer
 		[TestMethod]
 		public void SerializeCollectionPropertiesEmpty()
 		{
-			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
+			//JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
 			List<DailyResultEntity> list = new List<DailyResultEntity>(5);
 			DailyResultEntity item = new DailyResultEntity()
 			{
@@ -105,7 +106,7 @@ namespace StandardTest.EntityLayer
 				WorkHour = 8,
 			};
 			list.Add(item);
-			string result = converter.Serialize(list, true);
+			string result = JsonConverter.Serialize(list, true, CultureInfo.CurrentUICulture);
 			Console.WriteLine(result);
 			List<DailyResultEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailyResultEntity>>(result);
 			Assert.IsFalse(list1.Count == 0, result);
@@ -114,7 +115,6 @@ namespace StandardTest.EntityLayer
 		[TestMethod]
 		public void SerializeCollectionPropertiesFull()
 		{
-			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
 			List<DailyResultEntity> list = new List<DailyResultEntity>(5);
 			DailyResultEntity item = new DailyResultEntity()
 			{
@@ -134,7 +134,7 @@ namespace StandardTest.EntityLayer
 			item.Results.Add("R1006", 15201.05M);
 			item.Results.Add("R1005", 58.26M);
 			list.Add(item);
-			string result = converter.Serialize(list, true);
+			string result = JsonConverter.Serialize(list, true, CultureInfo.CurrentUICulture);
 			Console.WriteLine(result);
 			List<DailyResultEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailyResultEntity>>(result);
 			Assert.IsFalse(list1.Count == 0, result);
@@ -142,7 +142,6 @@ namespace StandardTest.EntityLayer
 		[TestMethod]
 		public void SerializeCollectionPropertiesOneEmpty1()
 		{
-			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
 			List<DailyResultEntity> list = new List<DailyResultEntity>(5);
 			DailyResultEntity item = new DailyResultEntity()
 			{
@@ -159,7 +158,7 @@ namespace StandardTest.EntityLayer
 			item.Results.Add("R1006", 15201.05M);
 			item.Results.Add("R1005", 58.26M);
 			list.Add(item);
-			string result = converter.Serialize(list, true);
+			string result = JsonConverter.Serialize(list, true, CultureInfo.CurrentUICulture);
 			Console.WriteLine(result);
 			List<DailyResultEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailyResultEntity>>(result);
 			Assert.IsFalse(list1.Count == 0, result);
@@ -167,7 +166,6 @@ namespace StandardTest.EntityLayer
 		[TestMethod]
 		public void SerializeCollectionPropertiesOneEmpty2()
 		{
-			JsonConverter converter = new JsonConverter(System.Globalization.CultureInfo.CurrentUICulture);
 			List<DailyResultEntity> list = new List<DailyResultEntity>(5);
 			DailyResultEntity item = new DailyResultEntity()
 			{
@@ -184,7 +182,7 @@ namespace StandardTest.EntityLayer
 			item.Dailies.Add("D0806", new ClassCalencar("D8", CalendarTypes.Weekend));
 			item.Dailies.Add("D0808", new ClassCalencar("D8", CalendarTypes.AllDay));
 			list.Add(item);
-			string result = converter.Serialize(list, true);
+			string result = JsonConverter.Serialize(list, true, CultureInfo.CurrentUICulture);
 			Console.WriteLine(result);
 			List<DailyResultEntity> list1 = System.Text.Json.JsonSerializer.Deserialize<List<DailyResultEntity>>(result);
 			Assert.IsFalse(list1.Count == 0, result);
@@ -731,7 +729,7 @@ namespace StandardTest.EntityLayer
 		public System.Guid GroupKey { get; set; }
 
 		/// <summary></summary>
-		[Basic.EntityLayer.PropertyCollection]
+		[Basic.EntityLayer.PropertyCollection("D_")]
 		public Dictionary<string, ClassCalencar> Dailies { get { return _Dailies; } }
 		private Dictionary<string, ClassCalencar> _Dailies = new Dictionary<string, ClassCalencar>(50);
 

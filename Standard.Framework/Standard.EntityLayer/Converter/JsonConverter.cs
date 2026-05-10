@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Web;
-using Basic.EntityLayer;
 using Basic.Messages;
 using Basic.Properties;
 
@@ -16,39 +15,37 @@ namespace Basic.EntityLayer
 	/// <summary>
 	/// 自定义Json序列化帮助类
 	/// </summary>
-	public sealed class JsonConverter
+	public static class JsonConverter
 	{
 		private readonly static Type typePropertyCollectionAttribute = typeof(PropertyCollectionAttribute);
-		//private readonly HttpRequest mRequest;
-		private readonly System.Globalization.CultureInfo _CultureInfo;
-
-		/// <summary>初始化 JsonConverter 类实例</summary>
-		public JsonConverter(System.Globalization.CultureInfo cultrue) { _CultureInfo = cultrue; }
 
 		/// <summary>将对象转换为 JSON 字符串。</summary>
 		/// <param name="value">需要序列化的DataEntity子类实例</param>
+		/// <param name="culture">区域信息</param>
 		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public string Serialize<T>(T value)
+		public static string Serialize<T>(T value, CultureInfo culture)
 		{
-			return Serialize<T>(value, true);
+			return Serialize<T>(value, true, culture);
 		}
 
 		/// <summary>将对象转换为 JSON 字符串。</summary>
 		/// <param name="value">需要序列化的DataEntity子类实例</param>
+		/// <param name="culture">区域信息</param>
 		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public string Serialize<T>(IEnumerable<T> value)
+		public static string Serialize<T>(IEnumerable<T> value, CultureInfo culture)
 		{
-			return Serialize<T>(value, true);
+			return Serialize<T>(value, true, culture);
 		}
 
 		/// <summary>将对象转换为 JSON 字符串。</summary>
 		/// <param name="value">需要序列化的DataEntity子类实例</param>
 		/// <param name="includeBrace">是否需要包含Json对象的大括号</param>
+		/// <param name="culture">区域信息</param>
 		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public string Serialize<T>(T value, bool includeBrace)
+		public static string Serialize<T>(T value, bool includeBrace, CultureInfo culture)
 		{
 			StringBuilder resultBuilder = new StringBuilder(2000);
-			SerializeValuePrivate(resultBuilder, value, true, 0, null, _CultureInfo);
+			SerializeValuePrivate(resultBuilder, value, true, 0, null, culture);
 
 			if (includeBrace == false)
 			{
@@ -61,11 +58,12 @@ namespace Basic.EntityLayer
 		/// <summary>将对象转换为 JSON 字符串。</summary>
 		/// <param name="value">需要序列化的DataEntity子类实例</param>
 		/// <param name="includeBrace">是否需要包含Json对象的中括号</param>
+		/// <param name="culture">区域信息</param>
 		/// <returns>DataEntity子类实例序列化的结果</returns>
-		public string Serialize<T>(IEnumerable<T> value, bool includeBrace)
+		public static string Serialize<T>(IEnumerable<T> value, bool includeBrace, CultureInfo culture)
 		{
 			StringBuilder resultBuilder = new StringBuilder(2000);
-			SerializeValuePrivate(resultBuilder, value, true, 0, null, _CultureInfo);
+			SerializeValuePrivate(resultBuilder, value, true, 0, null, culture);
 			if (includeBrace == false)
 			{
 				resultBuilder.Replace("[", "", 0, 1);
@@ -74,7 +72,7 @@ namespace Basic.EntityLayer
 			return resultBuilder.ToString();
 		}
 
-		private void SerializeValuePrivate(StringBuilder sb, object value, bool includeBrace, int depth, string format, CultureInfo ci)
+		private static void SerializeValuePrivate(StringBuilder sb, object value, bool includeBrace, int depth, string format, CultureInfo ci)
 		{
 			if (value == null || DBNull.Value == value)
 			{
@@ -164,7 +162,8 @@ namespace Basic.EntityLayer
 				}
 			}
 		}
-		private void SerializeCustomObject(StringBuilder sb, object value, int depth, bool includeBrace, CultureInfo ci)
+
+		private static void SerializeCustomObject(StringBuilder sb, object value, int depth, bool includeBrace, CultureInfo ci)
 		{
 			Type type = value.GetType(); bool comma = false;/*true:表示需要追加逗号(,)，false表示不需要追加逗号(,)*/
 			if (includeBrace == true) { sb.Append('{'); }
@@ -183,8 +182,6 @@ namespace Basic.EntityLayer
 				if (info2.Name == "EntityKey" || info2.Name == "EntityState") { continue; }
 				IgnorePropertyAttribute ignoe = info2.GetCustomAttribute<IgnorePropertyAttribute>();
 				if (ignoe != null) { continue; }
-				IgnoreSerializeAttribute ignore = info2.GetCustomAttribute<IgnoreSerializeAttribute>();
-				if (ignore != null && ignore.Condition == IgnoreConditions.Always) { continue; }
 
 				DisplayFormatAttribute dfa = info2.GetCustomAttribute<DisplayFormatAttribute>();
 				WebDisplayAttribute wdAttr = info2.GetCustomAttribute<WebDisplayAttribute>();
@@ -193,13 +190,12 @@ namespace Basic.EntityLayer
 				if ((getMethod != null) && (getMethod.GetParameters().Length <= 0))
 				{
 					object propValue = MethodInfoInvoke(getMethod, value, null);
-					if (ignore != null && ignore.Condition == IgnoreConditions.WhenIsNull && propValue == null) { continue; }
-
 					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
 					{
+						PropertyCollectionAttribute pcAttr = info2.GetCustomAttribute<PropertyCollectionAttribute>();
 						if (dicValue == null || dicValue.Count == 0) { continue; }
 						if (comma == true) { sb.Append(','); }
-						SerializeDictionaryNoBreak(sb, dicValue, depth, ci);
+						SerializeDictionaryNoBreak(sb, pcAttr.Prefix, dicValue, depth, ci);
 						comma = true; continue;
 					}
 
@@ -240,7 +236,8 @@ namespace Basic.EntityLayer
 			}
 			if (includeBrace == true) { sb.Append('}'); }
 		}
-		private void SerializeDictionaryNoBreak(StringBuilder sb, IDictionary value, int depth, CultureInfo ci)
+
+		private static void SerializeDictionaryNoBreak(StringBuilder sb, string prefix, IDictionary value, int depth, CultureInfo ci)
 		{
 			bool flag = true; bool flag2 = false;
 			if (value.Contains("__type"))
@@ -262,25 +259,28 @@ namespace Basic.EntityLayer
 				else
 				{
 					if (flag == false) { sb.Append(','); }
+					if (string.IsNullOrWhiteSpace(prefix) == false) { key = string.Concat(prefix, key); }
 					SerializeDictionaryKeyValue(sb, key, entry.Value, depth, ci);
 					flag = false;
 				}
 			}
 		}
 
-		private void SerializeDictionary(StringBuilder sb, IDictionary value, int depth, CultureInfo ci)
+		private static void SerializeDictionary(StringBuilder sb, IDictionary value, int depth, CultureInfo ci)
 		{
 			sb.Append('{');
-			SerializeDictionaryNoBreak(sb, value, depth, ci);
+			SerializeDictionaryNoBreak(sb, null, value, depth, ci);
 			sb.Append('}');
 		}
-		private void SerializeDictionaryKeyValue(StringBuilder sb, string key, object value, int depth, CultureInfo ci)
+
+		private static void SerializeDictionaryKeyValue(StringBuilder sb, string key, object value, int depth, CultureInfo ci)
 		{
 			SerializeString(sb, key, null);
 			sb.Append(':');
 			SerializeValuePrivate(sb, value, true, depth, null, ci);
 		}
-		private void SerializeEnumerable(StringBuilder sb, IEnumerable enumerable, int depth, CultureInfo ci)
+
+		private static void SerializeEnumerable(StringBuilder sb, IEnumerable enumerable, int depth, CultureInfo ci)
 		{
 			sb.Append('['); bool flag = false;
 			Type eleType = enumerable.GetType().GetElementType();
@@ -293,22 +293,24 @@ namespace Basic.EntityLayer
 				flag = true;
 			}
 			sb.Append(']');
-
 		}
-		private void SerializeChar(StringBuilder sb, char value, string format)
+
+		private static void SerializeChar(StringBuilder sb, char value, string format)
 		{
 			if (value == '\0')
 				sb.Append("null");
 			else
 				sb.Append('"').Append(HttpUtility.JavaScriptStringEncode(value.ToString())).Append('"');
 		}
-		private void SerializeString(StringBuilder sb, string value, string format)
+
+		private static void SerializeString(StringBuilder sb, string value, string format)
 		{
 			sb.Append('"');
 			sb.Append(HttpUtility.JavaScriptStringEncode(value));
 			sb.Append('"');
 		}
-		private void SerializeDateTime(StringBuilder sb, DateTime value, string format)
+
+		private static void SerializeDateTime(StringBuilder sb, DateTime value, string format)
 		{
 			if (!string.IsNullOrWhiteSpace(format))
 				sb.Append('"').AppendFormat(format, value).Append('"');
@@ -321,7 +323,8 @@ namespace Basic.EntityLayer
 			else
 				sb.AppendFormat("\"{0:yyyy-MM-dd}\"", value);
 		}
-		private void SerializeTimeSpan(StringBuilder sb, System.TimeSpan value, string format)
+
+		private static void SerializeTimeSpan(StringBuilder sb, System.TimeSpan value, string format)
 		{
 			if (!string.IsNullOrWhiteSpace(format))
 				sb.Append('"').AppendFormat(format, value).Append('"');
@@ -332,7 +335,8 @@ namespace Basic.EntityLayer
 			else
 				sb.AppendFormat("\"{0:HH:mm}\"", value);
 		}
-		private void SerializeEnumValue(StringBuilder sb, PropertyInfo info2, WebDisplayAttribute wdAttr, object propValue, CultureInfo ci)
+
+		private static void SerializeEnumValue(StringBuilder sb, PropertyInfo info2, WebDisplayAttribute wdAttr, object propValue, CultureInfo ci)
 		{
 			string value = Enum.Format(info2.PropertyType, propValue, "F");
 			Type eType = info2.PropertyType; string converterName = null;
@@ -360,20 +364,24 @@ namespace Basic.EntityLayer
 				}
 			}
 		}
-		private void SerializeBoolean(StringBuilder sb, WebDisplayAttribute wdAttr, bool value, CultureInfo ci)
+
+		private static void SerializeBoolean(StringBuilder sb, WebDisplayAttribute wdAttr, bool value, CultureInfo ci)
 		{
 			string source = string.Concat(wdAttr.DisplayName, value ? "_TrueText" : "_FalseText");
 			SerializeString(sb, GetResourceString(wdAttr.ConverterName, source, ci), null);
 		}
-		private void SerializeBoolean(StringBuilder sb, bool value)
+
+		private static void SerializeBoolean(StringBuilder sb, bool value)
 		{
 			if (value) { sb.Append("true"); } else { sb.Append("false"); }
 		}
-		private void SerializeGuid(StringBuilder sb, Guid value)
+
+		private static void SerializeGuid(StringBuilder sb, Guid value)
 		{
 			sb.Append("\"").Append(value.ToString()).Append("\"");
 		}
-		private void SerializeUri(StringBuilder sb, Uri uri)
+
+		private static void SerializeUri(StringBuilder sb, Uri uri)
 		{
 			sb.Append("\"").Append(uri.GetComponents(UriComponents.SerializationInfoString, UriFormat.UriEscaped)).Append("\"");
 		}
@@ -387,13 +395,13 @@ namespace Basic.EntityLayer
 		/// System.Globalization.CultureInfo.CurrentUICulture 属性获取 System.Globalization.CultureInfo。
 		/// </param>
 		/// <returns>为指定区域性本地化的资源的值。如果不可能有最佳匹配，则返回 null。</returns>
-		private string GetResourceString(string converter, string name, CultureInfo ci)
+		private static string GetResourceString(string converter, string name, CultureInfo ci)
 		{
 			return MessageContext.GetString(converter, name, ci);
 		}
 
 		#region 类型安全检测
-		private object MethodInfoInvoke(MethodInfo method, object target, object[] args)
+		private static object MethodInfoInvoke(MethodInfo method, object target, object[] args)
 		{
 			Type declaringType = method.DeclaringType;
 			if (declaringType == null)
@@ -408,7 +416,8 @@ namespace Basic.EntityLayer
 			}
 			return method.Invoke(target, args);
 		}
-		private bool GenericArgumentsAreVisible(MethodInfo method)
+
+		private static bool GenericArgumentsAreVisible(MethodInfo method)
 		{
 			if (method.IsGenericMethod)
 			{
@@ -422,7 +431,8 @@ namespace Basic.EntityLayer
 			}
 			return true;
 		}
-		private object FieldInfoGetValue(FieldInfo field, object target)
+
+		private static object FieldInfoGetValue(FieldInfo field, object target)
 		{
 			Type declaringType = field.DeclaringType;
 			if (declaringType == null)
@@ -436,10 +446,9 @@ namespace Basic.EntityLayer
 			return field.GetValue(target);
 		}
 
-		private void DemandReflectionAccess(Type type)
+		private static void DemandReflectionAccess(Type type)
 		{
 		}
-
 		#endregion
 	}
 }

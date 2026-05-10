@@ -52,9 +52,7 @@ namespace Basic.Caches
 			{
 				IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, 6890);
 				SslClientAuthenticationOptions options = new SslClientAuthenticationOptions();
-				//options.Password = "GoldSoft@6897";
-				//mEndPoint = options.EndPoints.First();
-				_database = new GarnetClient(IPEndPoint.Parse(""), options);
+				_database = new GarnetClient(endPoint, options, authPassword: "GoldSoft@6897");
 				//_database = _connection..GetDatabase(db);
 			}
 
@@ -62,25 +60,36 @@ namespace Basic.Caches
 			public void Dispose() { }
 
 			#region 缓存序列化方法 -  序列化和反序列化操作
-			//private static RedisValue SerializeValue<T>(T value)
-			//{
-			//	using (MemoryStream stream = new MemoryStream())
-			//	{
-			//		JsonSerializer.Serialize<T>(stream, value);
-			//		return RedisValue.CreateFrom(stream);
-			//	}
-			//}
-
-			//private static T DeserializeValue<T>(RedisValue value)
-			//{
-			//	return JsonSerializer.Deserialize<T>(value);
-			//}
-
+			/// <summary>
+			/// 将指定对象序列化为 JSON 字符串。
+			/// </summary>
+			/// <typeparam name="T">要序列化的对象的类型。</typeparam>
+			/// <param name="value">需要序列化的对象实例。</param>
+			/// <returns>表示对象数据的 JSON 格式字符串。</returns>
+			/// <exception cref="System.Text.Json.JsonException">
+			/// 当 <paramref name="value"/> 包含无法序列化的循环引用或类型不受支持时抛出。
+			/// </exception>
 			private static string Serialize<T>(T value)
 			{
 				return JsonSerializer.Serialize<T>(value);
 			}
 
+			/// <summary>
+			/// 将 JSON 字符串反序列化为指定类型的对象。
+			/// </summary>
+			/// <typeparam name="T">目标对象的类型。</typeparam>
+			/// <param name="value">包含 JSON 数据的字符串。</param>
+			/// <returns>反序列化后得到的类型为 <typeparamref name="T"/> 的对象。</returns>
+			/// <remarks>
+			/// 该方法内部使用 <see cref="JsonSerializer.Deserialize(string, Type, JsonSerializerOptions?)"/> 实现。
+			/// 若 JSON 字符串为 null 或空，通常会导致异常，需调用方确保数据有效性。
+			/// </remarks>
+			/// <exception cref="System.Text.Json.JsonException">
+			/// 当 <paramref name="value"/> 不是有效的 JSON 格式，或无法转换为 <typeparamref name="T"/> 时抛出。
+			/// </exception>
+			/// <exception cref="ArgumentNullException">
+			/// 当 <paramref name="value"/> 为 null 时抛出（具体取决于 JsonSerializer 实现）。
+			/// </exception>
 			private static T Deserialize<T>(string value)
 			{
 				return JsonSerializer.Deserialize<T>(value);
@@ -93,7 +102,8 @@ namespace Basic.Caches
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
 			public IEnumerable<KeyInfo> GetKeyInfos()
 			{
-				IServer server = _connection.GetServer(mEndPoint);
+				IServer server = _database.Connect();
+				_database.g
 				return server.Keys(_database.Database).Select(m => new KeyInfo(m)).ToList();
 			}
 
@@ -1048,6 +1058,11 @@ namespace Basic.Caches
 			{
 				RedisValue[] values = await _database.SetMembersAsync(key);
 				return values.Select(m => DeserializeValue<T>(m)).ToList();
+			}
+
+			Task<IEnumerable<KeyInfo>> ICacheClient.GetKeyInfosAsync()
+			{
+				throw new NotImplementedException();
 			}
 			#endregion
 		}

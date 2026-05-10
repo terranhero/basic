@@ -186,9 +186,6 @@ namespace Basic.MvcLibrary
 			response.ContentType = ContentType;
 			await response.WriteAsync("{");
 			await response.WriteAsync(string.Format("\"Success\":{0},\"total\":{1}", _Successful ? "true" : "false", _TotalCount));
-			JsonConverter converter = provider.GetRequiredService<JsonConverter>();
-			if (converter == null) { converter = new JsonConverter(_CultureInfo); }
-
 			if (!string.IsNullOrWhiteSpace(_Message))
 			{
 				await response.WriteAsync(",\"Message\":\"");
@@ -198,18 +195,18 @@ namespace Basic.MvcLibrary
 			if (_Entities != null)
 			{
 				await response.WriteAsync(",\"rows\":");
-				await response.WriteAsync(converter.Serialize(_Entities, true));
+				await response.WriteAsync(JsonConverter.Serialize(_Entities, true, _CultureInfo));
 			}
 			if (_Entity != null)
 			{
 				await response.WriteAsync(",\"row\":");
-				await response.WriteAsync(converter.Serialize(_Entity, true));
+				await response.WriteAsync(JsonConverter.Serialize(_Entity, true, _CultureInfo));
 			}
 			CreateResult();
 			if (_Result != null && _Result.Failure)
 			{
 				await response.WriteAsync(",\"errors\":");
-				await response.WriteAsync(converter.Serialize(_Result.Errors, false));
+				await response.WriteAsync(JsonConverter.Serialize(_Result.Errors, false, _CultureInfo));
 			}
 			await response.WriteAsync("}");
 		}

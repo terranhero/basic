@@ -14,11 +14,16 @@ namespace Basic.MvcLibrary
 	public sealed class TreeData<T> : IEnumerable<T>
 	{
 		private readonly List<T> datas;
-		private readonly JsonConverter converter;
+		private readonly CultureInfo _cultrue;
 		/// <summary>初始化 TreeData 类实例</summary>
 		/// <param name="list">一个集合，其元素被复制到新列表中。</param>
 		/// <param name="cultrue"></param>
-		public TreeData(CultureInfo cultrue, IEnumerable<T> list) { converter = new JsonConverter(cultrue); datas = new List<T>(list); }
+		public TreeData(CultureInfo cultrue, IEnumerable<T> list)
+		{
+			_cultrue = cultrue;
+			//converter = new JsonConverter(cultrue);
+			datas = new List<T>(list);
+		}
 
 		private Func<T, object> selectPredicate;
 		/// <summary>设置提取子节点的 Lambda 表达式</summary>
@@ -53,8 +58,8 @@ namespace Basic.MvcLibrary
 			{
 				if (builder.Length > length) { builder.Append(","); }
 				builder.Append("{");
-				if (selectPredicate == null) { builder.Append(converter.Serialize(row, false)); }
-				else { builder.Append(converter.Serialize(selectPredicate(row), false)); }
+				if (selectPredicate == null) { builder.Append(JsonConverter.Serialize(row, false, _cultrue)); }
+				else { builder.Append(JsonConverter.Serialize(selectPredicate(row), false, _cultrue)); }
 				builder.Append(",\"children\":[");
 				SerializeChildren(builder, row);
 				builder.Append("]");
@@ -73,8 +78,8 @@ namespace Basic.MvcLibrary
 			{
 				if (builder.Length > length) { builder.Append(","); }
 				builder.Append("{");
-				if (selectPredicate == null) { builder.Append(converter.Serialize(row, false)); }
-				else { builder.Append(converter.Serialize(selectPredicate(row), false)); }
+				if (selectPredicate == null) { builder.Append(JsonConverter.Serialize(row, false, _cultrue)); }
+				else { builder.Append(JsonConverter.Serialize(selectPredicate(row), false, _cultrue)); }
 				builder.Append(",\"children\":[");
 				SerializeChildren(builder, row);
 				builder.Append("]");

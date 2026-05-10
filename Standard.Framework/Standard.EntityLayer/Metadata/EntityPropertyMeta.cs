@@ -47,7 +47,7 @@ namespace Basic.EntityLayer
 				else if (attribute is ValidationAttribute) { fieldValidations.Add(attribute as ValidationAttribute); }
 				else if (attribute is GroupNameAttribute) { _GroupName = attribute as GroupNameAttribute; }
 				else if (attribute is JoinFieldAttribute) { fieldJoinField = attribute as JoinFieldAttribute; }
-				else if (attribute is PropertyCollectionAttribute) { PropertyCollection = true; }
+				else if (attribute is PropertyCollectionAttribute) { PropertyCollection = attribute as PropertyCollectionAttribute; }
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace Basic.EntityLayer
 
 		/// <summary>获取一个值该值标志属性是否使用 PropertyCollectionAttribute 特性标记。</summary>
 		/// <value>如果存在 PropertyCollectionAttribute 特性标记则返回true，否则返回 false。</value>
-		public bool PropertyCollection { get; private set; } = false;
+		public PropertyCollectionAttribute PropertyCollection { get; private set; }
 
 		/// <summary>获取当前属性导入特性信息。</summary>
 		public ImportAttribute Import { get { return fieldImport; } }
@@ -141,7 +141,7 @@ namespace Basic.EntityLayer
 		/// <remarks>
 		/// 该属性值决定了当前属性是否参与序列化过程。<br/>
 		/// 默认值为 <see cref="IgnoreConditions.Serialized"/>，
-		/// 表示属性始终被序列化，<see cref="JsonConverter.Serialize{T}(T)"/> 输出等。
+		/// 表示属性始终被序列化，<see cref="JsonConverter.Serialize{T}(T, System.Globalization.CultureInfo)"/> 输出等。
 		/// </remarks>
 		public IgnoreConditions IgnoreCondition { get; private set; } = IgnoreConditions.Serialized;
 
