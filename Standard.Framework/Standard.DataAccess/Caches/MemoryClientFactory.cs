@@ -38,13 +38,12 @@ namespace Basic.Caches
 		/// <summary>定义实现内存中缓存的类型。</summary>
 		private sealed class MemoryCacheClient : ICacheClient
 		{
-			private readonly ConcurrentDictionary<string, KeyTypes> keyTypes = new ConcurrentDictionary<string, KeyTypes>();
-			private readonly Func<string, KeyTypes, KeyTypes> updateValueFactory = new Func<string, KeyTypes, KeyTypes>((k, oldValue) => oldValue);
 #if NET8_0_OR_GREATER
 			private readonly MemoryCacheOptions options = new MemoryCacheOptions() { };
 			private readonly MemoryCache memory;
 #else
 			private readonly MemoryCache memory;
+
 #endif
 			/// <summary>初始化 MemoryCacheClient 类实例。</summary>
 			/// <param name="name"></param>
@@ -67,40 +66,20 @@ namespace Basic.Caches
 			public IEnumerable<KeyInfo> GetKeyInfos()
 			{
 #if NET8_0_OR_GREATER
-				return memory.Keys.Select(m =>
-				{
-					string key = (string)m;
-					if (keyTypes.TryGetValue(key, out KeyTypes type)) { return new KeyInfo(key, type); }
-					return new KeyInfo(key);
-				});
+				return memory.Keys.Select(m => new KeyInfo((string)m) { });
 #else
-				return memory.Select(m =>
-				{
-					string key = (string)m.Key;
-					if (keyTypes.TryGetValue(key, out KeyTypes type)) { return new KeyInfo(key, type); }
-					return new KeyInfo(key);
-				});
+				return memory.Select(m => new KeyInfo(m.Key) { });
 #endif
 			}
 
 			/// <summary>获取所有缓存的键</summary>
 			/// <returns>如果存在则返回键列表，否则返回 null。</returns>
-			public async Task<IEnumerable<KeyInfo>> GetKeyInfosAsync()
+			public Task<IEnumerable<KeyInfo>> GetKeyInfosAsync()
 			{
 #if NET8_0_OR_GREATER
-				return await Task.FromResult(memory.Keys.Select(m =>
-				{
-					string key = (string)m;
-					if (keyTypes.TryGetValue(key, out KeyTypes type)) { return new KeyInfo(key, type); }
-					return new KeyInfo(key);
-				}));
+				return Task.FromResult(memory.Keys.Select(m => new KeyInfo((string)m) { }));
 #else
-				return await Task.FromResult(memory.Select(m =>
-				{
-					string key = (string)m.Key;
-					if (keyTypes.TryGetValue(key, out KeyTypes type)) { return new KeyInfo(key, type); }
-					return new KeyInfo(key);
-				}));
+				return Task.FromResult(memory.Select(m => new KeyInfo(m.Key) { }));
 #endif
 			}
 			#endregion
@@ -125,8 +104,7 @@ namespace Basic.Caches
 			public void KeyDelete(string[] keys)
 			{
 				if (keys == null) { return; }
-				foreach (string key in keys) { memory.Remove(key); keyTypes.TryRemove(key, out _); }
-
+				foreach (string key in keys) { memory.Remove(key); }
 			}
 
 			/// <summary>根据传入的键移除一条记录</summary>
@@ -134,7 +112,7 @@ namespace Basic.Caches
 			/// <returns>移除成功则返回true，否则返回false。</returns>
 			public bool KeyDelete(string key)
 			{
-				memory.Remove(key); keyTypes.TryRemove(key, out _);
+				memory.Remove(key);
 				return true;
 			}
 
@@ -147,7 +125,7 @@ namespace Basic.Caches
 			public Task<bool> KeyDeleteAsync(string key)
 			{
 				if (key == null) { return Task.FromResult(false); }
-				memory.Remove(key); keyTypes.TryRemove(key, out _); return Task.FromResult(true);
+				memory.Remove(key); return Task.FromResult(true);
 			}
 
 			/// <summary>从缓存中移除指定键的缓存项</summary>
@@ -265,7 +243,6 @@ namespace Basic.Caches
 			public bool Set<T>(string key, T value, System.TimeSpan expiresIn)
 			{
 				memory.Set(key, value, DateTimeOffset.Now.Add(expiresIn));
-				keyTypes.AddOrUpdate(key, KeyTypes.String, updateValueFactory);
 				return true;
 			}
 
@@ -280,7 +257,6 @@ namespace Basic.Caches
 			public bool Set<T>(string key, T value, System.DateTime expiresAt)
 			{
 				memory.Set(key, value, new DateTimeOffset(expiresAt));
-				keyTypes.AddOrUpdate(key, KeyTypes.String, updateValueFactory);
 				return true;
 			}
 			#endregion
@@ -297,7 +273,6 @@ namespace Basic.Caches
 			public Task<bool> SetAsync<T>(string key, T value, DateTime expiresAt)
 			{
 				memory.Set(key, value, new DateTimeOffset(expiresAt));
-				keyTypes.AddOrUpdate(key, KeyTypes.String, updateValueFactory);
 				return Task.FromResult(true);
 			}
 
@@ -335,6 +310,7 @@ namespace Basic.Caches
 #else
 				return Task.FromResult((IDictionary<string, T>)memory.GetValues(keys));
 #endif
+
 			}
 			#endregion
 
@@ -347,7 +323,7 @@ namespace Basic.Caches
 			public Task<bool> ListPushAsync<T>(string key, T item)
 			{
 				IList<T> list = memory.Get<IList<T>>(key);
-				if (list == null) { list = new List<T>(); keyTypes.AddOrUpdate(key, KeyTypes.List, updateValueFactory); }
+				if (list == null) { list = new List<T>(); }
 				lock (list) { list.Add(item); }
 				memory.Set<IList<T>>(key, list);
 				return Task.FromResult(true);
