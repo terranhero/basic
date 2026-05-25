@@ -182,6 +182,8 @@ namespace Basic.EntityLayer
 				if (info2.Name == "EntityKey" || info2.Name == "EntityState") { continue; }
 				IgnorePropertyAttribute ignoe = info2.GetCustomAttribute<IgnorePropertyAttribute>();
 				if (ignoe != null) { continue; }
+				IgnoreSerializeAttribute ignore = info2.GetCustomAttribute<IgnoreSerializeAttribute>();
+				if (ignore != null && ignore.Condition == IgnoreConditions.Always) { continue; }
 
 				DisplayFormatAttribute dfa = info2.GetCustomAttribute<DisplayFormatAttribute>();
 				WebDisplayAttribute wdAttr = info2.GetCustomAttribute<WebDisplayAttribute>();
@@ -190,6 +192,7 @@ namespace Basic.EntityLayer
 				if ((getMethod != null) && (getMethod.GetParameters().Length <= 0))
 				{
 					object propValue = MethodInfoInvoke(getMethod, value, null);
+					if (ignore != null && ignore.Condition == IgnoreConditions.WhenIsNull && propValue == null) { continue; }
 					if (info2.IsDefined(typePropertyCollectionAttribute) && propValue is IDictionary dicValue)
 					{
 						PropertyCollectionAttribute pcAttr = info2.GetCustomAttribute<PropertyCollectionAttribute>();
