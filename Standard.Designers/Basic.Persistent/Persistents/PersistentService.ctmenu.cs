@@ -917,7 +917,7 @@ namespace Basic.Configuration
             }
         }
 
-        private void OnCopySql(object sender, EventArgs e)
+        private void OnCopySqlScript(object sender, EventArgs e)
         {
             DesignerEntitiesCanvas canvas = this.GetItemsCanvas();
             if (canvas.SelectedItem == null) { return; }

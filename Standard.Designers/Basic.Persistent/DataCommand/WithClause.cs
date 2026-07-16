@@ -113,8 +113,8 @@ namespace Basic.Designer
 		/// <returns>返回可执行的 SQL 语句</returns>
 		public string ToSql()
 		{
-			if (string.IsNullOrWhiteSpace(_TableDefinition)) { return string.Concat(TableName, " AS (", TableQuery, ")"); }
-			return string.Concat(TableName, "(", TableDefinition, ") AS (", TableQuery, ")");
+			if (string.IsNullOrWhiteSpace(_TableDefinition)) { return string.Concat(TableName, " AS (", Environment.NewLine, TableQuery, ")"); }
+			return string.Concat(TableName, "(", TableDefinition, ") AS (", Environment.NewLine, TableQuery, ")");
 		}
 
 		/// <summary>表示 WithClause 类型的字符串表示形式</summary>

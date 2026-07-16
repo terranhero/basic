@@ -360,7 +360,7 @@ namespace Basic.Configuration
 
 				_oleMenuService.AddCommand(EditCodeID, OnEditCode, OnCanEditCode);
 				_oleMenuService.AddCommand(CopyCodeID, OnCopyCode, OnCanCopyCode);
-				_oleMenuService.AddCommand(CopySqlID, OnCopySql, OnCanCopySql);
+				_oleMenuService.AddCommand(CopySqlID, OnCopySqlScript, OnCanCopySql);
 				_oleMenuService.AddCommand(UpdateTableID, OnUpdateTable, OnCanUpdateTable);
 				_oleMenuService.AddCommand(UpdateEntitiesID, OnUpdateEntities, OnCanUpdateEntities);
 				_oleMenuService.AddCommand(UpdateEntityID, OnUpdateEntity, OnCanUpdateEntity);
