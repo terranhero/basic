@@ -46,6 +46,7 @@
 							<Setter Property="CanUserResizeColumns" Value="False"/>
 							<Setter Property="SelectionMode" Value="Single"/>
 							<Setter Property="SelectionUnit" Value="Cell"/>
+							<Setter Property="RowHeaderWidth" Value="0"/>
 							<Setter Property="AutoGenerateColumns" Value="False"/>
 							<Setter Property="VerticalContentAlignment" Value="Center"/>
 							<Setter Property="BorderThickness" Value="0"/>

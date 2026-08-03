@@ -15,7 +15,6 @@ using Basic.Options;
 using Basic.Properties;
 using Basic.Windows;
 using Microsoft;
-using Microsoft.VisualStudio.RpcContracts.Commands;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using MVS = Microsoft.VisualStudio.Shell;

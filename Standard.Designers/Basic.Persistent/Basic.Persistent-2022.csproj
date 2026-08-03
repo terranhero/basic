@@ -135,7 +135,7 @@
     <Compile Include="Database\Transact\TransactColumnInfo.cs" />
     <Compile Include="Database\Transact\TransactParameterInfo.cs" />
     <Compile Include="Database\Transact\TransactTableInfo.cs" />
-    <Compile Include="Database\Windows\ColumnsWindow.xaml.cs" />
+    <Compile Include="Database\Windows\ColumnsDialog.xaml.cs" />
     <Compile Include="DataCommand\AbstractDesignerCommand.cs" />
     <Compile Include="DataCommand\DesignerCheckedCommand.cs" />
     <Compile Include="DataCommand\Collections\CheckedCommandCollection.cs" />
@@ -510,16 +510,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Database\Windows\ColumnsWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourcePackage\ResourceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Templates\MvcViewWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Columns.Style.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\ComboBox.Style.xaml">
