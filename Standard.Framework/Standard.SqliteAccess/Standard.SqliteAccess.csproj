@@ -15,7 +15,7 @@
 	</PropertyGroup>
 	<Import Project="$(ProjectDir)..\..\packages\std-props.targets" />
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.5" />
+	  <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.*" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Standard.DataAccess\Standard.DataAccess.csproj" />

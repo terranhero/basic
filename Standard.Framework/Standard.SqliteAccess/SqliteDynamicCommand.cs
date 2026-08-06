@@ -18,18 +18,18 @@ namespace Basic.SqliteAccess
 	[System.Xml.Serialization.XmlRoot(DataCommand.DynamicCommandConfig)]
 	internal sealed class SqliteDynamicCommand : DynamicCommand, IDisposable, ICloneable
 	{
-		private readonly SqliteCommand sqlCommand;
+		private readonly SqliteCommand liteCommand;
 
 		/// <summary>
 		/// 初始化 SqlDynamicCommand 类的新实例。 
 		/// </summary>
-		public SqliteDynamicCommand() : base(new SqliteCommand()) { sqlCommand = dataDbCommand as SqliteCommand; }
+		public SqliteDynamicCommand() : base(new SqliteCommand()) { liteCommand = dataDbCommand as SqliteCommand; }
 
 		/// <summary>
 		/// 根据数据库命令，初始化 SqlDynamicCommand 类的新实例，主要克隆实例时使用。
 		/// </summary>
 		/// <param name="dbCommand">表示 SqliteCommand 类实例。</param>
-		private SqliteDynamicCommand(SqliteCommand dbCommand) : base(dbCommand) { sqlCommand = dbCommand; }
+		private SqliteDynamicCommand(SqliteCommand dbCommand) : base(dbCommand) { liteCommand = dbCommand; }
 
 		/// <summary>当前命令的数据库类型</summary>
 		public override ConnectionType ConnectionType { get { return ConnectionType.SqlConnection; } }
@@ -58,7 +58,7 @@ namespace Basic.SqliteAccess
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync()
 		{
-			return sqlCommand.ExecuteReaderAsync().ContinueWith<DbDataReader>(task => task.Result);
+			return liteCommand.ExecuteReaderAsync().ContinueWith<DbDataReader>(task => task.Result);
 		}
 
 		/// <summary>
@@ -68,7 +68,7 @@ namespace Basic.SqliteAccess
 		/// <returns>一个 DbDataReader 对象。 </returns>
 		internal protected override System.Threading.Tasks.Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior)
 		{
-			return sqlCommand.ExecuteReaderAsync(behavior).ContinueWith<DbDataReader>(task => task.Result);
+			return liteCommand.ExecuteReaderAsync(behavior).ContinueWith<DbDataReader>(task => task.Result);
 		}
 
 		/// <summary>
@@ -115,7 +115,7 @@ namespace Basic.SqliteAccess
 		/// <returns>一个 DbParameter 对象。</returns>
 		public override DbParameter CreateParameter()
 		{
-			return sqlCommand.CreateParameter();
+			return liteCommand.CreateParameter();
 		}
 
 		/// <summary>
@@ -130,7 +130,7 @@ namespace Basic.SqliteAccess
 		internal protected override DbParameter CreateParameter(string parameterName, string sourceColumn, DataTypeEnum dbType,
 			 int size, ParameterDirection direction, bool isNullable)
 		{
-			SqliteParameter parameter = sqlCommand.CreateParameter();
+			SqliteParameter parameter = liteCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
@@ -153,7 +153,7 @@ namespace Basic.SqliteAccess
 		internal protected override DbParameter CreateParameter(string parameterName, string sourceColumn, DataTypeEnum dbType,
 			 byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			SqliteParameter parameter = sqlCommand.CreateParameter();
+			SqliteParameter parameter = liteCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -216,7 +216,7 @@ namespace Basic.SqliteAccess
 		public override DbParameter CreateParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			 int size, ParameterDirection direction, bool isNullable)
 		{
-			SqliteParameter parameter = sqlCommand.CreateParameter();
+			SqliteParameter parameter = liteCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
@@ -239,7 +239,7 @@ namespace Basic.SqliteAccess
 		public override DbParameter CreateParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			 byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			SqliteParameter parameter = sqlCommand.CreateParameter();
+			SqliteParameter parameter = liteCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -296,7 +296,7 @@ namespace Basic.SqliteAccess
 		public override DbParameter CreateAddParameter(string parameterName, string sourceColumn, DbTypeEnum dbType, int size,
 			ParameterDirection direction, bool isNullable)
 		{
-			SqliteParameter parameter = sqlCommand.CreateParameter();
+			SqliteParameter parameter = liteCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Size = size;
@@ -318,7 +318,7 @@ namespace Basic.SqliteAccess
 		public override DbParameter CreateAddParameter(string parameterName, string sourceColumn, DbTypeEnum dbType,
 			byte precision, byte scale, ParameterDirection direction, bool isNullable)
 		{
-			SqliteParameter parameter = sqlCommand.CreateParameter();
+			SqliteParameter parameter = liteCommand.CreateParameter();
 			parameter.ParameterName = CreateParameterName(parameterName);
 			parameter.SourceColumn = sourceColumn;
 			parameter.Precision = precision;
@@ -358,7 +358,7 @@ namespace Basic.SqliteAccess
 		/// <param name="parameters"></param>
 		internal protected override void CopyParametersTo(ICollection<DbParameter> parameters)
 		{
-			foreach (SqliteParameter parameter in sqlCommand.Parameters)
+			foreach (SqliteParameter parameter in liteCommand.Parameters)
 			{
 				parameters.Add((parameter as ICloneable).Clone() as SqliteParameter);
 			}
