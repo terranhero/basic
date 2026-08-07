@@ -23,6 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Standard.Designers\Basic.Persistent\Basic.Persistent-2022.csproj" />
+    <ProjectReference Include="..\..\Standard.Framework\Standard.EntityLayer\Standard.EntityLayer.csproj" />
+    <ProjectReference Include="..\..\Standard.Framework\Standard.DataAccess\Standard.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
