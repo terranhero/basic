@@ -14,7 +14,7 @@ namespace Basic.Windows
 	/// </summary>
 	public sealed class DesignerCanvas : UniformGrid
 	{
-		private readonly IVsUIShell iVsUiShell;
+		private IVsUIShell iVsUiShell;
 		/// <summary>
 		/// 元素间的空隙
 		/// </summary>
@@ -25,9 +25,17 @@ namespace Basic.Windows
 		public DesignerCanvas()
 			: base()
 		{
-			ThreadHelper.ThrowIfNotOnUIThread();
 			Focusable = false;
-			iVsUiShell = (IVsUIShell)Package.GetGlobalService(typeof(SVsUIShell));
+		}
+
+		private IVsUIShell VsUiShell
+		{
+			get
+			{
+				ThreadHelper.ThrowIfNotOnUIThread();
+				if (iVsUiShell == null) { iVsUiShell = (IVsUIShell)Package.GetGlobalService(typeof(SVsUIShell)); }
+				return iVsUiShell;
+			}
 		}
 
 		#region 属性 SelectedItem 定义
@@ -58,7 +66,7 @@ namespace Basic.Windows
 		/// <summary>
 		/// 设置当前鼠标为等待光标
 		/// </summary>
-		public void SetWaitCursor() { if (iVsUiShell != null) { iVsUiShell.SetWaitCursor(); } }
+		public void SetWaitCursor() { VsUiShell?.SetWaitCursor(); }
 
 		/// <summary>
 		/// 显示一个消息框，该消息框包含消息和标题栏标题，并且返回结果。
@@ -69,9 +77,9 @@ namespace Basic.Windows
 		public int ShowMessage(string message, string title = "Basic.Persistent")
 		{
 			int result = 0; Guid tempGuid = Guid.Empty;
-			if (iVsUiShell != null)
+			if (VsUiShell != null)
 			{
-				iVsUiShell.ShowMessageBox(0, ref tempGuid, title, message, null, 0, OLEMSGBUTTON.OLEMSGBUTTON_OK,
+				VsUiShell.ShowMessageBox(0, ref tempGuid, title, message, null, 0, OLEMSGBUTTON.OLEMSGBUTTON_OK,
 					OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_WARNING, 0, out result);
 			}
 			return result;
@@ -88,9 +96,9 @@ namespace Basic.Windows
 			if (string.IsNullOrWhiteSpace(title))
 				title = DesignerStrings.ResourceManager.GetString("Package_Description");
 			int result = 0; Guid tempGuid = Guid.Empty;
-			if (iVsUiShell != null)
+			if (VsUiShell != null)
 			{
-				iVsUiShell.ShowMessageBox(0, ref tempGuid, title, message, null, 0, OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL,
+				VsUiShell.ShowMessageBox(0, ref tempGuid, title, message, null, 0, OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL,
 					OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_QUERY, 0, out result);
 			}
 			return result == 1;//
@@ -101,8 +109,9 @@ namespace Basic.Windows
 		/// </summary>
 		public void ShowPropertyWindow()
 		{
+			ThreadHelper.ThrowIfNotOnUIThread();
 			Guid guid = new Guid("{EEFA5220-E298-11D0-8F78-00A0C9110057}");
-			iVsUiShell.FindToolWindow(0x80000, ref guid, out IVsWindowFrame ppWindowFrame);
+			VsUiShell.FindToolWindow(0x80000, ref guid, out IVsWindowFrame ppWindowFrame);
 			ppWindowFrame.Show();
 		}
 
