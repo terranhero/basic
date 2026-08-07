@@ -461,9 +461,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -493,20 +491,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager">
-      <Version>10.*</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions">
-      <Version>10.*</Version>
+      <Version>8.*</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder">
-      <Version>10.*</Version>
+      <Version>8.*</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json">
-      <Version>10.*</Version>
+      <Version>8.*</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Encoding.CodePages">
-      <Version>10.*</Version>
+      <Version>8.*</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
