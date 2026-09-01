@@ -576,6 +576,18 @@ namespace Basic.Caches
 				});
 			}
 
+			/// <summary>存储多个键值对到哈希表</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="hashId">哈希表缓存键</param>
+			/// <param name="values">要存储的键值对字典，其中键为哈希表键，值为哈希表值</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			public async Task<bool> HashSetAsync<T>(string hashId, IDictionary<string, T> values)
+			{
+				HashEntry[] entries = values.Select(m => new HashEntry(m.Key, Serialize(m.Value))).ToArray();
+				await _database.HashSetAsync(hashId, entries);
+				return true;
+			}
+
 			/// <summary>从哈希表获取数据。</summary>
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="hashId">哈希表缓存键</param>

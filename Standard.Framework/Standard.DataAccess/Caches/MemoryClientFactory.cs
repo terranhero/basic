@@ -517,6 +517,36 @@ namespace Basic.Caches
 				return Task.FromResult<IList<T>>(null);
 			}
 
+
+			/// <summary>存储多个键值对到哈希表</summary>
+			/// <typeparam name="T">缓存值类型</typeparam>
+			/// <param name="hashId">哈希表缓存键</param>
+			/// <param name="values">要存储的键值对字典，其中键为哈希表键，值为哈希表值</param>
+			/// <returns>创建成功则为true，否则为false。</returns>
+			public Task<bool> HashSetAsync<T>(string hashId, IDictionary<string, T> values)
+			{
+				if (memory.TryGetValue(hashId, out IDictionary<string, T> hash))
+				{
+					foreach (KeyValuePair<string, T> kvp in values)
+					{
+#if NET8_0_OR_GREATER
+						if (hash.ContainsKey(kvp.Key)) { hash[kvp.Key] = kvp.Value; }
+						else { hash.TryAdd(kvp.Key, kvp.Value); }
+#else
+						if (hash.ContainsKey(kvp.Key)) { hash[kvp.Key] = kvp.Value; }
+						else { hash.Add(kvp.Key, kvp.Value); }
+#endif
+					}
+					return Task.FromResult(true);
+				}
+				else
+				{
+					hash = new ConcurrentDictionary<string, T>(-1, values, null) { };
+					memory.Set(hashId, hash);
+					return Task.FromResult(true);
+				}
+			}
+
 			/// <summary>从哈希表获取数据。</summary>
 			/// <typeparam name="T">缓存值类型</typeparam>
 			/// <param name="hashId">哈希表缓存键</param>

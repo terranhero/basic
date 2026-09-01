@@ -336,7 +336,14 @@ namespace Basic.Caches
 		/// <returns>如果缓存中包含其键与 key 匹配的缓存项，则为 true；否则为 false。</returns>
 		Task<bool> HashExistsAsync(string hashId, string key);
 
-		/// <summary>从哈希表获取数据。</summary>
+		/// <summary>存储多个键值对到哈希表</summary>
+		/// <typeparam name="T">缓存值类型</typeparam>
+		/// <param name="hashId">哈希表缓存键</param>
+		/// <param name="values">要存储的键值对字典，其中键为哈希表键，值为哈希表值</param>
+		/// <returns>创建成功则为true，否则为false。</returns>
+		Task<bool> HashSetAsync<T>(string hashId, IDictionary<string, T> values);
+
+		/// <summary>存储数据到哈希表。</summary>
 		/// <typeparam name="T">缓存值类型</typeparam>
 		/// <param name="hashId">哈希表缓存键</param>
 		/// <param name="key">哈希表键</param>
