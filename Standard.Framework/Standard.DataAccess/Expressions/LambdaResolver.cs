@@ -145,12 +145,13 @@ namespace Basic.Expressions
 			}
 			else
 			{
-				ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
-				if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
-				DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-				condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
-				condition.ExpressionType = type;
-				return;
+				throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name);
+				//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
+				//if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
+				//DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+				//condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
+				//condition.ExpressionType = type;
+				//return;
 			}
 		}
 
@@ -176,13 +177,14 @@ namespace Basic.Expressions
 			}
 			else
 			{
-				ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
-				if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
-				DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-				condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
-				condition.ExpressionType = type;
-				condition.Value = AnalyzeExpressionResult(expArg2);
-				return;
+				throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name);
+				//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
+				//if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
+				//DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+				//condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
+				//condition.ExpressionType = type;
+				//condition.Value = AnalyzeExpressionResult(expArg2);
+				//return;
 			}
 		}
 
@@ -208,12 +210,13 @@ namespace Basic.Expressions
 			}
 			else
 			{
-				ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
-				if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
-				DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-				condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
-				condition.ExpressionType = type;
-				condition.Value = AnalyzeExpressionResult(expArg2);
+				throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name);
+				//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
+				//if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
+				//DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+				//condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
+				//condition.ExpressionType = type;
+				//condition.Value = AnalyzeExpressionResult(expArg2);
 			}
 		}
 
@@ -243,16 +246,17 @@ namespace Basic.Expressions
 			}
 			else
 			{
-				ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
-				if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
-				DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-				condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
-				object arg2Value = AnalyzeExpressionResult(expArg2);
-				object arg3Value = AnalyzeExpressionResult(expArg3);
-				if (arg2Value == null) { throw new ArgumentNullException(); }
-				if (arg3Value == null) { throw new ArgumentNullException(); }
-				condition.Value = arg2Value;
-				condition.ToValue = arg3Value;
+				throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name);
+				//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(memberLeft.Member, typeof(ColumnAttribute));
+				//if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", memberLeft.Member.DeclaringType, memberLeft.Member.Name); }
+				//DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+				//condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
+				//object arg2Value = AnalyzeExpressionResult(expArg2);
+				//object arg3Value = AnalyzeExpressionResult(expArg3);
+				//if (arg2Value == null) { throw new ArgumentNullException(); }
+				//if (arg3Value == null) { throw new ArgumentNullException(); }
+				//condition.Value = arg2Value;
+				//condition.ToValue = arg3Value;
 			}
 		}
 		#endregion
@@ -396,24 +400,24 @@ namespace Basic.Expressions
 				MemberExpression memberLeft = left as MemberExpression;
 				MemberInfo mi = memberLeft.Member;
 				ColumnMappingAttribute cma = (ColumnMappingAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnMappingAttribute));
-				ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
-				if (cma == null && ca == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
+				//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
+				if (cma == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
 				if (cma != null)
 				{
 					condition.SetConditionExpression(cma);
 					AnalyzeConditionExpressionType(condition, type);
 					condition.Value = AnalyzeExpressionResult(right);
 				}
-				else
-				{
-					DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-					if (ca.Precision > 0 || ca.Scale > 0)
-						condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Precision, ca.Scale, ca.Nullable);
-					else
-						condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
-					AnalyzeConditionExpressionType(condition, type);
-					condition.Value = AnalyzeExpressionResult(right);
-				}
+				//else
+				//{
+				//	DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+				//	if (ca.Precision > 0 || ca.Scale > 0)
+				//		condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Precision, ca.Scale, ca.Nullable);
+				//	else
+				//		condition.SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
+				//	AnalyzeConditionExpressionType(condition, type);
+				//	condition.Value = AnalyzeExpressionResult(right);
+				//}
 			}
 			else if (left is MethodCallExpression)
 			{
@@ -500,25 +504,25 @@ namespace Basic.Expressions
 				MemberExpression memberLeft = be.Left as MemberExpression;
 				MemberInfo mi = memberLeft.Member;
 				ColumnMappingAttribute cma = (ColumnMappingAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnMappingAttribute));
-				ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
-				if (cma == null && ca == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
+				//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
+				if (cma == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
 				if (cma != null)
 				{
 					ConditionExpression pe = lambdaCollection.AddConditionExpression(cma);
 					AnalyzeConditionExpressionType(pe, be.NodeType);
 					pe.Value = AnalyzeExpressionResult(be.Right);
 				}
-				else
-				{
-					DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-					ConditionExpression pe = null;
-					if (ca.Size > 0)
-						pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
-					else
-						pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Precision, ca.Scale, ca.Nullable);
-					AnalyzeConditionExpressionType(pe, be.NodeType);
-					pe.Value = AnalyzeExpressionResult(be.Right);
-				}
+				//else
+				//{
+				//	DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+				//	ConditionExpression pe = null;
+				//	if (ca.Size > 0)
+				//		pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
+				//	else
+				//		pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Precision, ca.Scale, ca.Nullable);
+				//	AnalyzeConditionExpressionType(pe, be.NodeType);
+				//	pe.Value = AnalyzeExpressionResult(be.Right);
+				//}
 				return;
 			}
 			if (be.Left is UnaryExpression)
@@ -528,25 +532,25 @@ namespace Basic.Expressions
 				{
 					MemberInfo mi = memberLeft.Member;
 					ColumnMappingAttribute cma = (ColumnMappingAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnMappingAttribute));
-					ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
-					if (cma == null && ca == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
+					//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
+					if (cma == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
 					if (cma != null)
 					{
 						ConditionExpression pe = lambdaCollection.AddConditionExpression(cma);
 						AnalyzeConditionExpressionType(pe, be.NodeType);
 						pe.Value = AnalyzeExpressionResult(be.Right);
 					}
-					else
-					{
-						DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-						ConditionExpression pe = null;
-						if (ca.Size > 0)
-							pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
-						else
-							pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Precision, ca.Scale, ca.Nullable);
-						AnalyzeConditionExpressionType(pe, be.NodeType);
-						pe.Value = AnalyzeExpressionResult(be.Right);
-					}
+					//else
+					//{
+					//	DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+					//	ConditionExpression pe = null;
+					//	if (ca.Size > 0)
+					//		pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Size, ca.Nullable);
+					//	else
+					//		pe = lambdaCollection.AddConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Precision, ca.Scale, ca.Nullable);
+					//	AnalyzeConditionExpressionType(pe, be.NodeType);
+					//	pe.Value = AnalyzeExpressionResult(be.Right);
+					//}
 					return;
 				}
 			}

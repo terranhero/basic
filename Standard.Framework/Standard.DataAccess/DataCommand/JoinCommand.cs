@@ -147,15 +147,15 @@ namespace Basic.DataAccess
 				MemberExpression rightMember = body.Right as MemberExpression;
 				string leftField = null, rightField = null;
 				ColumnMappingAttribute cma = (ColumnMappingAttribute)Attribute.GetCustomAttribute(leftMember.Member, typeof(ColumnMappingAttribute));
-				ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(leftMember.Member, typeof(ColumnAttribute));
+				//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(leftMember.Member, typeof(ColumnAttribute));
 				if (cma != null) { leftField = string.IsNullOrEmpty(cma.TableAlias) ? cma.SourceColumn : string.Concat(cma.TableAlias, ".", cma.SourceColumn); }
-				else if (ca != null) { leftField = string.IsNullOrEmpty(ca.TableName) ? ca.ColumnName : string.Concat(ca.TableName, ".", ca.ColumnName); }
+				//else if (ca != null) { leftField = string.IsNullOrEmpty(ca.TableName) ? ca.ColumnName : string.Concat(ca.TableName, ".", ca.ColumnName); }
 				else { leftField = leftMember.Member.Name; }
 
 				ColumnMappingAttribute rightMapping = (ColumnMappingAttribute)Attribute.GetCustomAttribute(rightMember.Member, typeof(ColumnMappingAttribute));
-				ColumnAttribute rightColumn = (ColumnAttribute)Attribute.GetCustomAttribute(rightMember.Member, typeof(ColumnAttribute));
+				//ColumnAttribute rightColumn = (ColumnAttribute)Attribute.GetCustomAttribute(rightMember.Member, typeof(ColumnAttribute));
 				if (rightMapping != null) { rightField = string.IsNullOrEmpty(rightMapping.TableAlias) ? rightMapping.SourceColumn : string.Concat(rightMapping.TableAlias, ".", rightMapping.SourceColumn); }
-				else if (rightColumn != null) { rightField = string.IsNullOrEmpty(rightColumn.TableName) ? rightColumn.ColumnName : string.Concat(rightColumn.TableName, ".", rightColumn.ColumnName); }
+				//else if (rightColumn != null) { rightField = string.IsNullOrEmpty(rightColumn.TableName) ? rightColumn.ColumnName : string.Concat(rightColumn.TableName, ".", rightColumn.ColumnName); }
 				else { rightField = rightMember.Member.Name; }
 
 				switch (body.NodeType)

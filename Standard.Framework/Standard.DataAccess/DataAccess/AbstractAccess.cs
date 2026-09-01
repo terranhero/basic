@@ -495,8 +495,6 @@ namespace Basic.DataAccess
 				foreach (EntityPropertyMeta info in propertyKeys)
 				{
 					ColumnMappingAttribute cma = info.Mapping;
-					ColumnAttribute column = info.Column;
-					if (cma == null && column == null) { throw new AttributeException("ColumnMappingAttribute_NotExists", entity.GetType(), info.Name); }
 					if (cma != null)
 					{
 						DbParameter parameter = dynamicCommand.CreateParameter(cma);
@@ -506,14 +504,9 @@ namespace Basic.DataAccess
 						builder.Append(cma.SourceColumn).Append("=").Append(parameter.ParameterName);
 						dynamicCommand.Parameters.Add(parameter);
 					}
-					else if (column != null)
+					else
 					{
-						DbParameter parameter = dynamicCommand.CreateParameter(column);
-						if (builder.Length > 0) { builder.Append(" AND "); }
-						if (!string.IsNullOrEmpty(column.TableName))
-							builder.Append(column.TableName).Append(".");
-						builder.Append(column.ColumnName).Append("=").Append(parameter.ParameterName);
-						dynamicCommand.Parameters.Add(parameter);
+						throw new AttributeException("ColumnMappingAttribute_NotExists", entity.GetType(), info.Name);
 					}
 				}
 				dynamicCommand.TempWhereText = builder.ToString();
@@ -551,8 +544,8 @@ namespace Basic.DataAccess
 				foreach (EntityPropertyMeta info in propertyKeys)
 				{
 					ColumnMappingAttribute cma = info.Mapping;
-					ColumnAttribute column = info.Column;
-					if (cma == null && column == null) { throw new AttributeException("ColumnMappingAttribute_NotExists", entity.GetType(), info.Name); }
+					//ColumnAttribute column = info.Column;
+					//if (cma == null && column == null) { throw new AttributeException("ColumnMappingAttribute_NotExists", entity.GetType(), info.Name); }
 					if (cma != null)
 					{
 						DbParameter parameter = dynamicCommand.CreateParameter(cma);
@@ -562,14 +555,18 @@ namespace Basic.DataAccess
 						builder.Append(cma.SourceColumn).Append("=").Append(parameter.ParameterName);
 						dynamicCommand.Parameters.Add(parameter);
 					}
-					else if (column != null)
+					//else if (column != null)
+					//{
+					//	DbParameter parameter = dynamicCommand.CreateParameter(column);
+					//	if (builder.Length > 0) { builder.Append(" AND "); }
+					//	if (!string.IsNullOrEmpty(column.TableName))
+					//		builder.Append(column.TableName).Append(".");
+					//	builder.Append(column.ColumnName).Append("=").Append(parameter.ParameterName);
+					//	dynamicCommand.Parameters.Add(parameter);
+					//}
+					else
 					{
-						DbParameter parameter = dynamicCommand.CreateParameter(column);
-						if (builder.Length > 0) { builder.Append(" AND "); }
-						if (!string.IsNullOrEmpty(column.TableName))
-							builder.Append(column.TableName).Append(".");
-						builder.Append(column.ColumnName).Append("=").Append(parameter.ParameterName);
-						dynamicCommand.Parameters.Add(parameter);
+						throw new AttributeException("ColumnMappingAttribute_NotExists", entity.GetType(), info.Name);
 					}
 				}
 				dynamicCommand.TempWhereText = builder.ToString();

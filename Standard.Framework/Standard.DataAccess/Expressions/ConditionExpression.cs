@@ -106,18 +106,18 @@ namespace Basic.Expressions
 			Scale = 0;
 		}
 
-		/// <summary>
-		/// 初始化ExpressionParemeter类实例
-		/// </summary>
-		/// <param name="ca">当前字段信息。</param>
-		public void SetConditionExpression(ColumnAttribute ca)
-		{
-			DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
-			SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Nullable);
-			Size = ca.Size;
-			Precision = ca.Precision;
-			Scale = ca.Scale;
-		}
+		///// <summary>
+		///// 初始化ExpressionParemeter类实例
+		///// </summary>
+		///// <param name="ca">当前字段信息。</param>
+		//public void SetConditionExpression(ColumnAttribute ca)
+		//{
+		//	DbTypeEnum dataType = DbTypeEnumConverter.ConvertFrom(ca.DataType);
+		//	SetConditionExpression(ca.TableName, ca.ColumnName, dataType, ca.Nullable);
+		//	Size = ca.Size;
+		//	Precision = ca.Precision;
+		//	Scale = ca.Scale;
+		//}
 
 		/// <summary>
 		/// 初始化ExpressionParemeter类实例

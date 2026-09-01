@@ -19,7 +19,7 @@ namespace Basic.EntityLayer
 		private readonly PropertyInfo _PropertyInfo;
 		private readonly ColumnMappingAttribute _Mapping;
 		private readonly JoinFieldAttribute fieldJoinField;
-		private readonly ColumnAttribute fieldColumn;
+		//private readonly ColumnAttribute fieldColumn;
 		private readonly DisplayFormatAttribute fieldDisplayFormat;
 		private readonly WebDisplayAttribute fieldWebDisplay;
 		private readonly ImportAttribute fieldImport;
@@ -37,7 +37,7 @@ namespace Basic.EntityLayer
 			foreach (System.Attribute attribute in attributes)
 			{
 				if (attribute is ColumnMappingAttribute) { _Mapping = attribute as ColumnMappingAttribute; }
-				else if (attribute is ColumnAttribute) { fieldColumn = attribute as ColumnAttribute; PrimaryKey = fieldColumn.PrimaryKey; }
+				//else if (attribute is ColumnAttribute) { fieldColumn = attribute as ColumnAttribute; PrimaryKey = fieldColumn.PrimaryKey; }
 				else if (attribute is DisplayFormatAttribute) { fieldDisplayFormat = attribute as DisplayFormatAttribute; }
 				else if (attribute is ImportAttribute) { fieldImport = attribute as ImportAttribute; }
 				else if (attribute is PrimaryKeyAttribute) { PrimaryKey = true; }
@@ -83,8 +83,8 @@ namespace Basic.EntityLayer
 		/// <summary>获取当前属性的数据库字段信息</summary>
 		public JoinFieldAttribute JoinField { get { return fieldJoinField; } }
 
-		/// <summary>获取当前属性的数据库字段信息</summary>
-		public ColumnAttribute Column { get { return fieldColumn; } }
+		///// <summary>获取当前属性的数据库字段信息</summary>
+		//public ColumnAttribute Column { get { return fieldColumn; } }
 
 		/// <summary>获取当前属性的格式化显示信息</summary>
 		public DisplayFormatAttribute DisplayFormat { get { return fieldDisplayFormat; } }

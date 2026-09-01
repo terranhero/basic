@@ -10,6 +10,259 @@ namespace Basic.EntityLayer
 	[AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
 	public sealed class ColumnMappingAttribute : Attribute
 	{
+		#region 使用 DbTypes 数据类型的构造函数，仅支持文本/Guid/Int等不需要精度的类型
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例（字符串类型专用构造函数）。</summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		/// <param name="dynamics">指示该字段是否为动态字段，动态字段可能在数据库表中不存在实际列。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, DbTypes dataType, bool nullable, bool dynamics)
+			 : this(tableAlias, name, null, dataType, 0, nullable, dynamics) { }
+
+		/// <summary>
+		/// 初始化 <see cref="ColumnMappingAttribute"/> 类的新实例（字符串类型专用构造函数）。
+		/// </summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, DbTypes dataType, bool nullable)
+			 : this(tableAlias, name, null, dataType, 0, nullable, false) { }
+
+		/// <summary>
+		/// 初始化ColumnAttribute类实例, 设置字符类型数据列
+		/// </summary>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="nullable">是否允许为空</param>
+		public ColumnMappingAttribute(string name, DbTypes dataType, bool nullable)
+			  : this(null, name, null, dataType, 0, nullable, false) { }
+
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。</summary>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="size">数据库字段长度</param>
+		public ColumnMappingAttribute(string name, DbTypes dataType, int size)
+			  : this(null, name, null, dataType, size, false, false) { }
+
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。</summary>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="size">数据的最大大小，以字节为单位。</param>
+		/// <param name="nullable">获取或设置一个值，该值指示参数是否接受空值。</param>
+		public ColumnMappingAttribute(string name, DbTypes dataType, int size, bool nullable)
+			  : this(null, name, null, dataType, size, false, false) { }
+
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。</summary>
+		/// <param name="tableAlias">当前字段所属表名称或别名</param>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="size">数据的最大大小，以字节为单位。</param>
+		/// <param name="nullable">获取或设置一个值，该值指示参数是否接受空值。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, DbTypes dataType, int size, bool nullable)
+			: this(tableAlias, name, null, dataType, size, nullable, false) { }
+
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。</summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="size">字段的长度或大小。对于字符串类型表示最大字符数，对于二进制类型表示最大字节数。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		/// <param name="dynamics">指示该字段是否为动态字段，动态字段可能在数据库表中不存在实际列。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, DbTypes dataType, int size, bool nullable, bool dynamics)
+			 : this(tableAlias, name, null, dataType, 0, nullable, dynamics) { }
+
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。</summary>
+		/// <param name="tableAlias">当前字段所属表名称或别名</param>
+		/// <param name="name">数据库字段返回名称</param>
+		/// <param name="source">数据库字段原名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="nullable">获取或设置一个值，该值指示参数是否接受空值。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, string source, DbTypes dataType, bool nullable)
+			  : this(tableAlias, name, source, dataType, 0, nullable, false) { }
+		/// <summary>
+		/// 初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。
+		/// </summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="source">数据源名称或源表名称。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="size">字段的长度或大小。对于字符串类型表示最大字符数，对于二进制类型表示最大字节数。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, string source, DbTypes dataType, int size, bool nullable)
+		 : this(tableAlias, name, source, dataType, 0, nullable, false) { }
+
+		/// <summary>
+		/// 初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。
+		/// </summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="source">数据源名称或源表名称。</param>
+		/// <param name="dbType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="size">字段的长度或大小。对于字符串类型表示最大字符数，对于二进制类型表示最大字节数。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		/// <param name="dynamics">指示该字段是否为动态字段，动态字段可能在数据库表中不存在实际列。</param>
+		/// <remarks>
+		/// 该构造函数适用于需要指定长度/大小的字段类型（如 <c>varchar</c>、<c>char</c>、<c>nvarchar</c>、<c>varbinary</c> 等）。
+		/// <para>
+		/// <list type="bullet">
+		/// <item><description><paramref name="dynamics"/> 参数为 <c>true</c> 时，表示该字段不参与数据库架构验证，通常用于扩展属性或运行时附加数据。</description></item>
+		/// <item><description><paramref name="size"/> 设置为 <c>-1</c> 或 <c>max</c> 通常表示最大长度（如 <c>varchar(max)</c>）。</description></item>
+		/// </list>
+		/// </para>
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">
+		/// 当 <paramref name="tableAlias"/>、<paramref name="name"/> 或 <paramref name="source"/> 为 <c>null</c> 时抛出。
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// 当 <paramref name="tableAlias"/>、<paramref name="name"/> 或 <paramref name="source"/> 为空白字符串，或 <paramref name="size"/> 无效时抛出。
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// 当 <paramref name="size"/> 小于 <c>-1</c> 或等于 <c>0</c> 时抛出（<c>-1</c> 通常表示 max）。
+		/// </exception>
+		public ColumnMappingAttribute(string tableAlias, string name, string source, DbTypes dbType, int size, bool nullable, bool dynamics)
+		{
+			TableAlias = tableAlias;
+			ColumnName = name;
+			SourceColumn = source ?? name;
+			DataType = (DbTypeEnum)dbType;
+			Size = size;
+			Precision = 0;
+			Scale = 0;
+			Nullable = nullable;
+			Dynamics = dynamics;
+		}
+		#endregion
+
+		#region 使用 DbTypes 数据类型,初始化 ColumnMappingAttribute 类实例, 设置 Decimal 类型数据列
+		/// <summary>
+		/// 初始化ColumnMappingAttribute类实例, 设置Decimal类型数据列
+		/// </summary>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="precision">数据库字段长度(decimal类型的精度)</param>
+		/// <param name="nullable">获取或设置一个值，该值指示参数是否接受空值。</param>
+		public ColumnMappingAttribute(string name, DbTypes dataType, byte precision, bool nullable)
+			  : this(null, name, null, dataType, precision, 0, nullable, false) { }
+
+		/// <summary>
+		/// 初始化ColumnAttribute类实例, 设置Decimal类型数据列
+		/// </summary>
+		/// <param name="tableAlias">当前字段所属表名称或别名</param>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="precision">数据库字段长度(decimal类型的精度)</param>
+		/// <param name="scale">数据库字段的小数位数</param>
+		public ColumnMappingAttribute(string tableAlias, string name, DbTypes dataType, byte precision, byte scale)
+			  : this(tableAlias, name, null, dataType, precision, scale, false, false) { }
+
+		/// <summary>
+		/// 初始化ColumnAttribute类实例, 设置Decimal类型数据列
+		/// </summary>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="precision">数据库字段长度(decimal类型的精度)</param>
+		/// <param name="scale">数据库字段的小数位数</param>
+		public ColumnMappingAttribute(string name, DbTypes dataType, byte precision, byte scale)
+			  : this(null, name, null, dataType, precision, scale, false, false) { }
+
+		/// <summary>
+		/// 初始化ColumnAttribute类实例
+		/// </summary>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="precision">表示 Value 属性的最大位数。</param>
+		/// <param name="scale">数据库字段的小数位数</param>
+		/// <param name="nullable">获取或设置一个值，该值指示参数是否接受空值。</param>
+		public ColumnMappingAttribute(string name, DbTypes dataType, byte precision, byte scale, bool nullable)
+			  : this(null, name, null, dataType, precision, scale, false, false) { }
+
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。</summary>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="precision">数值字段的精度（总位数），仅对 decimal/numeric 类型有效。</param>
+		/// <param name="scale">数值字段的小数位数，仅对 decimal/numeric 类型有效。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		/// <param name="dynamics">指示该字段是否为动态字段，动态字段可能在数据库表中不存在实际列。</param>
+		public ColumnMappingAttribute(string name, DbTypes dataType, byte precision, byte scale, bool nullable, bool dynamics)
+			 : this(null, name, null, dataType, precision, scale, nullable, dynamics) { }
+
+		/// <summary>
+		/// 初始化 ColumnMappingAttribute 类实例
+		/// </summary>
+		/// <param name="tableAlias">当前字段所属表名称或别名</param>
+		/// <param name="name">数据库字段名称</param>
+		/// <param name="dataType">数据库字段类型</param>
+		/// <param name="precision">表示 Value 属性的最大位数。</param>
+		/// <param name="scale">数据库字段的小数位数</param>
+		/// <param name="nullable">获取或设置一个值，该值指示参数是否接受空值。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, DbTypes dataType, byte precision, byte scale, bool nullable)
+			: this(tableAlias, name, null, dataType, precision, scale, nullable, false) { }
+
+		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。</summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="precision">数值字段的精度（总位数），仅对 decimal/numeric 类型有效。</param>
+		/// <param name="scale">数值字段的小数位数，仅对 decimal/numeric 类型有效。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		/// <param name="dynamics">指示该字段是否为动态字段，动态字段可能在数据库表中不存在实际列。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, DbTypes dataType, byte precision, byte scale, bool nullable, bool dynamics)
+			 : this(tableAlias, name, null, dataType, precision, scale, nullable, dynamics) { }
+
+		/// <summary>
+		/// 初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。
+		/// </summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="source">数据源名称或源表名称。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="precision">数值字段的精度（总位数），仅对 decimal/numeric 类型有效。</param>
+		/// <param name="scale">数值字段的小数位数，仅对 decimal/numeric 类型有效。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		public ColumnMappingAttribute(string tableAlias, string name, string source, DbTypes dataType, byte precision, byte scale, bool nullable)
+					 : this(tableAlias, name, null, dataType, precision, scale, nullable, false) { }
+
+		/// <summary>
+		/// 初始化 <see cref="ColumnMappingAttribute"/> 类的新实例。
+		/// </summary>
+		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
+		/// <param name="name">字段名称，对应数据库中的列名。</param>
+		/// <param name="source">数据源名称或源表名称。</param>
+		/// <param name="dataType">字段的数据类型，<see cref="DbTypes"/> 枚举值之一。</param>
+		/// <param name="precision">数值字段的精度（总位数），仅对 decimal/numeric 类型有效。</param>
+		/// <param name="scale">数值字段的小数位数，仅对 decimal/numeric 类型有效。</param>
+		/// <param name="nullable">指示该字段在数据库中是否可为 null。</param>
+		/// <param name="dynamics">指示该字段是否为动态字段，动态字段可能在数据库表中不存在实际列。</param>
+		/// <remarks>该构造函数用于创建列映射特性的完整配置实例。
+		/// <para>
+		/// <list type="bullet">
+		/// <item><description><paramref name="precision"/> 和 <paramref name="scale"/> 参数通常用于 <c>decimal</c> 或 <c>numeric</c> 类型的字段；对于其他类型，这两个参数可能被忽略。</description></item>
+		/// <item><description><paramref name="dynamics"/> 参数为 <c>true</c> 时，表示该字段不参与数据库架构验证，通常用于扩展属性或运行时附加数据。</description></item>
+		/// </list>
+		/// </para>
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">
+		/// 当 <paramref name="tableAlias"/>、<paramref name="name"/> 或 <paramref name="source"/> 为 <c>null</c> 时抛出。
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// 当 <paramref name="tableAlias"/>、<paramref name="name"/> 或 <paramref name="source"/> 为空白字符串时抛出。
+		/// </exception>
+		public ColumnMappingAttribute(string tableAlias, string name, string source, DbTypes dataType, byte precision, byte scale, bool nullable, bool dynamics)
+		{
+			TableAlias = tableAlias;
+			ColumnName = name;
+			SourceColumn = source ?? name;
+			DataType = (DbTypeEnum)dataType;
+			Size = 0;
+			Precision = precision;
+			Scale = scale;
+			Nullable = nullable;
+			Dynamics = dynamics;
+		}
+		#endregion
+
 		#region 使用 DbTypeEnum 数据类型的构造函数，仅支持文本/Guid/Int等不需要精度的类型
 		/// <summary>初始化 <see cref="ColumnMappingAttribute"/> 类的新实例（字符串类型专用构造函数）。</summary>
 		/// <param name="tableAlias">表别名，用于在多表关联查询时标识字段所属的表。</param>
@@ -262,7 +515,6 @@ namespace Basic.EntityLayer
 			Dynamics = dynamics;
 		}
 		#endregion
-
 
 		/// <summary>
 		/// 数据库表名称或别名

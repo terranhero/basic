@@ -209,6 +209,7 @@ namespace Basic.DataAccess
 		/// 根据 ColumnAttribute 特性创建数据库参数。
 		/// </summary>
 		/// <param name="ca">包含数据库字段信息的特性信息。</param>
+		[Obsolete("已启用，请改用 CreateParameter(ColumnMappingAttribute )", false)]
 		internal DbParameter CreateParameter(ColumnAttribute ca)
 		{
 			DbParameter parameter = CreateParameter();
@@ -562,11 +563,13 @@ namespace Basic.DataAccess
 					return cma.ColumnName;
 				return string.Concat(cma.TableAlias, ".", cma.ColumnName);
 			}
-			ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
-			if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
-			if (string.IsNullOrEmpty(ca.TableName))
-				return ca.ColumnName;
-			return string.Concat(ca.TableName, ".", ca.ColumnName);
+			throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name);
+
+			//ColumnAttribute ca = (ColumnAttribute)Attribute.GetCustomAttribute(mi, typeof(ColumnAttribute));
+			//if (ca == null) { throw new AttributeException("ColumnAttribute_NotExists", mi.DeclaringType, mi.Name); }
+			//if (string.IsNullOrEmpty(ca.TableName))
+			//	return ca.ColumnName;
+			//return string.Concat(ca.TableName, ".", ca.ColumnName);
 		}
 
 		/// <summary>
