@@ -222,7 +222,7 @@ namespace Basic.Caches
 			public T Get<T>(string key)
 			{
 #if NET8_0_OR_GREATER
-				return this.Get<T>(key);
+				return this.TryGetValue<T>(key, out T value) ? value : default(T);
 #else
 				return (T)this.Get(key);
 #endif
