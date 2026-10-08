@@ -3,12 +3,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Serialization;
 using Basic.DataAccess;
 using Basic.EntityLayer;
-using Basic.Enums;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
