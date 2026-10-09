@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Security.AccessControl;
+using System.Security.Principal;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.Win32;
 using MDC = Microsoft.Data.ConnectionUI;
@@ -35,24 +35,34 @@ namespace Basic.Configuration
         private void OnCanRegisterFileExtension(object sender, EventArgs e)
         {
             OleMenuCommand menu = sender as OleMenuCommand;
-            EnvDTE80.DTE2 dteClass = GetDTE() as EnvDTE80.DTE2;
-            Array array = dteClass.ToolWindows.SolutionExplorer.SelectedItems as Array;
+            if (menu == null) { return; }
             menu.Enabled = menu.Visible = false;
-            if (array == null || array.Length == 0) { return; }
-            foreach (EnvDTE.UIHierarchyItem item in array)
+            try
             {
-                if (item.Object is EnvDTE.ProjectItem)
+                ThreadHelper.ThrowIfNotOnUIThread();
+                EnvDTE80.DTE2 dteClass = GetDTE() as EnvDTE80.DTE2;
+                if (dteClass == null) { return; }
+                Array array = dteClass.ToolWindows?.SolutionExplorer?.SelectedItems as Array;
+                if (array == null || array.Length == 0) { return; }
+                string kindPhysicalFile = EnvDTE.Constants.vsProjectItemKindPhysicalFile;
+                foreach (EnvDTE.UIHierarchyItem item in array)
                 {
-                    EnvDTE.ProjectItem pItem = item.Object as EnvDTE.ProjectItem;
-                    if (pItem.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile && pItem.Name.EndsWith(".dpdl"))
+                    if (item != null && item.Object is EnvDTE.ProjectItem pItem && pItem.Kind == kindPhysicalFile)
                     {
-                        menu.Enabled = menu.Visible = true; return;
-                    }
-                    else if (pItem.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile && pItem.Name.EndsWith(".localresx"))
-                    {
-                        menu.Enabled = menu.Visible = true; return;
+                        string name = pItem.Name ?? string.Empty;
+                        if (name.EndsWith(".dpdl", StringComparison.CurrentCultureIgnoreCase) ||
+                            name.EndsWith(".localresx", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            menu.Enabled = menu.Visible = true;
+                            return;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                // 仅查询菜单可见性，失败时保持隐藏即可，不打断用户
+                Debug.WriteLine(ex);
             }
         }
 
@@ -73,31 +83,76 @@ namespace Basic.Configuration
             try
             {
                 ThreadHelper.ThrowIfNotOnUIThread();
+
+                // 1) 取 DTE 与选中项
                 EnvDTE80.DTE2 dteClass = GetDTE() as EnvDTE80.DTE2;
-                Array array = dteClass.ToolWindows.SolutionExplorer.SelectedItems as Array;
+                if (dteClass == null)
+                {
+                    ShowMessage("无法获取 Visual Studio 的 DTE 对象，请重新打开解决方案后重试。");
+                    return;
+                }
+                Array array = dteClass.ToolWindows?.SolutionExplorer?.SelectedItems as Array;
                 if (array == null || array.Length == 0) { return; }
+
+                // 2) 归类：按选中文件的扩展名合并需要注册的扩展类型（避免多选重复执行）
                 string kindPhysicalFile = EnvDTE.Constants.vsProjectItemKindPhysicalFile;
-                string vsInstallPath = Path.GetDirectoryName(dteClass.FullName);
+                bool registerDpdl = false, registerLocalResx = false;
                 foreach (EnvDTE.UIHierarchyItem uihItem in array)
                 {
-                    if (uihItem.Object is EnvDTE.ProjectItem)
+                    if (uihItem != null && uihItem.Object is EnvDTE.ProjectItem projectItem &&
+                        projectItem.Kind == kindPhysicalFile)
                     {
-                        EnvDTE.ProjectItem projectItem = uihItem.Object as EnvDTE.ProjectItem;
-                        if (projectItem.Kind == kindPhysicalFile && projectItem.Name.EndsWith(".dpdl", StringComparison.CurrentCultureIgnoreCase))
+                        string name = projectItem.Name ?? string.Empty;
+                        if (name.EndsWith(".dpdl", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            RegisterFileExtensions(vsInstallPath, ".dpdl", "ASP.NET MVC 数据持久定义文件", "-218");
-                            RegisterXmlFileExtensions(vsInstallPath, ".oraf", "ORACLE Config File", "-100");
-                            RegisterXmlFileExtensions(vsInstallPath, ".sqlf", "SQL SERVER Config File", "-100");
-                            RegisterXmlFileExtensions(vsInstallPath, ".myf", "MYSQL Config File", "-100");
-                            RegisterXmlFileExtensions(vsInstallPath, ".dbf", "IBM DB2 Config File", "-100");
-                            RegisterXmlFileExtensions(vsInstallPath, ".pgf", "PostgreSQL Config File", "-100");
+                            registerDpdl = true;
                         }
-                        else if (projectItem.Kind == kindPhysicalFile && projectItem.Name.EndsWith(".localresx", StringComparison.CurrentCultureIgnoreCase))
+                        else if (name.EndsWith(".localresx", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            RegisterFileExtensions(vsInstallPath, ".localresx", "ASP.NET 本地化资源文件", "-210");
+                            registerLocalResx = true;
                         }
                     }
                 }
+                if (!registerDpdl && !registerLocalResx) { return; }
+
+                // 3) 解析 VS 安装目录：DTE FullName 优先，其次 vswhere
+                if (!TryGetVisualStudioInstallPath(dteClass, out string vsInstallPath))
+                {
+                    ShowMessage("无法定位 Visual Studio 安装目录，请确认 vswhere.exe 存在后再试。");
+                    return;
+                }
+
+                // 4) 权限自检：HKCR 写入需要管理员
+                if (!IsProcessElevated())
+                {
+                    ShowMessage("注册文件扩展名需要管理员权限。\n请先关闭 Visual Studio，然后右键以管理员身份重新启动后再执行此命令。");
+                    return;
+                }
+
+                // 5) 真正执行注册
+                if (registerDpdl)
+                {
+                    RegisterFileExtensions(vsInstallPath, ".dpdl", "ASP.NET MVC 数据持久定义文件", "-218");
+                    RegisterXmlFileExtensions(vsInstallPath, ".oraf", "ORACLE Config File", "-100");
+                    RegisterXmlFileExtensions(vsInstallPath, ".sqlf", "SQL SERVER Config File", "-100");
+                    RegisterXmlFileExtensions(vsInstallPath, ".myf", "MYSQL Config File", "-100");
+                    RegisterXmlFileExtensions(vsInstallPath, ".dbf", "IBM DB2 Config File", "-100");
+                    RegisterXmlFileExtensions(vsInstallPath, ".pgf", "PostgreSQL Config File", "-100");
+                }
+                if (registerLocalResx)
+                {
+                    RegisterFileExtensions(vsInstallPath, ".localresx", "ASP.NET 本地化资源文件", "-210");
+                }
+
+                ShowMessage("文件扩展名注册成功。\nVS 安装目录：" + vsInstallPath);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                ShowMessage("没有写入 HKEY_CLASSES_ROOT 的权限，请以管理员身份重新启动 Visual Studio 后再执行此命令。\n" + ex.Message);
+            }
+            catch (System.Security.SecurityException ex)
+            {
+                ShowMessage("注册表访问被拒绝（HKEY_CLASSES_ROOT 可能由 SYSTEM/TrustedInstaller 持有）。\n请以管理员身份重新启动 Visual Studio。\n" + ex.Message);
             }
             catch (Exception ex)
             {
@@ -106,29 +161,104 @@ namespace Basic.Configuration
         }
 
         /// <summary>
-        /// 使用 __vswhere.exe__ 查找当前 Visual Studio 的安装路径（productPath）。
+        /// 解析当前运行的 Visual Studio 安装目录。
+        /// 优先尝试从 DTE 的 <c>FullName</c>（devenv.exe 路径）推断；失败时退化到 <c>vswhere.exe</c>。
         /// </summary>
-        /// <param name="vsInstallPath">输出参数，返回 Visual Studio 可执行文件所在目录。</param>
-        /// <remarks>
-        /// - 依赖于安装在默认位置的 __vswhere.exe__：%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe。
-        /// - 调用外部进程并读取其标准输出，请确保进程能够启动且有权限读取输出。
-        /// - 返回值为 productPath 的目录（即 msenv 可执行所在目录）。
-        /// </remarks>
+        /// <param name="dteClass">DTE2 实例，用于读取 <c>FullName</c>。</param>
+        /// <param name="vsInstallPath">输出：VS 可执行文件所在目录。</param>
+        /// <returns>解析成功返回 <c>true</c>，否则返回 <c>false</c>。</returns>
+        private static bool TryGetVisualStudioInstallPath(EnvDTE80.DTE2 dteClass, out string vsInstallPath)
+        {
+            vsInstallPath = null;
+
+            // 策略 1：通过 DTE.FullName 推断（最贴近当前进程）
+            try
+            {
+                string fullName = dteClass != null ? dteClass.FullName : null;
+                if (!string.IsNullOrEmpty(fullName))
+                {
+                    string dir = Path.GetDirectoryName(fullName);
+                    if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
+                    {
+                        vsInstallPath = dir;
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("通过 DTE.FullName 推断 VS 安装目录失败：" + ex);
+            }
+
+            // 策略 2：通过 vswhere.exe 查找
+            try
+            {
+                string pfx86Path = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                string vswherePath = Path.Combine(pfx86Path, @"Microsoft Visual Studio\Installer\vswhere.exe");
+                if (File.Exists(vswherePath))
+                {
+                    ProcessStartInfo psi = new ProcessStartInfo(vswherePath, "-nologo -property productPath")
+                    {
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true
+                    };
+                    using (Process p = Process.Start(psi))
+                    {
+                        if (p != null)
+                        {
+                            string output = p.StandardOutput.ReadToEnd();
+                            p.WaitForExit(3000);
+                            output = (output ?? string.Empty).Trim(Environment.NewLine.ToCharArray());
+                            string dir = Path.GetDirectoryName(output);
+                            if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
+                            {
+                                vsInstallPath = dir;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("通过 vswhere 解析 VS 安装目录失败：" + ex);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 检查当前进程是否已获得管理员权限（UAC 提权后）。
+        /// </summary>
+        private static bool IsProcessElevated()
+        {
+            try
+            {
+                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+                {
+                    if (identity == null) { return false; }
+                    WindowsPrincipal principal = new WindowsPrincipal(identity);
+                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("管理员检测失败：" + ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 兼容保留的旧入口。内部委托到 <see cref="TryGetVisualStudioInstallPath"/>。
+        /// </summary>
         private static void GetVisualStudioPath(out string vsInstallPath)
         {
-            string pfx86Path = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            string vswherePath = Path.Combine(pfx86Path, @"Microsoft Visual Studio\Installer\vswhere.exe");
-            //ProcessStartInfo vswhereInfo = new ProcessStartInfo(vswherePath, "-nologo -all");
-            //ProcessStartInfo vswhereInfo = new ProcessStartInfo(vswherePath, "-nologo -property installationPath");
-            ProcessStartInfo vswhereInfo = new ProcessStartInfo(vswherePath, "-nologo -property productPath");
-            vswhereInfo.CreateNoWindow = true;
-            vswhereInfo.UseShellExecute = false;
-            vswhereInfo.RedirectStandardOutput = true;
-            vswhereInfo.RedirectStandardError = true;
-            Process vswhereProceee = Process.Start(vswhereInfo);
-            vsInstallPath = vswhereProceee.StandardOutput.ReadToEnd();
-            vsInstallPath = vsInstallPath.Trim(Environment.NewLine.ToCharArray());
-            vsInstallPath = Path.GetDirectoryName(vsInstallPath);
+            if (!TryGetVisualStudioInstallPath(null, out vsInstallPath))
+            {
+                vsInstallPath = null;
+            }
         }
 
         /// <summary>
@@ -145,18 +275,23 @@ namespace Basic.Configuration
         /// </remarks>
         private static void RegisterFileExtensions(string vsInstallPath, string extension, string description, string icon)
         {
-            RegistryKey HKCR = Registry.ClassesRoot;
-            RegistryKey key = HKCR.OpenSubKey(extension, RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl);
-            if (key == null) { key = HKCR.CreateSubKey(extension, RegistryKeyPermissionCheck.ReadWriteSubTree); }
-            key.SetValue("", $"VisualStudio{extension}.16.0", RegistryValueKind.String);
+            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(extension, RegistryKeyPermissionCheck.ReadWriteSubTree))
+            {
+                if (key == null) { throw new IOException($"无法创建或打开注册表项：HKEY_CLASSES_ROOT\\{extension}"); }
+                key.SetValue("", $"VisualStudio{extension}.16.0", RegistryValueKind.String);
+            }
 
-            RegistryKey keyInfo = HKCR.OpenSubKey($"VisualStudio{extension}.16.0", RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl);
-            if (keyInfo == null) { keyInfo = HKCR.CreateSubKey($"VisualStudio{extension}.16.0", RegistryKeyPermissionCheck.ReadWriteSubTree); }
-            keyInfo.SetValue("", description, RegistryValueKind.String);
+            using (RegistryKey keyInfo = Registry.ClassesRoot.CreateSubKey($"VisualStudio{extension}.16.0", RegistryKeyPermissionCheck.ReadWriteSubTree))
+            {
+                if (keyInfo == null) { throw new IOException($"无法创建或打开注册表项：HKEY_CLASSES_ROOT\\VisualStudio{extension}.16.0"); }
+                keyInfo.SetValue("", description, RegistryValueKind.String);
 
-            RegistryKey defaultIconKey = keyInfo.OpenSubKey("DefaultIcon", RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl);
-            if (defaultIconKey == null) { defaultIconKey = keyInfo.CreateSubKey("DefaultIcon", RegistryKeyPermissionCheck.ReadWriteSubTree); }
-            defaultIconKey.SetValue("", $"\"{vsInstallPath}\\msenvico.dll\",{icon}", RegistryValueKind.String);
+                using (RegistryKey defaultIconKey = keyInfo.CreateSubKey("DefaultIcon", RegistryKeyPermissionCheck.ReadWriteSubTree))
+                {
+                    if (defaultIconKey == null) { throw new IOException("无法创建或打开注册表项：DefaultIcon"); }
+                    defaultIconKey.SetValue("", $"\"{vsInstallPath}\\msenvico.dll\",{icon}", RegistryValueKind.String);
+                }
+            }
         }
 
         /// <summary>
@@ -173,18 +308,23 @@ namespace Basic.Configuration
         /// </remarks>
         private static void RegisterXmlFileExtensions(string vsInstallPath, string extension, string description, string icon)
         {
-            RegistryKey HKCR = Registry.ClassesRoot;
-            RegistryKey key = HKCR.OpenSubKey(extension, RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl);
-            if (key == null) { key = HKCR.CreateSubKey(extension, RegistryKeyPermissionCheck.ReadWriteSubTree); }
-            key.SetValue("", $"VisualStudio{extension}.16.0", RegistryValueKind.String);
+            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(extension, RegistryKeyPermissionCheck.ReadWriteSubTree))
+            {
+                if (key == null) { throw new IOException($"无法创建或打开注册表项：HKEY_CLASSES_ROOT\\{extension}"); }
+                key.SetValue("", $"VisualStudio{extension}.16.0", RegistryValueKind.String);
+            }
 
-            RegistryKey keyInfo = HKCR.OpenSubKey($"VisualStudio{extension}.16.0", RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl);
-            if (keyInfo == null) { keyInfo = HKCR.CreateSubKey($"VisualStudio{extension}.16.0", RegistryKeyPermissionCheck.ReadWriteSubTree); }
-            keyInfo.SetValue("", description, RegistryValueKind.String);
+            using (RegistryKey keyInfo = Registry.ClassesRoot.CreateSubKey($"VisualStudio{extension}.16.0", RegistryKeyPermissionCheck.ReadWriteSubTree))
+            {
+                if (keyInfo == null) { throw new IOException($"无法创建或打开注册表项：HKEY_CLASSES_ROOT\\VisualStudio{extension}.16.0"); }
+                keyInfo.SetValue("", description, RegistryValueKind.String);
 
-            RegistryKey defaultIconKey = keyInfo.OpenSubKey("DefaultIcon", RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.FullControl);
-            if (defaultIconKey == null) { defaultIconKey = keyInfo.CreateSubKey("DefaultIcon", RegistryKeyPermissionCheck.ReadWriteSubTree); }
-            defaultIconKey.SetValue("", $"\"{vsInstallPath}\\Xml\\Microsoft.XmlEditorNeutralUI.dll\",{icon}", RegistryValueKind.String);
+                using (RegistryKey defaultIconKey = keyInfo.CreateSubKey("DefaultIcon", RegistryKeyPermissionCheck.ReadWriteSubTree))
+                {
+                    if (defaultIconKey == null) { throw new IOException("无法创建或打开注册表项：DefaultIcon"); }
+                    defaultIconKey.SetValue("", $"\"{vsInstallPath}\\Xml\\Microsoft.XmlEditorNeutralUI.dll\",{icon}", RegistryValueKind.String);
+                }
+            }
         }
 
     }
