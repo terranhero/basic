@@ -20,7 +20,6 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<CommandName>调整位置</CommandName>
-					<MenuText>调整位置</MenuText>
 					<ButtonText>调整位置</ButtonText>
 				</Strings>
 			</Menu>
@@ -30,12 +29,10 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
 					<CommandName>数据命令</CommandName>
-					<MenuText>数据命令</MenuText>
 					<ButtonText>数据命令</ButtonText>
 				</Strings>
 				<Strings language="en-us">
 					<CommandName>Data Command</CommandName>
-					<MenuText>Data Command</MenuText>
 					<ButtonText>Data Command</ButtonText>
 				</Strings>
 			</Menu>
@@ -45,11 +42,8 @@
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<Strings>
-					<CanonicalName>金软配置文件...</CanonicalName>
 					<CommandName>金软配置文件...</CommandName>
-					<MenuText>金软配置文件...</MenuText>
 					<ButtonText>金软配置文件...</ButtonText>
-					<LocCanonicalName>金软配置文件...</LocCanonicalName>
 				</Strings>
 			</Menu>
 		</Menus>
