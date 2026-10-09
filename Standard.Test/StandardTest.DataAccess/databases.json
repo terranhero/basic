@@ -12,7 +12,6 @@
 		"Connections": {
 			"LOCAL": {
 				"ConnectionType": "NewSqlConnection",
-				"Version": 12,
 				"Application Name": "HRMS-TEST",
 				"Initial Catalog": "HRMS-V5",
 				"Data Source": "(local)",
@@ -24,7 +23,6 @@
 			},
 			"SJEC": {
 				"ConnectionType": "NewSqlConnection",
-				"Version": 12,
 				"Application Name": "SJEC-HRMS",
 				"Initial Catalog": "SJEC-EHR-0728",
 				"Data Source": "(local)",

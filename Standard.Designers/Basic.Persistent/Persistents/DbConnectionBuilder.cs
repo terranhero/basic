@@ -17,15 +17,18 @@ namespace Basic.Configuration
         /// <param name="connectionString">表示需要解析的数据库连接字符串。</param>
         internal DbConnectionBuilder(string connectionString)
         {
-            if (connectionString == null || connectionString == "") { return; }
+            if (string.IsNullOrEmpty(connectionString)) { return; }
             string[] itemArray = connectionString.Split(';');
             foreach (string item in itemArray)
             {
-                if (item.IndexOf('=') >= 0)
-                {
-                    string[] subArray = item.Split('=');
-                    base.Add(subArray[0], subArray[1]);
-                }
+                if (string.IsNullOrEmpty(item)) { continue; }
+                int splitIndex = item.IndexOf('=');
+                if (splitIndex <= 0) { continue; }
+                string key = item.Substring(0, splitIndex).Trim();
+                if (string.IsNullOrEmpty(key)) { continue; }
+                // 使用 Substring 而非 Split，避免连接字符串值中出现的 '='（例如加密后的密码）被截断。
+                string value = item.Substring(splitIndex + 1).Trim();
+                this[key] = value;      // 使用索引器赋值，兼容重复键（后者覆盖前者）。
             }
         }
     }

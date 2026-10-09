@@ -500,6 +500,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json">
       <Version>8.*</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.4</Version>
+    </PackageReference>
     <PackageReference Include="System.Text.Encoding.CodePages">
       <Version>8.*</Version>
     </PackageReference>

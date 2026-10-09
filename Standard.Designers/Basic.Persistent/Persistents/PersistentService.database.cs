@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Basic.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.Shell;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using MDC = Microsoft.Data.ConnectionUI;
 using MEC = Microsoft.Extensions.Configuration;
 using SC = System.Configuration;
@@ -169,40 +175,160 @@ namespace Basic.Configuration
 			}
 		}
 
+		/// <summary>
+		/// 将一个新的数据库连接写入指定的 JSON 配置文件。
+		/// </summary>
+		/// <param name="fullName">JSON 配置文件完整路径（例如 appsettings.json、database.json）。</param>
+		/// <param name="connection">由数据连接对话框生成的数据库连接字符串。</param>
+		/// <param name="dataProvider">所选数据提供程序，用于决定连接类型。</param>
+		/// <remarks>
+		/// 使用 Newtonsoft.Json 以 <see cref="CommentHandling.Load"/> 方式解析文件，向
+		/// <c>Connections/Connections</c> 节点追加一个新连接后再整体写回；
+		/// 文件中的注释、其它配置节、缩进风格与编码均会保留。
+		/// </remarks>
 		private void SaveJsonConfiguration(string fullName, string connection, MDC.DataProvider dataProvider)
 		{
-			IConfigurationBuilder jsonBuilder = new MEC.ConfigurationBuilder().AddJsonFile(fullName);
-			IConfigurationSection section = jsonBuilder.Build().GetRequiredSection("Connections");
-			JsonConnectionsSection sectionConnections = new JsonConnectionsSection();
-			section.Bind(sectionConnections);
-			ConnectionExtension.InitializeConnections(section);
-
-			// JsonConfigurationWriter.WriteConfiguration(root, connection, dataProvider);
-			JsonConnectionSection element = new JsonConnectionSection
+			try
 			{
-				Name = string.Concat("Connection_", sectionConnections.Connections.Count)
-			};
-			if (string.IsNullOrEmpty(sectionConnections.DefaultName))
-				sectionConnections.DefaultName = element.Name;
-			if (dataProvider == MDC.DataProvider.OracleDataProvider)
-				element.ConnectionType = ConnectionType.OracleConnection;
-			else if (dataProvider == MDC.DataProvider.OdbcDataProvider)
-				element.ConnectionType = ConnectionType.OdbcConnection;
-			else if (dataProvider == MDC.DataProvider.OleDBDataProvider)
-				element.ConnectionType = ConnectionType.OleDbConnection;
-			else { element.ConnectionType = ConnectionType.SqlConnection; }
+				if (string.IsNullOrEmpty(fullName)) { ShowMessage("配置文件路径为空，无法保存数据库连接。"); return; }
+				if (!File.Exists(fullName)) { ShowMessage(string.Concat("配置文件不存在：", fullName)); return; }
 
-			//DbConnectionBuilder builder = new DbConnectionBuilder(connection);
-			//foreach (string key in builder.Keys)
-			//{
-			//    ConnectionItem item = new ConnectionItem() { Name = key, Value = builder[key] };
-			//    if (string.Compare(item.Name, "Password", true) == 0) { item.Value = ConfigurationAlgorithm.Encryption(item.Value); }
-			//    element.Add(item);
-			//}
+				// 1) 读取 JSON 文本（保留原文件编码）并解析为 JSON 对象（保留注释）
+				Encoding encoding = DetectJsonFileEncoding(fullName);
+				string json = File.ReadAllText(fullName, encoding);
+				JObject root;
+				try { root = LoadJsonObject(json); }
+				catch (Exception ex)
+				{
+					ShowMessage(string.Concat("当前 JSON 配置文件结构不受支持，无法自动写入数据库连接。", ex.Message));
+					return;
+				}
 
-			//sectionConnections.Connections.Add(element);
-			//configuration.Save(SC.ConfigurationSaveMode.Modified);
+				// 2) 定位（或创建）Connections/Connections 节点
+				JObject connections = GetOrCreateObject(root, "Connections");
+				JObject items = GetOrCreateObject(connections, "Connections");
+
+				// 3) 计算新连接名称（沿用 Connection_{index} 规则，并保证不重名）
+				HashSet<string> connectionNames = new HashSet<string>(
+					items.Properties().Select(p => p.Name), StringComparer.OrdinalIgnoreCase);
+				string connectionName;
+				int index = 0;
+				do { connectionName = string.Concat("Connection_", index++); } while (connectionNames.Contains(connectionName));
+
+				// 4) 构造新的连接配置
+				JsonConnectionSection element = new JsonConnectionSection { Name = connectionName };
+				if (dataProvider == MDC.DataProvider.OracleDataProvider) { element.ConnectionType = ConnectionType.OracleConnection; }
+				else if (dataProvider == MDC.DataProvider.OdbcDataProvider) { element.ConnectionType = ConnectionType.OdbcConnection; }
+				else if (dataProvider == MDC.DataProvider.OleDBDataProvider) { element.ConnectionType = ConnectionType.OleDbConnection; }
+				else { element.ConnectionType = ConnectionType.SqlConnection; }
+
+				DbConnectionBuilder builder = new DbConnectionBuilder(connection);
+				foreach (string key in builder.Keys)
+				{
+					if (string.IsNullOrWhiteSpace(key)) { continue; }
+					string value = builder[key];
+					if (string.Compare(key, "Password", true) == 0) { value = ConfigurationAlgorithm.Encryption(value); }
+					element[key] = value;
+				}
+				items[connectionName] = BuildConnectionToken(element);
+
+				// 5) 补充 DefaultName（置于 Connections 节点首位）
+				if (string.IsNullOrWhiteSpace(connections.Value<string>("DefaultName")))
+				{
+					connections.AddFirst(new JProperty("DefaultName", connectionName));
+				}
+
+				// 6) 写回文件（保留原文件的缩进风格、换行符与编码）
+				string newLine = json.Contains("\r\n") ? "\r\n" : Environment.NewLine;
+				File.WriteAllText(fullName, SerializeJson(root, newLine), encoding);
+				WriteToOutput(string.Concat("已向配置文件\"", fullName, "\"添加数据库连接\"", connectionName, "\"。"));
+			}
+			catch (Exception ex)
+			{
+				ShowMessage(ex.Message);
+			}
 		}
+
+		#region JSON 读写辅助方法
+
+		/// <summary>根据 BOM 检测 JSON 文件编码；无 BOM 时按 UTF-8（无 BOM）处理。</summary>
+		private static Encoding DetectJsonFileEncoding(string fullName)
+		{
+			try
+			{
+				byte[] head = new byte[3];
+				using (FileStream stream = new FileStream(fullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+				{
+					int count = stream.Read(head, 0, head.Length);
+					if (count >= 3 && head[0] == 0xEF && head[1] == 0xBB && head[2] == 0xBF) { return new UTF8Encoding(true); }
+					if (count >= 2 && head[0] == 0xFF && head[1] == 0xFE) { return Encoding.Unicode; }
+					if (count >= 2 && head[0] == 0xFE && head[1] == 0xFF) { return Encoding.BigEndianUnicode; }
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("检测 JSON 文件编码失败：" + ex);
+			}
+			return new UTF8Encoding(false);
+		}
+
+		/// <summary>将 JSON 文本解析为可写的对象，同时保留文件中的注释。</summary>
+		private static JObject LoadJsonObject(string json)
+		{
+			if (string.IsNullOrWhiteSpace(json)) { return new JObject(); }
+			JsonLoadSettings settings = new JsonLoadSettings { CommentHandling = CommentHandling.Load };
+			using (StringReader textReader = new StringReader(json))
+			using (JsonTextReader jsonReader = new JsonTextReader(textReader) { DateParseHandling = DateParseHandling.None })
+			{
+				return JObject.Load(jsonReader, settings);
+			}
+		}
+
+		/// <summary>获取指定名称的子对象；不存在时创建后返回。</summary>
+		private static JObject GetOrCreateObject(JObject parent, string name)
+		{
+			if (parent[name] is JObject existing) { return existing; }
+			JObject created = new JObject();
+			parent[name] = created;
+			return created;
+		}
+
+		/// <summary>将连接配置转换为 JSON 对象（ConnectionType 在最前，Version 作为数字输出）。</summary>
+		private static JObject BuildConnectionToken(JsonConnectionSection element)
+		{
+			JObject token = new JObject { ["ConnectionType"] = element.ConnectionType.ToString() };
+			foreach (KeyValuePair<string, string> pair in element)
+			{
+				if (string.IsNullOrWhiteSpace(pair.Key)) { continue; }
+				if (string.Equals(pair.Key, "ConnectionType", StringComparison.OrdinalIgnoreCase)) { continue; }
+				{
+					token[pair.Key] = pair.Value;
+				}
+			}
+			return token;
+		}
+
+		/// <summary>以制表符缩进序列化 JSON 对象，并统一换行符为文件原有风格（结尾保留一个换行符）。</summary>
+		private static string SerializeJson(JObject root, string newLine)
+		{
+			StringBuilder buffer = new StringBuilder();
+			using (StringWriter textWriter = new StringWriter(buffer))
+			{
+				using (JsonTextWriter jsonWriter = new JsonTextWriter(textWriter))
+				{
+					jsonWriter.Formatting = Formatting.Indented;
+					jsonWriter.Indentation = 1;
+					jsonWriter.IndentChar = '\t';
+					root.WriteTo(jsonWriter);
+				}
+			}
+			// JsonTextWriter 的换行符取决于运行环境，这里统一为文件原有风格
+			string normalized = buffer.ToString().Replace("\r\n", "\n").Replace("\r", "\n");
+			if (newLine == "\r\n") { normalized = normalized.Replace("\n", "\r\n"); }
+			return string.Concat(normalized.TrimEnd('\r', '\n'), newLine);
+		}
+
+		#endregion
 
 		private void SaveConfiguration(string fullName, string connection, MDC.DataProvider dataProvider)
 		{
