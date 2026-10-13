@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -30,8 +31,15 @@ namespace Basic.Localizations
 		private readonly LocalizationService _Commands;
 
 		private const string FileExtension = ".localresx";
+		// 监听属性/大小/时间戳/删除/新增，覆盖资源管理器中可能的所有改动
+		private const uint FileChangeFilter = (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Attr
+			| _VSFILECHANGEFLAGS.VSFILECHG_Size
+			| _VSFILECHANGEFLAGS.VSFILECHG_Time
+			| _VSFILECHANGEFLAGS.VSFILECHG_Del
+			| _VSFILECHANGEFLAGS.VSFILECHG_Add);
 		private bool isDirty = false, loading = false;
 		private uint vsFileChangeCookie;
+		private readonly Dictionary<string, uint> dependentFileCookies = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
 		private IVsFileChangeEx vsFileChangeEx;
 		private ITrackSelection trackSelection;
 		private readonly LocalizationPackage asyncPackage;
@@ -160,7 +168,24 @@ namespace Basic.Localizations
 		/// Close the IVsPersistDocData object
 		/// </summary>
 		/// <returns>S_OK if the function succeeds</returns>
-		int IVsPersistDocData.Close() { return VSConstants.S_OK; }
+		int IVsPersistDocData.Close()
+		{
+			try
+			{
+				ThreadHelper.ThrowIfNotOnUIThread();
+				if (!string.IsNullOrEmpty(FileName))
+				{
+					SetFileChangeNotification(FileName, false);
+					UnregisterDependentFileNotifications();
+					FileName = string.Empty;
+				}
+			}
+			catch (Exception ex)
+			{
+				_Commands.ShowMessage(ex);
+			}
+			return VSConstants.S_OK;
+		}
 
 
 		/// <summary>
@@ -460,11 +485,19 @@ namespace Basic.Localizations
 					// Hook up to file change notifications
 					if (string.IsNullOrEmpty(FileName) || 0 != string.Compare(FileName, pszFilename, true, CultureInfo.CurrentCulture))
 					{
+						// 切换到新文件前：释放旧的主/依赖文件通知
+						if (!string.IsNullOrEmpty(FileName))
+						{
+							SetFileChangeNotification(FileName, false);
+							UnregisterDependentFileNotifications();
+						}
 						FileName = pszFilename;
 						SetFileChangeNotification(pszFilename, true);
 						// Notify the load or reload
 						NotifyDocChanged();
 					}
+					// 同步依赖 culture 文件的监听（解决：加载后又被外部新增/删除 culture 文件）
+					RegisterDependentFileNotifications();
 				});
 			}
 			catch (Exception ex)
@@ -511,7 +544,10 @@ namespace Basic.Localizations
 			//Suspend file change notifications for only Save since we don't have notifications setup
 			//for SaveAs and SaveCopyAs (as they are different files)
 			if (doingSaveOnSameFile)
+			{
 				this.SuspendFileChangeNotification(pszFilename, 1);
+				SuspendDependentFileChangeNotifications(1);
+			}
 
 			try
 			{
@@ -523,6 +559,8 @@ namespace Basic.Localizations
 					ProjectItem sitem = solution.FindProjectItem(filePath);
 					if (item == null) { _ = item.ProjectItems.AddFromFile(filePath); }
 				}
+				// 保存后依赖 culture 文件可能新增/删除，重新刷新监听
+				if (doingSaveOnSameFile) { RegisterDependentFileNotifications(); }
 			}
 			catch (ArgumentException)
 			{
@@ -536,7 +574,10 @@ namespace Basic.Localizations
 			{
 				//restore the file change notifications
 				if (doingSaveOnSameFile)
+				{
 					this.SuspendFileChangeNotification(pszFilename, 0);
+					SuspendDependentFileChangeNotifications(0);
+				}
 			}
 
 			if (VSConstants.E_FAIL == hr)
@@ -606,21 +647,61 @@ namespace Basic.Localizations
 			if (0 == cChanges || null == rgpszFile || null == rggrfChange)
 				return VSConstants.E_INVALIDARG;
 
-			//ignore file changes if we are in that mode
-			//for (uint i = 0; i < cChanges; i++)
-			//{
-			//    if (!String.IsNullOrEmpty(rgpszFile[i]) && String.Compare(rgpszFile[i], fileName, true, CultureInfo.CurrentCulture) == 0)
-			//    {
-			//        // if the readonly state (file attributes) have changed we can immediately update
-			//        // the editor to match the new state (either readonly or not readonly) immediately
-			//        // without prompting the user.
-			//        if (0 != (rggrfChange[i] & (int)_VSFILECHANGEFLAGS.VSFILECHG_Attr))
-			//        {
-			//            FileAttributes fileAttrs = File.GetAttributes(fileName);
-			//            int isReadOnly = (int)fileAttrs & (int)FileAttributes.ReadOnly;
-			//        }
-			//    }
-			//}
+			try
+			{
+				ThreadHelper.JoinableTaskFactory.Run(async () =>
+				{
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+					for (uint i = 0; i < cChanges; i++)
+					{
+						if (string.IsNullOrEmpty(rgpszFile[i])) { continue; }
+						uint flags = rggrfChange[i];
+						bool isMainFile = string.Equals(rgpszFile[i], FileName, StringComparison.OrdinalIgnoreCase);
+
+						// 1) 主文件被外部删除
+						if (isMainFile && 0 != (flags & (uint)_VSFILECHANGEFLAGS.VSFILECHG_Del))
+						{
+							_Commands.ShowMessage($"资源文件 \"{Path.GetFileName(FileName)}\" 已被外部删除，请先保存文档再继续编辑。");
+							continue;
+						}
+
+						// 2) 依赖文件被删除：忽略（下次保存或刷新时会自动重建）
+						if (0 != (flags & (uint)_VSFILECHANGEFLAGS.VSFILECHG_Del))
+							continue;
+
+						if (isMainFile)
+						{
+							// 2.1) 只读属性变更（暂不更新标题，保持最小改动）
+							if (0 != (flags & (uint)_VSFILECHANGEFLAGS.VSFILECHG_Attr))
+								continue;
+
+							// 2.2) 主文件内容变更：自动/询问重新加载
+							if (loading) { continue; }
+							if (isDirty)
+							{
+								bool reload = _Commands.Confirm($"资源文件 \"{Path.GetFileName(FileName)}\" 已在外部修改。\r\n是否重新加载？（重新加载将丢弃当前未保存的修改）");
+								if (!reload) { continue; }
+							}
+							_ = ((IPersistFileFormat)this).Load(FileName, 0, 0);
+							NotifyDocChanged();
+						}
+						else
+						{
+							// 3) 依赖 culture 文件被外部修改：刷新主文档以反映数据
+							if (loading) { continue; }
+							if (isDirty) { continue; } // 用户有未保存改动时不打扰
+							_ = ((IPersistFileFormat)this).Load(FileName, 0, 0);
+							NotifyDocChanged();
+						}
+					}
+				});
+			}
+			catch (Exception ex)
+			{
+				_Commands.ShowMessage(ex);
+			}
+
 			return VSConstants.S_OK;
 		}
 		#endregion
@@ -704,9 +785,8 @@ namespace Basic.Localizations
 			{
 				if (vsFileChangeCookie == VSConstants.VSCOOKIE_NIL)
 				{
-					//Receive notifications if either the attributes of the file change or 
-					//if the size of the file changes or if the last modified time of the file changes
-					uint grfFilter = (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Attr | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Time);
+					//Receive notifications on attribute / size / time / delete / add
+					uint grfFilter = FileChangeFilter;
 					result = vsFileChangeEx.AdviseFileChange(pszFileName, grfFilter, this, out vsFileChangeCookie);
 					if (vsFileChangeCookie == VSConstants.VSCOOKIE_NIL)
 						return VSConstants.E_FAIL;
@@ -752,6 +832,110 @@ namespace Basic.Localizations
 			//If we use the VSCOOKIE parameter to specify the file, then pszMkDocument parameter 
 			//must be set to a null reference and vice versa 
 			return vsFileChangeEx.IgnoreFile(vsFileChangeCookie, null, fSuspend);
+		}
+
+		/// <summary>
+		/// 枚举与 <see cref="FileName"/> 同目录、同基名的所有 culture resx 文件
+		/// （形如 &lt;baseName&gt;.&lt;culture&gt;.resx）。
+		/// </summary>
+		private string[] GetDependentResxFiles()
+		{
+			if (string.IsNullOrEmpty(FileName)) { return Array.Empty<string>(); }
+			string directory = Path.GetDirectoryName(FileName);
+			if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory)) { return Array.Empty<string>(); }
+			string prefix = Path.GetFileNameWithoutExtension(FileName);
+			if (string.IsNullOrEmpty(prefix)) { return Array.Empty<string>(); }
+			try
+			{
+				return Directory.GetFiles(directory, prefix + ".*.resx")
+					.Where(f => !string.Equals(f, FileName, StringComparison.OrdinalIgnoreCase))
+					.ToArray();
+			}
+			catch (Exception ex)
+			{
+				_Commands.ShowMessage(ex);
+				return Array.Empty<string>();
+			}
+		}
+
+		/// <summary>
+		/// 为当前目录内的所有 culture resx 注册文件变更通知。
+		/// 已有 cookie 不会重复注册，已不存在的文件会被释放。
+		/// </summary>
+		private void RegisterDependentFileNotifications()
+		{
+			ThreadHelper.ThrowIfNotOnUIThread();
+			Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "\t **** Inside RegisterDependentFileNotifications ****"));
+			if (null == vsFileChangeEx)
+				vsFileChangeEx = (IVsFileChangeEx)GetService(typeof(SVsFileChangeEx));
+			if (null == vsFileChangeEx) { return; }
+
+			string[] current = GetDependentResxFiles();
+			HashSet<string> currentSet = new HashSet<string>(current, StringComparer.OrdinalIgnoreCase);
+
+			// 释放已经不再存在的依赖文件通知
+			List<string> toRemove = new List<string>();
+			foreach (KeyValuePair<string, uint> kv in dependentFileCookies)
+			{
+				if (!currentSet.Contains(kv.Key)) { toRemove.Add(kv.Key); }
+			}
+			foreach (string file in toRemove)
+			{
+				if (dependentFileCookies.TryGetValue(file, out uint cookie))
+				{
+					_ = vsFileChangeEx.UnadviseFileChange(cookie);
+				}
+				dependentFileCookies.Remove(file);
+			}
+
+			// 注册新增的依赖文件
+			foreach (string file in current)
+			{
+				if (dependentFileCookies.ContainsKey(file)) { continue; }
+				if (vsFileChangeEx.AdviseFileChange(file, FileChangeFilter, this, out uint cookie) == VSConstants.S_OK
+					&& cookie != VSConstants.VSCOOKIE_NIL)
+				{
+					dependentFileCookies[file] = cookie;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 释放所有依赖文件的变更通知。
+		/// </summary>
+		private void UnregisterDependentFileNotifications()
+		{
+			ThreadHelper.ThrowIfNotOnUIThread();
+			if (null == vsFileChangeEx)
+				vsFileChangeEx = (IVsFileChangeEx)GetService(typeof(SVsFileChangeEx));
+			if (null == vsFileChangeEx) { return; }
+			foreach (KeyValuePair<string, uint> kv in dependentFileCookies)
+			{
+				_ = vsFileChangeEx.UnadviseFileChange(kv.Value);
+			}
+			dependentFileCookies.Clear();
+		}
+
+		/// <summary>
+		/// 暂停 / 恢复所有依赖文件的变更通知。
+		/// </summary>
+		private void SuspendDependentFileChangeNotifications(int fSuspend)
+		{
+			ThreadHelper.ThrowIfNotOnUIThread();
+			if (null == vsFileChangeEx)
+				vsFileChangeEx = (IVsFileChangeEx)GetService(typeof(SVsFileChangeEx));
+			if (null == vsFileChangeEx) { return; }
+			if (0 == fSuspend)
+			{
+				foreach (string file in dependentFileCookies.Keys)
+				{
+					if (vsFileChangeEx.SyncFile(file) == VSConstants.E_FAIL) { return; }
+				}
+			}
+			foreach (uint cookie in dependentFileCookies.Values)
+			{
+				_ = vsFileChangeEx.IgnoreFile(cookie, null, fSuspend);
+			}
 		}
 		#endregion
 	}

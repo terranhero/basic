@@ -143,7 +143,6 @@ namespace Basic.Collections
 		/// 将对象转换为其 XML 表示形式中属性部分。
 		/// </summary>
 		/// <param name="writer">对象要序列化为的 XmlWriter 流。</param>
-		/// <param name="connectionEnum">表示数据库连接类型</param>
 		protected internal override void WriteAttribute(System.Xml.XmlWriter writer)
 		{
 			writer.WriteAttributeString(NamespaceAttribute, _Namespace);

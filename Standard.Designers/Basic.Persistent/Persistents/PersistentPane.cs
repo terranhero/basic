@@ -1,10 +1,12 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Transactions;
 using System.Xml;
 using Basic.DataEntities;
@@ -47,6 +49,12 @@ namespace Basic.Configuration
 		private readonly PersistentService _CommandService;
 		private const uint PersistentFormat = 0;
 		private const string PersistentExtension = ".dpdl";
+		// 监听属性 / 大小 / 时间戳 / 删除 / 新增，覆盖资源管理器中可能的所有改动
+		private const uint FileChangeFilter = (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Attr
+			| _VSFILECHANGEFLAGS.VSFILECHG_Size
+			| _VSFILECHANGEFLAGS.VSFILECHG_Time
+			| _VSFILECHANGEFLAGS.VSFILECHG_Del
+			| _VSFILECHANGEFLAGS.VSFILECHG_Add);
 		private DesignerEntitiesCanvas editorControl;
 		private readonly PersistentDesigner _Persistent;
 		private readonly AsyncPackage _PersistentPackage;
@@ -55,6 +63,8 @@ namespace Basic.Configuration
 		private readonly ArrayList selectableList = new ArrayList();
 		private readonly EnvDTE.DTE dteClass;
 		private readonly string _FileName;
+		// 同目录下其他 .dpdl 依赖文件的文件变更通知 cookie
+		private readonly Dictionary<string, uint> dependentFileCookies = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
 		public EnvDTE.ProjectItem ProjectItem { get { return _ProjectItem; } }
 		public string FileName { get { return _FileName; } }
 
@@ -301,14 +311,22 @@ namespace Basic.Configuration
 				}
 
 				// Hook up to file change notifications
-				if (String.IsNullOrEmpty(fileName) || 0 != String.Compare(fileName, pszFilename, true, CultureInfo.CurrentCulture))
+				if (string.IsNullOrEmpty(fileName) || 0 != String.Compare(fileName, pszFilename, true, CultureInfo.CurrentCulture))
 				{
+					// 切换到新文件前：释放旧的主/依赖文件通知
+					if (!string.IsNullOrEmpty(fileName))
+					{
+						SetFileChangeNotification(fileName, false);
+						UnregisterDependentFileNotifications();
+					}
 					fileName = pszFilename;
 					SetFileChangeNotification(pszFilename, true);
 
 					// Notify the load or reload
 					NotifyDocChanged();
 				}
+				// 同步依赖 .dpdl 文件的监听（解决：加载后又被外部新增/删除 dpdl 文件）
+				RegisterDependentFileNotifications();
 			}
 			finally
 			{
@@ -397,7 +415,10 @@ namespace Basic.Configuration
 			//Suspend file change notifications for only Save since we don't have notifications setup
 			//for SaveAs and SaveCopyAs (as they are different files)
 			if (doingSaveOnSameFile)
+			{
 				this.SuspendFileChangeNotification(pszFilename, 1);
+				SuspendDependentFileChangeNotifications(1);
+			}
 
 			try
 			{
@@ -415,7 +436,10 @@ namespace Basic.Configuration
 			{
 				//restore the file change notifications
 				if (doingSaveOnSameFile)
+				{
 					this.SuspendFileChangeNotification(pszFilename, 0);
+					SuspendDependentFileChangeNotifications(0);
+				}
 			}
 
 			if (VSConstants.E_FAIL == hr)
@@ -433,7 +457,9 @@ namespace Basic.Configuration
 				}
 				isDirty = false;
 				SetReadOnly(false);             //set read only to false since you were successfully able
-												//to save to the new file                                                    
+												//to save to the new file
+												// 保存后同目录下的依赖文件集合可能发生变化，重新刷新监听
+				RegisterDependentFileNotifications();
 			}
 
 			ITrackSelection track = TrackSelection;
@@ -631,6 +657,20 @@ namespace Basic.Configuration
 		/// <returns>S_OK if the function succeeds</returns>
 		int IVsPersistDocData.Close()
 		{
+			try
+			{
+				ThreadHelper.ThrowIfNotOnUIThread();
+				if (!string.IsNullOrEmpty(fileName))
+				{
+					SetFileChangeNotification(fileName, false);
+					UnregisterDependentFileNotifications();
+					fileName = string.Empty;
+				}
+			}
+			catch (Exception ex)
+			{
+				ShowMessage(ex.Message);
+			}
 			return VSConstants.S_OK;
 		}
 
@@ -706,22 +746,67 @@ namespace Basic.Configuration
 			if (0 == cChanges || null == rgpszFile || null == rggrfChange)
 				return VSConstants.E_INVALIDARG;
 
-			//ignore file changes if we are in that mode
-			for (uint i = 0; i < cChanges; i++)
+			try
 			{
-				if (!String.IsNullOrEmpty(rgpszFile[i]) && String.Compare(rgpszFile[i], fileName, true, CultureInfo.CurrentCulture) == 0)
+				ThreadHelper.JoinableTaskFactory.Run(async () =>
 				{
-					// if the readonly state (file attributes) have changed we can immediately update
-					// the editor to match the new state (either readonly or not readonly) immediately
-					// without prompting the user.
-					if (0 != (rggrfChange[i] & (int)_VSFILECHANGEFLAGS.VSFILECHG_Attr))
+					await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+					for (uint i = 0; i < cChanges; i++)
 					{
-						FileAttributes fileAttrs = File.GetAttributes(fileName);
-						int isReadOnly = (int)fileAttrs & (int)FileAttributes.ReadOnly;
-						SetReadOnly(isReadOnly != 0);
+						if (string.IsNullOrEmpty(rgpszFile[i])) { continue; }
+						uint flags = rggrfChange[i];
+						bool isMainFile = string.Equals(rgpszFile[i], fileName, StringComparison.OrdinalIgnoreCase);
+
+						// 1) 主文件被外部删除：提示用户保存后再编辑
+						if (isMainFile && 0 != (flags & (uint)_VSFILECHANGEFLAGS.VSFILECHG_Del))
+						{
+							ShowMessage($"持久化文件 \"{Path.GetFileName(fileName)}\" 已被外部删除，请先保存文档再继续编辑。");
+							continue;
+						}
+
+						// 2) 依赖文件被删除：忽略，下次保存或刷新时会重新枚举
+						if (0 != (flags & (uint)_VSFILECHANGEFLAGS.VSFILECHG_Del))
+							continue;
+
+						if (isMainFile)
+						{
+							// 2.1) 只读属性变更
+							if (0 != (flags & (uint)_VSFILECHANGEFLAGS.VSFILECHG_Attr))
+							{
+								FileAttributes fileAttrs = File.GetAttributes(fileName);
+								int isReadOnly = (int)fileAttrs & (int)FileAttributes.ReadOnly;
+								SetReadOnly(isReadOnly != 0);
+								continue;
+							}
+
+							// 2.2) 主文件内容变更（Size / Time）：自动或询问重新加载
+							if (loading) { continue; }
+							if (isDirty)
+							{
+								bool reload = _CommandService.Confirm($"持久化文件 \"{Path.GetFileName(fileName)}\" 已在外部修改。\r\n是否重新加载？（重新加载将丢弃当前未保存的修改）");
+								if (reload == false) { continue; }
+							}
+							_ = ((IPersistFileFormat)this).Load(fileName, 0, 0);
+							NotifyDocChanged();
+						}
+						else
+						{
+							// 3) 依赖 .dpdl 文件被外部修改：刷新主文档以反映数据
+							if (loading || isDirty) { continue; }
+							_ = ((IPersistFileFormat)this).Load(fileName, 0, 0);
+							NotifyDocChanged();
+							// 依赖文件集合可能发生变化（外部新增/删除了其他 dpdl），重新同步监听
+							RegisterDependentFileNotifications();
+						}
 					}
-				}
+				});
 			}
+			catch (Exception ex)
+			{
+				ShowMessage(ex.Message);
+			}
+
 			return VSConstants.S_OK;
 		}
 
@@ -789,9 +874,8 @@ namespace Basic.Configuration
 			{
 				if (vsFileChangeCookie == VSConstants.VSCOOKIE_NIL)
 				{
-					//Receive notifications if either the attributes of the file change or 
-					//if the size of the file changes or if the last modified time of the file changes
-					uint grfFilter = (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Attr | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Time);
+					//Receive notifications on attribute / size / time / delete / add
+					uint grfFilter = FileChangeFilter;
 					result = vsFileChangeEx.AdviseFileChange(pszFileName, grfFilter, (IVsFileChangeEvents)this, out vsFileChangeCookie);
 					if (vsFileChangeCookie == VSConstants.VSCOOKIE_NIL)
 						return VSConstants.E_FAIL;
@@ -818,6 +902,7 @@ namespace Basic.Configuration
 		/// <returns></returns>
 		private int SuspendFileChangeNotification(string pszFileName, int fSuspend)
 		{
+			ThreadHelper.ThrowIfNotOnUIThread();
 			Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "\t **** Inside SuspendFileChangeNotification ****"));
 
 			if (null == vsFileChangeEx)
@@ -833,9 +918,109 @@ namespace Basic.Configuration
 					return VSConstants.E_FAIL;
 			}
 
-			//If we use the VSCOOKIE parameter to specify the file, then pszMkDocument parameter 
-			//must be set to a null reference and vice versa 
+			//If we use the VSCOOKIE parameter to specify the file, then pszMkDocument parameter
+			//must be set to a null reference and vice versa
 			return vsFileChangeEx.IgnoreFile(vsFileChangeCookie, null, fSuspend);
+		}
+
+		/// <summary>
+		/// 枚举与 <see cref="fileName"/> 同目录下的其他 .dpdl 依赖文件。
+		/// </summary>
+		private string[] GetDependentFiles()
+		{
+			if (string.IsNullOrEmpty(fileName)) { return Array.Empty<string>(); }
+			string directory = Path.GetDirectoryName(fileName);
+			if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory)) { return Array.Empty<string>(); }
+			try
+			{
+				return Directory.GetFiles(directory, "*" + PersistentExtension)
+					.Where(f => !string.Equals(f, fileName, StringComparison.OrdinalIgnoreCase))
+					.ToArray();
+			}
+			catch (Exception ex)
+			{
+				ShowMessage(ex.Message);
+				return Array.Empty<string>();
+			}
+		}
+
+		/// <summary>
+		/// 为同目录下所有依赖 .dpdl 文件注册变更通知。
+		/// 已有 cookie 不会重复注册，已不存在的文件会被释放。
+		/// </summary>
+		private void RegisterDependentFileNotifications()
+		{
+			ThreadHelper.ThrowIfNotOnUIThread();
+			if (null == vsFileChangeEx)
+				vsFileChangeEx = (IVsFileChangeEx)GetService(typeof(SVsFileChangeEx));
+			if (null == vsFileChangeEx) { return; }
+
+			string[] current = GetDependentFiles();
+			HashSet<string> currentSet = new HashSet<string>(current, StringComparer.OrdinalIgnoreCase);
+
+			// 释放已经不再存在的依赖文件通知
+			List<string> toRemove = new List<string>();
+			foreach (KeyValuePair<string, uint> kv in dependentFileCookies)
+			{
+				if (!currentSet.Contains(kv.Key)) { toRemove.Add(kv.Key); }
+			}
+			foreach (string file in toRemove)
+			{
+				if (dependentFileCookies.TryGetValue(file, out uint cookie))
+				{
+					_ = vsFileChangeEx.UnadviseFileChange(cookie);
+				}
+				dependentFileCookies.Remove(file);
+			}
+
+			// 注册新增的依赖文件
+			foreach (string file in current)
+			{
+				if (dependentFileCookies.ContainsKey(file)) { continue; }
+				if (vsFileChangeEx.AdviseFileChange(file, FileChangeFilter, (IVsFileChangeEvents)this, out uint cookie) == VSConstants.S_OK
+					&& cookie != VSConstants.VSCOOKIE_NIL)
+				{
+					dependentFileCookies[file] = cookie;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 释放所有依赖文件的变更通知。
+		/// </summary>
+		private void UnregisterDependentFileNotifications()
+		{
+			ThreadHelper.ThrowIfNotOnUIThread();
+			if (null == vsFileChangeEx)
+				vsFileChangeEx = (IVsFileChangeEx)GetService(typeof(SVsFileChangeEx));
+			if (null == vsFileChangeEx) { return; }
+			foreach (KeyValuePair<string, uint> kv in dependentFileCookies)
+			{
+				_ = vsFileChangeEx.UnadviseFileChange(kv.Value);
+			}
+			dependentFileCookies.Clear();
+		}
+
+		/// <summary>
+		/// 暂停 / 恢复所有依赖文件的变更通知。
+		/// </summary>
+		private void SuspendDependentFileChangeNotifications(int fSuspend)
+		{
+			ThreadHelper.ThrowIfNotOnUIThread();
+			if (null == vsFileChangeEx)
+				vsFileChangeEx = (IVsFileChangeEx)GetService(typeof(SVsFileChangeEx));
+			if (null == vsFileChangeEx) { return; }
+			if (0 == fSuspend)
+			{
+				foreach (string file in dependentFileCookies.Keys)
+				{
+					if (vsFileChangeEx.SyncFile(file) == VSConstants.E_FAIL) { return; }
+				}
+			}
+			foreach (uint cookie in dependentFileCookies.Values)
+			{
+				_ = vsFileChangeEx.IgnoreFile(cookie, null, fSuspend);
+			}
 		}
 		#endregion
 
