@@ -278,8 +278,7 @@ namespace Basic.Localizations
 					// Call QueryEditQuerySave
 					uint result;
 					hr = queryEditQuerySave.QuerySaveFile(FileName, 0, null, out result);
-					if (ErrorHandler.Failed(hr))
-						return hr;
+					if (ErrorHandler.Failed(hr)) { return hr; }
 
 					// Process according to result from QuerySave
 					switch ((tagVSQuerySaveResult)result)
@@ -295,8 +294,7 @@ namespace Basic.Localizations
 								// Call the shell to do the save for us
 								IVsUIShell uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
 								hr = uiShell.SaveDocDataToFile(dwSave, (IPersistFileFormat)this, FileName, out pbstrMkDocumentNew, out pfSaveCanceled);
-								if (ErrorHandler.Failed(hr))
-									return hr;
+								if (ErrorHandler.Failed(hr)) { return hr; }
 							}
 							break;
 						case tagVSQuerySaveResult.QSR_ForceSaveAs:
@@ -304,8 +302,7 @@ namespace Basic.Localizations
 								// Call the shell to do the SaveAS for us
 								IVsUIShell uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
 								hr = uiShell.SaveDocDataToFile(VSSAVEFLAGS.VSSAVE_SaveAs, (IPersistFileFormat)this, FileName, out pbstrMkDocumentNew, out pfSaveCanceled);
-								if (ErrorHandler.Failed(hr))
-									return hr;
+								if (ErrorHandler.Failed(hr)) { return hr; }
 							}
 							break;
 
@@ -320,19 +317,19 @@ namespace Basic.Localizations
 				case VSSAVEFLAGS.VSSAVE_SaveAs:
 				case VSSAVEFLAGS.VSSAVE_SaveCopyAs:
 					// Make sure the file name as the right extension
-					if (String.Compare(FileExtension, Path.GetExtension(FileName), true, CultureInfo.CurrentCulture) != 0)
+					if (string.Compare(FileExtension, Path.GetExtension(FileName), true, CultureInfo.CurrentCulture) != 0)
 					{
 						FileName += FileExtension;
 					}
 					// Call the shell to do the save for us
 					IVsUIShell vsUIShell = (IVsUIShell)GetService(typeof(SVsUIShell));
 					hr = vsUIShell.SaveDocDataToFile(dwSave, (IPersistFileFormat)this, FileName, out pbstrMkDocumentNew, out pfSaveCanceled);
-					if (ErrorHandler.Failed(hr))
-						return hr;
+					if (ErrorHandler.Failed(hr)) { return hr; }
 					break;
 				default:
 					throw new ArgumentException("Unsupported Save flag");
-			};
+			}
+			;
 
 			return VSConstants.S_OK;
 		}
@@ -430,7 +427,6 @@ namespace Basic.Localizations
 			pfIsDirty = isDirty ? 1 : 0;
 			return VSConstants.S_OK;
 		}
-
 
 		/// <summary>
 		/// Loads the file content into the textbox
