@@ -6,7 +6,8 @@ namespace Basic.Caches
 	/// </summary>
 	public abstract class CacheClientFactory
 	{
-		private static CacheClientFactory _ClientFactory = new MemoryClientFactory();
+		private readonly static CacheClientFactory _DefaultFactory = new MemoryClientFactory();
+		private static CacheClientFactory _ClientFactory = _DefaultFactory;
 		/// <summary>
 		/// 创建 ICacheClient 子类实例。
 		/// </summary>
@@ -25,13 +26,27 @@ namespace Basic.Caches
 		public static ICacheClient GetClient(string name)
 		{
 			if (_ClientFactory != null) { return _ClientFactory.CreateClient(name); }
-			return _ClientFactory.CreateClient(name);
+			return _DefaultFactory.CreateClient(name);
 		}
 
 		/// <summary>根据数据库连接名称，返回对应的缓存实例</summary>
 		/// <param name="name">数据库连接信息</param>
 		/// <returns>返回缓存 ICacheClient 接口的实例。</returns>
 		public abstract ICacheClient CreateClient(string name);
+
+		/// <summary>
+		/// 获取缓存 ICacheClient 接口的实例。
+		/// </summary>
+		/// <returns>返回缓存 ICacheClient 接口的实例。</returns>
+		public static ICacheClient GetClient()
+		{
+			if (_ClientFactory != null) { return _ClientFactory.CreateClient(); }
+			return _DefaultFactory.CreateClient();
+		}
+
+		/// <summary>根据数据库连接名称，返回对应的缓存实例</summary>
+		/// <returns>返回缓存 ICacheClient 接口的实例。</returns>
+		public abstract ICacheClient CreateClient();
 
 	}
 }
